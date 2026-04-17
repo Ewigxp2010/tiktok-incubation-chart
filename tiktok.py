@@ -50,6 +50,12 @@ PHASES = [
     ("Phase 3 — Breakout", 30_000, 100_000, 0.10, 20, 0.25),
 ]
 
+PHASE_COLORS = {
+    "Phase 1 — Cold Start": "#EAF4FF",
+    "Phase 2 — Growth": "#EEFBEF",
+    "Phase 3 — Breakout": "#FFF4E8",
+}
+
 # ======================
 # i18n
 # ======================
@@ -263,6 +269,29 @@ def get_product_platform_fee_rate(phase_idx: int, promo_60d: bool, fee_type_seri
         return np.full(len(fee_type_series), 0.05)
     return fee_type_series.to_numpy()
 
+def add_phase_backgrounds(ax, df: pd.DataFrame):
+    phase_ranges = (
+        df.groupby("Phase", as_index=False)
+        .agg(
+            start_week=("Global Week", "min"),
+            end_week=("Global Week", "max")
+        )
+    )
+
+    for _, row in phase_ranges.iterrows():
+        phase_name = row["Phase"]
+        start_week = row["start_week"]
+        end_week = row["end_week"]
+        color = PHASE_COLORS.get(phase_name, "#F5F5F5")
+
+        ax.axvspan(
+            start_week - 0.5,
+            end_week + 0.5,
+            color=color,
+            alpha=0.8,
+            zorder=0
+        )
+
 def phase_weekly_series(
     phase_idx: int,
     phase_name: str,
@@ -405,10 +434,13 @@ def make_chart(
     annotate_break_even: bool = False
 ):
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(df["Global Week"], df["GMV"], marker="o", label="GMV")
-    ax.plot(df["Global Week"], df["Total Cost"], marker="o", label="Total Cost")
-    ax.plot(df["Global Week"], df["Profit"], marker="o", linewidth=2, label="Profit")
-    ax.axhline(0, linewidth=1)
+
+    add_phase_backgrounds(ax, df)
+
+    ax.plot(df["Global Week"], df["GMV"], marker="o", label="GMV", zorder=3)
+    ax.plot(df["Global Week"], df["Total Cost"], marker="o", label="Total Cost", zorder=3)
+    ax.plot(df["Global Week"], df["Profit"], marker="o", linewidth=2, label="Profit", zorder=4)
+    ax.axhline(0, linewidth=1, zorder=2)
 
     if annotate_break_even and weekly_be_week is not None:
         y_weekly = get_point_by_week(df, weekly_be_week, "Profit")
@@ -420,12 +452,12 @@ def make_chart(
                 xytext=(8, 8),
                 textcoords="offset points"
             )
-            ax.axvline(weekly_be_week, linestyle="--", alpha=0.35)
+            ax.axvline(weekly_be_week, linestyle="--", alpha=0.35, zorder=2)
 
     ax.set_title(title)
     ax.set_xlabel(T["week"])
     ax.set_ylabel("€")
-    ax.grid(True, alpha=0.3)
+    ax.grid(True, alpha=0.3, zorder=1)
     ax.legend()
     format_eur_axis(ax)
     fig.tight_layout()
@@ -436,8 +468,11 @@ def make_cumulative_profit_chart(df_all: pd.DataFrame, cumulative_be_week=None):
     tmp["Cumulative Profit"] = tmp["Profit"].cumsum()
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(tmp["Global Week"], tmp["Cumulative Profit"], marker="o", linewidth=2, label="Cumulative Profit")
-    ax.axhline(0, linewidth=1)
+
+    add_phase_backgrounds(ax, tmp)
+
+    ax.plot(tmp["Global Week"], tmp["Cumulative Profit"], marker="o", linewidth=2, label="Cumulative Profit", zorder=3)
+    ax.axhline(0, linewidth=1, zorder=2)
 
     if cumulative_be_week is not None:
         y_cum = get_point_by_week(tmp, cumulative_be_week, "Cumulative Profit")
@@ -449,12 +484,12 @@ def make_cumulative_profit_chart(df_all: pd.DataFrame, cumulative_be_week=None):
                 xytext=(8, 8),
                 textcoords="offset points"
             )
-            ax.axvline(cumulative_be_week, linestyle="--", alpha=0.35)
+            ax.axvline(cumulative_be_week, linestyle="--", alpha=0.35, zorder=2)
 
     ax.set_title(T["cumulative_profit_trend"])
     ax.set_xlabel("Global Week")
     ax.set_ylabel("€")
-    ax.grid(True, alpha=0.3)
+    ax.grid(True, alpha=0.3, zorder=1)
     ax.legend()
     format_eur_axis(ax)
     fig.tight_layout()
@@ -471,10 +506,7 @@ def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
         preset = st.session_state[f"preset_{i}"]
 
         fee_label = st.session_state[f"fee_type_{i}"]
-        if fee_label == T["electronics_fee"]:
-            fee_rate = 0.07
-        else:
-            fee_rate = 0.09
+        fee_rate = 0.07 if fee_label == T["electronics_fee"] else 0.09
 
         gross_margin_pct = float(st.session_state[f"gross_margin_pct_{i}"])
         gross_margin_decimal = gross_margin_pct / 100.0
