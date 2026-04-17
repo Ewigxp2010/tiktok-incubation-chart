@@ -6,16 +6,13 @@ import matplotlib.ticker as ticker
 
 plt.rcParams["axes.unicode_minus"] = False
 
-# ======================
-# Page config
-# ======================
 st.set_page_config(
     page_title="Meeting Growth Visualizer",
     layout="wide"
 )
 
 # ======================
-# AOV preset library
+# Presets
 # ======================
 AOV_PRESETS = {
     "Home & Living": {
@@ -45,11 +42,13 @@ AOV_PRESETS = {
     }
 }
 
+ALL_PRESET_OPTIONS = []
+for family_name, preset_map in AOV_PRESETS.items():
+    for preset_name in preset_map.keys():
+        ALL_PRESET_OPTIONS.append(f"{family_name} | {preset_name}")
+
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-# ======================
-# Phase definition
-# ======================
 PHASES = [
     ("Phase 1 — Cold Start", 2_000, 10_000, 0.00, 30),
     ("Phase 2 — Growth", 10_000, 30_000, 0.05, 25),
@@ -59,29 +58,84 @@ PHASES = [
 # ======================
 # Helpers
 # ======================
-def format_eur_axis(ax):
-    ax.yaxis.set_major_formatter(ticker.StrMethodFormatter("€{x:,.0f}"))
+def default_product_df(n_products: int) -> pd.DataFrame:
+    rows = []
+    default_family = "Home & Living"
+    default_preset = list(AOV_PRESETS[default_family].keys())[0]
+    default_aov = AOV_PRESETS[default_family][default_preset]
 
-def normalize_shares(df):
+    for i in range(n_products):
+        rows.append({
+            "Product": LETTERS[i],
+            "Preset": f"{default_family} | {default_preset}",
+            "Share": 1.0,
+            "AOV": float(default_aov),
+            "Gross Margin": 0.40,
+            "Fee Type": "Other (9%)",
+        })
+    return pd.DataFrame(rows)
+
+def normalize_shares(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
-    df["Share"] = df["Share"].clip(lower=0)
+    df["Share"] = pd.to_numeric(df["Share"], errors="coerce").fillna(0).clip(lower=0)
     s = df["Share"].sum()
     if s <= 0:
         raise ValueError("At least one product share must be > 0.")
     df["ShareNorm"] = df["Share"] / s
     return df
 
-def get_product_platform_fee_rate(phase_idx: int, promo_60d: bool, fee_type_series):
-    """
-    fee_type_series contains per-product default fee rates (0.07 or 0.09)
+def split_preset(preset_value: str):
+    if " | " not in str(preset_value):
+        raise ValueError(f"Invalid preset value: {preset_value}")
+    family, preset = preset_value.split(" | ", 1)
+    return family, preset
 
-    If promo_60d is on:
-      Phase 1 & Phase 2 => all products use 5%
-      Phase 3 => use product-level default fee
+def prepare_product_df(df_input: pd.DataFrame) -> pd.DataFrame:
+    df = df_input.copy()
 
-    If promo_60d is off:
-      all phases use product-level default fee
-    """
+    required_cols = ["Product", "Preset", "Share", "AOV", "Gross Margin", "Fee Type"]
+    missing = [c for c in required_cols if c not in df.columns]
+    if missing:
+        raise ValueError(f"Missing columns: {missing}")
+
+    families = []
+    presets = []
+    fee_rates = []
+
+    for _, row in df.iterrows():
+        family, preset = split_preset(row["Preset"])
+        families.append(family)
+        presets.append(preset)
+
+        fee_label = str(row["Fee Type"]).strip()
+        if fee_label == "Electronics (7%)":
+            fee_rates.append(0.07)
+        else:
+            fee_rates.append(0.09)
+
+    df["Family"] = families
+    df["Preset Category"] = presets
+    df["Platform Fee Rate Default"] = fee_rates
+    df["AOV"] = pd.to_numeric(df["AOV"], errors="coerce")
+    df["Gross Margin"] = pd.to_numeric(df["Gross Margin"], errors="coerce")
+    df["Share"] = pd.to_numeric(df["Share"], errors="coerce")
+
+    if df["Product"].isna().any():
+        raise ValueError("Product name cannot be empty.")
+
+    if (df["AOV"] <= 0).any() or df["AOV"].isna().any():
+        raise ValueError("AOV must be > 0 for all products.")
+
+    if ((df["Gross Margin"] < 0.05) | (df["Gross Margin"] > 0.90) | df["Gross Margin"].isna()).any():
+        raise ValueError("Gross Margin must be between 0.05 and 0.90 for all products.")
+
+    df = normalize_shares(df)
+    return df
+
+def format_eur_axis(ax):
+    ax.yaxis.set_major_formatter(ticker.StrMethodFormatter("€{x:,.0f}"))
+
+def get_product_platform_fee_rate(phase_idx: int, promo_60d: bool, fee_type_series: pd.Series) -> np.ndarray:
     if promo_60d and phase_idx in (0, 1):
         return np.full(len(fee_type_series), 0.05)
     return fee_type_series.to_numpy()
@@ -101,17 +155,14 @@ def phase_weekly_series(
     prod_df: pd.DataFrame,
     affiliate_share: float,
     affiliate_commission_rate: float,
-    week_offset: int = 0
-):
+    week_offset: int = 0,
+) -> pd.DataFrame:
     gmv_series = np.linspace(gmv_start, gmv_end, weeks_in_phase)
 
     share = prod_df["ShareNorm"].to_numpy()
     aov = prod_df["AOV"].to_numpy()
     gross_margin = prod_df["Gross Margin"].to_numpy()
     fee_type = prod_df["Platform Fee Rate Default"]
-
-    if np.any(aov <= 0):
-        raise ValueError("AOV must be > 0 for all products.")
 
     sample_allin_unit = float(sample_product_cost) + float(sample_ship_cost)
     product_fee_rates = get_product_platform_fee_rate(phase_idx, promo_60d, fee_type)
@@ -124,7 +175,6 @@ def phase_weekly_series(
         non_affiliate_gmv = gmv * (1 - affiliate_share)
 
         rev = gmv * share
-
         orders_p = rev / aov
         orders_total = float(np.sum(orders_p))
 
@@ -171,7 +221,7 @@ def phase_weekly_series(
 
     return pd.DataFrame(rows)
 
-def build_phase_summary(df_all: pd.DataFrame):
+def build_phase_summary(df_all: pd.DataFrame) -> pd.DataFrame:
     summary = (
         df_all.groupby("Phase", as_index=False)
         .agg({
@@ -190,20 +240,19 @@ def build_phase_summary(df_all: pd.DataFrame):
     summary["Profit Margin"] = np.where(summary["GMV"] > 0, summary["Profit"] / summary["GMV"], 0)
     return summary
 
-def build_overall_summary(df_all: pd.DataFrame):
+def build_overall_summary(df_all: pd.DataFrame) -> pd.DataFrame:
     total_gmv = df_all["GMV"].sum()
     total_cost = df_all["Total Cost"].sum()
     total_profit = df_all["Profit"].sum()
     total_orders = df_all["Orders (est.)"].sum()
 
-    out = pd.DataFrame([{
+    return pd.DataFrame([{
         "Total GMV": total_gmv,
         "Total Cost": total_cost,
         "Total Profit": total_profit,
         "Total Orders (est.)": total_orders,
         "Overall Profit Margin": (total_profit / total_gmv) if total_gmv > 0 else 0
     }])
-    return out
 
 def first_positive_profit_week(df_all: pd.DataFrame):
     tmp = df_all[df_all["Profit"] > 0]
@@ -219,13 +268,11 @@ def first_cumulative_break_even_week(df_all: pd.DataFrame):
         return None
     return int(pos["Global Week"].iloc[0])
 
-def plot_phase(df_phase: pd.DataFrame, title: str):
+def make_chart(df: pd.DataFrame, title: str):
     fig, ax = plt.subplots(figsize=(10, 5))
-    x = df_phase["Global Week"].to_numpy()
-
-    ax.plot(x, df_phase["GMV"], marker="o", label="GMV")
-    ax.plot(x, df_phase["Total Cost"], marker="o", label="Total Cost")
-    ax.plot(x, df_phase["Profit"], marker="o", linewidth=2, label="Profit")
+    ax.plot(df["Global Week"], df["GMV"], marker="o", label="GMV")
+    ax.plot(df["Global Week"], df["Total Cost"], marker="o", label="Total Cost")
+    ax.plot(df["Global Week"], df["Profit"], marker="o", linewidth=2, label="Profit")
     ax.axhline(0, linewidth=1)
     ax.set_title(title)
     ax.set_xlabel("Week")
@@ -236,31 +283,14 @@ def plot_phase(df_phase: pd.DataFrame, title: str):
     fig.tight_layout()
     return fig
 
-def plot_overall(df_all: pd.DataFrame):
-    fig, ax = plt.subplots(figsize=(11, 5.5))
-    x = df_all["Global Week"].to_numpy()
-
-    ax.plot(x, df_all["GMV"], marker="o", label="GMV")
-    ax.plot(x, df_all["Total Cost"], marker="o", label="Total Cost")
-    ax.plot(x, df_all["Profit"], marker="o", linewidth=2, label="Profit")
-    ax.axhline(0, linewidth=1)
-    ax.set_title("Overall weekly trend (all phases)")
-    ax.set_xlabel("Global Week")
-    ax.set_ylabel("€")
-    ax.grid(True, alpha=0.3)
-    ax.legend()
-    format_eur_axis(ax)
-    fig.tight_layout()
-    return fig
-
-def plot_cumulative_profit(df_all: pd.DataFrame):
+def make_cumulative_profit_chart(df_all: pd.DataFrame):
     tmp = df_all.copy()
     tmp["Cumulative Profit"] = tmp["Profit"].cumsum()
 
-    fig, ax = plt.subplots(figsize=(11, 5.5))
+    fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(tmp["Global Week"], tmp["Cumulative Profit"], marker="o", linewidth=2, label="Cumulative Profit")
     ax.axhline(0, linewidth=1)
-    ax.set_title("Cumulative profit trend")
+    ax.set_title("Cumulative Profit Trend")
     ax.set_xlabel("Global Week")
     ax.set_ylabel("€")
     ax.grid(True, alpha=0.3)
@@ -268,11 +298,15 @@ def plot_cumulative_profit(df_all: pd.DataFrame):
     format_eur_axis(ax)
     fig.tight_layout()
     return fig
+
+def to_csv_bytes(df: pd.DataFrame) -> bytes:
+    return df.to_csv(index=False).encode("utf-8")
 
 # ======================
 # UI
 # ======================
-st.title("Meeting Growth Visualizer — Enhanced Version")
+st.title("Meeting Growth Visualizer")
+st.caption("Enhanced Streamlit version for GMV / Cost / Profit modeling")
 
 with st.sidebar:
     st.header("Global Inputs")
@@ -282,35 +316,35 @@ with st.sidebar:
         min_value=1,
         max_value=26,
         value=3,
-        step=1
+        step=1,
     )
 
     promo_60d = st.radio(
         "60-day fee promo",
         options=[True, False],
         format_func=lambda x: "Yes (5% first ~60 days)" if x else "No promo",
-        index=0
+        index=0,
     )
 
     fulfillment_per_order = st.number_input(
         "Fulfillment €/order",
         min_value=0.0,
         value=6.0,
-        step=0.5
+        step=0.5,
     )
 
     sample_product_cost = st.number_input(
         "Sample product €/unit",
         min_value=0.0,
         value=30.0,
-        step=1.0
+        step=1.0,
     )
 
     sample_ship_cost = st.number_input(
         "Sample shipping €/unit",
         min_value=0.0,
         value=5.0,
-        step=1.0
+        step=1.0,
     )
 
     affiliate_share = st.slider(
@@ -318,7 +352,7 @@ with st.sidebar:
         min_value=0.0,
         max_value=1.0,
         value=0.40,
-        step=0.01
+        step=0.01,
     )
 
     affiliate_commission_rate = st.slider(
@@ -326,7 +360,7 @@ with st.sidebar:
         min_value=0.0,
         max_value=0.5,
         value=0.15,
-        step=0.01
+        step=0.01,
     )
 
     weeks_in_phase = st.slider(
@@ -334,144 +368,103 @@ with st.sidebar:
         min_value=2,
         max_value=8,
         value=4,
-        step=1
+        step=1,
     )
 
+# keep editor stable
+if "editor_df" not in st.session_state or len(st.session_state.editor_df) != int(n_products):
+    st.session_state.editor_df = default_product_df(int(n_products))
+
 st.subheader("Product Setup")
+st.caption("You can edit the table directly. Preset is used as a category reference; AOV can still be manually overridden.")
 
-product_rows = []
+edited_df = st.data_editor(
+    st.session_state.editor_df,
+    num_rows="fixed",
+    use_container_width=True,
+    column_config={
+        "Product": st.column_config.TextColumn("Product"),
+        "Preset": st.column_config.SelectboxColumn("Preset", options=ALL_PRESET_OPTIONS),
+        "Share": st.column_config.NumberColumn("Share", min_value=0.0, step=0.1, format="%.2f"),
+        "AOV": st.column_config.NumberColumn("AOV (€)", min_value=0.01, step=1.0, format="%.2f"),
+        "Gross Margin": st.column_config.NumberColumn("Gross Margin", min_value=0.05, max_value=0.90, step=0.01, format="%.2f"),
+        "Fee Type": st.column_config.SelectboxColumn("Fee Type", options=["Electronics (7%)", "Other (9%)"]),
+    },
+    hide_index=True,
+    key="product_editor",
+)
 
-for i in range(int(n_products)):
-    name = LETTERS[i]
-    st.markdown(f"### Product {name}")
-
-    col1, col2, col3, col4, col5, col6 = st.columns([1, 1.4, 1.6, 1, 1.4, 1.2])
-
-    with col1:
-        share = st.number_input(
-            f"Share {name}",
-            min_value=0.0,
-            value=1.0,
-            step=0.1,
-            key=f"share_{i}"
-        )
-
-    with col2:
-        family = st.selectbox(
-            f"Family {name}",
-            options=list(AOV_PRESETS.keys()),
-            key=f"family_{i}"
-        )
-
-    preset_options = list(AOV_PRESETS[family].keys())
-
-    with col3:
-        category = st.selectbox(
-            f"Preset {name}",
-            options=preset_options,
-            key=f"category_{i}"
-        )
-
-    default_aov = AOV_PRESETS[family][category]
-
-    with col4:
-        aov = st.number_input(
-            f"AOV (€) {name}",
-            min_value=0.01,
-            value=float(default_aov),
-            step=1.0,
-            key=f"aov_{i}"
-        )
-
-    with col5:
-        gross_margin = st.slider(
-            f"Gross Margin {name}",
-            min_value=0.05,
-            max_value=0.90,
-            value=0.40,
-            step=0.01,
-            key=f"gm_{i}"
-        )
-
-    with col6:
-        fee_label = st.selectbox(
-            f"Fee Type {name}",
-            options=["Electronics (7%)", "Other (9%)"],
-            index=1,
-            key=f"fee_{i}"
-        )
-        fee_type = 0.07 if fee_label == "Electronics (7%)" else 0.09
-
-    product_rows.append({
-        "Product": name,
-        "Family": family,
-        "Preset Category": category,
-        "Share": float(share),
-        "AOV": float(aov),
-        "Gross Margin": float(gross_margin),
-        "Platform Fee Rate Default": float(fee_type),
-    })
-
-prod_df = pd.DataFrame(product_rows)
+st.session_state.editor_df = edited_df.copy()
 
 generate = st.button("Generate charts", type="primary")
 
-# ======================
-# Run
-# ======================
 if generate:
     try:
-        prod_df = normalize_shares(prod_df)
+        prod_df = prepare_product_df(edited_df)
 
-        mix = prod_df[[
+        mix_display = prod_df[[
             "Product", "Family", "Preset Category", "Share", "ShareNorm",
             "AOV", "Gross Margin", "Platform Fee Rate Default"
         ]].copy()
 
-        mix_display = mix.copy()
         mix_display["Share"] = mix_display["Share"].map(lambda v: f"{v:,.2f}")
         mix_display["ShareNorm"] = mix_display["ShareNorm"].map(lambda v: f"{v:.0%}")
         mix_display["AOV"] = mix_display["AOV"].map(lambda v: f"€{v:,.2f}")
         mix_display["Gross Margin"] = mix_display["Gross Margin"].map(lambda v: f"{v:.0%}")
         mix_display["Platform Fee Rate Default"] = mix_display["Platform Fee Rate Default"].map(lambda v: f"{v:.0%}")
 
-        st.subheader("Product mix used (normalized)")
+        st.subheader("Product Mix Used")
         st.dataframe(mix_display, use_container_width=True)
 
-        fulfill_cost = float(fulfillment_per_order)
-        samp_prod = float(sample_product_cost)
-        samp_ship = float(sample_ship_cost)
-        promo = bool(promo_60d)
-        wks = int(weeks_in_phase)
-        aff_share = float(affiliate_share)
-        aff_comm_rate = float(affiliate_commission_rate)
-
         all_tables = []
-
-        for idx, (name, g0, g1, ads_r, samp_w) in enumerate(PHASES):
+        for idx, (phase_name, g0, g1, ads_r, samp_w) in enumerate(PHASES):
             dfp = phase_weekly_series(
-                idx, name, g0, g1, ads_r, samp_w,
-                fulfill_cost, samp_prod, samp_ship,
-                promo, wks, prod_df,
-                aff_share, aff_comm_rate,
-                week_offset=idx * wks
+                idx,
+                phase_name,
+                g0,
+                g1,
+                ads_r,
+                samp_w,
+                float(fulfillment_per_order),
+                float(sample_product_cost),
+                float(sample_ship_cost),
+                bool(promo_60d),
+                int(weeks_in_phase),
+                prod_df,
+                float(affiliate_share),
+                float(affiliate_commission_rate),
+                week_offset=idx * int(weeks_in_phase),
             )
-
-            st.subheader(f"{name} — weekly trend")
-            st.pyplot(plot_phase(dfp, f"{name} — weekly trend"), clear_figure=True)
-
             all_tables.append(dfp)
 
         df_all = pd.concat(all_tables, ignore_index=True)
 
-        st.subheader("Overall weekly trend")
-        st.pyplot(plot_overall(df_all), clear_figure=True)
-
-        st.subheader("Cumulative profit trend")
-        st.pyplot(plot_cumulative_profit(df_all), clear_figure=True)
-
         phase_summary = build_phase_summary(df_all)
         overall_summary = build_overall_summary(df_all)
+
+        metric1, metric2, metric3 = st.columns(3)
+        with metric1:
+            st.metric("Total GMV", f"€{overall_summary.iloc[0]['Total GMV']:,.0f}")
+        with metric2:
+            st.metric("Total Profit", f"€{overall_summary.iloc[0]['Total Profit']:,.0f}")
+        with metric3:
+            st.metric("Profit Margin", f"{overall_summary.iloc[0]['Overall Profit Margin']:.1%}")
+
+        st.subheader("Charts")
+        chart_col1, chart_col2 = st.columns(2)
+
+        with chart_col1:
+            st.pyplot(make_chart(df_all, "Overall Weekly Trend"))
+
+        with chart_col2:
+            st.pyplot(make_cumulative_profit_chart(df_all))
+
+        st.subheader("Phase-by-Phase Weekly Trend")
+        phase_tabs = st.tabs([p[0] for p in PHASES])
+        for tab, (phase_name, _, _, _, _) in zip(phase_tabs, PHASES):
+            with tab:
+                phase_df = df_all[df_all["Phase"] == phase_name].copy()
+                st.pyplot(make_chart(phase_df, phase_name))
 
         phase_summary_fmt = phase_summary.copy()
         for col in [
@@ -488,43 +481,59 @@ if generate:
         overall_summary_fmt["Total Orders (est.)"] = overall_summary_fmt["Total Orders (est.)"].map(lambda v: f"{v:,.0f}")
         overall_summary_fmt["Overall Profit Margin"] = overall_summary["Overall Profit Margin"].map(lambda v: f"{v:.1%}")
 
-        st.subheader("Phase summary")
-        st.dataframe(phase_summary_fmt, use_container_width=True)
-
-        st.subheader("Overall summary")
-        st.dataframe(overall_summary_fmt, use_container_width=True)
+        st.subheader("Summary")
+        sum_col1, sum_col2 = st.columns(2)
+        with sum_col1:
+            st.dataframe(phase_summary_fmt, use_container_width=True)
+        with sum_col2:
+            st.dataframe(overall_summary_fmt, use_container_width=True)
 
         single_week_break_even = first_positive_profit_week(df_all)
         cumulative_break_even = first_cumulative_break_even_week(df_all)
 
-        col_a, col_b = st.columns(2)
-        with col_a:
+        st.subheader("Break-even Signals")
+        be_col1, be_col2 = st.columns(2)
+        with be_col1:
             if single_week_break_even is not None:
                 st.success(f"First positive weekly profit: Week {single_week_break_even}")
             else:
                 st.warning("First positive weekly profit: Not reached")
 
-        with col_b:
+        with be_col2:
             if cumulative_break_even is not None:
                 st.success(f"Cumulative break-even: Week {cumulative_break_even}")
             else:
                 st.warning("Cumulative break-even: Not reached")
 
+        st.subheader("Weekly Details")
         df_all_display = df_all.copy()
         money_cols = [
             "GMV", "Affiliate GMV", "Non-affiliate GMV", "Creator Commission",
             "Platform Fee", "Ads Cost", "Samples Cost", "Fulfillment Cost",
             "COGS", "Total Cost", "Profit"
         ]
-
         for col in money_cols:
             df_all_display[col] = df_all_display[col].map(lambda v: f"{v:,.2f}")
-
         df_all_display["Orders (est.)"] = df_all_display["Orders (est.)"].map(lambda v: f"{v:,.2f}")
         df_all_display["Ads Rate"] = df_all["Ads Rate"].map(lambda v: f"{v:.0%}")
 
-        st.subheader("Weekly details (all phases)")
         st.dataframe(df_all_display, use_container_width=True)
+
+        dl1, dl2 = st.columns(2)
+        with dl1:
+            st.download_button(
+                "Download weekly details CSV",
+                data=to_csv_bytes(df_all),
+                file_name="weekly_details.csv",
+                mime="text/csv"
+            )
+        with dl2:
+            st.download_button(
+                "Download phase summary CSV",
+                data=to_csv_bytes(phase_summary),
+                file_name="phase_summary.csv",
+                mime="text/csv"
+            )
 
     except Exception as e:
         st.error(f"Input error: {e}")
