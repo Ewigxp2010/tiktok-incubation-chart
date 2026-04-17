@@ -50,9 +50,9 @@ for family_name, preset_map in AOV_PRESETS.items():
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 PHASES = [
-    ("Phase 1 — Cold Start", 2_000, 10_000, 0.00, 30),
-    ("Phase 2 — Growth", 10_000, 30_000, 0.05, 25),
-    ("Phase 3 — Breakout", 30_000, 100_000, 0.10, 20),
+    ("Phase 1 — Cold Start", 2_000, 10_000, 0.00, 30, 0.60),
+    ("Phase 2 — Growth", 10_000, 30_000, 0.05, 25, 0.40),
+    ("Phase 3 — Breakout", 30_000, 100_000, 0.10, 20, 0.25),
 ]
 
 # ======================
@@ -216,7 +216,8 @@ def phase_weekly_series(
             "Profit": profit,
             "Orders (est.)": orders_total,
             "Ads Rate": ads_rate,
-            "Samples / Week": samples_per_week
+            "Samples / Week": samples_per_week,
+            "Affiliate Share": affiliate_share,
         })
 
     return pd.DataFrame(rows)
@@ -268,12 +269,37 @@ def first_cumulative_break_even_week(df_all: pd.DataFrame):
         return None
     return int(pos["Global Week"].iloc[0])
 
-def make_chart(df: pd.DataFrame, title: str):
+def get_point_by_week(df: pd.DataFrame, week: int, y_col: str):
+    match = df[df["Global Week"] == week]
+    if match.empty:
+        return None
+    return float(match.iloc[0][y_col])
+
+def make_chart(
+    df: pd.DataFrame,
+    title: str,
+    weekly_be_week: int | None = None,
+    cumulative_be_week: int | None = None,
+    annotate_break_even: bool = False
+):
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(df["Global Week"], df["GMV"], marker="o", label="GMV")
     ax.plot(df["Global Week"], df["Total Cost"], marker="o", label="Total Cost")
     ax.plot(df["Global Week"], df["Profit"], marker="o", linewidth=2, label="Profit")
     ax.axhline(0, linewidth=1)
+
+    if annotate_break_even and weekly_be_week is not None:
+        y_weekly = get_point_by_week(df, weekly_be_week, "Profit")
+        if y_weekly is not None:
+            ax.scatter([weekly_be_week], [y_weekly], s=80, zorder=5)
+            ax.annotate(
+                f"Weekly BE: W{weekly_be_week}",
+                xy=(weekly_be_week, y_weekly),
+                xytext=(8, 8),
+                textcoords="offset points"
+            )
+            ax.axvline(weekly_be_week, linestyle="--", alpha=0.35)
+
     ax.set_title(title)
     ax.set_xlabel("Week")
     ax.set_ylabel("€")
@@ -283,13 +309,26 @@ def make_chart(df: pd.DataFrame, title: str):
     fig.tight_layout()
     return fig
 
-def make_cumulative_profit_chart(df_all: pd.DataFrame):
+def make_cumulative_profit_chart(df_all: pd.DataFrame, cumulative_be_week: int | None = None):
     tmp = df_all.copy()
     tmp["Cumulative Profit"] = tmp["Profit"].cumsum()
 
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(tmp["Global Week"], tmp["Cumulative Profit"], marker="o", linewidth=2, label="Cumulative Profit")
     ax.axhline(0, linewidth=1)
+
+    if cumulative_be_week is not None:
+        y_cum = get_point_by_week(tmp, cumulative_be_week, "Cumulative Profit")
+        if y_cum is not None:
+            ax.scatter([cumulative_be_week], [y_cum], s=80, zorder=5)
+            ax.annotate(
+                f"Cumulative BE: W{cumulative_be_week}",
+                xy=(cumulative_be_week, y_cum),
+                xytext=(8, 8),
+                textcoords="offset points"
+            )
+            ax.axvline(cumulative_be_week, linestyle="--", alpha=0.35)
+
     ax.set_title("Cumulative Profit Trend")
     ax.set_xlabel("Global Week")
     ax.set_ylabel("€")
@@ -347,14 +386,6 @@ with st.sidebar:
         step=1.0,
     )
 
-    affiliate_share = st.slider(
-        "Affiliate GMV share",
-        min_value=0.0,
-        max_value=1.0,
-        value=0.40,
-        step=0.01,
-    )
-
     affiliate_commission_rate = st.slider(
         "Affiliate commission",
         min_value=0.0,
@@ -370,6 +401,47 @@ with st.sidebar:
         value=4,
         step=1,
     )
+
+    st.header("Phase Controls")
+    phase_inputs = []
+
+    for i, (name, g0, g1, default_ads, default_samples, default_aff_share) in enumerate(PHASES):
+        st.subheader(name)
+
+        ads_rate = st.slider(
+            f"Ads Rate - {name}",
+            min_value=0.0,
+            max_value=0.30,
+            value=float(default_ads),
+            step=0.01,
+            key=f"ads_{i}"
+        )
+
+        samples = st.number_input(
+            f"Samples / week - {name}",
+            min_value=0,
+            value=int(default_samples),
+            step=1,
+            key=f"samples_{i}"
+        )
+
+        aff_share = st.slider(
+            f"Affiliate share - {name}",
+            min_value=0.0,
+            max_value=1.0,
+            value=float(default_aff_share),
+            step=0.01,
+            key=f"aff_{i}"
+        )
+
+        phase_inputs.append({
+            "name": name,
+            "gmv_start": g0,
+            "gmv_end": g1,
+            "ads_rate": ads_rate,
+            "samples": samples,
+            "affiliate_share": aff_share
+        })
 
 # keep editor stable
 if "editor_df" not in st.session_state or len(st.session_state.editor_df) != int(n_products):
@@ -417,21 +489,21 @@ if generate:
         st.dataframe(mix_display, use_container_width=True)
 
         all_tables = []
-        for idx, (phase_name, g0, g1, ads_r, samp_w) in enumerate(PHASES):
+        for idx, phase in enumerate(phase_inputs):
             dfp = phase_weekly_series(
                 idx,
-                phase_name,
-                g0,
-                g1,
-                ads_r,
-                samp_w,
+                phase["name"],
+                phase["gmv_start"],
+                phase["gmv_end"],
+                phase["ads_rate"],
+                phase["samples"],
                 float(fulfillment_per_order),
                 float(sample_product_cost),
                 float(sample_ship_cost),
                 bool(promo_60d),
                 int(weeks_in_phase),
                 prod_df,
-                float(affiliate_share),
+                float(phase["affiliate_share"]),
                 float(affiliate_commission_rate),
                 week_offset=idx * int(weeks_in_phase),
             )
@@ -441,6 +513,9 @@ if generate:
 
         phase_summary = build_phase_summary(df_all)
         overall_summary = build_overall_summary(df_all)
+
+        single_week_break_even = first_positive_profit_week(df_all)
+        cumulative_break_even = first_cumulative_break_even_week(df_all)
 
         metric1, metric2, metric3 = st.columns(3)
         with metric1:
@@ -454,17 +529,43 @@ if generate:
         chart_col1, chart_col2 = st.columns(2)
 
         with chart_col1:
-            st.pyplot(make_chart(df_all, "Overall Weekly Trend"))
+            st.pyplot(
+                make_chart(
+                    df_all,
+                    "Overall Weekly Trend",
+                    weekly_be_week=single_week_break_even,
+                    annotate_break_even=True
+                )
+            )
 
         with chart_col2:
-            st.pyplot(make_cumulative_profit_chart(df_all))
+            st.pyplot(
+                make_cumulative_profit_chart(
+                    df_all,
+                    cumulative_be_week=cumulative_break_even
+                )
+            )
 
         st.subheader("Phase-by-Phase Weekly Trend")
-        phase_tabs = st.tabs([p[0] for p in PHASES])
-        for tab, (phase_name, _, _, _, _) in zip(phase_tabs, PHASES):
+        phase_tabs = st.tabs([p["name"] for p in phase_inputs])
+
+        for tab, phase in zip(phase_tabs, phase_inputs):
             with tab:
-                phase_df = df_all[df_all["Phase"] == phase_name].copy()
-                st.pyplot(make_chart(phase_df, phase_name))
+                phase_df = df_all[df_all["Phase"] == phase["name"]].copy()
+
+                phase_weekly_be = None
+                tmp_phase_be = phase_df[phase_df["Profit"] > 0]
+                if not tmp_phase_be.empty:
+                    phase_weekly_be = int(tmp_phase_be["Global Week"].iloc[0])
+
+                st.pyplot(
+                    make_chart(
+                        phase_df,
+                        phase["name"],
+                        weekly_be_week=phase_weekly_be,
+                        annotate_break_even=True
+                    )
+                )
 
         phase_summary_fmt = phase_summary.copy()
         for col in [
@@ -487,9 +588,6 @@ if generate:
             st.dataframe(phase_summary_fmt, use_container_width=True)
         with sum_col2:
             st.dataframe(overall_summary_fmt, use_container_width=True)
-
-        single_week_break_even = first_positive_profit_week(df_all)
-        cumulative_break_even = first_cumulative_break_even_week(df_all)
 
         st.subheader("Break-even Signals")
         be_col1, be_col2 = st.columns(2)
@@ -516,6 +614,7 @@ if generate:
             df_all_display[col] = df_all_display[col].map(lambda v: f"{v:,.2f}")
         df_all_display["Orders (est.)"] = df_all_display["Orders (est.)"].map(lambda v: f"{v:,.2f}")
         df_all_display["Ads Rate"] = df_all["Ads Rate"].map(lambda v: f"{v:.0%}")
+        df_all_display["Affiliate Share"] = df_all["Affiliate Share"].map(lambda v: f"{v:.0%}")
 
         st.dataframe(df_all_display, use_container_width=True)
 
