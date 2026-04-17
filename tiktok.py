@@ -42,11 +42,6 @@ AOV_PRESETS = {
     }
 }
 
-ALL_PRESET_OPTIONS = []
-for family_name, preset_map in AOV_PRESETS.items():
-    for preset_name in preset_map.keys():
-        ALL_PRESET_OPTIONS.append(f"{family_name} | {preset_name}")
-
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 PHASES = [
@@ -78,7 +73,7 @@ TEXT = {
         "samples_per_week": "Samples / week",
         "affiliate_share": "Affiliate share",
         "product_setup": "Product Setup",
-        "product_setup_caption": "You can edit the table directly. Preset is used as a category reference; AOV can still be manually overridden.",
+        "product_setup_caption": "Set up each product below. You can choose a preset and still manually override AOV.",
         "generate": "Generate charts",
         "product_mix": "Product Mix Used",
         "charts": "Charts",
@@ -114,6 +109,8 @@ TEXT = {
         "platform_fee_default": "Platform Fee Rate Default",
         "input_error": "Input error",
         "ads_take_rate_col": "Ads Take Rate",
+        "use_preset_aov": "Use preset AOV",
+        "product_block": "Product",
     },
     "de": {
         "app_title": "Meeting Growth Visualizer",
@@ -134,7 +131,7 @@ TEXT = {
         "samples_per_week": "Samples / Woche",
         "affiliate_share": "Affiliate-Anteil",
         "product_setup": "Produkteinstellung",
-        "product_setup_caption": "Die Tabelle kann direkt bearbeitet werden. Preset dient als Kategoriereferenz; AOV kann weiterhin manuell überschrieben werden.",
+        "product_setup_caption": "Richte unten jedes Produkt ein. Du kannst ein Preset wählen und den AOV trotzdem manuell überschreiben.",
         "generate": "Charts erzeugen",
         "product_mix": "Verwendeter Produktmix",
         "charts": "Charts",
@@ -170,6 +167,8 @@ TEXT = {
         "platform_fee_default": "Standard-Plattformgebühr",
         "input_error": "Eingabefehler",
         "ads_take_rate_col": "Ads Take Rate",
+        "use_preset_aov": "Preset-AOV verwenden",
+        "product_block": "Produkt",
     },
     "zh": {
         "app_title": "Meeting Growth Visualizer",
@@ -190,7 +189,7 @@ TEXT = {
         "samples_per_week": "每周样品数",
         "affiliate_share": "达人 GMV 占比",
         "product_setup": "产品设置",
-        "product_setup_caption": "你可以直接编辑表格。Preset 作为类目参考；AOV 仍可手动修改。",
+        "product_setup_caption": "请在下方逐个设置产品。你可以选择 preset，同时仍可手动覆盖 AOV。",
         "generate": "生成图表",
         "product_mix": "使用的产品组合",
         "charts": "图表",
@@ -226,10 +225,14 @@ TEXT = {
         "platform_fee_default": "默认平台费率",
         "input_error": "输入错误",
         "ads_take_rate_col": "Ads Take Rate",
+        "use_preset_aov": "使用 preset AOV",
+        "product_block": "产品",
     },
 }
 
-# default English
+# ======================
+# Language
+# ======================
 with st.sidebar:
     lang = st.selectbox(
         "Language",
@@ -243,25 +246,6 @@ T = TEXT[lang]
 # ======================
 # Helpers
 # ======================
-def default_product_df(n_products: int) -> pd.DataFrame:
-    rows = []
-    default_family = "Home & Living"
-    default_preset = list(AOV_PRESETS[default_family].keys())[0]
-    default_aov = AOV_PRESETS[default_family][default_preset]
-
-    fee_default = T["other_fee"]
-
-    for i in range(n_products):
-        rows.append({
-            T["product"]: LETTERS[i],
-            T["preset"]: f"{default_family} | {default_preset}",
-            T["share"]: 1.0,
-            T["aov"]: float(default_aov),
-            T["gross_margin"]: 0.40,
-            T["fee_type"]: fee_default,
-        })
-    return pd.DataFrame(rows)
-
 def normalize_shares(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     df["Share"] = pd.to_numeric(df["Share"], errors="coerce").fillna(0).clip(lower=0)
@@ -270,56 +254,6 @@ def normalize_shares(df: pd.DataFrame) -> pd.DataFrame:
         raise ValueError("At least one product share must be > 0.")
     df["ShareNorm"] = df["Share"] / s
     return df
-
-def split_preset(preset_value: str):
-    if " | " not in str(preset_value):
-        raise ValueError(f"Invalid preset value: {preset_value}")
-    family, preset = preset_value.split(" | ", 1)
-    return family, preset
-
-def prepare_product_df(df_input: pd.DataFrame) -> pd.DataFrame:
-    df = df_input.copy()
-
-    required_cols = [T["product"], T["preset"], T["share"], T["aov"], T["gross_margin"], T["fee_type"]]
-    missing = [c for c in required_cols if c not in df.columns]
-    if missing:
-        raise ValueError(f"Missing columns: {missing}")
-
-    families = []
-    presets = []
-    fee_rates = []
-
-    for _, row in df.iterrows():
-        family, preset = split_preset(row[T["preset"]])
-        families.append(family)
-        presets.append(preset)
-
-        fee_label = str(row[T["fee_type"]]).strip()
-        if fee_label == T["electronics_fee"]:
-            fee_rates.append(0.07)
-        else:
-            fee_rates.append(0.09)
-
-    out = pd.DataFrame()
-    out["Product"] = df[T["product"]]
-    out["Family"] = families
-    out["Preset Category"] = presets
-    out["Share"] = pd.to_numeric(df[T["share"]], errors="coerce")
-    out["AOV"] = pd.to_numeric(df[T["aov"]], errors="coerce")
-    out["Gross Margin"] = pd.to_numeric(df[T["gross_margin"]], errors="coerce")
-    out["Platform Fee Rate Default"] = fee_rates
-
-    if out["Product"].isna().any():
-        raise ValueError("Product name cannot be empty.")
-
-    if (out["AOV"] <= 0).any() or out["AOV"].isna().any():
-        raise ValueError("AOV must be > 0 for all products.")
-
-    if ((out["Gross Margin"] < 0.05) | (out["Gross Margin"] > 0.90) | out["Gross Margin"].isna()).any():
-        raise ValueError("Gross Margin must be between 0.05 and 0.90 for all products.")
-
-    out = normalize_shares(out)
-    return out
 
 def format_eur_axis(ax):
     ax.yaxis.set_major_formatter(ticker.StrMethodFormatter("€{x:,.0f}"))
@@ -529,6 +463,43 @@ def make_cumulative_profit_chart(df_all: pd.DataFrame, cumulative_be_week=None):
 def to_csv_bytes(df: pd.DataFrame) -> bytes:
     return df.to_csv(index=False).encode("utf-8")
 
+def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
+    rows = []
+
+    for i in range(int(n_products)):
+        family = st.session_state[f"family_{i}"]
+        preset = st.session_state[f"preset_{i}"]
+
+        fee_label = st.session_state[f"fee_type_{i}"]
+        if fee_label == T["electronics_fee"]:
+            fee_rate = 0.07
+        else:
+            fee_rate = 0.09
+
+        rows.append({
+            "Product": st.session_state[f"product_name_{i}"],
+            "Family": family,
+            "Preset Category": preset,
+            "Share": float(st.session_state[f"share_{i}"]),
+            "AOV": float(st.session_state[f"aov_{i}"]),
+            "Gross Margin": float(st.session_state[f"gross_margin_{i}"]),
+            "Platform Fee Rate Default": float(fee_rate),
+        })
+
+    df = pd.DataFrame(rows)
+
+    if df["Product"].isna().any() or (df["Product"].astype(str).str.strip() == "").any():
+        raise ValueError("Product name cannot be empty.")
+
+    if (df["AOV"] <= 0).any() or df["AOV"].isna().any():
+        raise ValueError("AOV must be > 0 for all products.")
+
+    if ((df["Gross Margin"] < 0.05) | (df["Gross Margin"] > 0.90) | df["Gross Margin"].isna()).any():
+        raise ValueError("Gross Margin must be between 0.05 and 0.90 for all products.")
+
+    df = normalize_shares(df)
+    return df
+
 # ======================
 # UI
 # ======================
@@ -631,36 +602,118 @@ with st.sidebar:
             "affiliate_share": aff_share
         })
 
-editor_key = f"editor_df_{lang}"
-if editor_key not in st.session_state or len(st.session_state[editor_key]) != int(n_products):
-    st.session_state[editor_key] = default_product_df(int(n_products))
-
+# ======================
+# Product Setup Form UI
+# ======================
 st.subheader(T["product_setup"])
 st.caption(T["product_setup_caption"])
 
-edited_df = st.data_editor(
-    st.session_state[editor_key],
-    num_rows="fixed",
-    use_container_width=True,
-    column_config={
-        T["product"]: st.column_config.TextColumn(T["product"]),
-        T["preset"]: st.column_config.SelectboxColumn(T["preset"], options=ALL_PRESET_OPTIONS),
-        T["share"]: st.column_config.NumberColumn(T["share"], min_value=0.0, step=0.1, format="%.2f"),
-        T["aov"]: st.column_config.NumberColumn(T["aov"], min_value=0.01, step=1.0, format="%.2f"),
-        T["gross_margin"]: st.column_config.NumberColumn(T["gross_margin"], min_value=0.05, max_value=0.90, step=0.01, format="%.2f"),
-        T["fee_type"]: st.column_config.SelectboxColumn(T["fee_type"], options=[T["electronics_fee"], T["other_fee"]]),
-    },
-    hide_index=True,
-    key=f"product_editor_{lang}",
-)
+for i in range(int(n_products)):
+    if f"product_name_{i}" not in st.session_state:
+        st.session_state[f"product_name_{i}"] = LETTERS[i]
 
-st.session_state[editor_key] = edited_df.copy()
+    if f"family_{i}" not in st.session_state:
+        st.session_state[f"family_{i}"] = "Home & Living"
+
+    current_family = st.session_state[f"family_{i}"]
+    available_presets = list(AOV_PRESETS[current_family].keys())
+
+    if f"preset_{i}" not in st.session_state or st.session_state[f"preset_{i}"] not in available_presets:
+        st.session_state[f"preset_{i}"] = available_presets[0]
+
+    current_preset = st.session_state[f"preset_{i}"]
+    default_aov = AOV_PRESETS[current_family][current_preset]
+
+    if f"aov_{i}" not in st.session_state:
+        st.session_state[f"aov_{i}"] = float(default_aov)
+
+    if f"share_{i}" not in st.session_state:
+        st.session_state[f"share_{i}"] = 1.0
+
+    if f"gross_margin_{i}" not in st.session_state:
+        st.session_state[f"gross_margin_{i}"] = 0.40
+
+    if f"fee_type_{i}" not in st.session_state:
+        st.session_state[f"fee_type_{i}"] = T["other_fee"]
+
+    with st.container(border=True):
+        st.markdown(f"**{T['product_block']} {i + 1}**")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.text_input(
+                T["product"],
+                key=f"product_name_{i}"
+            )
+
+        with col2:
+            st.selectbox(
+                T["family"],
+                options=list(AOV_PRESETS.keys()),
+                key=f"family_{i}"
+            )
+
+        selected_family = st.session_state[f"family_{i}"]
+        updated_presets = list(AOV_PRESETS[selected_family].keys())
+
+        if st.session_state[f"preset_{i}"] not in updated_presets:
+            st.session_state[f"preset_{i}"] = updated_presets[0]
+
+        with col3:
+            st.selectbox(
+                T["preset"],
+                options=updated_presets,
+                key=f"preset_{i}"
+            )
+
+        selected_preset = st.session_state[f"preset_{i}"]
+        preset_aov = AOV_PRESETS[selected_family][selected_preset]
+
+        col4, col5, col6 = st.columns(3)
+
+        with col4:
+            st.number_input(
+                T["share"],
+                min_value=0.0,
+                step=0.1,
+                key=f"share_{i}"
+            )
+
+        with col5:
+            st.number_input(
+                T["aov"],
+                min_value=0.01,
+                step=1.0,
+                key=f"aov_{i}"
+            )
+            if st.button(f"{T['use_preset_aov']} ({preset_aov:.2f})", key=f"use_preset_aov_{i}"):
+                st.session_state[f"aov_{i}"] = float(preset_aov)
+                st.rerun()
+
+        with col6:
+            st.selectbox(
+                T["fee_type"],
+                options=[T["electronics_fee"], T["other_fee"]],
+                key=f"fee_type_{i}"
+            )
+
+        st.slider(
+            T["gross_margin"],
+            min_value=0.05,
+            max_value=0.90,
+            step=0.01,
+            key=f"gross_margin_{i}"
+        )
 
 generate = st.button(T["generate"], type="primary")
 
+# ======================
+# Run
+# ======================
 if generate:
     try:
-        prod_df = prepare_product_df(edited_df)
+        prod_df = build_product_df_from_ui(int(n_products))
 
         mix_display = prod_df[[
             "Product", "Family", "Preset Category", "Share", "ShareNorm",
