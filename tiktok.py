@@ -74,7 +74,7 @@ TEXT = {
         "affiliate_commission": "Affiliate commission",
         "weeks_per_phase": "Weeks / phase",
         "phase_controls": "Phase Controls",
-        "ads_rate": "Ads Rate",
+        "ads_rate": "Ads Take Rate",
         "samples_per_week": "Samples / week",
         "affiliate_share": "Affiliate share",
         "product_setup": "Product Setup",
@@ -113,6 +113,7 @@ TEXT = {
         "preset_category": "Preset Category",
         "platform_fee_default": "Platform Fee Rate Default",
         "input_error": "Input error",
+        "ads_take_rate_col": "Ads Take Rate",
     },
     "de": {
         "app_title": "Meeting Growth Visualizer",
@@ -129,7 +130,7 @@ TEXT = {
         "affiliate_commission": "Affiliate-Provision",
         "weeks_per_phase": "Wochen / Phase",
         "phase_controls": "Phasensteuerung",
-        "ads_rate": "Ads-Rate",
+        "ads_rate": "Ads Take Rate",
         "samples_per_week": "Samples / Woche",
         "affiliate_share": "Affiliate-Anteil",
         "product_setup": "Produkteinstellung",
@@ -168,6 +169,7 @@ TEXT = {
         "preset_category": "Preset-Kategorie",
         "platform_fee_default": "Standard-Plattformgebühr",
         "input_error": "Eingabefehler",
+        "ads_take_rate_col": "Ads Take Rate",
     },
     "zh": {
         "app_title": "Meeting Growth Visualizer",
@@ -184,7 +186,7 @@ TEXT = {
         "affiliate_commission": "达人佣金",
         "weeks_per_phase": "每阶段周数",
         "phase_controls": "阶段控制",
-        "ads_rate": "广告占比",
+        "ads_rate": "Ads Take Rate",
         "samples_per_week": "每周样品数",
         "affiliate_share": "达人 GMV 占比",
         "product_setup": "产品设置",
@@ -223,6 +225,7 @@ TEXT = {
         "preset_category": "Preset 类目",
         "platform_fee_default": "默认平台费率",
         "input_error": "输入错误",
+        "ads_take_rate_col": "Ads Take Rate",
     },
 }
 
@@ -331,7 +334,7 @@ def phase_weekly_series(
     phase_name: str,
     gmv_start: float,
     gmv_end: float,
-    ads_rate: float,
+    ads_take_rate: float,
     samples_per_week: int,
     fulfill_cost: float,
     sample_product_cost: float,
@@ -370,14 +373,14 @@ def phase_weekly_series(
         platform_fee_p = rev * product_fee_rates
         platform_fee_total = float(np.sum(platform_fee_p))
 
-        ads = gmv * ads_rate
+        ads_cost = gmv * ads_take_rate
         samples_cost = float(samples_per_week) * sample_allin_unit
         fulfillment = orders_total * float(fulfill_cost)
         creator_commission = affiliate_gmv * affiliate_commission_rate
 
         total_cost = (
             cogs_total
-            + ads
+            + ads_cost
             + samples_cost
             + fulfillment
             + platform_fee_total
@@ -394,14 +397,14 @@ def phase_weekly_series(
             "Non-affiliate GMV": non_affiliate_gmv,
             "Creator Commission": creator_commission,
             "Platform Fee": platform_fee_total,
-            "Ads Cost": ads,
+            "Ads Cost": ads_cost,
             "Samples Cost": samples_cost,
             "Fulfillment Cost": fulfillment,
             "COGS": cogs_total,
             "Total Cost": total_cost,
             "Profit": profit,
             "Orders (est.)": orders_total,
-            "Ads Rate": ads_rate,
+            "Ads Take Rate": ads_take_rate,
             "Samples / Week": samples_per_week,
             "Affiliate Share": affiliate_share,
         })
@@ -593,7 +596,7 @@ with st.sidebar:
     for i, (name, g0, g1, default_ads, default_samples, default_aff_share) in enumerate(PHASES):
         st.subheader(name)
 
-        ads_rate = st.slider(
+        ads_take_rate = st.slider(
             f"{T['ads_rate']} - {name}",
             min_value=0.0,
             max_value=0.30,
@@ -623,12 +626,11 @@ with st.sidebar:
             "name": name,
             "gmv_start": g0,
             "gmv_end": g1,
-            "ads_rate": ads_rate,
+            "ads_take_rate": ads_take_rate,
             "samples": samples,
             "affiliate_share": aff_share
         })
 
-# keep editor stable
 editor_key = f"editor_df_{lang}"
 if editor_key not in st.session_state or len(st.session_state[editor_key]) != int(n_products):
     st.session_state[editor_key] = default_product_df(int(n_products))
@@ -692,7 +694,7 @@ if generate:
                 phase["name"],
                 phase["gmv_start"],
                 phase["gmv_end"],
-                phase["ads_rate"],
+                phase["ads_take_rate"],
                 phase["samples"],
                 float(fulfillment_per_order),
                 float(sample_product_cost),
@@ -811,8 +813,10 @@ if generate:
         for col in money_cols:
             df_all_display[col] = df_all_display[col].map(lambda v: f"{v:,.2f}")
         df_all_display["Orders (est.)"] = df_all_display["Orders (est.)"].map(lambda v: f"{v:,.2f}")
-        df_all_display["Ads Rate"] = df_all["Ads Rate"].map(lambda v: f"{v:.0%}")
+        df_all_display[T["ads_take_rate_col"]] = df_all["Ads Take Rate"].map(lambda v: f"{v:.0%}")
         df_all_display["Affiliate Share"] = df_all["Affiliate Share"].map(lambda v: f"{v:.0%}")
+        if "Ads Take Rate" in df_all_display.columns:
+            df_all_display = df_all_display.drop(columns=["Ads Take Rate"])
 
         st.dataframe(df_all_display, use_container_width=True)
 
