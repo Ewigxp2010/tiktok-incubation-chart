@@ -56,6 +56,12 @@ PHASE_COLORS = {
     "Phase 3 — Breakout": "#FFF4E8",
 }
 
+PHASE_BADGE_STYLES = {
+    "Phase 1 — Cold Start": {"bg": "#DCEEFF", "text": "#1D4E89"},
+    "Phase 2 — Growth": {"bg": "#DFF5E3", "text": "#1E6B35"},
+    "Phase 3 — Breakout": {"bg": "#FFE8D6", "text": "#A14B00"},
+}
+
 # ======================
 # i18n
 # ======================
@@ -234,6 +240,64 @@ TEXT = {
         "product_block": "产品",
         "gross_margin_help": "请输入百分比，例如 40 = 40%",
     },
+    "nl": {
+        "app_title": "Meeting Growth Visualizer",
+        "app_caption": "Verbeterde Streamlit-versie voor GMV / kosten / winstmodellering",
+        "language": "Taal",
+        "global_inputs": "Algemene invoer",
+        "num_products": "Aantal producten",
+        "promo_60d": "60-dagen fee promo",
+        "promo_yes": "Ja (5% gedurende de eerste ~60 dagen)",
+        "promo_no": "Geen promo",
+        "fulfillment": "Fulfillment €/bestelling",
+        "sample_product": "Sample product €/stuk",
+        "sample_shipping": "Sample verzending €/stuk",
+        "affiliate_commission": "Affiliate commissie",
+        "weeks_per_phase": "Weken / fase",
+        "phase_controls": "Fase-instellingen",
+        "ads_rate": "Ads Take Rate",
+        "samples_per_week": "Samples / week",
+        "affiliate_share": "Affiliate aandeel",
+        "product_setup": "Productinstellingen",
+        "product_setup_caption": "Stel hieronder elk product in. Preset dient als categorieverwijzing; AOV kan nog steeds handmatig worden aangepast.",
+        "generate": "Grafieken genereren",
+        "product_mix": "Gebruikte productmix",
+        "charts": "Grafieken",
+        "overall_weekly_trend": "Totale wekelijkse trend",
+        "cumulative_profit_trend": "Cumulatieve winsttrend",
+        "phase_by_phase": "Wekelijkse trend per fase",
+        "summary": "Samenvatting",
+        "phase_summary": "Faseoverzicht",
+        "overall_summary": "Totaaloverzicht",
+        "break_even_signals": "Break-even signalen",
+        "weekly_details": "Wekelijkse details",
+        "download_weekly": "Download wekelijkse details CSV",
+        "download_phase": "Download faseoverzicht CSV",
+        "total_gmv": "Totale GMV",
+        "total_profit": "Totale winst",
+        "profit_margin": "Winstmarge",
+        "first_positive_profit": "Eerste positieve weekwinst",
+        "cumulative_break_even": "Cumulatieve break-even",
+        "not_reached": "Niet bereikt",
+        "weekly_be_label": "Wekelijkse BE",
+        "cumulative_be_label": "Cumulatieve BE",
+        "week": "Week",
+        "product": "Product",
+        "preset": "Preset",
+        "share": "Aandeel",
+        "aov": "AOV (€)",
+        "gross_margin": "Brutomarge (%)",
+        "fee_type": "Fee type",
+        "electronics_fee": "Elektronica (7%)",
+        "other_fee": "Overig (9%)",
+        "family": "Familie",
+        "preset_category": "Preset-categorie",
+        "platform_fee_default": "Standaard platform fee",
+        "input_error": "Invoerfout",
+        "ads_take_rate_col": "Ads Take Rate",
+        "product_block": "Product",
+        "gross_margin_help": "Voer brutomarge in als percentage, bijv. 40 = 40%",
+    },
 }
 
 # ======================
@@ -242,8 +306,13 @@ TEXT = {
 with st.sidebar:
     lang = st.selectbox(
         "Language",
-        options=["en", "de", "zh"],
-        format_func=lambda x: {"en": "English", "de": "Deutsch", "zh": "简体中文"}[x],
+        options=["en", "de", "zh", "nl"],
+        format_func=lambda x: {
+            "en": "English",
+            "de": "Deutsch",
+            "zh": "简体中文",
+            "nl": "Nederlands"
+        }[x],
         index=0
     )
 
@@ -291,6 +360,29 @@ def add_phase_backgrounds(ax, df: pd.DataFrame):
             alpha=0.8,
             zorder=0
         )
+
+def render_phase_badges(phase_names):
+    html_parts = []
+    for name in phase_names:
+        style = PHASE_BADGE_STYLES.get(name, {"bg": "#EEEEEE", "text": "#333333"})
+        html_parts.append(
+            f"""
+            <span style="
+                display:inline-block;
+                padding:8px 14px;
+                margin-right:10px;
+                margin-bottom:8px;
+                border-radius:999px;
+                background:{style['bg']};
+                color:{style['text']};
+                font-weight:600;
+                font-size:14px;
+            ">
+                {name}
+            </span>
+            """
+        )
+    st.markdown("".join(html_parts), unsafe_allow_html=True)
 
 def phase_weekly_series(
     phase_idx: int,
@@ -814,6 +906,8 @@ if generate:
             st.metric(T["profit_margin"], f"{overall_summary.iloc[0]['Overall Profit Margin']:.1%}")
 
         st.subheader(T["charts"])
+        render_phase_badges([p["name"] for p in phase_inputs])
+
         chart_col1, chart_col2 = st.columns(2)
 
         with chart_col1:
@@ -844,6 +938,8 @@ if generate:
                 tmp_phase_be = phase_df[phase_df["Profit"] > 0]
                 if not tmp_phase_be.empty:
                     phase_weekly_be = int(tmp_phase_be["Global Week"].iloc[0])
+
+                render_phase_badges([phase["name"]])
 
                 st.pyplot(
                     make_chart(
