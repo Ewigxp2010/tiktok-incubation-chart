@@ -73,7 +73,7 @@ TEXT = {
         "samples_per_week": "Samples / week",
         "affiliate_share": "Affiliate share",
         "product_setup": "Product Setup",
-        "product_setup_caption": "Set up each product below. You can choose a preset and still manually override AOV.",
+        "product_setup_caption": "Set up each product below. Preset is used as category reference; AOV can still be manually overridden.",
         "generate": "Generate charts",
         "product_mix": "Product Mix Used",
         "charts": "Charts",
@@ -100,7 +100,7 @@ TEXT = {
         "preset": "Preset",
         "share": "Share",
         "aov": "AOV (€)",
-        "gross_margin": "Gross Margin",
+        "gross_margin": "Gross Margin (%)",
         "fee_type": "Fee Type",
         "electronics_fee": "Electronics (7%)",
         "other_fee": "Other (9%)",
@@ -109,8 +109,8 @@ TEXT = {
         "platform_fee_default": "Platform Fee Rate Default",
         "input_error": "Input error",
         "ads_take_rate_col": "Ads Take Rate",
-        "use_preset_aov": "Use preset AOV",
         "product_block": "Product",
+        "gross_margin_help": "Enter gross margin as a percentage, e.g. 40 = 40%",
     },
     "de": {
         "app_title": "Meeting Growth Visualizer",
@@ -131,7 +131,7 @@ TEXT = {
         "samples_per_week": "Samples / Woche",
         "affiliate_share": "Affiliate-Anteil",
         "product_setup": "Produkteinstellung",
-        "product_setup_caption": "Richte unten jedes Produkt ein. Du kannst ein Preset wählen und den AOV trotzdem manuell überschreiben.",
+        "product_setup_caption": "Richte unten jedes Produkt ein. Preset dient als Kategoriereferenz; AOV kann weiterhin manuell überschrieben werden.",
         "generate": "Charts erzeugen",
         "product_mix": "Verwendeter Produktmix",
         "charts": "Charts",
@@ -158,7 +158,7 @@ TEXT = {
         "preset": "Preset",
         "share": "Anteil",
         "aov": "AOV (€)",
-        "gross_margin": "Bruttomarge",
+        "gross_margin": "Bruttomarge (%)",
         "fee_type": "Gebührentyp",
         "electronics_fee": "Elektronik (7%)",
         "other_fee": "Sonstige (9%)",
@@ -167,8 +167,8 @@ TEXT = {
         "platform_fee_default": "Standard-Plattformgebühr",
         "input_error": "Eingabefehler",
         "ads_take_rate_col": "Ads Take Rate",
-        "use_preset_aov": "Preset-AOV verwenden",
         "product_block": "Produkt",
+        "gross_margin_help": "Bruttomarge in Prozent eingeben, z. B. 40 = 40%",
     },
     "zh": {
         "app_title": "Meeting Growth Visualizer",
@@ -189,7 +189,7 @@ TEXT = {
         "samples_per_week": "每周样品数",
         "affiliate_share": "达人 GMV 占比",
         "product_setup": "产品设置",
-        "product_setup_caption": "请在下方逐个设置产品。你可以选择 preset，同时仍可手动覆盖 AOV。",
+        "product_setup_caption": "请在下方逐个设置产品。Preset 作为类目参考；AOV 仍可手动修改。",
         "generate": "生成图表",
         "product_mix": "使用的产品组合",
         "charts": "图表",
@@ -216,7 +216,7 @@ TEXT = {
         "preset": "Preset",
         "share": "占比",
         "aov": "AOV (€)",
-        "gross_margin": "毛利率",
+        "gross_margin": "毛利率 (%)",
         "fee_type": "费率类型",
         "electronics_fee": "电子类 (7%)",
         "other_fee": "其他 (9%)",
@@ -225,8 +225,8 @@ TEXT = {
         "platform_fee_default": "默认平台费率",
         "input_error": "输入错误",
         "ads_take_rate_col": "Ads Take Rate",
-        "use_preset_aov": "使用 preset AOV",
         "product_block": "产品",
+        "gross_margin_help": "请输入百分比，例如 40 = 40%",
     },
 }
 
@@ -476,13 +476,16 @@ def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
         else:
             fee_rate = 0.09
 
+        gross_margin_pct = float(st.session_state[f"gross_margin_pct_{i}"])
+        gross_margin_decimal = gross_margin_pct / 100.0
+
         rows.append({
             "Product": st.session_state[f"product_name_{i}"],
             "Family": family,
             "Preset Category": preset,
             "Share": float(st.session_state[f"share_{i}"]),
             "AOV": float(st.session_state[f"aov_{i}"]),
-            "Gross Margin": float(st.session_state[f"gross_margin_{i}"]),
+            "Gross Margin": gross_margin_decimal,
             "Platform Fee Rate Default": float(fee_rate),
         })
 
@@ -495,7 +498,7 @@ def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
         raise ValueError("AOV must be > 0 for all products.")
 
     if ((df["Gross Margin"] < 0.05) | (df["Gross Margin"] > 0.90) | df["Gross Margin"].isna()).any():
-        raise ValueError("Gross Margin must be between 0.05 and 0.90 for all products.")
+        raise ValueError("Gross Margin must be between 5% and 90% for all products.")
 
     df = normalize_shares(df)
     return df
@@ -630,8 +633,8 @@ for i in range(int(n_products)):
     if f"share_{i}" not in st.session_state:
         st.session_state[f"share_{i}"] = 1.0
 
-    if f"gross_margin_{i}" not in st.session_state:
-        st.session_state[f"gross_margin_{i}"] = 0.40
+    if f"gross_margin_pct_{i}" not in st.session_state:
+        st.session_state[f"gross_margin_pct_{i}"] = 40.0
 
     if f"fee_type_{i}" not in st.session_state:
         st.session_state[f"fee_type_{i}"] = T["other_fee"]
@@ -670,6 +673,9 @@ for i in range(int(n_products)):
         selected_preset = st.session_state[f"preset_{i}"]
         preset_aov = AOV_PRESETS[selected_family][selected_preset]
 
+        if st.session_state[f"aov_{i}"] <= 0:
+            st.session_state[f"aov_{i}"] = float(preset_aov)
+
         col4, col5, col6 = st.columns(3)
 
         with col4:
@@ -687,9 +693,6 @@ for i in range(int(n_products)):
                 step=1.0,
                 key=f"aov_{i}"
             )
-            if st.button(f"{T['use_preset_aov']} ({preset_aov:.2f})", key=f"use_preset_aov_{i}"):
-                st.session_state[f"aov_{i}"] = float(preset_aov)
-                st.rerun()
 
         with col6:
             st.selectbox(
@@ -698,12 +701,13 @@ for i in range(int(n_products)):
                 key=f"fee_type_{i}"
             )
 
-        st.slider(
+        st.number_input(
             T["gross_margin"],
-            min_value=0.05,
-            max_value=0.90,
-            step=0.01,
-            key=f"gross_margin_{i}"
+            min_value=5.0,
+            max_value=90.0,
+            step=1.0,
+            key=f"gross_margin_pct_{i}",
+            help=T["gross_margin_help"]
         )
 
 generate = st.button(T["generate"], type="primary")
