@@ -44,22 +44,18 @@ AOV_PRESETS = {
 
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-PHASES = [
-    ("Phase 1 — Cold Start", 2_000, 10_000, 0.00, 30, 0.60),
-    ("Phase 2 — Growth", 10_000, 30_000, 0.05, 25, 0.40),
-    ("Phase 3 — Breakout", 30_000, 100_000, 0.10, 20, 0.25),
-]
+PHASE_KEYS = ["phase1", "phase2", "phase3"]
 
-PHASE_COLORS = {
-    "Phase 1 — Cold Start": "#EAF4FF",
-    "Phase 2 — Growth": "#EEFBEF",
-    "Phase 3 — Breakout": "#FFF4E8",
+PHASE_DEFAULTS = {
+    "phase1": {"gmv_start": 2_000, "gmv_end": 10_000, "ads_take_rate": 0.00, "samples": 30, "affiliate_share": 0.60},
+    "phase2": {"gmv_start": 10_000, "gmv_end": 30_000, "ads_take_rate": 0.05, "samples": 25, "affiliate_share": 0.40},
+    "phase3": {"gmv_start": 30_000, "gmv_end": 100_000, "ads_take_rate": 0.10, "samples": 20, "affiliate_share": 0.25},
 }
 
-PHASE_BADGE_STYLES = {
-    "Phase 1 — Cold Start": {"bg": "#DCEEFF", "text": "#1D4E89"},
-    "Phase 2 — Growth": {"bg": "#DFF5E3", "text": "#1E6B35"},
-    "Phase 3 — Breakout": {"bg": "#FFE8D6", "text": "#A14B00"},
+PHASE_COLOR_KEYS = {
+    "phase1": {"bg": "#EAF4FF", "badge_bg": "#DCEEFF", "badge_text": "#1D4E89"},
+    "phase2": {"bg": "#EEFBEF", "badge_bg": "#DFF5E3", "badge_text": "#1E6B35"},
+    "phase3": {"bg": "#FFF4E8", "badge_bg": "#FFE8D6", "badge_text": "#A14B00"},
 }
 
 # ======================
@@ -81,6 +77,9 @@ TEXT = {
         "affiliate_commission": "Affiliate commission",
         "weeks_per_phase": "Weeks / phase",
         "phase_controls": "Phase Controls",
+        "phase1": "Phase 1 — Cold Start",
+        "phase2": "Phase 2 — Growth",
+        "phase3": "Phase 3 — Breakout",
         "ads_rate": "Ads Take Rate",
         "samples_per_week": "Samples / week",
         "affiliate_share": "Affiliate share",
@@ -110,7 +109,8 @@ TEXT = {
         "week": "Week",
         "product": "Product",
         "preset": "Preset",
-        "share": "Share",
+        "sales_share": "Sales Share (%)",
+        "sales_share_help": "Does not need to equal 100. The system auto-normalizes.",
         "aov": "AOV (€)",
         "gross_margin": "Gross Margin (%)",
         "fee_type": "Fee Type",
@@ -121,8 +121,12 @@ TEXT = {
         "platform_fee_default": "Platform Fee Rate Default",
         "input_error": "Input error",
         "ads_take_rate_col": "Ads Take Rate",
+        "affiliate_share_col": "Affiliate Share",
+        "sales_share_col": "Sales Share",
         "product_block": "Product",
         "gross_margin_help": "Enter gross margin as a percentage, e.g. 40 = 40%",
+        "gmv_start": "GMV start",
+        "gmv_end": "GMV end",
     },
     "de": {
         "app_title": "Meeting Growth Visualizer",
@@ -139,6 +143,9 @@ TEXT = {
         "affiliate_commission": "Affiliate-Provision",
         "weeks_per_phase": "Wochen / Phase",
         "phase_controls": "Phasensteuerung",
+        "phase1": "Phase 1 — Kaltstart",
+        "phase2": "Phase 2 — Wachstum",
+        "phase3": "Phase 3 — Skalierung",
         "ads_rate": "Ads Take Rate",
         "samples_per_week": "Samples / Woche",
         "affiliate_share": "Affiliate-Anteil",
@@ -168,7 +175,8 @@ TEXT = {
         "week": "Woche",
         "product": "Produkt",
         "preset": "Preset",
-        "share": "Anteil",
+        "sales_share": "Umsatzanteil (%)",
+        "sales_share_help": "Muss nicht 100 ergeben. Das System normalisiert automatisch.",
         "aov": "AOV (€)",
         "gross_margin": "Bruttomarge (%)",
         "fee_type": "Gebührentyp",
@@ -179,8 +187,12 @@ TEXT = {
         "platform_fee_default": "Standard-Plattformgebühr",
         "input_error": "Eingabefehler",
         "ads_take_rate_col": "Ads Take Rate",
+        "affiliate_share_col": "Affiliate-Anteil",
+        "sales_share_col": "Umsatzanteil",
         "product_block": "Produkt",
         "gross_margin_help": "Bruttomarge in Prozent eingeben, z. B. 40 = 40%",
+        "gmv_start": "GMV-Start",
+        "gmv_end": "GMV-Ende",
     },
     "zh": {
         "app_title": "Meeting Growth Visualizer",
@@ -197,6 +209,9 @@ TEXT = {
         "affiliate_commission": "达人佣金",
         "weeks_per_phase": "每阶段周数",
         "phase_controls": "阶段控制",
+        "phase1": "阶段 1 — 冷启动",
+        "phase2": "阶段 2 — 增长",
+        "phase3": "阶段 3 — 爆发",
         "ads_rate": "Ads Take Rate",
         "samples_per_week": "每周样品数",
         "affiliate_share": "达人 GMV 占比",
@@ -226,7 +241,8 @@ TEXT = {
         "week": "周",
         "product": "产品",
         "preset": "Preset",
-        "share": "占比",
+        "sales_share": "销售占比 (%)",
+        "sales_share_help": "不需要加起来等于100，系统会自动标准化。",
         "aov": "AOV (€)",
         "gross_margin": "毛利率 (%)",
         "fee_type": "费率类型",
@@ -237,8 +253,12 @@ TEXT = {
         "platform_fee_default": "默认平台费率",
         "input_error": "输入错误",
         "ads_take_rate_col": "Ads Take Rate",
+        "affiliate_share_col": "达人占比",
+        "sales_share_col": "销售占比",
         "product_block": "产品",
         "gross_margin_help": "请输入百分比，例如 40 = 40%",
+        "gmv_start": "GMV 起点",
+        "gmv_end": "GMV 终点",
     },
     "nl": {
         "app_title": "Meeting Growth Visualizer",
@@ -255,6 +275,9 @@ TEXT = {
         "affiliate_commission": "Affiliate commissie",
         "weeks_per_phase": "Weken / fase",
         "phase_controls": "Fase-instellingen",
+        "phase1": "Fase 1 — Koude start",
+        "phase2": "Fase 2 — Groei",
+        "phase3": "Fase 3 — Doorbraak",
         "ads_rate": "Ads Take Rate",
         "samples_per_week": "Samples / week",
         "affiliate_share": "Affiliate aandeel",
@@ -284,7 +307,8 @@ TEXT = {
         "week": "Week",
         "product": "Product",
         "preset": "Preset",
-        "share": "Aandeel",
+        "sales_share": "Verkoopaandeel (%)",
+        "sales_share_help": "Hoeft niet op te tellen tot 100. Het systeem normaliseert automatisch.",
         "aov": "AOV (€)",
         "gross_margin": "Brutomarge (%)",
         "fee_type": "Fee type",
@@ -295,8 +319,12 @@ TEXT = {
         "platform_fee_default": "Standaard platform fee",
         "input_error": "Invoerfout",
         "ads_take_rate_col": "Ads Take Rate",
+        "affiliate_share_col": "Affiliate aandeel",
+        "sales_share_col": "Verkoopaandeel",
         "product_block": "Product",
         "gross_margin_help": "Voer brutomarge in als percentage, bijv. 40 = 40%",
+        "gmv_start": "GMV start",
+        "gmv_end": "GMV einde",
     },
 }
 
@@ -311,7 +339,7 @@ with st.sidebar:
             "en": "English",
             "de": "Deutsch",
             "zh": "简体中文",
-            "nl": "Nederlands"
+            "nl": "Nederlands",
         }[x],
         index=0
     )
@@ -319,15 +347,40 @@ with st.sidebar:
 T = TEXT[lang]
 
 # ======================
+# Localized phase helpers
+# ======================
+def phase_label(phase_key: str) -> str:
+    return T[phase_key]
+
+def phase_key_from_label(label: str) -> str:
+    reverse_map = {T[k]: k for k in PHASE_KEYS}
+    return reverse_map[label]
+
+def build_phase_inputs():
+    phase_inputs = []
+    for phase_key in PHASE_KEYS:
+        defaults = PHASE_DEFAULTS[phase_key]
+        phase_inputs.append({
+            "key": phase_key,
+            "name": phase_label(phase_key),
+            "gmv_start": defaults["gmv_start"],
+            "gmv_end": defaults["gmv_end"],
+            "ads_take_rate": defaults["ads_take_rate"],
+            "samples": defaults["samples"],
+            "affiliate_share": defaults["affiliate_share"],
+        })
+    return phase_inputs
+
+# ======================
 # Helpers
 # ======================
-def normalize_shares(df: pd.DataFrame) -> pd.DataFrame:
+def normalize_sales_shares(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
-    df["Share"] = pd.to_numeric(df["Share"], errors="coerce").fillna(0).clip(lower=0)
-    s = df["Share"].sum()
+    df["Sales Share (%)"] = pd.to_numeric(df["Sales Share (%)"], errors="coerce").fillna(0).clip(lower=0)
+    s = df["Sales Share (%)"].sum()
     if s <= 0:
-        raise ValueError("At least one product share must be > 0.")
-    df["ShareNorm"] = df["Share"] / s
+        raise ValueError("At least one product sales share must be > 0.")
+    df["SalesShareNorm"] = df["Sales Share (%)"] / s
     return df
 
 def format_eur_axis(ax):
@@ -349,9 +402,10 @@ def add_phase_backgrounds(ax, df: pd.DataFrame):
 
     for _, row in phase_ranges.iterrows():
         phase_name = row["Phase"]
+        phase_key = phase_key_from_label(phase_name)
         start_week = row["start_week"]
         end_week = row["end_week"]
-        color = PHASE_COLORS.get(phase_name, "#F5F5F5")
+        color = PHASE_COLOR_KEYS.get(phase_key, {}).get("bg", "#F5F5F5")
 
         ax.axvspan(
             start_week - 0.5,
@@ -361,10 +415,10 @@ def add_phase_backgrounds(ax, df: pd.DataFrame):
             zorder=0
         )
 
-def render_phase_badges(phase_names):
+def render_phase_badges(phase_keys):
     html_parts = []
-    for name in phase_names:
-        style = PHASE_BADGE_STYLES.get(name, {"bg": "#EEEEEE", "text": "#333333"})
+    for pkey in phase_keys:
+        style = PHASE_COLOR_KEYS.get(pkey, {"badge_bg": "#EEEEEE", "badge_text": "#333333"})
         html_parts.append(
             f"""
             <span style="
@@ -373,12 +427,12 @@ def render_phase_badges(phase_names):
                 margin-right:10px;
                 margin-bottom:8px;
                 border-radius:999px;
-                background:{style['bg']};
-                color:{style['text']};
+                background:{style['badge_bg']};
+                color:{style['badge_text']};
                 font-weight:600;
                 font-size:14px;
             ">
-                {name}
+                {phase_label(pkey)}
             </span>
             """
         )
@@ -403,7 +457,7 @@ def phase_weekly_series(
 ) -> pd.DataFrame:
     gmv_series = np.linspace(gmv_start, gmv_end, weeks_in_phase)
 
-    share = prod_df["ShareNorm"].to_numpy()
+    share = prod_df["SalesShareNorm"].to_numpy()
     aov = prod_df["AOV"].to_numpy()
     gross_margin = prod_df["Gross Margin"].to_numpy()
     fee_type = prod_df["Platform Fee Rate Default"]
@@ -607,7 +661,7 @@ def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
             "Product": st.session_state[f"product_name_{i}"],
             "Family": family,
             "Preset Category": preset,
-            "Share": float(st.session_state[f"share_{i}"]),
+            "Sales Share (%)": float(st.session_state[f"sales_share_pct_{i}"]),
             "AOV": float(st.session_state[f"aov_{i}"]),
             "Gross Margin": gross_margin_decimal,
             "Platform Fee Rate Default": float(fee_rate),
@@ -624,7 +678,7 @@ def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
     if ((df["Gross Margin"] < 0.05) | (df["Gross Margin"] > 0.90) | df["Gross Margin"].isna()).any():
         raise ValueError("Gross Margin must be between 5% and 90% for all products.")
 
-    df = normalize_shares(df)
+    df = normalize_sales_shares(df)
     return df
 
 # ======================
@@ -689,48 +743,39 @@ with st.sidebar:
     )
 
     st.header(T["phase_controls"])
-    phase_inputs = []
+    phase_inputs = build_phase_inputs()
 
-    for i, (name, g0, g1, default_ads, default_samples, default_aff_share) in enumerate(PHASES):
-        st.subheader(name)
+    for i, phase in enumerate(phase_inputs):
+        st.subheader(phase["name"])
 
-        ads_take_rate = st.slider(
-            f"{T['ads_rate']} - {name}",
+        phase["ads_take_rate"] = st.slider(
+            f"{T['ads_rate']} - {phase['name']}",
             min_value=0.0,
             max_value=0.30,
-            value=float(default_ads),
+            value=float(phase["ads_take_rate"]),
             step=0.01,
             key=f"ads_{i}"
         )
 
-        samples = st.number_input(
-            f"{T['samples_per_week']} - {name}",
+        phase["samples"] = st.number_input(
+            f"{T['samples_per_week']} - {phase['name']}",
             min_value=0,
-            value=int(default_samples),
+            value=int(phase["samples"]),
             step=1,
             key=f"samples_{i}"
         )
 
-        aff_share = st.slider(
-            f"{T['affiliate_share']} - {name}",
+        phase["affiliate_share"] = st.slider(
+            f"{T['affiliate_share']} - {phase['name']}",
             min_value=0.0,
             max_value=1.0,
-            value=float(default_aff_share),
+            value=float(phase["affiliate_share"]),
             step=0.01,
             key=f"aff_{i}"
         )
 
-        phase_inputs.append({
-            "name": name,
-            "gmv_start": g0,
-            "gmv_end": g1,
-            "ads_take_rate": ads_take_rate,
-            "samples": samples,
-            "affiliate_share": aff_share
-        })
-
 # ======================
-# Product Setup Form UI
+# Product Setup
 # ======================
 st.subheader(T["product_setup"])
 st.caption(T["product_setup_caption"])
@@ -754,8 +799,8 @@ for i in range(int(n_products)):
     if f"aov_{i}" not in st.session_state:
         st.session_state[f"aov_{i}"] = float(default_aov)
 
-    if f"share_{i}" not in st.session_state:
-        st.session_state[f"share_{i}"] = 1.0
+    if f"sales_share_pct_{i}" not in st.session_state:
+        st.session_state[f"sales_share_pct_{i}"] = 100.0 / float(n_products)
 
     if f"gross_margin_pct_{i}" not in st.session_state:
         st.session_state[f"gross_margin_pct_{i}"] = 40.0
@@ -769,17 +814,10 @@ for i in range(int(n_products)):
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.text_input(
-                T["product"],
-                key=f"product_name_{i}"
-            )
+            st.text_input(T["product"], key=f"product_name_{i}")
 
         with col2:
-            st.selectbox(
-                T["family"],
-                options=list(AOV_PRESETS.keys()),
-                key=f"family_{i}"
-            )
+            st.selectbox(T["family"], options=list(AOV_PRESETS.keys()), key=f"family_{i}")
 
         selected_family = st.session_state[f"family_{i}"]
         updated_presets = list(AOV_PRESETS[selected_family].keys())
@@ -788,11 +826,7 @@ for i in range(int(n_products)):
             st.session_state[f"preset_{i}"] = updated_presets[0]
 
         with col3:
-            st.selectbox(
-                T["preset"],
-                options=updated_presets,
-                key=f"preset_{i}"
-            )
+            st.selectbox(T["preset"], options=updated_presets, key=f"preset_{i}")
 
         selected_preset = st.session_state[f"preset_{i}"]
         preset_aov = AOV_PRESETS[selected_family][selected_preset]
@@ -804,10 +838,11 @@ for i in range(int(n_products)):
 
         with col4:
             st.number_input(
-                T["share"],
+                T["sales_share"],
                 min_value=0.0,
-                step=0.1,
-                key=f"share_{i}"
+                step=1.0,
+                key=f"sales_share_pct_{i}",
+                help=T["sales_share_help"]
             )
 
         with col5:
@@ -844,7 +879,7 @@ if generate:
         prod_df = build_product_df_from_ui(int(n_products))
 
         mix_display = prod_df[[
-            "Product", "Family", "Preset Category", "Share", "ShareNorm",
+            "Product", "Family", "Preset Category", "Sales Share (%)", "SalesShareNorm",
             "AOV", "Gross Margin", "Platform Fee Rate Default"
         ]].copy()
 
@@ -852,15 +887,15 @@ if generate:
             T["product"],
             T["family"],
             T["preset_category"],
-            T["share"],
-            "ShareNorm",
+            T["sales_share"],
+            "SalesShareNorm",
             T["aov"],
             T["gross_margin"],
             T["platform_fee_default"],
         ]
 
-        mix_display[T["share"]] = mix_display[T["share"]].map(lambda v: f"{v:,.2f}")
-        mix_display["ShareNorm"] = mix_display["ShareNorm"].map(lambda v: f"{v:.0%}")
+        mix_display[T["sales_share"]] = mix_display[T["sales_share"]].map(lambda v: f"{v:,.1f}%")
+        mix_display["SalesShareNorm"] = mix_display["SalesShareNorm"].map(lambda v: f"{v:.0%}")
         mix_display[T["aov"]] = mix_display[T["aov"]].map(lambda v: f"€{v:,.2f}")
         mix_display[T["gross_margin"]] = mix_display[T["gross_margin"]].map(lambda v: f"{v:.0%}")
         mix_display[T["platform_fee_default"]] = mix_display[T["platform_fee_default"]].map(lambda v: f"{v:.0%}")
@@ -906,7 +941,7 @@ if generate:
             st.metric(T["profit_margin"], f"{overall_summary.iloc[0]['Overall Profit Margin']:.1%}")
 
         st.subheader(T["charts"])
-        render_phase_badges([p["name"] for p in phase_inputs])
+        render_phase_badges([p["key"] for p in phase_inputs])
 
         chart_col1, chart_col2 = st.columns(2)
 
@@ -939,7 +974,7 @@ if generate:
                 if not tmp_phase_be.empty:
                     phase_weekly_be = int(tmp_phase_be["Global Week"].iloc[0])
 
-                render_phase_badges([phase["name"]])
+                render_phase_badges([phase["key"]])
 
                 st.pyplot(
                     make_chart(
@@ -999,7 +1034,7 @@ if generate:
             df_all_display[col] = df_all_display[col].map(lambda v: f"{v:,.2f}")
         df_all_display["Orders (est.)"] = df_all_display["Orders (est.)"].map(lambda v: f"{v:,.2f}")
         df_all_display[T["ads_take_rate_col"]] = df_all["Ads Take Rate"].map(lambda v: f"{v:.0%}")
-        df_all_display["Affiliate Share"] = df_all["Affiliate Share"].map(lambda v: f"{v:.0%}")
+        df_all_display[T["affiliate_share_col"]] = df_all["Affiliate Share"].map(lambda v: f"{v:.0%}")
         if "Ads Take Rate" in df_all_display.columns:
             df_all_display = df_all_display.drop(columns=["Ads Take Rate"])
 
