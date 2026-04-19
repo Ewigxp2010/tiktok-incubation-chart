@@ -7,7 +7,7 @@ import matplotlib.ticker as ticker
 plt.rcParams["axes.unicode_minus"] = False
 
 st.set_page_config(
-    page_title="Meeting Growth Visualizer",
+    page_title="TikTok Shop Growth Visualizer",
     layout="wide"
 )
 
@@ -63,7 +63,7 @@ PHASE_COLOR_KEYS = {
 # ======================
 TEXT = {
     "en": {
-        "app_title": "Meeting Growth Visualizer",
+        "app_title": "TikTok Shop Growth Visualizer",
         "app_caption": "Enhanced Streamlit version for GMV / Cost / Profit modeling",
         "language": "Language",
         "global_inputs": "Global Inputs",
@@ -110,7 +110,7 @@ TEXT = {
         "product": "Product",
         "preset": "Preset",
         "sales_share": "Sales Share (%)",
-        "sales_share_help": "Does not need to equal 100. The system auto-normalizes.",
+        "sales_share_help": "Enter a percentage like 50 or 20. It does not need to total 100. The system auto-normalizes.",
         "aov": "AOV (€)",
         "gross_margin": "Gross Margin (%)",
         "fee_type": "Fee Type",
@@ -129,7 +129,7 @@ TEXT = {
         "gmv_end": "GMV end",
     },
     "de": {
-        "app_title": "Meeting Growth Visualizer",
+        "app_title": "TikTok Shop Growth Visualizer",
         "app_caption": "Erweiterte Streamlit-Version für GMV-, Kosten- und Gewinnmodellierung",
         "language": "Sprache",
         "global_inputs": "Globale Eingaben",
@@ -176,7 +176,7 @@ TEXT = {
         "product": "Produkt",
         "preset": "Preset",
         "sales_share": "Umsatzanteil (%)",
-        "sales_share_help": "Muss nicht 100 ergeben. Das System normalisiert automatisch.",
+        "sales_share_help": "Prozentwert eingeben, z. B. 50 oder 20. Muss nicht 100 ergeben. Das System normalisiert automatisch.",
         "aov": "AOV (€)",
         "gross_margin": "Bruttomarge (%)",
         "fee_type": "Gebührentyp",
@@ -195,7 +195,7 @@ TEXT = {
         "gmv_end": "GMV-Ende",
     },
     "zh": {
-        "app_title": "Meeting Growth Visualizer",
+        "app_title": "TikTok Shop Growth Visualizer",
         "app_caption": "用于 GMV / 成本 / 利润建模的增强版 Streamlit 工具",
         "language": "语言",
         "global_inputs": "全局输入",
@@ -242,7 +242,7 @@ TEXT = {
         "product": "产品",
         "preset": "Preset",
         "sales_share": "销售占比 (%)",
-        "sales_share_help": "不需要加起来等于100，系统会自动标准化。",
+        "sales_share_help": "请输入百分比，比如 50 或 20。不需要加起来等于100，系统会自动标准化。",
         "aov": "AOV (€)",
         "gross_margin": "毛利率 (%)",
         "fee_type": "费率类型",
@@ -261,7 +261,7 @@ TEXT = {
         "gmv_end": "GMV 终点",
     },
     "nl": {
-        "app_title": "Meeting Growth Visualizer",
+        "app_title": "TikTok Shop Growth Visualizer",
         "app_caption": "Verbeterde Streamlit-versie voor GMV / kosten / winstmodellering",
         "language": "Taal",
         "global_inputs": "Algemene invoer",
@@ -308,7 +308,7 @@ TEXT = {
         "product": "Product",
         "preset": "Preset",
         "sales_share": "Verkoopaandeel (%)",
-        "sales_share_help": "Hoeft niet op te tellen tot 100. Het systeem normaliseert automatisch.",
+        "sales_share_help": "Voer een percentage in, zoals 50 of 20. Hoeft niet op te tellen tot 100. Het systeem normaliseert automatisch.",
         "aov": "AOV (€)",
         "gross_margin": "Brutomarge (%)",
         "fee_type": "Fee type",
@@ -374,6 +374,14 @@ def build_phase_inputs():
 # ======================
 # Helpers
 # ======================
+def parse_percent_text(value) -> float:
+    if value is None:
+        return 0.0
+    text = str(value).strip().replace("%", "").replace(",", ".")
+    if text == "":
+        return 0.0
+    return float(text)
+
 def normalize_sales_shares(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     df["Sales Share (%)"] = pd.to_numeric(df["Sales Share (%)"], errors="coerce").fillna(0).clip(lower=0)
@@ -657,11 +665,13 @@ def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
         gross_margin_pct = float(st.session_state[f"gross_margin_pct_{i}"])
         gross_margin_decimal = gross_margin_pct / 100.0
 
+        sales_share_pct = parse_percent_text(st.session_state[f"sales_share_text_{i}"])
+
         rows.append({
             "Product": st.session_state[f"product_name_{i}"],
             "Family": family,
             "Preset Category": preset,
-            "Sales Share (%)": float(st.session_state[f"sales_share_pct_{i}"]),
+            "Sales Share (%)": sales_share_pct,
             "AOV": float(st.session_state[f"aov_{i}"]),
             "Gross Margin": gross_margin_decimal,
             "Platform Fee Rate Default": float(fee_rate),
@@ -799,8 +809,8 @@ for i in range(int(n_products)):
     if f"aov_{i}" not in st.session_state:
         st.session_state[f"aov_{i}"] = float(default_aov)
 
-    if f"sales_share_pct_{i}" not in st.session_state:
-        st.session_state[f"sales_share_pct_{i}"] = 100.0 / float(n_products)
+    if f"sales_share_text_{i}" not in st.session_state:
+        st.session_state[f"sales_share_text_{i}"] = f"{round(100.0 / float(n_products), 1)}"
 
     if f"gross_margin_pct_{i}" not in st.session_state:
         st.session_state[f"gross_margin_pct_{i}"] = 40.0
@@ -837,11 +847,9 @@ for i in range(int(n_products)):
         col4, col5, col6 = st.columns(3)
 
         with col4:
-            st.number_input(
+            st.text_input(
                 T["sales_share"],
-                min_value=0.0,
-                step=1.0,
-                key=f"sales_share_pct_{i}",
+                key=f"sales_share_text_{i}",
                 help=T["sales_share_help"]
             )
 
