@@ -686,6 +686,20 @@ def money(value, digits=0):
     return f"€{float(value):,.{digits}f}"
 
 
+def short_number(value):
+    value = float(value)
+    abs_value = abs(value)
+    if abs_value >= 1_000_000:
+        return f"{value / 1_000_000:.2f}M"
+    if abs_value >= 1_000:
+        return f"{value / 1_000:.1f}K"
+    return f"{value:,.0f}"
+
+
+def short_money(value):
+    return f"€{short_number(value)}"
+
+
 def pct(value, digits=1):
     return f"{float(value):.{digits}%}"
 
@@ -1624,45 +1638,30 @@ def make_investment_split_chart(df_all):
         T["cost_cogs"]: df_all["COGS"].sum(),
     })
     values = values[values > 0].sort_values(ascending=False)
+    total = float(values.sum())
+    shares = values / total if total > 0 else values
+    display = values.sort_values(ascending=True)
+    share_display = shares.loc[display.index]
+    colors = ["#14B8A6", "#06B6D4", "#F97316", "#EC4899", "#8B5CF6", "#64748B"][:len(display)]
     fig = go.Figure(
-        go.Pie(
-            labels=values.index,
-            values=values.values,
-            hole=0.46,
-            domain=dict(x=[0.02, 0.70], y=[0.02, 0.98]),
-            marker=dict(colors=["#64748B", "#8B5CF6", "#06B6D4", "#EC4899", "#F97316", "#14B8A6"][:len(values)]),
-            textinfo="percent",
-            textposition="inside",
-            insidetextorientation="radial",
-            textfont=dict(size=13, color="white"),
-            hovertemplate="%{label}: €%{value:,.0f}<extra></extra>",
+        go.Bar(
+            x=display.values,
+            y=display.index,
+            orientation="h",
+            marker=dict(color=colors),
+            text=[f"{short_money(v)} · {pct(share_display.loc[idx], 0)}" for idx, v in display.items()],
+            textposition="outside",
+            cliponaxis=False,
+            hovertemplate="<b>%{y}</b><br>Cost: €%{x:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, T["investment_split"], height=460)
+    apply_plotly_layout(fig, T["investment_split"], height=520)
     fig.update_layout(
-        showlegend=True,
-        legend=dict(
-            orientation="v",
-            yanchor="middle",
-            y=0.5,
-            xanchor="left",
-            x=0.76,
-            bgcolor="rgba(255,255,255,0.86)",
-            bordercolor="#E5E7EB",
-            borderwidth=1,
-            font=dict(size=12),
-        ),
-        margin=dict(l=28, r=28, t=72, b=36),
-        annotations=[
-            dict(
-                text=T["total_cost"],
-                x=0.36,
-                y=0.50,
-                showarrow=False,
-                font=dict(size=13, color="#6B7280"),
-            )
-        ],
+        showlegend=False,
+        margin=dict(l=150, r=140, t=96, b=56),
     )
+    fig.update_xaxes(showticklabels=False, title="")
+    fig.update_yaxes(title="", automargin=True)
     return fig
 
 
@@ -2027,42 +2026,56 @@ def make_funnel_chart(df):
         T["orders_label"]: df["Orders"].sum(),
     })
     display = values.sort_values(ascending=True)
+    max_value = float(display.max()) if len(display) else 0
     fig = go.Figure(
         go.Bar(
             x=display.values,
             y=display.index,
             orientation="h",
             marker=dict(color=["#93C5FD", "#60A5FA", "#2563EB", "#1D4ED8"]),
-            text=[f"{v:,.0f}" for v in display.values],
+            text=[short_number(v) for v in display.values],
             textposition="outside",
+            cliponaxis=False,
             hovertemplate="%{y}: %{x:,.0f}<extra></extra>",
         )
     )
     apply_plotly_layout(fig, T["funnel_summary"], height=500)
-    fig.update_xaxes(showticklabels=False, title="")
-    fig.update_yaxes(title="")
+    fig.update_layout(margin=dict(l=96, r=130, t=96, b=56))
+    fig.update_xaxes(showticklabels=False, title="", range=[0, max_value * 1.18 if max_value > 0 else 1])
+    fig.update_yaxes(title="", automargin=True)
     return fig
 
 
 def make_channel_mix_chart(phase_summary):
+    temp = phase_summary.copy()
+    temp["Total Channel GMV"] = temp["ShopTab GMV"] + temp["Affiliate Video GMV"]
+    temp["Store/Search Share"] = np.where(temp["Total Channel GMV"] > 0, temp["ShopTab GMV"] / temp["Total Channel GMV"], 0)
+    temp["Affiliate Share"] = np.where(temp["Total Channel GMV"] > 0, temp["Affiliate Video GMV"] / temp["Total Channel GMV"], 0)
     fig = go.Figure()
     fig.add_trace(go.Bar(
-        x=phase_summary["Phase"],
-        y=phase_summary["ShopTab GMV"],
+        x=temp["Phase"],
+        y=temp["Store/Search Share"],
         name=T["shoptab_gmv"],
         marker_color="#2563EB",
-        hovertemplate=f"{T['shoptab_gmv']}: €%{{y:,.0f}}<extra></extra>",
+        text=[pct(v, 0) for v in temp["Store/Search Share"]],
+        textposition="inside",
+        customdata=temp["ShopTab GMV"],
+        hovertemplate=f"{T['shoptab_gmv']}: €%{{customdata:,.0f}}<br>Share: %{{y:.0%}}<extra></extra>",
     ))
     fig.add_trace(go.Bar(
-        x=phase_summary["Phase"],
-        y=phase_summary["Affiliate Video GMV"],
+        x=temp["Phase"],
+        y=temp["Affiliate Share"],
         name=T["affiliate_video_gmv"],
         marker_color="#F97316",
-        hovertemplate=f"{T['affiliate_video_gmv']}: €%{{y:,.0f}}<extra></extra>",
+        text=[pct(v, 0) for v in temp["Affiliate Share"]],
+        textposition="inside",
+        customdata=temp["Affiliate Video GMV"],
+        hovertemplate=f"{T['affiliate_video_gmv']}: €%{{customdata:,.0f}}<br>Share: %{{y:.0%}}<extra></extra>",
     ))
     apply_plotly_layout(fig, T["channel_mix"], height=500)
-    fig.update_layout(barmode="stack")
-    fig.update_yaxes(tickprefix="€", tickformat=",.0f")
+    fig.update_layout(barmode="stack", margin=dict(l=54, r=42, t=96, b=72))
+    fig.update_yaxes(tickformat=".0%", range=[0, 1], title="")
+    fig.update_xaxes(title="", automargin=True)
     return fig
 
 
@@ -2080,7 +2093,19 @@ def make_phase_total_chart(phase_row):
     labels = [item[0] for item in steps]
     values = [item[1] for item in steps]
     measures = [item[2] for item in steps]
-    text = [money(abs(value), 0) if measure == "relative" else money(value, 0) for label, value, measure in steps]
+    text = [short_money(abs(value)) if measure == "relative" else short_money(value) for label, value, measure in steps]
+    running = []
+    current = 0
+    for _label, value, measure in steps:
+        if measure == "absolute":
+            current = value
+        elif measure == "relative":
+            current += value
+        else:
+            current = value
+        running.append(current)
+    y_min = min(0, min(running)) * 1.18
+    y_max = max(running) * 1.18 if max(running) > 0 else 1
 
     fig = go.Figure(
         go.Waterfall(
@@ -2095,18 +2120,19 @@ def make_phase_total_chart(phase_row):
             decreasing={"marker": {"color": "#F97316"}},
             totals={"marker": {"color": "#16A34A" if float(phase_row["Profit"]) >= 0 else "#DC2626"}},
             hovertemplate="<b>%{x}</b><br>€%{y:,.0f}<extra></extra>",
+            cliponaxis=False,
         )
     )
 
     apply_plotly_layout(fig, f"{phase_row['Phase']} - {T['phase_total_breakdown']}", height=560)
     fig.update_layout(
         showlegend=False,
-        margin=dict(l=36, r=36, t=96, b=108),
+        margin=dict(l=64, r=48, t=110, b=132),
         bargap=0.34,
     )
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
-    fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title="", tickangle=0, automargin=True)
+    fig.update_yaxes(tickprefix="€", tickformat=",.0f", range=[y_min, y_max])
+    fig.update_xaxes(title="", tickangle=-18, automargin=True)
     return fig
 
 
