@@ -28,52 +28,52 @@ PLATFORM_COMMISSION = {
 # shop_tab_share: reference share used to seed the ShopTab natural-sales assumption
 CATEGORY_PRESETS = {
     "Home Living": {
-        "Kitchenware": {"aov": 29.90, "videos_per_sample": 0.40, "clicks_per_video": 90, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
-        "Home Supplies": {"aov": 24.90, "videos_per_sample": 0.40, "clicks_per_video": 80, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
-        "Textiles & Soft Furnishings": {"aov": 34.90, "videos_per_sample": 0.35, "clicks_per_video": 70, "click_to_order_rate": 0.028, "shop_tab_share": 0.38},
-        "Tools & Hardware": {"aov": 27.90, "videos_per_sample": 0.30, "clicks_per_video": 55, "click_to_order_rate": 0.024, "shop_tab_share": 0.40},
-        "Furniture": {"aov": 129.00, "videos_per_sample": 0.20, "clicks_per_video": 35, "click_to_order_rate": 0.010, "shop_tab_share": 0.45},
-        "Home Improvement": {"aov": 39.90, "videos_per_sample": 0.30, "clicks_per_video": 55, "click_to_order_rate": 0.022, "shop_tab_share": 0.40},
-        "Toys & Hobbies": {"aov": 24.90, "videos_per_sample": 0.35, "clicks_per_video": 75, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
-        "Books, Magazines & Audio": {"aov": 18.90, "videos_per_sample": 0.25, "clicks_per_video": 35, "click_to_order_rate": 0.022, "shop_tab_share": 0.40},
-        "Collectibles": {"aov": 39.90, "videos_per_sample": 0.35, "clicks_per_video": 70, "click_to_order_rate": 0.030, "shop_tab_share": 0.35},
+        "Kitchenware": {"aov": 29.90, "videos_per_sample": 1.50, "clicks_per_video": 90, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
+        "Home Supplies": {"aov": 24.90, "videos_per_sample": 1.45, "clicks_per_video": 80, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Textiles & Soft Furnishings": {"aov": 34.90, "videos_per_sample": 1.35, "clicks_per_video": 70, "click_to_order_rate": 0.028, "shop_tab_share": 0.38},
+        "Tools & Hardware": {"aov": 27.90, "videos_per_sample": 1.15, "clicks_per_video": 55, "click_to_order_rate": 0.024, "shop_tab_share": 0.40},
+        "Furniture": {"aov": 129.00, "videos_per_sample": 1.00, "clicks_per_video": 35, "click_to_order_rate": 0.010, "shop_tab_share": 0.45},
+        "Home Improvement": {"aov": 39.90, "videos_per_sample": 1.20, "clicks_per_video": 55, "click_to_order_rate": 0.022, "shop_tab_share": 0.40},
+        "Toys & Hobbies": {"aov": 24.90, "videos_per_sample": 1.55, "clicks_per_video": 75, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
+        "Books, Magazines & Audio": {"aov": 18.90, "videos_per_sample": 1.00, "clicks_per_video": 35, "click_to_order_rate": 0.022, "shop_tab_share": 0.40},
+        "Collectibles": {"aov": 39.90, "videos_per_sample": 1.35, "clicks_per_video": 70, "click_to_order_rate": 0.030, "shop_tab_share": 0.35},
     },
     "Electronics": {
-        "Phones & Electronics": {"aov": 69.00, "videos_per_sample": 0.25, "clicks_per_video": 50, "click_to_order_rate": 0.018, "shop_tab_share": 0.42},
-        "Computers & Office Equipment": {"aov": 89.00, "videos_per_sample": 0.20, "clicks_per_video": 40, "click_to_order_rate": 0.013, "shop_tab_share": 0.45},
-        "Household Appliances": {"aov": 59.00, "videos_per_sample": 0.25, "clicks_per_video": 55, "click_to_order_rate": 0.018, "shop_tab_share": 0.42},
-        "Automotive & Motorcycle": {"aov": 39.90, "videos_per_sample": 0.20, "clicks_per_video": 40, "click_to_order_rate": 0.015, "shop_tab_share": 0.45},
-        "Smart Home Systems": {"aov": 79.00, "videos_per_sample": 0.22, "clicks_per_video": 45, "click_to_order_rate": 0.015, "shop_tab_share": 0.44},
-        "Audio & Headphones": {"aov": 49.90, "videos_per_sample": 0.28, "clicks_per_video": 60, "click_to_order_rate": 0.020, "shop_tab_share": 0.40},
-        "Mobile Accessories": {"aov": 19.90, "videos_per_sample": 0.35, "clicks_per_video": 80, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Phones & Electronics": {"aov": 69.00, "videos_per_sample": 1.10, "clicks_per_video": 50, "click_to_order_rate": 0.018, "shop_tab_share": 0.42},
+        "Computers & Office Equipment": {"aov": 89.00, "videos_per_sample": 1.00, "clicks_per_video": 40, "click_to_order_rate": 0.013, "shop_tab_share": 0.45},
+        "Household Appliances": {"aov": 59.00, "videos_per_sample": 1.15, "clicks_per_video": 55, "click_to_order_rate": 0.018, "shop_tab_share": 0.42},
+        "Automotive & Motorcycle": {"aov": 39.90, "videos_per_sample": 1.00, "clicks_per_video": 40, "click_to_order_rate": 0.015, "shop_tab_share": 0.45},
+        "Smart Home Systems": {"aov": 79.00, "videos_per_sample": 1.05, "clicks_per_video": 45, "click_to_order_rate": 0.015, "shop_tab_share": 0.44},
+        "Audio & Headphones": {"aov": 49.90, "videos_per_sample": 1.20, "clicks_per_video": 60, "click_to_order_rate": 0.020, "shop_tab_share": 0.40},
+        "Mobile Accessories": {"aov": 19.90, "videos_per_sample": 1.45, "clicks_per_video": 80, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
     },
     "FMCG": {
-        "Food & Beverages": {"aov": 18.90, "videos_per_sample": 0.45, "clicks_per_video": 95, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
-        "Health": {"aov": 29.90, "videos_per_sample": 0.35, "clicks_per_video": 75, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
-        "Baby & Maternity": {"aov": 34.90, "videos_per_sample": 0.40, "clicks_per_video": 80, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
-        "Pet Supplies": {"aov": 24.90, "videos_per_sample": 0.45, "clicks_per_video": 85, "click_to_order_rate": 0.038, "shop_tab_share": 0.32},
-        "Household Consumables": {"aov": 19.90, "videos_per_sample": 0.40, "clicks_per_video": 75, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
-        "Personal Care Consumables": {"aov": 19.90, "videos_per_sample": 0.45, "clicks_per_video": 95, "click_to_order_rate": 0.050, "shop_tab_share": 0.30},
+        "Food & Beverages": {"aov": 18.90, "videos_per_sample": 1.80, "clicks_per_video": 95, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
+        "Health": {"aov": 29.90, "videos_per_sample": 1.45, "clicks_per_video": 75, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Baby & Maternity": {"aov": 34.90, "videos_per_sample": 1.55, "clicks_per_video": 80, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
+        "Pet Supplies": {"aov": 24.90, "videos_per_sample": 1.75, "clicks_per_video": 85, "click_to_order_rate": 0.038, "shop_tab_share": 0.32},
+        "Household Consumables": {"aov": 19.90, "videos_per_sample": 1.55, "clicks_per_video": 75, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
+        "Personal Care Consumables": {"aov": 19.90, "videos_per_sample": 1.90, "clicks_per_video": 95, "click_to_order_rate": 0.050, "shop_tab_share": 0.30},
     },
     "Beauty": {
-        "Beauty & Personal Care": {"aov": 24.90, "videos_per_sample": 0.50, "clicks_per_video": 120, "click_to_order_rate": 0.055, "shop_tab_share": 0.30},
-        "Skincare": {"aov": 29.90, "videos_per_sample": 0.50, "clicks_per_video": 130, "click_to_order_rate": 0.060, "shop_tab_share": 0.28},
-        "Makeup": {"aov": 22.90, "videos_per_sample": 0.55, "clicks_per_video": 140, "click_to_order_rate": 0.065, "shop_tab_share": 0.28},
-        "Hair Care & Styling": {"aov": 34.90, "videos_per_sample": 0.45, "clicks_per_video": 105, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
-        "Fragrance": {"aov": 39.90, "videos_per_sample": 0.30, "clicks_per_video": 60, "click_to_order_rate": 0.025, "shop_tab_share": 0.40},
-        "Beauty Devices": {"aov": 59.00, "videos_per_sample": 0.35, "clicks_per_video": 85, "click_to_order_rate": 0.030, "shop_tab_share": 0.38},
-        "Men's Grooming": {"aov": 24.90, "videos_per_sample": 0.35, "clicks_per_video": 75, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Beauty & Personal Care": {"aov": 24.90, "videos_per_sample": 2.00, "clicks_per_video": 120, "click_to_order_rate": 0.055, "shop_tab_share": 0.30},
+        "Skincare": {"aov": 29.90, "videos_per_sample": 2.10, "clicks_per_video": 130, "click_to_order_rate": 0.060, "shop_tab_share": 0.28},
+        "Makeup": {"aov": 22.90, "videos_per_sample": 2.25, "clicks_per_video": 140, "click_to_order_rate": 0.065, "shop_tab_share": 0.28},
+        "Hair Care & Styling": {"aov": 34.90, "videos_per_sample": 1.85, "clicks_per_video": 105, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
+        "Fragrance": {"aov": 39.90, "videos_per_sample": 1.30, "clicks_per_video": 60, "click_to_order_rate": 0.025, "shop_tab_share": 0.40},
+        "Beauty Devices": {"aov": 59.00, "videos_per_sample": 1.35, "clicks_per_video": 85, "click_to_order_rate": 0.030, "shop_tab_share": 0.38},
+        "Men's Grooming": {"aov": 24.90, "videos_per_sample": 1.50, "clicks_per_video": 75, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
     },
     "Fashion": {
-        "Womenswear & Underwear": {"aov": 29.90, "videos_per_sample": 0.40, "clicks_per_video": 85, "click_to_order_rate": 0.036, "shop_tab_share": 0.35},
-        "Menswear & Underwear": {"aov": 34.90, "videos_per_sample": 0.35, "clicks_per_video": 75, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
-        "Fashion Accessories": {"aov": 19.90, "videos_per_sample": 0.45, "clicks_per_video": 95, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
-        "Shoes": {"aov": 49.90, "videos_per_sample": 0.30, "clicks_per_video": 65, "click_to_order_rate": 0.028, "shop_tab_share": 0.38},
-        "Luggage & Bags": {"aov": 45.90, "videos_per_sample": 0.25, "clicks_per_video": 50, "click_to_order_rate": 0.020, "shop_tab_share": 0.42},
-        "Jewelry Accessories & Derivatives": {"aov": 24.90, "videos_per_sample": 0.45, "clicks_per_video": 95, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
-        "Kids' Fashion": {"aov": 24.90, "videos_per_sample": 0.35, "clicks_per_video": 70, "click_to_order_rate": 0.032, "shop_tab_share": 0.38},
-        "Modest Fashion": {"aov": 29.90, "videos_per_sample": 0.35, "clicks_per_video": 70, "click_to_order_rate": 0.032, "shop_tab_share": 0.38},
-        "Sports & Outdoor": {"aov": 49.90, "videos_per_sample": 0.30, "clicks_per_video": 60, "click_to_order_rate": 0.022, "shop_tab_share": 0.38},
+        "Womenswear & Underwear": {"aov": 29.90, "videos_per_sample": 1.70, "clicks_per_video": 85, "click_to_order_rate": 0.036, "shop_tab_share": 0.35},
+        "Menswear & Underwear": {"aov": 34.90, "videos_per_sample": 1.50, "clicks_per_video": 75, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
+        "Fashion Accessories": {"aov": 19.90, "videos_per_sample": 1.85, "clicks_per_video": 95, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
+        "Shoes": {"aov": 49.90, "videos_per_sample": 1.25, "clicks_per_video": 65, "click_to_order_rate": 0.028, "shop_tab_share": 0.38},
+        "Luggage & Bags": {"aov": 45.90, "videos_per_sample": 1.10, "clicks_per_video": 50, "click_to_order_rate": 0.020, "shop_tab_share": 0.42},
+        "Jewelry Accessories & Derivatives": {"aov": 24.90, "videos_per_sample": 1.80, "clicks_per_video": 95, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
+        "Kids' Fashion": {"aov": 24.90, "videos_per_sample": 1.40, "clicks_per_video": 70, "click_to_order_rate": 0.032, "shop_tab_share": 0.38},
+        "Modest Fashion": {"aov": 29.90, "videos_per_sample": 1.35, "clicks_per_video": 70, "click_to_order_rate": 0.032, "shop_tab_share": 0.38},
+        "Sports & Outdoor": {"aov": 49.90, "videos_per_sample": 1.20, "clicks_per_video": 60, "click_to_order_rate": 0.022, "shop_tab_share": 0.38},
     },
 }
 
@@ -133,12 +133,16 @@ TEXT = {
         "clicks_video": "Clicks / video",
         "click_order": "Click-to-order (%)",
         "shoptab_share": "ShopTab GMV share (%)",
+        "organic_commission_sku": "Organic creator commission (%)",
+        "paid_commission_sku": "Paid-traffic creator commission (%)",
         "aov_help": "Average selling price per order for this subcategory. Current default is a public-market benchmark for Germany and should be replaced with internal TikTok Shop subcategory AOV when available.",
         "gross_margin_help": "Merchant gross margin before platform fee, creator commission, ads, logistics, and sample investment. Product cost is calculated as AOV x (1 - gross margin).",
         "videos_sample_help": "Estimated creator videos generated per sample sent. Example: 0.40 means 100 samples generate about 40 videos. Current value is a public benchmark placeholder.",
         "clicks_video_help": "Estimated product-page clicks generated by each creator video over its active content tail. Current value is a public social-commerce benchmark placeholder.",
         "click_order_help": "Estimated conversion from product click to order. Current value is a public e-commerce/social-commerce benchmark placeholder.",
         "shoptab_share_help": "Share of organic GMV attributed to ShopTab/Search/Mall/Storefront after users are influenced by content. This GMV does not carry creator affiliate commission. Current value is a public benchmark placeholder and should be replaced with internal data.",
+        "organic_commission_help": "SKU-level standard affiliate commission for orders generated by creator organic traffic.",
+        "paid_commission_help": "SKU-level commission for orders generated by paid traffic using creator affiliate content. TikTok Shop Ads can use a separate Shop Ads commission rate; current default is 5%.",
         "generate": "Generate Simulator",
         "sku_mix": "SKU Mix & Funnel Assumptions",
         "total_gmv": "Total GMV",
@@ -218,12 +222,16 @@ TEXT = {
         "clicks_video": "每条视频商品点击数",
         "click_order": "点击到下单转化率 (%)",
         "shoptab_share": "ShopTab GMV 占比 (%)",
+        "organic_commission_sku": "自然流达人佣金 (%)",
+        "paid_commission_sku": "广告流达人佣金 (%)",
         "aov_help": "该 subcategory 的平均成交客单价。当前默认值是基于公开市场信息的德国 benchmark，拿到 TikTok Shop 内部 subcategory AOV 后建议替换。",
         "gross_margin_help": "商家毛利率，不包含平台佣金、达人佣金、广告、物流和寄样投入。商品成本会按 AOV x (1 - 毛利率) 自动计算。",
         "videos_sample_help": "每寄出 1 个样品预计产生的达人视频数。例如 0.40 表示 100 个样品约产生 40 条视频。当前为公开 benchmark 占位值。",
         "clicks_video_help": "每条达人视频在内容长尾周期内预计带来的商品页点击数。当前为公开 social commerce benchmark 占位值。",
         "click_order_help": "商品页点击到下单的转化率。当前为公开电商/social commerce benchmark 占位值。",
         "shoptab_share_help": "被内容种草后，最终通过 ShopTab/Search/Mall/店铺页成交的 organic GMV 占比。这部分 GMV 不产生达人佣金。当前为公开 benchmark 占位值，拿到内部数据后建议替换。",
+        "organic_commission_help": "SKU level 的标准达人佣金，用于达人自然流成交订单。",
+        "paid_commission_help": "SKU level 的广告流达人佣金，用于通过达人内容广告加热产生的订单。TikTok Shop Ads 可以单独设置 Shop Ads commission rate；当前默认 5%。",
         "generate": "生成模拟结果",
         "sku_mix": "SKU 组合与漏斗假设",
         "total_gmv": "总 GMV",
@@ -303,12 +311,16 @@ TEXT["de"] = {
     "clicks_video": "Klicks / Video",
     "click_order": "Klick-zu-Bestellung (%)",
     "shoptab_share": "ShopTab GMV-Anteil (%)",
+    "organic_commission_sku": "Organische Creator-Provision (%)",
+    "paid_commission_sku": "Paid-Traffic-Creator-Provision (%)",
     "aov_help": "Durchschnittlicher Verkaufspreis pro Bestellung. Der aktuelle Standardwert ist ein öffentlicher Deutschland-Benchmark und sollte durch interne TikTok-Shop-Daten ersetzt werden.",
     "gross_margin_help": "Händler-Bruttomarge vor Plattformgebühr, Creator-Provision, Ads, Logistik und Sample-Investment. Produktkosten = AOV x (1 - Bruttomarge).",
     "videos_sample_help": "Geschätzte Creator-Videos pro versendetem Sample. Beispiel: 0,40 bedeutet ca. 40 Videos aus 100 Samples. Aktuell ein öffentlicher Benchmark-Platzhalter.",
     "clicks_video_help": "Geschätzte Produktseiten-Klicks pro Creator-Video über den Content-Tail. Aktuell ein öffentlicher Benchmark-Platzhalter.",
     "click_order_help": "Geschätzte Conversion von Produktklick zu Bestellung. Aktuell ein öffentlicher Benchmark-Platzhalter.",
     "shoptab_share_help": "Anteil des organischen GMV, der nach Content-Einfluss über ShopTab/Search/Mall/Storefront kauft. Dieser GMV trägt keine Creator-Provision. Aktuell ein öffentlicher Benchmark-Platzhalter.",
+    "organic_commission_help": "SKU-spezifische Standard-Affiliate-Provision für Bestellungen aus organischem Creator-Traffic.",
+    "paid_commission_help": "SKU-spezifische Provision für Bestellungen aus bezahltem Traffic mit Creator-Content. TikTok Shop Ads kann eine separate Shop Ads Commission Rate nutzen; aktueller Standard ist 5%.",
     "generate": "Simulator erzeugen",
     "sku_mix": "SKU-Mix & Funnel-Annahmen",
     "total_gmv": "Gesamt-GMV",
@@ -383,12 +395,16 @@ TEXT["nl"] = {
     "clicks_video": "Clicks / video",
     "click_order": "Click-to-order (%)",
     "shoptab_share": "ShopTab GMV-aandeel (%)",
+    "organic_commission_sku": "Organische creator commissie (%)",
+    "paid_commission_sku": "Paid-traffic creator commissie (%)",
     "aov_help": "Gemiddelde verkoopprijs per order. De huidige standaardwaarde is een publieke Duitsland-benchmark en moet worden vervangen door interne TikTok Shop-data zodra beschikbaar.",
     "gross_margin_help": "Brutomarge van de merchant voor platform fee, creator commissie, ads, logistiek en sample-investering. Productkosten = AOV x (1 - brutomarge).",
     "videos_sample_help": "Geschat aantal creator-video's per verzonden sample. Voorbeeld: 0,40 betekent circa 40 video's uit 100 samples. Huidige waarde is een publieke benchmark-placeholder.",
     "clicks_video_help": "Geschat aantal productpagina-clicks per creator-video over de content-tail. Huidige waarde is een publieke benchmark-placeholder.",
     "click_order_help": "Geschatte conversie van productclick naar order. Huidige waarde is een publieke benchmark-placeholder.",
     "shoptab_share_help": "Aandeel organische GMV dat na content-invloed via ShopTab/Search/Mall/Storefront koopt. Deze GMV heeft geen creator commissie. Huidige waarde is een publieke benchmark-placeholder.",
+    "organic_commission_help": "SKU-specifieke standaard affiliate commissie voor orders uit organisch creatorverkeer.",
+    "paid_commission_help": "SKU-specifieke commissie voor orders uit paid traffic met creator-content. TikTok Shop Ads kan een aparte Shop Ads commission rate gebruiken; huidige default is 5%.",
     "generate": "Simulator genereren",
     "sku_mix": "SKU-mix & funnelaannames",
     "total_gmv": "Totale GMV",
@@ -508,6 +524,10 @@ def initialize_sku(i):
         apply_category_defaults(i)
     if f"gross_margin_pct_{i}" not in st.session_state:
         st.session_state[f"gross_margin_pct_{i}"] = 40.0
+    if f"organic_commission_pct_{i}" not in st.session_state:
+        st.session_state[f"organic_commission_pct_{i}"] = 10.0
+    if f"paid_commission_pct_{i}" not in st.session_state:
+        st.session_state[f"paid_commission_pct_{i}"] = 5.0
 
 
 def build_product_df(n_skus):
@@ -524,6 +544,8 @@ def build_product_df(n_skus):
             "Clicks / Video": float(st.session_state[f"clicks_per_video_{i}"]),
             "Click-to-order Rate": float(st.session_state[f"click_to_order_pct_{i}"]) / 100,
             "ShopTab GMV Share": float(st.session_state[f"shop_tab_share_pct_{i}"]) / 100,
+            "Organic Creator Commission Rate": float(st.session_state[f"organic_commission_pct_{i}"]) / 100,
+            "Paid Creator Commission Rate": float(st.session_state[f"paid_commission_pct_{i}"]) / 100,
         })
 
     df = pd.DataFrame(rows)
@@ -539,6 +561,10 @@ def build_product_df(n_skus):
         raise ValueError("Click-to-order rate must be between 0% and 100%.")
     if df["ShopTab GMV Share"].lt(0).any() or df["ShopTab GMV Share"].gt(0.90).any():
         raise ValueError("ShopTab GMV share must be between 0% and 90%.")
+    if df["Organic Creator Commission Rate"].lt(0).any() or df["Organic Creator Commission Rate"].gt(0.80).any():
+        raise ValueError("Organic creator commission must be between 0% and 80%.")
+    if df["Paid Creator Commission Rate"].lt(0).any() or df["Paid Creator Commission Rate"].gt(0.80).any():
+        raise ValueError("Paid-traffic creator commission must be between 0% and 80%.")
     return df
 
 
@@ -548,8 +574,6 @@ def build_weekly_model(
     weeks_per_phase,
     promo_60d,
     logistics_cost,
-    affiliate_commission_rate,
-    paid_affiliate_commission_rate,
     organic_click_window_weeks,
     ads_roas,
 ):
@@ -563,6 +587,8 @@ def build_weekly_model(
     clicks_per_video = product_df["Clicks / Video"].to_numpy()
     click_to_order_rate = product_df["Click-to-order Rate"].to_numpy()
     shop_tab_share = product_df["ShopTab GMV Share"].to_numpy()
+    organic_creator_commission_rate = product_df["Organic Creator Commission Rate"].to_numpy()
+    paid_creator_commission_rate = product_df["Paid Creator Commission Rate"].to_numpy()
 
     rows = []
     video_history = []
@@ -631,8 +657,8 @@ def build_weekly_model(
             platform_fee = float(np.sum(platform_fee_p))
             samples_cost = float(np.sum(samples_cost_p))
             fulfillment_cost = orders * float(logistics_cost)
-            organic_creator_commission = float(np.sum(affiliate_organic_gmv_p)) * float(affiliate_commission_rate)
-            paid_creator_commission = float(np.sum(affiliate_paid_gmv_p)) * float(paid_affiliate_commission_rate)
+            organic_creator_commission = float(np.sum(affiliate_organic_gmv_p * organic_creator_commission_rate))
+            paid_creator_commission = float(np.sum(affiliate_paid_gmv_p * paid_creator_commission_rate))
             creator_commission = organic_creator_commission + paid_creator_commission
             ads_cost = gmv * take_rate
             sales_contribution = gmv - cogs - platform_fee - creator_commission - fulfillment_cost
@@ -1080,8 +1106,6 @@ with st.sidebar:
         index=0,
     )
     logistics_cost = st.number_input(T["fulfillment"], min_value=0.0, value=5.0, step=0.5)
-    affiliate_commission_rate = st.slider(T["creator_commission"], min_value=0.0, max_value=0.5, value=0.10, step=0.01)
-    paid_affiliate_commission_rate = st.slider(T["paid_creator_commission"], min_value=0.0, max_value=0.5, value=0.05, step=0.01)
     ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=5.0, step=0.1)
     organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1)
     weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
@@ -1136,6 +1160,26 @@ for i in range(int(n_skus)):
         with c6:
             st.metric(T["platform_commission"], pct(PLATFORM_COMMISSION[category], 0))
 
+        c7, c8 = st.columns(2)
+        with c7:
+            st.number_input(
+                T["organic_commission_sku"],
+                min_value=0.0,
+                max_value=80.0,
+                step=0.5,
+                key=f"organic_commission_pct_{i}",
+                help=T["organic_commission_help"],
+            )
+        with c8:
+            st.number_input(
+                T["paid_commission_sku"],
+                min_value=0.0,
+                max_value=80.0,
+                step=0.5,
+                key=f"paid_commission_pct_{i}",
+                help=T["paid_commission_help"],
+            )
+
         with st.expander(T["benchmark_expander"], expanded=False):
             b1, b2, b3, b4 = st.columns(4)
             with b1:
@@ -1159,8 +1203,6 @@ if st.session_state.get("has_generated", False):
             weeks_per_phase=int(weeks_per_phase),
             promo_60d=bool(promo_60d),
             logistics_cost=float(logistics_cost),
-            affiliate_commission_rate=float(affiliate_commission_rate),
-            paid_affiliate_commission_rate=float(paid_affiliate_commission_rate),
             organic_click_window_weeks=int(organic_click_window_weeks),
             ads_roas=float(ads_roas),
         )
@@ -1198,6 +1240,8 @@ if st.session_state.get("has_generated", False):
         product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
         product_display["Click-to-order Rate"] = product_display["Click-to-order Rate"].map(lambda x: pct(x, 1))
         product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
+        product_display["Organic Creator Commission Rate"] = product_display["Organic Creator Commission Rate"].map(lambda x: pct(x, 1))
+        product_display["Paid Creator Commission Rate"] = product_display["Paid Creator Commission Rate"].map(lambda x: pct(x, 1))
         st.dataframe(product_display, use_container_width=True)
 
         m1, m2, m3, m4 = st.columns(4)
