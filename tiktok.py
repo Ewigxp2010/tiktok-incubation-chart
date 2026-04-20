@@ -103,6 +103,9 @@ TEXT = {
         "title": "TikTok Shop Growth Visualizer",
         "caption": "Germany public-benchmark simulator for SKU samples, creator videos, clicks, GMV, costs, and profit",
         "global_inputs": "Global Inputs",
+        "plan_setup": "Plan Setup",
+        "cost_assumptions": "Cost Assumptions",
+        "growth_levers": "Growth Levers",
         "sku_count": "Number of SKUs",
         "promo": "60-day platform fee promo",
         "promo_yes": "Yes, 5% platform fee for first ~60 days",
@@ -166,6 +169,21 @@ TEXT = {
         "orders": "Orders",
         "charts": "Charts",
         "overall_weekly": "Overall Weekly Trend",
+        "cumulative_profit_trend": "Cumulative Profit Trend",
+        "funnel_summary": "Funnel Summary",
+        "forecast_gmv": "Forecast GMV",
+        "total_cost_label": "Total Cost",
+        "profit_label": "Profit",
+        "week": "Week",
+        "samples_label": "Samples",
+        "videos_label": "Videos",
+        "clicks_label": "Clicks",
+        "orders_label": "Orders",
+        "affiliate_video_gmv": "Affiliate Video GMV",
+        "shoptab_gmv": "ShopTab GMV",
+        "phase_total_breakdown": "P&L Breakdown",
+        "supporting_charts": "Supporting Charts",
+        "product_profile": "Product Profile",
         "phase_trend": "Phase-by-Phase Trend",
         "summary": "Summary",
         "phase_summary": "Phase Summary",
@@ -184,6 +202,7 @@ TEXT = {
         "insight": "Plan Insight",
         "insight_text": "Over {weeks} weeks, this plan sends {samples} samples, generates estimated GMV of {gmv}, and ends with {profit} total profit. Weekly break-even: {weekly_be}. Cumulative break-even: {cumulative_be}.",
         "executive_summary": "Executive Summary",
+        "executive_dashboard": "Executive Dashboard",
         "executive_summary_text": "In this {weeks}-week plan, the brand needs about {growth_investment} in growth investment, including {sample_investment} for samples and {ads_investment} for ads. The model estimates {gmv} GMV and {profit} total profit. Each sample contributes around {gmv_per_sample} GMV and {profit_per_sample} profit. The largest GMV driver is {main_channel}. Weekly break-even: {weekly_be}. Cumulative break-even: {cumulative_be}.",
         "sample_roi_title": "Sample ROI",
         "gmv_per_sample": "GMV / Sample",
@@ -203,6 +222,8 @@ TEXT = {
         "phase_objective": "Phase Objective",
         "benchmark_info": "About benchmark assumptions",
         "benchmark_info_text": "Current AOV, video, click, conversion, and ShopTab assumptions are planning benchmarks based on public market signals. Replace these values with internal TikTok Shop Germany subcategory data when available.",
+        "model_assumptions": "Model Assumptions",
+        "model_assumptions_text": "The model uses SKU-level content funnel assumptions, Ads Take Rate x ROAS to estimate paid GMV lift, ShopTab GMV with no creator commission, and FBT free shipping only for SKUs above €20 AOV when selected.",
         "download_customer_summary": "Download customer summary CSV",
         "view_details": "View detailed tables",
         "channel_mix": "GMV Channel Mix",
@@ -212,6 +233,9 @@ TEXT = {
         "title": "TikTok Shop Growth Visualizer",
         "caption": "基于德国公开 benchmark 的 SKU 寄样、达人视频、点击、GMV、成本和利润模拟器",
         "global_inputs": "全局输入",
+        "plan_setup": "计划设置",
+        "cost_assumptions": "成本假设",
+        "growth_levers": "增长杠杆",
         "sku_count": "SKU 数量",
         "promo": "60天平台费优惠",
         "promo_yes": "是，前约60天平台费 5%",
@@ -275,6 +299,21 @@ TEXT = {
         "orders": "订单数",
         "charts": "图表",
         "overall_weekly": "整体周趋势",
+        "cumulative_profit_trend": "累计利润趋势",
+        "funnel_summary": "漏斗汇总",
+        "forecast_gmv": "预测 GMV",
+        "total_cost_label": "总成本",
+        "profit_label": "利润",
+        "week": "周",
+        "samples_label": "样品",
+        "videos_label": "视频",
+        "clicks_label": "点击",
+        "orders_label": "订单",
+        "affiliate_video_gmv": "达人视频 GMV",
+        "shoptab_gmv": "ShopTab GMV",
+        "phase_total_breakdown": "P&L 拆解",
+        "supporting_charts": "辅助图表",
+        "product_profile": "产品组合",
         "phase_trend": "分阶段趋势",
         "summary": "汇总",
         "phase_summary": "阶段汇总",
@@ -293,6 +332,7 @@ TEXT = {
         "insight": "计划解读",
         "insight_text": "按当前计划，品牌将在 {weeks} 周内寄出 {samples} 个样品，预计产生 {gmv} GMV，最终总利润为 {profit}。首次单周盈利：{weekly_be}。累计 Break-even：{cumulative_be}。",
         "executive_summary": "客户版总结",
+        "executive_dashboard": "客户版 Dashboard",
         "executive_summary_text": "按当前 {weeks} 周计划，品牌预计需要准备 {growth_investment} 增长投入，其中样品投入 {sample_investment}，广告投入 {ads_investment}。模型预计产生 {gmv} GMV，最终总利润为 {profit}。平均每个样品预计带来 {gmv_per_sample} GMV 和 {profit_per_sample} 利润。当前最大的 GMV 来源是 {main_channel}。首次单周盈利：{weekly_be}；累计 Break-even：{cumulative_be}。",
         "sample_roi_title": "样品 ROI",
         "gmv_per_sample": "GMV / 样品",
@@ -312,6 +352,8 @@ TEXT = {
         "phase_objective": "阶段目标",
         "benchmark_info": "关于 benchmark 假设",
         "benchmark_info_text": "当前 AOV、视频、点击、转化率和 ShopTab 占比是基于公开市场信号的 planning benchmark。拿到 TikTok Shop 德国内部 subcategory 数据后，建议直接替换这些默认值。",
+        "model_assumptions": "模型假设说明",
+        "model_assumptions_text": "模型基于 SKU level 内容漏斗假设，用 Ads Take Rate x ROAS 估算广告带来的 GMV 增量；ShopTab GMV 不计达人佣金；勾选 FBT 时，仅 AOV 高于 €20 的 SKU 物流成本按 €0 计算。",
         "download_customer_summary": "下载客户版 summary CSV",
         "view_details": "查看详细表格",
         "channel_mix": "GMV 渠道拆分",
@@ -657,6 +699,27 @@ st.markdown(
         box-shadow: inset 0 -3px 0 var(--tts-red);
     }
 
+    .st-key-selected_phase_view div[role="radiogroup"],
+    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] {
+        gap: 8px;
+    }
+
+    .st-key-selected_phase_view div[role="radiogroup"] label,
+    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
+        background: #EEF2F7;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 7px 14px;
+        min-height: 38px;
+    }
+
+    .st-key-selected_phase_view div[role="radiogroup"] label:has(input:checked),
+    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label:has(input:checked) {
+        background: #FFFFFF;
+        border-color: #CBD5E1;
+        box-shadow: inset 0 -3px 0 var(--tts-red), 0 6px 16px rgba(15, 23, 42, 0.06);
+    }
+
     .stButton > button {
         border-radius: 8px;
         border: 0;
@@ -701,6 +764,30 @@ st.markdown(
         min-height: 430px;
         display: flex;
         align-items: stretch;
+    }
+
+    .dashboard-note {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-left: 4px solid var(--tts-red);
+        border-radius: 8px;
+        padding: 14px 16px;
+        color: #1F2937;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+        line-height: 1.55;
+    }
+
+    .sku-title {
+        font-size: 1rem;
+        font-weight: 760;
+        color: #111827;
+        margin-bottom: 0.2rem;
+    }
+
+    .sku-subtitle {
+        color: #6B7280;
+        font-size: 0.88rem;
+        margin-bottom: 0.8rem;
     }
     </style>
     """,
@@ -1051,20 +1138,20 @@ def cost_driver(row):
 
 def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_be_label):
     rows = [
-        ("Total GMV", money(overall["Total GMV"], 0)),
-        ("Total Profit", money(overall["Total Profit"], 0)),
-        ("Growth Investment", money(overall["Growth Investment"], 0)),
-        ("Sample Investment", money(overall["Sample Investment"], 0)),
-        ("Ads Investment", money(overall["Ads Investment"], 0)),
-        ("GMV / Sample", money(overall["GMV / Sample"], 0)),
-        ("Profit / Sample", money(overall["Profit / Sample"], 0)),
-        ("Orders / Sample", f"{overall['Orders / Sample']:.2f}"),
-        ("Weekly Break-even", weekly_be_label),
-        ("Cumulative Break-even", cumulative_be_label),
+        (T["total_gmv"], money(overall["Total GMV"], 0)),
+        (T["total_profit"], money(overall["Total Profit"], 0)),
+        (T["growth_investment"], money(overall["Growth Investment"], 0)),
+        (T["sample_investment"], money(overall["Sample Investment"], 0)),
+        (T["ads_investment"], money(overall["Ads Investment"], 0)),
+        (T["gmv_per_sample"], money(overall["GMV / Sample"], 0)),
+        (T["profit_per_sample"], money(overall["Profit / Sample"], 0)),
+        (T["orders_per_sample"], f"{overall['Orders / Sample']:.2f}"),
+        (T["weekly_profit"], weekly_be_label),
+        (T["cumulative_be"], cumulative_be_label),
     ]
     for _, phase_row in phase_summary.iterrows():
-        rows.append((f"{phase_row['Phase']} GMV", money(phase_row["GMV"], 0)))
-        rows.append((f"{phase_row['Phase']} Profit", money(phase_row["Profit"], 0)))
+        rows.append((f"{phase_row['Phase']} {T['total_gmv']}", money(phase_row["GMV"], 0)))
+        rows.append((f"{phase_row['Phase']} {T['total_profit']}", money(phase_row["Profit"], 0)))
     return pd.DataFrame(rows, columns=["Metric", "Value"])
 
 
@@ -1105,9 +1192,9 @@ def make_weekly_chart(df, title, break_even_week=None):
     fig = go.Figure()
     add_phase_bands(fig, df)
     series = [
-        ("Forecast GMV", "GMV", CHART_COLORS["gmv"]),
-        ("Total Cost", "Total Cost", CHART_COLORS["cost"]),
-        ("Profit", "Profit", CHART_COLORS["profit"]),
+        (T["forecast_gmv"], "GMV", CHART_COLORS["gmv"]),
+        (T["total_cost_label"], "Total Cost", CHART_COLORS["cost"]),
+        (T["profit_label"], "Profit", CHART_COLORS["profit"]),
     ]
     for label, col, color in series:
         fig.add_trace(
@@ -1126,7 +1213,7 @@ def make_weekly_chart(df, title, break_even_week=None):
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
     apply_plotly_layout(fig, title)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title="Week")
+    fig.update_xaxes(title=T["week"])
     return fig
 
 
@@ -1141,27 +1228,27 @@ def make_cumulative_profit_chart(df, break_even_week=None):
             y=temp["Cumulative Profit"],
             mode="lines+markers",
             fill="tozeroy",
-            name="Cumulative Profit",
+            name=T["cumulative_profit_trend"],
             line=dict(color=CHART_COLORS["cumulative"], width=3),
             marker=dict(size=7),
-            hovertemplate="Cumulative Profit: €%{y:,.0f}<extra></extra>",
+            hovertemplate=f"{T['cumulative_profit_trend']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
-    apply_plotly_layout(fig, "Cumulative Profit Trend")
+    apply_plotly_layout(fig, T["cumulative_profit_trend"])
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title="Week")
+    fig.update_xaxes(title=T["week"])
     return fig
 
 
 def make_funnel_chart(df):
     values = pd.Series({
-        "Samples": df["Samples Sent"].sum(),
-        "Videos": df["New Videos"].sum(),
-        "Clicks": df["Product Clicks"].sum(),
-        "Orders": df["Orders"].sum(),
+        T["samples_label"]: df["Samples Sent"].sum(),
+        T["videos_label"]: df["New Videos"].sum(),
+        T["clicks_label"]: df["Product Clicks"].sum(),
+        T["orders_label"]: df["Orders"].sum(),
     })
     display = values.sort_values(ascending=True)
     fig = go.Figure(
@@ -1175,7 +1262,7 @@ def make_funnel_chart(df):
             hovertemplate="%{y}: %{x:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, "Funnel Summary", height=390)
+    apply_plotly_layout(fig, T["funnel_summary"], height=390)
     fig.update_xaxes(showticklabels=False, title="")
     fig.update_yaxes(title="")
     return fig
@@ -1186,16 +1273,16 @@ def make_channel_mix_chart(phase_summary):
     fig.add_trace(go.Bar(
         x=phase_summary["Phase"],
         y=phase_summary["ShopTab GMV"],
-        name="ShopTab GMV",
+        name=T["shoptab_gmv"],
         marker_color="#2563EB",
-        hovertemplate="ShopTab GMV: €%{y:,.0f}<extra></extra>",
+        hovertemplate=f"{T['shoptab_gmv']}: €%{{y:,.0f}}<extra></extra>",
     ))
     fig.add_trace(go.Bar(
         x=phase_summary["Phase"],
         y=phase_summary["Affiliate Video GMV"],
-        name="Affiliate Video GMV",
+        name=T["affiliate_video_gmv"],
         marker_color="#F97316",
-        hovertemplate="Affiliate Video GMV: €%{y:,.0f}<extra></extra>",
+        hovertemplate=f"{T['affiliate_video_gmv']}: €%{{y:,.0f}}<extra></extra>",
     ))
     apply_plotly_layout(fig, T["channel_mix"], height=390)
     fig.update_layout(barmode="stack")
@@ -1207,24 +1294,24 @@ def make_phase_total_chart(phase_row):
     fig = go.Figure()
     fig.add_trace(
         go.Bar(
-            x=["Forecast GMV"],
+            x=[T["forecast_gmv"]],
             y=[float(phase_row["GMV"])],
-            name="Forecast GMV",
+            name=T["forecast_gmv"],
             marker_color="#2563EB",
             text=[money(phase_row["GMV"], 0)],
             textposition="outside",
-            hovertemplate="Forecast GMV: €%{y:,.0f}<extra></extra>",
+            hovertemplate=f"{T['forecast_gmv']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
 
     cost_parts = [
-        ("COGS", "COGS", "#64748B"),
-        ("Platform Fee", "Platform Fee", "#F97316"),
+        (T["cost_cogs"], "COGS", "#64748B"),
+        (T["cost_platform_fee"], "Platform Fee", "#F97316"),
         ("Organic Creator Commission", "Organic Creator Commission", "#EC4899"),
         ("Paid Creator Commission", "Paid Creator Commission", "#F472B6"),
-        ("Fulfillment Cost", "Fulfillment Cost", "#14B8A6"),
-        ("Sample Investment", "Samples Cost", "#8B5CF6"),
-        ("Ads Investment", "Ads Cost", "#06B6D4"),
+        (T["cost_fulfillment"], "Fulfillment Cost", "#14B8A6"),
+        (T["cost_samples"], "Samples Cost", "#8B5CF6"),
+        (T["cost_ads"], "Ads Cost", "#06B6D4"),
     ]
     for label, col, color in cost_parts:
         value = float(phase_row[col])
@@ -1232,7 +1319,7 @@ def make_phase_total_chart(phase_row):
             continue
         fig.add_trace(
             go.Bar(
-                x=["Total Cost"],
+                x=[T["total_cost_label"]],
                 y=[value],
                 name=label,
                 marker_color=color,
@@ -1246,13 +1333,13 @@ def make_phase_total_chart(phase_row):
     profit_color = "#16A34A" if float(phase_row["Profit"]) >= 0 else "#DC2626"
     fig.add_trace(
         go.Bar(
-            x=["Profit"],
+            x=[T["profit_label"]],
             y=[float(phase_row["Profit"])],
-            name="Profit",
+            name=T["profit_label"],
             marker_color=profit_color,
             text=[money(phase_row["Profit"], 0)],
             textposition="outside",
-            hovertemplate="Profit: €%{y:,.0f}<extra></extra>",
+            hovertemplate=f"{T['profit_label']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
     fig.add_trace(
@@ -1267,7 +1354,7 @@ def make_phase_total_chart(phase_row):
         )
     )
 
-    apply_plotly_layout(fig, f"{phase_row['Phase']} - P&L Breakdown", height=540)
+    apply_plotly_layout(fig, f"{phase_row['Phase']} - {T['phase_total_breakdown']}", height=540)
     fig.update_layout(
         barmode="stack",
         legend=dict(
@@ -1298,14 +1385,14 @@ def make_phase_cumulative_chart(phase_df, title):
 
     fig = go.Figure()
     series = [
-        ("GMV", "Cumulative GMV", CHART_COLORS["gmv"], "solid", 4, 9),
-        ("Total Cost", "Cumulative Total Cost", CHART_COLORS["cost"], "solid", 4, 9),
-        ("Sales Contribution", "Cumulative Sales Contribution", "#10B981", "solid", 4, 9),
-        ("Profit", "Cumulative Profit", CHART_COLORS["profit"], "solid", 4, 9),
-        ("Growth Investment", "Cumulative Growth Investment", "#8B5CF6", "dash", 3, 8),
+        (T["total_gmv"], "Cumulative GMV", CHART_COLORS["gmv"], "solid", 4, 9),
+        (T["total_cost_label"], "Cumulative Total Cost", CHART_COLORS["cost"], "solid", 4, 9),
+        (T["sales_contribution"], "Cumulative Sales Contribution", "#10B981", "solid", 4, 9),
+        (T["profit_label"], "Cumulative Profit", CHART_COLORS["profit"], "solid", 4, 9),
+        (T["growth_investment"], "Cumulative Growth Investment", "#8B5CF6", "dash", 3, 8),
     ]
     if float(temp["Cumulative Ads Investment"].abs().sum()) > 0:
-        series.append(("Ads Investment", "Cumulative Ads Investment", "#06B6D4", "dot", 2, 7))
+        series.append((T["ads_investment"], "Cumulative Ads Investment", "#06B6D4", "dot", 2, 7))
     for label, col, color, dash, width, marker_size in series:
         fig.add_trace(
             go.Scatter(
@@ -1335,7 +1422,7 @@ def make_phase_cumulative_chart(phase_df, title):
         )
 
     fig.add_hline(y=0, line_color="#6B7280", line_width=1, opacity=0.75)
-    apply_plotly_layout(fig, f"{title} - Cumulative Trend", height=520)
+    apply_plotly_layout(fig, f"{title} - {T['phase_chart_cumulative']}", height=520)
     fig.update_layout(
         legend=dict(
             orientation="h",
@@ -1348,7 +1435,7 @@ def make_phase_cumulative_chart(phase_df, title):
         margin=dict(l=28, r=98, t=78, b=104),
     )
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title="Week in Phase", dtick=1, tickmode="linear")
+    fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
     return fig
 
 
@@ -1373,7 +1460,7 @@ st.title(T["title"])
 st.caption(T["caption"])
 
 with st.sidebar:
-    st.header(T["global_inputs"])
+    st.header(T["plan_setup"])
     n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=5, step=1)
     promo_60d = st.radio(
         T["promo"],
@@ -1386,6 +1473,9 @@ with st.sidebar:
         value=False,
         help=T["fbt_help"],
     )
+    weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
+
+    st.header(T["cost_assumptions"])
     logistics_cost = st.number_input(
         T["fulfillment"],
         min_value=0.0,
@@ -1393,10 +1483,10 @@ with st.sidebar:
         step=0.5,
         key="logistics_cost_manual",
     )
+
+    st.header(T["growth_levers"])
     ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1)
     organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1)
-    weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
-
     st.header(T["phase_controls"])
     phase_inputs = []
     for idx, phase in enumerate(PHASES):
@@ -1422,11 +1512,21 @@ st.subheader(T["sku_setup"])
 st.caption(T["sku_caption"])
 with st.expander(T["benchmark_info"], expanded=False):
     st.write(T["benchmark_info_text"])
+with st.expander(T["model_assumptions"], expanded=False):
+    st.write(T["model_assumptions_text"])
 
 for i in range(int(n_skus)):
     initialize_sku(i)
     with st.container(border=True):
-        st.markdown(f"**SKU {i + 1}**")
+        category = st.session_state[f"category_{i}"]
+        subcategory = st.session_state[f"subcategory_{i}"]
+        st.markdown(
+            f"""
+            <div class="sku-title">SKU {i + 1} · {st.session_state[f"sku_name_{i}"]}</div>
+            <div class="sku-subtitle">{category} / {subcategory} · {pct(PLATFORM_COMMISSION[category], 0)} {T["platform_commission"]}</div>
+            """,
+            unsafe_allow_html=True,
+        )
         c1, c2, c3 = st.columns(3)
         with c1:
             st.text_input(T["sku_name"], key=f"sku_name_{i}")
@@ -1513,48 +1613,38 @@ if st.session_state.get("has_generated", False):
         weekly_be_label = f"Week {weekly_be}" if weekly_be else T["not_reached"]
         cumulative_be_label = f"Week {cumulative_be}" if cumulative_be else T["not_reached"]
 
-        st.subheader(T["executive_summary"])
-        st.success(
-            T["executive_summary_text"].format(
-                weeks=int(weeks_per_phase) * len(PHASES),
-                samples=f"{overall['Total Samples']:,.0f}",
-                gmv=money(overall["Total GMV"], 0),
-                profit=money(overall["Total Profit"], 0),
-                growth_investment=money(overall["Growth Investment"], 0),
-                sample_investment=money(overall["Sample Investment"], 0),
-                ads_investment=money(overall["Ads Investment"], 0),
-                gmv_per_sample=money(overall["GMV / Sample"], 0),
-                profit_per_sample=money(overall["Profit / Sample"], 0),
-                main_channel=main_gmv_channel(df_all),
-                weekly_be=weekly_be_label,
-                cumulative_be=cumulative_be_label,
-            )
-        )
-
-        st.subheader(T["sku_mix"])
-        product_display = product_df.copy()
-        product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
-        product_display["Gross Margin"] = product_display["Gross Margin"].map(lambda x: pct(x, 0))
-        product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
-        product_display["Click-to-order Rate"] = product_display["Click-to-order Rate"].map(lambda x: pct(x, 1))
-        product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
-        product_display["Organic Creator Commission Rate"] = product_display["Organic Creator Commission Rate"].map(lambda x: pct(x, 1))
-        product_display["Paid Creator Commission Rate"] = product_display["Paid Creator Commission Rate"].map(lambda x: pct(x, 1))
-        st.dataframe(product_display, use_container_width=True)
-
+        st.subheader(T["executive_dashboard"])
         m1, m2, m3, m4 = st.columns(4)
         m1.metric(T["total_gmv"], money(overall["Total GMV"], 0))
         m2.metric(T["total_profit"], money(overall["Total Profit"], 0))
-        m3.metric(T["profit_margin"], pct(overall["Profit Margin"], 1))
-        m4.metric(T["growth_investment"], money(overall["Growth Investment"], 0))
+        m3.metric(T["growth_investment"], money(overall["Growth Investment"], 0))
+        m4.metric(T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x")
         m5, m6, m7, m8 = st.columns(4)
-        m5.metric(T["samples_sent"], f"{overall['Total Samples']:,.0f}")
-        m6.metric(T["videos_generated"], f"{overall['Total Videos']:,.0f}")
-        m7.metric(T["product_clicks"], f"{overall['Total Clicks']:,.0f}")
-        m8.metric(T["orders"], f"{overall['Total Orders']:,.0f}")
-        m9, m10 = st.columns(2)
-        m9.metric(T["sample_investment"], money(df_all["Samples Cost"].sum(), 0))
-        m10.metric(T["avg_sample_cost"], money(overall["Avg Sample Cost / Unit"], 2))
+        m5.metric(T["weekly_profit"], weekly_be_label)
+        m6.metric(T["cumulative_be"], cumulative_be_label)
+        m7.metric(T["orders"], f"{overall['Total Orders']:,.0f}")
+        m8.metric(T["channel_mix"], main_gmv_channel(df_all))
+        st.markdown(
+            f"""
+            <div class="dashboard-note">
+                {T["executive_summary_text"].format(
+                    weeks=int(weeks_per_phase) * len(PHASES),
+                    samples=f"{overall['Total Samples']:,.0f}",
+                    gmv=money(overall["Total GMV"], 0),
+                    profit=money(overall["Total Profit"], 0),
+                    growth_investment=money(overall["Growth Investment"], 0),
+                    sample_investment=money(overall["Sample Investment"], 0),
+                    ads_investment=money(overall["Ads Investment"], 0),
+                    gmv_per_sample=money(overall["GMV / Sample"], 0),
+                    profit_per_sample=money(overall["Profit / Sample"], 0),
+                    main_channel=main_gmv_channel(df_all),
+                    weekly_be=weekly_be_label,
+                    cumulative_be=cumulative_be_label,
+                )}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         st.subheader(T["sample_roi_title"])
         r1, r2, r3, r4 = st.columns(4)
@@ -1572,12 +1662,24 @@ if st.session_state.get("has_generated", False):
             )
         )
 
+        with st.expander(T["product_profile"], expanded=False):
+            product_display = product_df.copy()
+            product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
+            product_display["Gross Margin"] = product_display["Gross Margin"].map(lambda x: pct(x, 0))
+            product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
+            product_display["Click-to-order Rate"] = product_display["Click-to-order Rate"].map(lambda x: pct(x, 1))
+            product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
+            product_display["Organic Creator Commission Rate"] = product_display["Organic Creator Commission Rate"].map(lambda x: pct(x, 1))
+            product_display["Paid Creator Commission Rate"] = product_display["Paid Creator Commission Rate"].map(lambda x: pct(x, 1))
+            st.dataframe(product_display, use_container_width=True)
+
         st.subheader(T["charts"])
         c1, c2 = st.columns(2)
         with c1:
-            st.plotly_chart(make_weekly_chart(df_all, "Overall Weekly Trend", weekly_be), use_container_width=True)
+            st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True)
         with c2:
             st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True)
+        st.subheader(T["supporting_charts"])
         c3, c4 = st.columns(2)
         with c3:
             st.plotly_chart(make_funnel_chart(df_all), use_container_width=True)
@@ -1644,11 +1746,6 @@ if st.session_state.get("has_generated", False):
         ]
 
         st.subheader(T["summary"])
-        st.markdown(f"**{T['phase_summary']}**")
-        st.dataframe(
-            format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
-            use_container_width=True,
-        )
         customer_summary = build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_be_label)
         st.download_button(
             T["download_customer_summary"],
@@ -1656,6 +1753,11 @@ if st.session_state.get("has_generated", False):
             file_name="customer_summary.csv",
             mime="text/csv",
         )
+        with st.expander(T["phase_summary"], expanded=False):
+            st.dataframe(
+                format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
+                use_container_width=True,
+            )
 
         st.subheader(T["break_even"])
         b1, b2 = st.columns(2)
