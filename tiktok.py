@@ -25,7 +25,7 @@ PLATFORM_COMMISSION = {
 # videos_per_sample: average videos generated per sample shipped
 # clicks_per_video: estimated product clicks per creator video
 # click_to_order_rate: product click -> order conversion
-# shop_tab_share: GMV share from ShopTab/mall/search etc.; no creator commission
+# shop_tab_share: reference share used to seed the ShopTab natural-sales assumption
 CATEGORY_PRESETS = {
     "Home Living": {
         "Kitchenware": {"aov": 29.90, "videos_per_sample": 0.40, "clicks_per_video": 90, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
@@ -84,7 +84,16 @@ PHASES = [
     {"key": "phase3", "name": "Phase 3 - Scale", "samples_per_sku": 20, "take_rate": 0.10, "color": "#FFF4E8"},
 ]
 
-CONTENT_DECAY_WEIGHTS = [1.00, 0.55, 0.30, 0.15]
+SHOP_TAB_DEFAULTS = {
+    "Home Living": {"base_orders": 1.50, "growth": 0.07, "halo": 0.010},
+    "Electronics": {"base_orders": 0.90, "growth": 0.05, "halo": 0.006},
+    "FMCG": {"base_orders": 2.20, "growth": 0.08, "halo": 0.012},
+    "Beauty": {"base_orders": 2.40, "growth": 0.09, "halo": 0.014},
+    "Fashion": {"base_orders": 1.80, "growth": 0.08, "halo": 0.012},
+}
+
+# Videos generated in week 1 keep contributing in later weeks, with a content tail.
+CONTENT_DECAY_WEIGHTS = [1.00, 0.75, 0.60, 0.48, 0.38, 0.30, 0.24, 0.19, 0.15, 0.12, 0.10, 0.08]
 PROMO_WEEKS = 9
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 CHART_COLORS = {
@@ -132,6 +141,9 @@ TEXT = {
         "clicks_video": "Clicks / video",
         "click_order": "Click-to-order (%)",
         "shoptab_share": "ShopTab GMV share (%)",
+        "shoptab_base_orders": "ShopTab base orders / week",
+        "shoptab_growth": "ShopTab weekly growth (%)",
+        "shoptab_halo": "ShopTab content halo / video (%)",
         "generate": "Generate Simulator",
         "sku_mix": "SKU Mix & Funnel Assumptions",
         "total_gmv": "Total GMV",
@@ -195,6 +207,9 @@ TEXT = {
         "clicks_video": "每条视频商品点击数",
         "click_order": "点击到下单转化率 (%)",
         "shoptab_share": "ShopTab GMV 占比 (%)",
+        "shoptab_base_orders": "ShopTab 每周基础订单",
+        "shoptab_growth": "ShopTab 每周自然增长 (%)",
+        "shoptab_halo": "每条累计视频带来的 ShopTab 加成 (%)",
         "generate": "生成模拟结果",
         "sku_mix": "SKU 组合与漏斗假设",
         "total_gmv": "总 GMV",
@@ -258,6 +273,9 @@ TEXT["de"] = {
     "clicks_video": "Klicks / Video",
     "click_order": "Klick-zu-Bestellung (%)",
     "shoptab_share": "ShopTab GMV-Anteil (%)",
+    "shoptab_base_orders": "ShopTab-Basisbestellungen / Woche",
+    "shoptab_growth": "ShopTab-Wachstum / Woche (%)",
+    "shoptab_halo": "ShopTab-Content-Halo / Video (%)",
     "generate": "Simulator erzeugen",
     "sku_mix": "SKU-Mix & Funnel-Annahmen",
     "total_gmv": "Gesamt-GMV",
@@ -317,6 +335,9 @@ TEXT["nl"] = {
     "clicks_video": "Clicks / video",
     "click_order": "Click-to-order (%)",
     "shoptab_share": "ShopTab GMV-aandeel (%)",
+    "shoptab_base_orders": "ShopTab basisorders / week",
+    "shoptab_growth": "ShopTab wekelijkse groei (%)",
+    "shoptab_halo": "ShopTab content-halo / video (%)",
     "generate": "Simulator genereren",
     "sku_mix": "SKU-mix & funnelaannames",
     "total_gmv": "Totale GMV",
@@ -386,16 +407,31 @@ def get_preset(category, subcategory):
     return CATEGORY_PRESETS[category][subcategory]
 
 
+def get_shop_tab_defaults(category, preset):
+    defaults = SHOP_TAB_DEFAULTS[category]
+    share_index = float(preset["shop_tab_share"]) / 0.35
+    share_index = max(0.55, min(1.60, share_index))
+    return {
+        "base_orders": defaults["base_orders"] * share_index,
+        "growth": defaults["growth"],
+        "halo": defaults["halo"],
+    }
+
+
 def apply_category_defaults(i):
     category = st.session_state[f"category_{i}"]
     subcategory = st.session_state[f"subcategory_{i}"]
     preset = get_preset(category, subcategory)
+    shop_tab_defaults = get_shop_tab_defaults(category, preset)
     st.session_state[f"aov_{i}"] = float(preset["aov"])
     st.session_state[f"platform_fee_{i}"] = PLATFORM_COMMISSION[category]
     st.session_state[f"videos_per_sample_{i}"] = float(preset["videos_per_sample"])
     st.session_state[f"clicks_per_video_{i}"] = float(preset["clicks_per_video"])
     st.session_state[f"click_to_order_pct_{i}"] = float(preset["click_to_order_rate"] * 100)
     st.session_state[f"shop_tab_share_pct_{i}"] = float(preset["shop_tab_share"] * 100)
+    st.session_state[f"shop_tab_base_orders_{i}"] = float(shop_tab_defaults["base_orders"])
+    st.session_state[f"shop_tab_growth_pct_{i}"] = float(shop_tab_defaults["growth"] * 100)
+    st.session_state[f"shop_tab_halo_pct_{i}"] = float(shop_tab_defaults["halo"] * 100)
     st.session_state[f"last_category_{i}"] = category
     st.session_state[f"last_subcategory_{i}"] = subcategory
 
@@ -439,6 +475,9 @@ def build_product_df(n_skus):
             "Clicks / Video": float(st.session_state[f"clicks_per_video_{i}"]),
             "Click-to-order Rate": float(st.session_state[f"click_to_order_pct_{i}"]) / 100,
             "ShopTab GMV Share": float(st.session_state[f"shop_tab_share_pct_{i}"]) / 100,
+            "ShopTab Base Orders / Week": float(st.session_state[f"shop_tab_base_orders_{i}"]),
+            "ShopTab Weekly Growth Rate": float(st.session_state[f"shop_tab_growth_pct_{i}"]) / 100,
+            "ShopTab Halo / Video": float(st.session_state[f"shop_tab_halo_pct_{i}"]) / 100,
         })
 
     df = pd.DataFrame(rows)
@@ -454,6 +493,12 @@ def build_product_df(n_skus):
         raise ValueError("Click-to-order rate must be between 0% and 100%.")
     if df["ShopTab GMV Share"].lt(0).any() or df["ShopTab GMV Share"].gt(1).any():
         raise ValueError("ShopTab GMV share must be between 0% and 100%.")
+    if df["ShopTab Base Orders / Week"].lt(0).any():
+        raise ValueError("ShopTab base orders cannot be negative.")
+    if df["ShopTab Weekly Growth Rate"].lt(0).any() or df["ShopTab Weekly Growth Rate"].gt(1).any():
+        raise ValueError("ShopTab weekly growth must be between 0% and 100%.")
+    if df["ShopTab Halo / Video"].lt(0).any() or df["ShopTab Halo / Video"].gt(1).any():
+        raise ValueError("ShopTab content halo must be between 0% and 100%.")
     return df
 
 
@@ -476,10 +521,13 @@ def build_weekly_model(
     videos_per_sample = product_df["Videos / Sample"].to_numpy()
     clicks_per_video = product_df["Clicks / Video"].to_numpy()
     click_to_order_rate = product_df["Click-to-order Rate"].to_numpy()
-    shop_tab_share = product_df["ShopTab GMV Share"].to_numpy()
+    shop_tab_base_orders = product_df["ShopTab Base Orders / Week"].to_numpy()
+    shop_tab_weekly_growth = product_df["ShopTab Weekly Growth Rate"].to_numpy()
+    shop_tab_halo_per_video = product_df["ShopTab Halo / Video"].to_numpy()
 
     rows = []
     video_history = []
+    cumulative_videos_p = np.zeros(len(product_df))
     global_week = 0
 
     for phase in phase_inputs:
@@ -489,6 +537,7 @@ def build_weekly_model(
             samples_p = np.full(len(product_df), float(phase["samples_per_sku"]))
             new_videos_p = samples_p * videos_per_sample
             video_history.append(new_videos_p)
+            cumulative_videos_p += new_videos_p
 
             active_videos_p = np.zeros(len(product_df))
             for age, weight in enumerate(CONTENT_DECAY_WEIGHTS):
@@ -498,7 +547,11 @@ def build_weekly_model(
 
             organic_clicks_p = active_videos_p * clicks_per_video
             organic_orders_p = organic_clicks_p * click_to_order_rate
-            organic_gmv_p = organic_orders_p * aov
+            affiliate_organic_gmv_p = organic_orders_p * aov
+            shop_tab_orders_p = shop_tab_base_orders * np.power(1 + shop_tab_weekly_growth, global_week - 1)
+            shop_tab_halo_multiplier_p = 1 + cumulative_videos_p * shop_tab_halo_per_video
+            shop_tab_organic_gmv_p = shop_tab_orders_p * aov * shop_tab_halo_multiplier_p
+            organic_gmv_p = affiliate_organic_gmv_p + shop_tab_organic_gmv_p
 
             take_rate = float(phase["take_rate"])
             if take_rate * ads_roas >= 0.90:
@@ -508,8 +561,16 @@ def build_weekly_model(
             paid_gmv_p = total_gmv_p - organic_gmv_p
             orders_p = total_gmv_p / aov
 
-            shop_tab_gmv_p = total_gmv_p * shop_tab_share
-            affiliate_gmv_p = total_gmv_p - shop_tab_gmv_p
+            affiliate_mix_p = np.divide(
+                affiliate_organic_gmv_p,
+                organic_gmv_p,
+                out=np.zeros_like(affiliate_organic_gmv_p),
+                where=organic_gmv_p > 0,
+            )
+            shop_tab_paid_gmv_p = paid_gmv_p * (1 - affiliate_mix_p)
+            affiliate_paid_gmv_p = paid_gmv_p * affiliate_mix_p
+            shop_tab_gmv_p = shop_tab_organic_gmv_p + shop_tab_paid_gmv_p
+            affiliate_gmv_p = affiliate_organic_gmv_p + affiliate_paid_gmv_p
 
             if promo_60d and global_week <= PROMO_WEEKS:
                 week_platform_fee_rates = np.full(len(product_df), 0.05)
@@ -540,9 +601,12 @@ def build_weekly_model(
                 "Avg Sample Cost / Unit": float(np.average(sample_all_in_cost_per_unit)) if len(sample_all_in_cost_per_unit) else 0.0,
                 "New Videos": float(np.sum(new_videos_p)),
                 "Active Videos": float(np.sum(active_videos_p)),
+                "Cumulative Videos": float(np.sum(cumulative_videos_p)),
                 "Product Clicks": float(np.sum(organic_clicks_p)),
                 "Orders": orders,
                 "Organic Funnel GMV": float(np.sum(organic_gmv_p)),
+                "Affiliate Organic GMV": float(np.sum(affiliate_organic_gmv_p)),
+                "ShopTab Organic GMV": float(np.sum(shop_tab_organic_gmv_p)),
                 "Paid GMV Lift": float(np.sum(paid_gmv_p)),
                 "GMV": gmv,
                 "ShopTab GMV": float(np.sum(shop_tab_gmv_p)),
@@ -568,9 +632,12 @@ def build_phase_summary(df):
         "Samples Sent": "sum",
         "Avg Sample Cost / Unit": "mean",
         "New Videos": "sum",
+        "Cumulative Videos": "max",
         "Product Clicks": "sum",
         "Orders": "sum",
         "Organic Funnel GMV": "sum",
+        "Affiliate Organic GMV": "sum",
+        "ShopTab Organic GMV": "sum",
         "Paid GMV Lift": "sum",
         "GMV": "sum",
         "ShopTab GMV": "sum",
@@ -849,6 +916,13 @@ for i in range(int(n_skus)):
                 st.number_input(T["click_order"], min_value=0.0, max_value=100.0, step=0.1, key=f"click_to_order_pct_{i}")
             with b4:
                 st.number_input(T["shoptab_share"], min_value=0.0, max_value=100.0, step=1.0, key=f"shop_tab_share_pct_{i}")
+            s1, s2, s3 = st.columns(3)
+            with s1:
+                st.number_input(T["shoptab_base_orders"], min_value=0.0, max_value=10000.0, step=0.1, key=f"shop_tab_base_orders_{i}")
+            with s2:
+                st.number_input(T["shoptab_growth"], min_value=0.0, max_value=100.0, step=0.5, key=f"shop_tab_growth_pct_{i}")
+            with s3:
+                st.number_input(T["shoptab_halo"], min_value=0.0, max_value=100.0, step=0.1, key=f"shop_tab_halo_pct_{i}")
 
 generate = st.button(T["generate"], type="primary")
 
@@ -893,6 +967,8 @@ if generate:
         product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
         product_display["Click-to-order Rate"] = product_display["Click-to-order Rate"].map(lambda x: pct(x, 1))
         product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
+        product_display["ShopTab Weekly Growth Rate"] = product_display["ShopTab Weekly Growth Rate"].map(lambda x: pct(x, 1))
+        product_display["ShopTab Halo / Video"] = product_display["ShopTab Halo / Video"].map(lambda x: pct(x, 1))
         st.dataframe(product_display, use_container_width=True)
 
         m1, m2, m3, m4 = st.columns(4)
@@ -929,14 +1005,15 @@ if generate:
                 st.plotly_chart(make_weekly_chart(phase_df, phase["name"], first_positive_profit_week(phase_df)), use_container_width=True)
 
         money_cols = [
-            "Organic Funnel GMV", "Paid GMV Lift", "GMV", "ShopTab GMV",
+            "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
+            "Paid GMV Lift", "GMV", "ShopTab GMV",
             "Affiliate Video GMV", "COGS", "Gross Profit", "Platform Fee",
             "Creator Commission", "Ads Cost", "Samples Cost", "Fulfillment Cost",
             "Growth Investment", "Total Cost", "Profit", "GMV / Sample",
             "Total GMV", "Total Profit", "Avg Sample Cost / Unit",
         ]
         number_cols = [
-            "Samples Sent", "New Videos", "Active Videos", "Product Clicks", "Orders",
+            "Samples Sent", "New Videos", "Active Videos", "Cumulative Videos", "Product Clicks", "Orders",
             "Total Samples", "Total Videos", "Total Clicks", "Total Orders",
         ]
 
