@@ -1,26 +1,10 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
-import matplotlib.font_manager as fm
+import plotly.graph_objects as go
 
 
 st.set_page_config(page_title="TikTok Shop Growth Visualizer", layout="wide")
-plt.rcParams["axes.unicode_minus"] = False
-
-for font_name in [
-    "Noto Sans CJK SC",
-    "Noto Sans CJK",
-    "Microsoft YaHei",
-    "SimHei",
-    "PingFang SC",
-    "Arial Unicode MS",
-    "WenQuanYi Zen Hei",
-]:
-    if any(font_name in font.name for font in fm.fontManager.ttflist):
-        plt.rcParams["font.sans-serif"] = [font_name, "DejaVu Sans"]
-        break
 
 
 # Public benchmark estimates. Replace CATEGORY_PRESETS with internal data
@@ -141,6 +125,8 @@ TEXT = {
         "subcategory": "Subcategory",
         "gross_margin": "Gross Margin (%)",
         "platform_commission": "Platform Commission",
+        "avg_sample_cost": "Avg sample cost / unit",
+        "sample_investment": "Sample Investment",
         "benchmark_expander": "View / adjust category funnel assumptions",
         "videos_sample": "Videos / sample",
         "clicks_video": "Clicks / video",
@@ -170,6 +156,10 @@ TEXT = {
         "download_weekly": "Download weekly details CSV",
         "download_phase": "Download phase summary CSV",
         "input_error": "Input error",
+        "insight": "Plan Insight",
+        "insight_text": "Over {weeks} weeks, this plan sends {samples} samples, generates estimated GMV of {gmv}, and ends with {profit} total profit. Weekly break-even: {weekly_be}. Cumulative break-even: {cumulative_be}.",
+        "view_details": "View detailed tables",
+        "channel_mix": "GMV Channel Mix",
     },
     "zh": {
         "language": "语言",
@@ -198,6 +188,8 @@ TEXT = {
         "subcategory": "Subcategory",
         "gross_margin": "毛利率 (%)",
         "platform_commission": "平台佣金",
+        "avg_sample_cost": "平均样品成本 / 件",
+        "sample_investment": "样品投入",
         "benchmark_expander": "查看 / 调整类目漏斗假设",
         "videos_sample": "每个样品产出视频数",
         "clicks_video": "每条视频商品点击数",
@@ -227,6 +219,10 @@ TEXT = {
         "download_weekly": "下载每周明细 CSV",
         "download_phase": "下载阶段汇总 CSV",
         "input_error": "输入错误",
+        "insight": "计划解读",
+        "insight_text": "按当前计划，品牌将在 {weeks} 周内寄出 {samples} 个样品，预计产生 {gmv} GMV，最终总利润为 {profit}。首次单周盈利：{weekly_be}。累计 Break-even：{cumulative_be}。",
+        "view_details": "查看详细表格",
+        "channel_mix": "GMV 渠道拆分",
     },
     "de": {},
     "nl": {},
@@ -255,6 +251,8 @@ TEXT["de"] = {
     "sku_name": "SKU-Name",
     "category": "Kategorie",
     "platform_commission": "Plattformkommission",
+    "avg_sample_cost": "Ø Sample-Kosten / Stück",
+    "sample_investment": "Sample-Investition",
     "benchmark_expander": "Kategorie-Funnel-Annahmen anzeigen / anpassen",
     "videos_sample": "Videos / Sample",
     "clicks_video": "Klicks / Video",
@@ -283,6 +281,10 @@ TEXT["de"] = {
     "download_weekly": "Wöchentliche Details CSV herunterladen",
     "download_phase": "Phasenübersicht CSV herunterladen",
     "input_error": "Eingabefehler",
+    "insight": "Plan-Insight",
+    "insight_text": "Über {weeks} Wochen versendet dieser Plan {samples} Samples, erzeugt geschätzten GMV von {gmv} und endet mit {profit} Gesamtgewinn. Erste positive Woche: {weekly_be}. Kumulierter Break-even: {cumulative_be}.",
+    "view_details": "Detaillierte Tabellen anzeigen",
+    "channel_mix": "GMV-Kanalmix",
 }
 TEXT["nl"] = {
     **TEXT["en"],
@@ -308,6 +310,8 @@ TEXT["nl"] = {
     "sku_name": "SKU-naam",
     "category": "Categorie",
     "platform_commission": "Platformcommissie",
+    "avg_sample_cost": "Gem. samplekosten / stuk",
+    "sample_investment": "Sample-investering",
     "benchmark_expander": "Categorie-funnelaannames bekijken / aanpassen",
     "videos_sample": "Video's / sample",
     "clicks_video": "Clicks / video",
@@ -336,6 +340,10 @@ TEXT["nl"] = {
     "download_weekly": "Wekelijkse details CSV downloaden",
     "download_phase": "Faseoverzicht CSV downloaden",
     "input_error": "Invoerfout",
+    "insight": "Plan-inzicht",
+    "insight_text": "Over {weeks} weken verstuurt dit plan {samples} samples, genereert naar schatting {gmv} GMV en eindigt met {profit} totale winst. Eerste positieve week: {weekly_be}. Cumulatieve break-even: {cumulative_be}.",
+    "view_details": "Gedetailleerde tabellen bekijken",
+    "channel_mix": "GMV-kanaalmix",
 }
 
 
@@ -372,10 +380,6 @@ def phase_label(phase):
 
 def csv_bytes(df):
     return df.to_csv(index=False).encode("utf-8-sig")
-
-
-def format_eur_axis(ax):
-    ax.yaxis.set_major_formatter(ticker.StrMethodFormatter("€{x:,.0f}"))
 
 
 def get_preset(category, subcategory):
@@ -533,6 +537,7 @@ def build_weekly_model(
                 "Week in Phase": week_idx + 1,
                 "Global Week": global_week,
                 "Samples Sent": float(np.sum(samples_p)),
+                "Avg Sample Cost / Unit": float(np.average(sample_all_in_cost_per_unit)) if len(sample_all_in_cost_per_unit) else 0.0,
                 "New Videos": float(np.sum(new_videos_p)),
                 "Active Videos": float(np.sum(active_videos_p)),
                 "Product Clicks": float(np.sum(organic_clicks_p)),
@@ -561,6 +566,7 @@ def build_weekly_model(
 def build_phase_summary(df):
     summary = df.groupby(["Phase Key", "Phase"], as_index=False).agg({
         "Samples Sent": "sum",
+        "Avg Sample Cost / Unit": "mean",
         "New Videos": "sum",
         "Product Clicks": "sum",
         "Orders": "sum",
@@ -591,6 +597,7 @@ def build_overall_summary(df):
     total_samples = df["Samples Sent"].sum()
     return pd.DataFrame([{
         "Total Samples": total_samples,
+        "Avg Sample Cost / Unit": df["Avg Sample Cost / Unit"].mean(),
         "Total Videos": df["New Videos"].sum(),
         "Total Clicks": df["Product Clicks"].sum(),
         "Total Orders": df["Orders"].sum(),
@@ -615,76 +622,91 @@ def first_cumulative_break_even_week(df):
     return None if hit.empty else int(hit["Global Week"].iloc[0])
 
 
-def add_phase_backgrounds(ax, df):
-    phase_ranges = df.groupby(["Phase Key", "Phase"], as_index=False).agg(
+def apply_plotly_layout(fig, title, height=420):
+    fig.update_layout(
+        title={"text": title, "x": 0.02, "xanchor": "left"},
+        height=height,
+        margin=dict(l=24, r=24, t=64, b=36),
+        paper_bgcolor="white",
+        plot_bgcolor="#FAFBFC",
+        font=dict(color="#111827", family="Arial, sans-serif"),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
+        hovermode="x unified",
+    )
+    fig.update_xaxes(showgrid=True, gridcolor="#E5E7EB", zeroline=False)
+    fig.update_yaxes(showgrid=True, gridcolor="#E5E7EB", zeroline=False)
+    return fig
+
+
+def add_phase_bands(fig, df):
+    phase_ranges = df.groupby(["Phase Key"], as_index=False).agg(
         start_week=("Global Week", "min"),
         end_week=("Global Week", "max"),
     )
     color_map = {p["key"]: p["color"] for p in PHASES}
     for _, row in phase_ranges.iterrows():
-        ax.axvspan(row["start_week"] - 0.5, row["end_week"] + 0.5, color=color_map[row["Phase Key"]], alpha=0.42, zorder=0)
-
-
-def polish_axis(ax):
-    ax.set_facecolor("#FAFBFC")
-    ax.grid(True, color=CHART_COLORS["grid"], linewidth=0.8, alpha=0.8, zorder=1)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_color("#D1D5DB")
-    ax.spines["bottom"].set_color("#D1D5DB")
-    ax.tick_params(colors="#4B5563", labelsize=9)
-    ax.title.set_color(CHART_COLORS["text"])
-    ax.xaxis.label.set_color("#374151")
-    ax.yaxis.label.set_color("#374151")
+        fig.add_vrect(
+            x0=row["start_week"] - 0.5,
+            x1=row["end_week"] + 0.5,
+            fillcolor=color_map.get(row["Phase Key"], "#F3F4F6"),
+            opacity=0.28,
+            line_width=0,
+            layer="below",
+        )
 
 
 def make_weekly_chart(df, title, break_even_week=None):
-    fig, ax = plt.subplots(figsize=(11, 5.6), facecolor="white")
-    add_phase_backgrounds(ax, df)
-    ax.plot(df["Global Week"], df["GMV"], marker="o", markersize=5, linewidth=2.6, color=CHART_COLORS["gmv"], label="Forecast GMV", zorder=4)
-    ax.plot(df["Global Week"], df["Total Cost"], marker="o", markersize=5, linewidth=2.2, color=CHART_COLORS["cost"], label="Total Cost", zorder=3)
-    ax.plot(df["Global Week"], df["Profit"], marker="o", markersize=5, linewidth=2.6, color=CHART_COLORS["profit"], label="Profit", zorder=4)
-    ax.fill_between(df["Global Week"], df["GMV"], alpha=0.08, color=CHART_COLORS["gmv"], zorder=2)
-    ax.axhline(0, linewidth=1.2, color="#6B7280", zorder=2)
+    fig = go.Figure()
+    add_phase_bands(fig, df)
+    series = [
+        ("Forecast GMV", "GMV", CHART_COLORS["gmv"]),
+        ("Total Cost", "Total Cost", CHART_COLORS["cost"]),
+        ("Profit", "Profit", CHART_COLORS["profit"]),
+    ]
+    for label, col, color in series:
+        fig.add_trace(
+            go.Scatter(
+                x=df["Global Week"],
+                y=df[col],
+                mode="lines+markers",
+                name=label,
+                line=dict(color=color, width=3),
+                marker=dict(size=7),
+                hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
+            )
+        )
+    fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     if break_even_week is not None:
-        point = df[df["Global Week"] == break_even_week]
-        if not point.empty:
-            y = float(point["Profit"].iloc[0])
-            ax.scatter([break_even_week], [y], s=90, color=CHART_COLORS["profit"], edgecolor="white", linewidth=1.5, zorder=5)
-            ax.axvline(break_even_week, linestyle="--", color="#6B7280", alpha=0.35, zorder=2)
-            ax.annotate(f"Weekly BE: W{break_even_week}", xy=(break_even_week, y), xytext=(8, 8), textcoords="offset points")
-    ax.set_title(title, fontsize=14, fontweight="bold", pad=14)
-    ax.set_xlabel("Week")
-    ax.set_ylabel("€")
-    polish_axis(ax)
-    ax.legend(loc="upper left", frameon=False, ncols=3, bbox_to_anchor=(0, 1.02))
-    format_eur_axis(ax)
-    fig.tight_layout()
+        fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
+    apply_plotly_layout(fig, title)
+    fig.update_yaxes(tickprefix="€", tickformat=",.0f")
+    fig.update_xaxes(title="Week")
     return fig
 
 
 def make_cumulative_profit_chart(df, break_even_week=None):
     temp = df.copy()
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
-    fig, ax = plt.subplots(figsize=(11, 5.6), facecolor="white")
-    add_phase_backgrounds(ax, temp)
-    ax.plot(temp["Global Week"], temp["Cumulative Profit"], marker="o", markersize=5, linewidth=2.8, color=CHART_COLORS["cumulative"], label="Cumulative Profit", zorder=3)
-    ax.fill_between(temp["Global Week"], temp["Cumulative Profit"], 0, alpha=0.10, color=CHART_COLORS["cumulative"], zorder=2)
-    ax.axhline(0, linewidth=1.2, color="#6B7280", zorder=2)
+    fig = go.Figure()
+    add_phase_bands(fig, temp)
+    fig.add_trace(
+        go.Scatter(
+            x=temp["Global Week"],
+            y=temp["Cumulative Profit"],
+            mode="lines+markers",
+            fill="tozeroy",
+            name="Cumulative Profit",
+            line=dict(color=CHART_COLORS["cumulative"], width=3),
+            marker=dict(size=7),
+            hovertemplate="Cumulative Profit: €%{y:,.0f}<extra></extra>",
+        )
+    )
+    fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     if break_even_week is not None:
-        point = temp[temp["Global Week"] == break_even_week]
-        if not point.empty:
-            y = float(point["Cumulative Profit"].iloc[0])
-            ax.scatter([break_even_week], [y], s=90, color=CHART_COLORS["cumulative"], edgecolor="white", linewidth=1.5, zorder=5)
-            ax.axvline(break_even_week, linestyle="--", color="#6B7280", alpha=0.35, zorder=2)
-            ax.annotate(f"Cumulative BE: W{break_even_week}", xy=(break_even_week, y), xytext=(8, 8), textcoords="offset points")
-    ax.set_title("Cumulative Profit Trend", fontsize=14, fontweight="bold", pad=14)
-    ax.set_xlabel("Week")
-    ax.set_ylabel("€")
-    polish_axis(ax)
-    ax.legend(loc="upper left", frameon=False)
-    format_eur_axis(ax)
-    fig.tight_layout()
+        fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
+    apply_plotly_layout(fig, "Cumulative Profit Trend")
+    fig.update_yaxes(tickprefix="€", tickformat=",.0f")
+    fig.update_xaxes(title="Week")
     return fig
 
 
@@ -696,31 +718,42 @@ def make_funnel_chart(df):
         "Orders": df["Orders"].sum(),
     })
     display = values.sort_values(ascending=True)
-    width = display / display.max()
-
-    fig, ax = plt.subplots(figsize=(11, 4.8), facecolor="white")
-    colors = ["#93C5FD", "#60A5FA", "#2563EB", "#1D4ED8"]
-    bars = ax.barh(display.index, width.values, color=colors[: len(display)], height=0.58, zorder=3)
-    for bar, raw_value in zip(bars, display.values):
-        ax.text(
-            min(bar.get_width() + 0.025, 0.94),
-            bar.get_y() + bar.get_height() / 2,
-            f"{raw_value:,.0f}",
-            va="center",
-            ha="left",
-            fontsize=10,
-            color="#111827",
-            fontweight="bold",
+    fig = go.Figure(
+        go.Bar(
+            x=display.values,
+            y=display.index,
+            orientation="h",
+            marker=dict(color=["#93C5FD", "#60A5FA", "#2563EB", "#1D4ED8"]),
+            text=[f"{v:,.0f}" for v in display.values],
+            textposition="outside",
+            hovertemplate="%{y}: %{x:,.0f}<extra></extra>",
         )
-    ax.set_xlim(0, 1.12)
-    ax.set_title("Funnel Summary", fontsize=14, fontweight="bold", pad=14)
-    ax.set_xlabel("")
-    ax.set_xticks([])
-    ax.grid(False)
-    for spine_name in ["top", "right", "bottom", "left"]:
-        ax.spines[spine_name].set_visible(False)
-    ax.tick_params(axis="y", colors="#374151", labelsize=10)
-    fig.tight_layout()
+    )
+    apply_plotly_layout(fig, "Funnel Summary", height=360)
+    fig.update_xaxes(showticklabels=False, title="")
+    fig.update_yaxes(title="")
+    return fig
+
+
+def make_channel_mix_chart(phase_summary):
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=phase_summary["Phase"],
+        y=phase_summary["ShopTab GMV"],
+        name="ShopTab GMV",
+        marker_color="#2563EB",
+        hovertemplate="ShopTab GMV: €%{y:,.0f}<extra></extra>",
+    ))
+    fig.add_trace(go.Bar(
+        x=phase_summary["Phase"],
+        y=phase_summary["Affiliate Video GMV"],
+        name="Affiliate Video GMV",
+        marker_color="#F97316",
+        hovertemplate="Affiliate Video GMV: €%{y:,.0f}<extra></extra>",
+    ))
+    apply_plotly_layout(fig, T["channel_mix"], height=390)
+    fig.update_layout(barmode="stack")
+    fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     return fig
 
 
@@ -837,6 +870,22 @@ if generate:
         weekly_be = first_positive_profit_week(df_all)
         cumulative_be = first_cumulative_break_even_week(df_all)
 
+        overall = overall_summary.iloc[0]
+        weekly_be_label = f"Week {weekly_be}" if weekly_be else T["not_reached"]
+        cumulative_be_label = f"Week {cumulative_be}" if cumulative_be else T["not_reached"]
+
+        st.subheader(T["insight"])
+        st.info(
+            T["insight_text"].format(
+                weeks=int(weeks_per_phase) * len(PHASES),
+                samples=f"{overall['Total Samples']:,.0f}",
+                gmv=money(overall["Total GMV"], 0),
+                profit=money(overall["Total Profit"], 0),
+                weekly_be=weekly_be_label,
+                cumulative_be=cumulative_be_label,
+            )
+        )
+
         st.subheader(T["sku_mix"])
         product_display = product_df.copy()
         product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
@@ -846,7 +895,6 @@ if generate:
         product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
         st.dataframe(product_display, use_container_width=True)
 
-        overall = overall_summary.iloc[0]
         m1, m2, m3, m4 = st.columns(4)
         m1.metric(T["total_gmv"], money(overall["Total GMV"], 0))
         m2.metric(T["total_profit"], money(overall["Total Profit"], 0))
@@ -857,28 +905,35 @@ if generate:
         m6.metric(T["videos_generated"], f"{overall['Total Videos']:,.0f}")
         m7.metric(T["product_clicks"], f"{overall['Total Clicks']:,.0f}")
         m8.metric(T["orders"], f"{overall['Total Orders']:,.0f}")
+        m9, m10 = st.columns(2)
+        m9.metric(T["sample_investment"], money(df_all["Samples Cost"].sum(), 0))
+        m10.metric(T["avg_sample_cost"], money(overall["Avg Sample Cost / Unit"], 2))
 
         st.subheader(T["charts"])
         c1, c2 = st.columns(2)
         with c1:
-            st.pyplot(make_weekly_chart(df_all, "Overall Weekly Trend", weekly_be))
+            st.plotly_chart(make_weekly_chart(df_all, "Overall Weekly Trend", weekly_be), use_container_width=True)
         with c2:
-            st.pyplot(make_cumulative_profit_chart(df_all, cumulative_be))
-        st.pyplot(make_funnel_chart(df_all))
+            st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True)
+        c3, c4 = st.columns(2)
+        with c3:
+            st.plotly_chart(make_funnel_chart(df_all), use_container_width=True)
+        with c4:
+            st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True)
 
         st.subheader(T["phase_trend"])
         tabs = st.tabs([phase_label(p) for p in phase_inputs])
         for tab, phase in zip(tabs, phase_inputs):
             with tab:
                 phase_df = df_all[df_all["Phase Key"] == phase["key"]].copy()
-                st.pyplot(make_weekly_chart(phase_df, phase["name"], first_positive_profit_week(phase_df)))
+                st.plotly_chart(make_weekly_chart(phase_df, phase["name"], first_positive_profit_week(phase_df)), use_container_width=True)
 
         money_cols = [
             "Organic Funnel GMV", "Paid GMV Lift", "GMV", "ShopTab GMV",
             "Affiliate Video GMV", "COGS", "Gross Profit", "Platform Fee",
             "Creator Commission", "Ads Cost", "Samples Cost", "Fulfillment Cost",
             "Growth Investment", "Total Cost", "Profit", "GMV / Sample",
-            "Total GMV", "Total Cost", "Total Profit",
+            "Total GMV", "Total Profit", "Avg Sample Cost / Unit",
         ]
         number_cols = [
             "Samples Sent", "New Videos", "Active Videos", "Product Clicks", "Orders",
@@ -886,19 +941,11 @@ if generate:
         ]
 
         st.subheader(T["summary"])
-        s1, s2 = st.columns(2)
-        with s1:
-            st.markdown(f"**{T['phase_summary']}**")
-            st.dataframe(
-                format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols),
-                use_container_width=True,
-            )
-        with s2:
-            st.markdown(f"**{T['overall_summary']}**")
-            st.dataframe(
-                format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols),
-                use_container_width=True,
-            )
+        st.markdown(f"**{T['phase_summary']}**")
+        st.dataframe(
+            format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols),
+            use_container_width=True,
+        )
 
         st.subheader(T["break_even"])
         b1, b2 = st.columns(2)
@@ -913,13 +960,19 @@ if generate:
             else:
                 st.warning(f"{T['cumulative_be']}: {T['not_reached']}")
 
-        st.subheader(T["weekly_details"])
-        weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate"], number_cols=number_cols)
-        st.dataframe(weekly_display, use_container_width=True)
+        with st.expander(T["view_details"], expanded=False):
+            st.markdown(f"**{T['overall_summary']}**")
+            st.dataframe(
+                format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols),
+                use_container_width=True,
+            )
+            st.markdown(f"**{T['weekly_details']}**")
+            weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate"], number_cols=number_cols)
+            st.dataframe(weekly_display, use_container_width=True)
 
-        d1, d2 = st.columns(2)
-        d1.download_button(T["download_weekly"], data=csv_bytes(df_all), file_name="weekly_details.csv", mime="text/csv")
-        d2.download_button(T["download_phase"], data=csv_bytes(phase_summary), file_name="phase_summary.csv", mime="text/csv")
+            d1, d2 = st.columns(2)
+            d1.download_button(T["download_weekly"], data=csv_bytes(df_all), file_name="weekly_details.csv", mime="text/csv")
+            d2.download_button(T["download_phase"], data=csv_bytes(phase_summary), file_name="phase_summary.csv", mime="text/csv")
 
     except Exception as e:
         st.error(f"{T['input_error']}: {e}")
