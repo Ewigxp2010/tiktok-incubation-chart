@@ -84,8 +84,13 @@ PHASES = [
     {"key": "phase3", "name": "Phase 3 - Scale", "samples_per_sku": 20, "take_rate": 0.10, "color": "#FFF4E8"},
 ]
 
-# Videos generated in week 1 keep contributing in later weeks, with a content tail.
-CONTENT_DECAY_WEIGHTS = [1.00, 0.75, 0.60, 0.48, 0.38, 0.30, 0.24, 0.19, 0.15, 0.12, 0.10, 0.08]
+# Videos generated in week 1 keep contributing in later weeks. This long-tail
+# curve approximates evergreen content rather than a one-week sales spike.
+CONTENT_DECAY_WEIGHTS = [
+    1.00, 0.90, 0.82, 0.75, 0.68, 0.62, 0.56, 0.51,
+    0.46, 0.42, 0.38, 0.35, 0.32, 0.30, 0.28, 0.26,
+    0.24, 0.23, 0.22, 0.21, 0.20, 0.19, 0.18, 0.18,
+]
 PROMO_WEEKS = 9
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 CHART_COLORS = {
@@ -143,6 +148,8 @@ TEXT = {
         "sku_mix": "SKU Mix & Funnel Assumptions",
         "total_gmv": "Total GMV",
         "total_cost": "Total Cost",
+        "sales_contribution": "Sales Contribution",
+        "contribution_margin": "Contribution Margin",
         "total_profit": "Total Profit",
         "profit_margin": "Profit Margin",
         "growth_investment": "Growth Investment",
@@ -224,6 +231,8 @@ TEXT = {
         "sku_mix": "SKU 组合与漏斗假设",
         "total_gmv": "总 GMV",
         "total_cost": "总成本",
+        "sales_contribution": "销售贡献利润",
+        "contribution_margin": "贡献利润率",
         "total_profit": "总利润",
         "profit_margin": "利润率",
         "growth_investment": "增长投入",
@@ -305,6 +314,8 @@ TEXT["de"] = {
     "sku_mix": "SKU-Mix & Funnel-Annahmen",
     "total_gmv": "Gesamt-GMV",
     "total_cost": "Gesamtkosten",
+    "sales_contribution": "Sales Contribution",
+    "contribution_margin": "Deckungsbeitragsmarge",
     "total_profit": "Gesamtgewinn",
     "profit_margin": "Gewinnmarge",
     "growth_investment": "Wachstumsinvestition",
@@ -381,6 +392,8 @@ TEXT["nl"] = {
     "sku_mix": "SKU-mix & funnelaannames",
     "total_gmv": "Totale GMV",
     "total_cost": "Totale kosten",
+    "sales_contribution": "Sales contribution",
+    "contribution_margin": "Contributiemarge",
     "total_profit": "Totale winst",
     "profit_margin": "Winstmarge",
     "growth_investment": "Groei-investering",
@@ -616,6 +629,8 @@ def build_weekly_model(
             fulfillment_cost = orders * float(logistics_cost)
             creator_commission = affiliate_gmv * float(affiliate_commission_rate)
             ads_cost = gmv * take_rate
+            sales_contribution = gmv - cogs - platform_fee - creator_commission - fulfillment_cost
+            growth_investment = samples_cost + ads_cost
             total_cost = cogs + platform_fee + creator_commission + ads_cost + samples_cost + fulfillment_cost
 
             rows.append({
@@ -644,9 +659,11 @@ def build_weekly_model(
                 "Ads Cost": ads_cost,
                 "Samples Cost": samples_cost,
                 "Fulfillment Cost": fulfillment_cost,
-                "Growth Investment": samples_cost + ads_cost,
+                "Sales Contribution": sales_contribution,
+                "Contribution Margin": sales_contribution / gmv if gmv > 0 else 0,
+                "Growth Investment": growth_investment,
                 "Total Cost": total_cost,
-                "Profit": gmv - total_cost,
+                "Profit": sales_contribution - growth_investment,
                 "Ads Take Rate": take_rate,
             })
 
@@ -675,11 +692,13 @@ def build_phase_summary(df):
         "Ads Cost": "sum",
         "Samples Cost": "sum",
         "Fulfillment Cost": "sum",
+        "Sales Contribution": "sum",
         "Growth Investment": "sum",
         "Total Cost": "sum",
         "Profit": "sum",
     })
     summary["Profit Margin"] = np.where(summary["GMV"] > 0, summary["Profit"] / summary["GMV"], 0)
+    summary["Contribution Margin"] = np.where(summary["GMV"] > 0, summary["Sales Contribution"] / summary["GMV"], 0)
     summary["GMV / Sample"] = np.where(summary["Samples Sent"] > 0, summary["GMV"] / summary["Samples Sent"], 0)
     return summary
 
@@ -699,10 +718,12 @@ def build_overall_summary(df):
         "Total GMV": total_gmv,
         "Total Cost": df["Total Cost"].sum(),
         "Total Profit": total_profit,
+        "Sales Contribution": df["Sales Contribution"].sum(),
         "Sample Investment": total_sample_cost,
         "Ads Investment": total_ads_cost,
         "Growth Investment": df["Growth Investment"].sum(),
         "Profit Margin": total_profit / total_gmv if total_gmv > 0 else 0,
+        "Contribution Margin": df["Sales Contribution"].sum() / total_gmv if total_gmv > 0 else 0,
         "GMV / Sample": total_gmv / total_samples if total_samples > 0 else 0,
         "Profit / Sample": total_profit / total_samples if total_samples > 0 else 0,
         "Videos / Sample": df["New Videos"].sum() / total_samples if total_samples > 0 else 0,
@@ -917,6 +938,17 @@ def make_phase_total_chart(phase_row):
             hovertemplate="Profit: €%{y:,.0f}<extra></extra>",
         )
     )
+    fig.add_trace(
+        go.Bar(
+            x=["Sales Contribution"],
+            y=[float(phase_row["Sales Contribution"])],
+            name="Sales Contribution",
+            marker_color="#10B981",
+            text=[money(phase_row["Sales Contribution"], 0)],
+            textposition="outside",
+            hovertemplate="Sales Contribution: €%{y:,.0f}<extra></extra>",
+        )
+    )
 
     apply_plotly_layout(fig, f"{phase_row['Phase']} - P&L Breakdown", height=540)
     fig.update_layout(
@@ -942,6 +974,7 @@ def make_phase_cumulative_chart(phase_df, title):
     temp["Cumulative GMV"] = temp["GMV"].cumsum()
     temp["Cumulative Total Cost"] = temp["Total Cost"].cumsum()
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
+    temp["Cumulative Sales Contribution"] = temp["Sales Contribution"].cumsum()
     temp["Cumulative Sample Investment"] = temp["Samples Cost"].cumsum()
     temp["Cumulative Ads Investment"] = temp["Ads Cost"].cumsum()
     temp["Cumulative Growth Investment"] = temp["Growth Investment"].cumsum()
@@ -950,6 +983,7 @@ def make_phase_cumulative_chart(phase_df, title):
     series = [
         ("GMV", "Cumulative GMV", CHART_COLORS["gmv"], "solid", 4, 9),
         ("Total Cost", "Cumulative Total Cost", CHART_COLORS["cost"], "solid", 4, 9),
+        ("Sales Contribution", "Cumulative Sales Contribution", "#10B981", "solid", 4, 9),
         ("Profit", "Cumulative Profit", CHART_COLORS["profit"], "solid", 4, 9),
         ("Growth Investment", "Cumulative Growth Investment", "#8B5CF6", "dash", 3, 8),
     ]
@@ -1189,12 +1223,13 @@ if st.session_state.get("has_generated", False):
             with tab:
                 phase_df = df_all[df_all["Phase Key"] == phase["key"]].copy()
                 phase_row = phase_summary[phase_summary["Phase Key"] == phase["key"]].iloc[0]
-                p1, p2, p3, p4, p5 = st.columns(5)
+                p1, p2, p3, p4, p5, p6 = st.columns(6)
                 p1.metric(T["total_gmv"], money(phase_row["GMV"], 0))
                 p2.metric(T["total_cost"], money(phase_row["Total Cost"], 0))
-                p3.metric(T["total_profit"], money(phase_row["Profit"], 0))
-                p4.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
-                p5.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
+                p3.metric(T["sales_contribution"], money(phase_row["Sales Contribution"], 0))
+                p4.metric(T["total_profit"], money(phase_row["Profit"], 0))
+                p5.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
+                p6.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
 
                 chart_mode = st.radio(
                     T["phase_chart_mode"],
@@ -1212,7 +1247,7 @@ if st.session_state.get("has_generated", False):
             "Paid GMV Lift", "GMV", "ShopTab GMV",
             "Affiliate Video GMV", "COGS", "Gross Profit", "Platform Fee",
             "Creator Commission", "Ads Cost", "Samples Cost", "Fulfillment Cost",
-            "Growth Investment", "Total Cost", "Profit", "GMV / Sample",
+            "Sales Contribution", "Growth Investment", "Total Cost", "Profit", "GMV / Sample",
             "Profit / Sample", "Total GMV", "Total Profit", "Avg Sample Cost / Unit",
             "Sample Investment", "Ads Investment",
         ]
@@ -1227,7 +1262,7 @@ if st.session_state.get("has_generated", False):
         st.subheader(T["summary"])
         st.markdown(f"**{T['phase_summary']}**")
         st.dataframe(
-            format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
+            format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
             use_container_width=True,
         )
 
@@ -1247,11 +1282,11 @@ if st.session_state.get("has_generated", False):
         with st.expander(T["view_details"], expanded=False):
             st.markdown(f"**{T['overall_summary']}**")
             st.dataframe(
-                format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
+                format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
                 use_container_width=True,
             )
             st.markdown(f"**{T['weekly_details']}**")
-            weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate"], number_cols=number_cols, decimal_cols=decimal_cols)
+            weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols)
             st.dataframe(weekly_display, use_container_width=True)
 
             d1, d2 = st.columns(2)
