@@ -106,6 +106,8 @@ TEXT = {
         "plan_setup": "Plan Setup",
         "cost_assumptions": "Cost Assumptions",
         "growth_levers": "Growth Levers",
+        "meeting_mode": "Meeting mode",
+        "meeting_mode_help": "Hide detailed setup and data tables after generation, keeping the page focused on the client-facing summary and charts.",
         "sku_count": "Number of SKUs",
         "promo": "60-day platform fee promo",
         "promo_yes": "Yes, 5% platform fee for first ~60 days",
@@ -184,6 +186,14 @@ TEXT = {
         "phase_total_breakdown": "P&L Breakdown",
         "supporting_charts": "Supporting Charts",
         "product_profile": "Product Profile",
+        "hero_title": "{weeks}-week incubation plan for {skus} SKUs",
+        "hero_subtitle": "Projected {gmv} GMV with {growth_investment} growth investment. Break-even: {break_even}.",
+        "hero_gmv": "Projected GMV",
+        "hero_investment": "Growth Investment",
+        "hero_break_even": "Break-even",
+        "chart_insight": "Chart Insight",
+        "overall_chart_insight": "GMV moves from {start_gmv} in Week 1 to {end_gmv} by Week {end_week}. The plan's cumulative profit ends at {cum_profit}.",
+        "phase_chart_insight": "{phase} ends with {gmv} GMV, {profit} profit, and {investment} growth investment.",
         "phase_trend": "Phase-by-Phase Trend",
         "summary": "Summary",
         "phase_summary": "Phase Summary",
@@ -236,6 +246,8 @@ TEXT = {
         "plan_setup": "计划设置",
         "cost_assumptions": "成本假设",
         "growth_levers": "增长杠杆",
+        "meeting_mode": "会议展示模式",
+        "meeting_mode_help": "生成结果后隐藏详细设置和数据表，让页面聚焦客户版总结和图表。",
         "sku_count": "SKU 数量",
         "promo": "60天平台费优惠",
         "promo_yes": "是，前约60天平台费 5%",
@@ -314,6 +326,14 @@ TEXT = {
         "phase_total_breakdown": "P&L 拆解",
         "supporting_charts": "辅助图表",
         "product_profile": "产品组合",
+        "hero_title": "{weeks} 周、{skus} 个 SKU 的孵化计划",
+        "hero_subtitle": "预计产生 {gmv} GMV，需要 {growth_investment} 增长投入。Break-even：{break_even}。",
+        "hero_gmv": "预测 GMV",
+        "hero_investment": "增长投入",
+        "hero_break_even": "Break-even",
+        "chart_insight": "图表解读",
+        "overall_chart_insight": "GMV 从第 1 周的 {start_gmv} 增长到第 {end_week} 周的 {end_gmv}，累计利润最终为 {cum_profit}。",
+        "phase_chart_insight": "{phase} 结束时预计产生 {gmv} GMV，利润 {profit}，增长投入 {investment}。",
         "phase_trend": "分阶段趋势",
         "summary": "汇总",
         "phase_summary": "阶段汇总",
@@ -777,6 +797,114 @@ st.markdown(
         line-height: 1.55;
     }
 
+    .hero-band {
+        background:
+            linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98)),
+            #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 22px 24px;
+        margin: 18px 0 18px 0;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.07);
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) repeat(3, minmax(120px, 0.55fr));
+        gap: 18px;
+        align-items: center;
+    }
+
+    .hero-title {
+        color: #111827;
+        font-size: 1.32rem;
+        font-weight: 790;
+        line-height: 1.18;
+        margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+        color: #4B5563;
+        font-size: 0.98rem;
+        line-height: 1.45;
+    }
+
+    .hero-kpi {
+        border-left: 1px solid #E5E7EB;
+        padding-left: 16px;
+    }
+
+    .hero-kpi-label {
+        color: #6B7280;
+        font-size: 0.78rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .hero-kpi-value {
+        color: #111827;
+        font-size: 1.22rem;
+        font-weight: 800;
+        line-height: 1.15;
+        overflow-wrap: anywhere;
+    }
+
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin: 10px 0 14px 0;
+    }
+
+    .premium-kpi {
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-top: 3px solid var(--accent);
+        border-radius: 8px;
+        padding: 13px 14px;
+        min-height: 94px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045);
+    }
+
+    .premium-kpi-label {
+        color: #6B7280;
+        font-size: 0.78rem;
+        font-weight: 720;
+        margin-bottom: 8px;
+        line-height: 1.25;
+    }
+
+    .premium-kpi-value {
+        color: #111827;
+        font-size: 1.34rem;
+        font-weight: 800;
+        line-height: 1.1;
+        overflow-wrap: anywhere;
+    }
+
+    .insight-strip {
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-left: 3px solid #25F4EE;
+        border-radius: 8px;
+        color: #374151;
+        padding: 12px 14px;
+        margin: 10px 0 18px 0;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.035);
+        line-height: 1.45;
+    }
+
+    @media (max-width: 900px) {
+        .hero-band,
+        .kpi-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-kpi {
+            border-left: 0;
+            border-top: 1px solid #E5E7EB;
+            padding-left: 0;
+            padding-top: 12px;
+        }
+    }
+
     .sku-title {
         font-size: 1rem;
         font-weight: 760;
@@ -1155,6 +1283,81 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
     return pd.DataFrame(rows, columns=["Metric", "Value"])
 
 
+def kpi_card(label, value, accent="#2563EB"):
+    return f"""
+    <div class="premium-kpi" style="--accent:{accent};">
+        <div class="premium-kpi-label">{label}</div>
+        <div class="premium-kpi-value">{value}</div>
+    </div>
+    """
+
+
+def render_kpi_grid(items):
+    cards = "".join(kpi_card(label, value, accent) for label, value, accent in items)
+    st.markdown(f'<div class="kpi-grid">{cards}</div>', unsafe_allow_html=True)
+
+
+def render_hero(overall, weeks, skus, break_even_label):
+    st.markdown(
+        f"""
+        <div class="hero-band">
+            <div>
+                <div class="hero-title">{T["hero_title"].format(weeks=weeks, skus=skus)}</div>
+                <div class="hero-subtitle">{T["hero_subtitle"].format(
+                    gmv=money(overall["Total GMV"], 0),
+                    growth_investment=money(overall["Growth Investment"], 0),
+                    break_even=break_even_label,
+                )}</div>
+            </div>
+            <div class="hero-kpi">
+                <div class="hero-kpi-label">{T["hero_gmv"]}</div>
+                <div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div>
+            </div>
+            <div class="hero-kpi">
+                <div class="hero-kpi-label">{T["hero_investment"]}</div>
+                <div class="hero-kpi-value">{money(overall["Growth Investment"], 0)}</div>
+            </div>
+            <div class="hero-kpi">
+                <div class="hero-kpi-label">{T["hero_break_even"]}</div>
+                <div class="hero-kpi-value">{break_even_label}</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_insight(text):
+    st.markdown(
+        f'<div class="insight-strip"><strong>{T["chart_insight"]}:</strong> {text}</div>',
+        unsafe_allow_html=True,
+    )
+
+
+def overall_chart_insight(df):
+    ordered = df.sort_values("Global Week")
+    if ordered.empty:
+        return ""
+    start = ordered.iloc[0]
+    end = ordered.iloc[-1]
+    cumulative_profit = ordered["Profit"].cumsum().iloc[-1]
+    return T["overall_chart_insight"].format(
+        start_gmv=money(start["GMV"], 0),
+        end_week=int(end["Global Week"]),
+        end_gmv=money(end["GMV"], 0),
+        cum_profit=money(cumulative_profit, 0),
+    )
+
+
+def phase_chart_insight(row):
+    return T["phase_chart_insight"].format(
+        phase=row["Phase"],
+        gmv=money(row["GMV"], 0),
+        profit=money(row["Profit"], 0),
+        investment=money(row["Growth Investment"], 0),
+    )
+
+
 def apply_plotly_layout(fig, title, height=420):
     fig.update_layout(
         title={"text": title, "x": 0.02, "xanchor": "left"},
@@ -1461,6 +1664,11 @@ st.caption(T["caption"])
 
 with st.sidebar:
     st.header(T["plan_setup"])
+    meeting_mode = st.checkbox(
+        T["meeting_mode"],
+        value=False,
+        help=T["meeting_mode_help"],
+    )
     n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=5, step=1)
     promo_60d = st.radio(
         T["promo"],
@@ -1508,85 +1716,91 @@ with st.sidebar:
         )
         phase_inputs.append({**phase, "take_rate": take_rate, "samples_per_sku": samples_per_sku})
 
-st.subheader(T["sku_setup"])
-st.caption(T["sku_caption"])
-with st.expander(T["benchmark_info"], expanded=False):
-    st.write(T["benchmark_info_text"])
-with st.expander(T["model_assumptions"], expanded=False):
-    st.write(T["model_assumptions_text"])
+show_setup = (not meeting_mode) or (not st.session_state.get("has_generated", False))
 
-for i in range(int(n_skus)):
-    initialize_sku(i)
-    with st.container(border=True):
-        category = st.session_state[f"category_{i}"]
-        subcategory = st.session_state[f"subcategory_{i}"]
-        st.markdown(
-            f"""
-            <div class="sku-title">SKU {i + 1} · {st.session_state[f"sku_name_{i}"]}</div>
-            <div class="sku-subtitle">{category} / {subcategory} · {pct(PLATFORM_COMMISSION[category], 0)} {T["platform_commission"]}</div>
-            """,
-            unsafe_allow_html=True,
-        )
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            st.text_input(T["sku_name"], key=f"sku_name_{i}")
-        with c2:
-            st.selectbox(T["category"], options=list(CATEGORY_PRESETS.keys()), key=f"category_{i}")
-        category = st.session_state[f"category_{i}"]
-        subcategories = list(CATEGORY_PRESETS[category].keys())
-        if st.session_state[f"subcategory_{i}"] not in subcategories:
-            st.session_state[f"subcategory_{i}"] = subcategories[0]
-        with c3:
-            st.selectbox(T["subcategory"], options=subcategories, key=f"subcategory_{i}")
+if show_setup:
+    st.subheader(T["sku_setup"])
+    st.caption(T["sku_caption"])
+    with st.expander(T["benchmark_info"], expanded=False):
+        st.write(T["benchmark_info_text"])
+    with st.expander(T["model_assumptions"], expanded=False):
+        st.write(T["model_assumptions_text"])
 
-        refresh_if_category_changed(i)
-
-        c4, c5, c6 = st.columns(3)
-        with c4:
-            st.number_input("AOV (€)", min_value=0.01, step=1.0, key=f"aov_{i}", help=T["aov_help"])
-        with c5:
-            st.number_input(T["gross_margin"], min_value=5.0, max_value=90.0, step=1.0, key=f"gross_margin_pct_{i}", help=T["gross_margin_help"])
-        with c6:
+    for i in range(int(n_skus)):
+        initialize_sku(i)
+        with st.container(border=True):
+            category = st.session_state[f"category_{i}"]
+            subcategory = st.session_state[f"subcategory_{i}"]
             st.markdown(
                 f"""
-                <div class="readonly-rate">
-                    <div class="readonly-rate-label">{T["platform_commission"]}</div>
-                    <div class="readonly-rate-value">{pct(PLATFORM_COMMISSION[category], 0)}</div>
-                </div>
+                <div class="sku-title">SKU {i + 1} · {st.session_state[f"sku_name_{i}"]}</div>
+                <div class="sku-subtitle">{category} / {subcategory} · {pct(PLATFORM_COMMISSION[category], 0)} {T["platform_commission"]}</div>
                 """,
                 unsafe_allow_html=True,
             )
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                st.text_input(T["sku_name"], key=f"sku_name_{i}")
+            with c2:
+                st.selectbox(T["category"], options=list(CATEGORY_PRESETS.keys()), key=f"category_{i}")
+            category = st.session_state[f"category_{i}"]
+            subcategories = list(CATEGORY_PRESETS[category].keys())
+            if st.session_state[f"subcategory_{i}"] not in subcategories:
+                st.session_state[f"subcategory_{i}"] = subcategories[0]
+            with c3:
+                st.selectbox(T["subcategory"], options=subcategories, key=f"subcategory_{i}")
 
-        c7, c8 = st.columns(2)
-        with c7:
-            st.number_input(
-                T["organic_commission_sku"],
-                min_value=0.0,
-                max_value=80.0,
-                step=0.5,
-                key=f"organic_commission_pct_{i}",
-                help=T["organic_commission_help"],
-            )
-        with c8:
-            st.number_input(
-                T["paid_commission_sku"],
-                min_value=0.0,
-                max_value=80.0,
-                step=0.5,
-                key=f"paid_commission_pct_{i}",
-                help=T["paid_commission_help"],
-            )
+            refresh_if_category_changed(i)
 
-        with st.expander(T["benchmark_expander"], expanded=False):
-            b1, b2, b3, b4 = st.columns(4)
-            with b1:
-                st.number_input(T["videos_sample"], min_value=0.0, max_value=5.0, step=0.05, key=f"videos_per_sample_{i}", help=T["videos_sample_help"])
-            with b2:
-                st.number_input(T["clicks_video"], min_value=0.0, max_value=100000.0, step=10.0, key=f"clicks_per_video_{i}", help=T["clicks_video_help"])
-            with b3:
-                st.number_input(T["click_order"], min_value=0.0, max_value=100.0, step=0.1, key=f"click_to_order_pct_{i}", help=T["click_order_help"])
-            with b4:
-                st.number_input(T["shoptab_share"], min_value=0.0, max_value=90.0, step=1.0, key=f"shop_tab_share_pct_{i}", help=T["shoptab_share_help"])
+            c4, c5, c6 = st.columns(3)
+            with c4:
+                st.number_input("AOV (€)", min_value=0.01, step=1.0, key=f"aov_{i}", help=T["aov_help"])
+            with c5:
+                st.number_input(T["gross_margin"], min_value=5.0, max_value=90.0, step=1.0, key=f"gross_margin_pct_{i}", help=T["gross_margin_help"])
+            with c6:
+                st.markdown(
+                    f"""
+                    <div class="readonly-rate">
+                        <div class="readonly-rate-label">{T["platform_commission"]}</div>
+                        <div class="readonly-rate-value">{pct(PLATFORM_COMMISSION[category], 0)}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+            c7, c8 = st.columns(2)
+            with c7:
+                st.number_input(
+                    T["organic_commission_sku"],
+                    min_value=0.0,
+                    max_value=80.0,
+                    step=0.5,
+                    key=f"organic_commission_pct_{i}",
+                    help=T["organic_commission_help"],
+                )
+            with c8:
+                st.number_input(
+                    T["paid_commission_sku"],
+                    min_value=0.0,
+                    max_value=80.0,
+                    step=0.5,
+                    key=f"paid_commission_pct_{i}",
+                    help=T["paid_commission_help"],
+                )
+
+            with st.expander(T["benchmark_expander"], expanded=False):
+                b1, b2, b3, b4 = st.columns(4)
+                with b1:
+                    st.number_input(T["videos_sample"], min_value=0.0, max_value=5.0, step=0.05, key=f"videos_per_sample_{i}", help=T["videos_sample_help"])
+                with b2:
+                    st.number_input(T["clicks_video"], min_value=0.0, max_value=100000.0, step=10.0, key=f"clicks_per_video_{i}", help=T["clicks_video_help"])
+                with b3:
+                    st.number_input(T["click_order"], min_value=0.0, max_value=100.0, step=0.1, key=f"click_to_order_pct_{i}", help=T["click_order_help"])
+                with b4:
+                    st.number_input(T["shoptab_share"], min_value=0.0, max_value=90.0, step=1.0, key=f"shop_tab_share_pct_{i}", help=T["shoptab_share_help"])
+else:
+    for i in range(int(n_skus)):
+        initialize_sku(i)
 
 if st.button(T["generate"], type="primary"):
     st.session_state["has_generated"] = True
@@ -1613,17 +1827,24 @@ if st.session_state.get("has_generated", False):
         weekly_be_label = f"Week {weekly_be}" if weekly_be else T["not_reached"]
         cumulative_be_label = f"Week {cumulative_be}" if cumulative_be else T["not_reached"]
 
+        render_hero(
+            overall=overall,
+            weeks=int(weeks_per_phase) * len(PHASES),
+            skus=int(n_skus),
+            break_even_label=cumulative_be_label,
+        )
+
         st.subheader(T["executive_dashboard"])
-        m1, m2, m3, m4 = st.columns(4)
-        m1.metric(T["total_gmv"], money(overall["Total GMV"], 0))
-        m2.metric(T["total_profit"], money(overall["Total Profit"], 0))
-        m3.metric(T["growth_investment"], money(overall["Growth Investment"], 0))
-        m4.metric(T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x")
-        m5, m6, m7, m8 = st.columns(4)
-        m5.metric(T["weekly_profit"], weekly_be_label)
-        m6.metric(T["cumulative_be"], cumulative_be_label)
-        m7.metric(T["orders"], f"{overall['Total Orders']:,.0f}")
-        m8.metric(T["channel_mix"], main_gmv_channel(df_all))
+        render_kpi_grid([
+            (T["total_gmv"], money(overall["Total GMV"], 0), "#2563EB"),
+            (T["total_profit"], money(overall["Total Profit"], 0), "#16A34A" if overall["Total Profit"] >= 0 else "#DC2626"),
+            (T["growth_investment"], money(overall["Growth Investment"], 0), "#7C3AED"),
+            (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#0EA5E9"),
+            (T["weekly_profit"], weekly_be_label, "#64748B"),
+            (T["cumulative_be"], cumulative_be_label, "#64748B"),
+            (T["orders"], f"{overall['Total Orders']:,.0f}", "#14B8A6"),
+            (T["channel_mix"], main_gmv_channel(df_all), "#F97316"),
+        ])
         st.markdown(
             f"""
             <div class="dashboard-note">
@@ -1662,16 +1883,17 @@ if st.session_state.get("has_generated", False):
             )
         )
 
-        with st.expander(T["product_profile"], expanded=False):
-            product_display = product_df.copy()
-            product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
-            product_display["Gross Margin"] = product_display["Gross Margin"].map(lambda x: pct(x, 0))
-            product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
-            product_display["Click-to-order Rate"] = product_display["Click-to-order Rate"].map(lambda x: pct(x, 1))
-            product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
-            product_display["Organic Creator Commission Rate"] = product_display["Organic Creator Commission Rate"].map(lambda x: pct(x, 1))
-            product_display["Paid Creator Commission Rate"] = product_display["Paid Creator Commission Rate"].map(lambda x: pct(x, 1))
-            st.dataframe(product_display, use_container_width=True)
+        if not meeting_mode:
+            with st.expander(T["product_profile"], expanded=False):
+                product_display = product_df.copy()
+                product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
+                product_display["Gross Margin"] = product_display["Gross Margin"].map(lambda x: pct(x, 0))
+                product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
+                product_display["Click-to-order Rate"] = product_display["Click-to-order Rate"].map(lambda x: pct(x, 1))
+                product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
+                product_display["Organic Creator Commission Rate"] = product_display["Organic Creator Commission Rate"].map(lambda x: pct(x, 1))
+                product_display["Paid Creator Commission Rate"] = product_display["Paid Creator Commission Rate"].map(lambda x: pct(x, 1))
+                st.dataframe(product_display, use_container_width=True)
 
         st.subheader(T["charts"])
         c1, c2 = st.columns(2)
@@ -1679,6 +1901,7 @@ if st.session_state.get("has_generated", False):
             st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True)
         with c2:
             st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True)
+        render_insight(overall_chart_insight(df_all))
         st.subheader(T["supporting_charts"])
         c3, c4 = st.columns(2)
         with c3:
@@ -1720,6 +1943,7 @@ if st.session_state.get("has_generated", False):
             st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True)
         else:
             st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
+        render_insight(phase_chart_insight(phase_row))
 
         driver, amount, share = cost_driver(phase_row)
         st.info(
@@ -1753,11 +1977,12 @@ if st.session_state.get("has_generated", False):
             file_name="customer_summary.csv",
             mime="text/csv",
         )
-        with st.expander(T["phase_summary"], expanded=False):
-            st.dataframe(
-                format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
-                use_container_width=True,
-            )
+        if not meeting_mode:
+            with st.expander(T["phase_summary"], expanded=False):
+                st.dataframe(
+                    format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
+                    use_container_width=True,
+                )
 
         st.subheader(T["break_even"])
         b1, b2 = st.columns(2)
@@ -1772,19 +1997,20 @@ if st.session_state.get("has_generated", False):
             else:
                 st.warning(f"{T['cumulative_be']}: {T['not_reached']}")
 
-        with st.expander(T["view_details"], expanded=False):
-            st.markdown(f"**{T['overall_summary']}**")
-            st.dataframe(
-                format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
-                use_container_width=True,
-            )
-            st.markdown(f"**{T['weekly_details']}**")
-            weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols)
-            st.dataframe(weekly_display, use_container_width=True)
+        if not meeting_mode:
+            with st.expander(T["view_details"], expanded=False):
+                st.markdown(f"**{T['overall_summary']}**")
+                st.dataframe(
+                    format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
+                    use_container_width=True,
+                )
+                st.markdown(f"**{T['weekly_details']}**")
+                weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols)
+                st.dataframe(weekly_display, use_container_width=True)
 
-            d1, d2 = st.columns(2)
-            d1.download_button(T["download_weekly"], data=csv_bytes(df_all), file_name="weekly_details.csv", mime="text/csv")
-            d2.download_button(T["download_phase"], data=csv_bytes(phase_summary), file_name="phase_summary.csv", mime="text/csv")
+                d1, d2 = st.columns(2)
+                d1.download_button(T["download_weekly"], data=csv_bytes(df_all), file_name="weekly_details.csv", mime="text/csv")
+                d2.download_button(T["download_phase"], data=csv_bytes(phase_summary), file_name="phase_summary.csv", mime="text/csv")
 
     except Exception as e:
         st.error(f"{T['input_error']}: {e}")
