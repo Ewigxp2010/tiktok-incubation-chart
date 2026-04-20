@@ -874,6 +874,32 @@ def make_channel_mix_chart(phase_summary):
     return fig
 
 
+def make_phase_total_chart(phase_row):
+    values = pd.Series({
+        "Forecast GMV": float(phase_row["GMV"]),
+        "Total Cost": float(phase_row["Total Cost"]),
+        "Profit": float(phase_row["Profit"]),
+        "Sample Investment": float(phase_row["Samples Cost"]),
+        "Ads Investment": float(phase_row["Ads Cost"]),
+    })
+    colors = ["#2563EB", "#F97316", "#16A34A", "#8B5CF6", "#06B6D4"]
+    fig = go.Figure(
+        go.Bar(
+            x=values.index,
+            y=values.values,
+            marker=dict(color=colors),
+            text=[money(v, 0) for v in values.values],
+            textposition="outside",
+            hovertemplate="%{x}: €%{y:,.0f}<extra></extra>",
+        )
+    )
+    apply_plotly_layout(fig, str(phase_row["Phase"]), height=390)
+    fig.add_hline(y=0, line_color="#6B7280", line_width=1)
+    fig.update_yaxes(tickprefix="€", tickformat=",.0f")
+    fig.update_xaxes(title="")
+    return fig
+
+
 def format_table(df, money_cols=None, pct_cols=None, number_cols=None, decimal_cols=None):
     out = df.copy()
     for col in dict.fromkeys(money_cols or []):
@@ -1070,8 +1096,13 @@ if generate:
         tabs = st.tabs([phase_label(p) for p in phase_inputs])
         for tab, phase in zip(tabs, phase_inputs):
             with tab:
-                phase_df = df_all[df_all["Phase Key"] == phase["key"]].copy()
-                st.plotly_chart(make_weekly_chart(phase_df, phase["name"], first_positive_profit_week(phase_df)), use_container_width=True)
+                phase_row = phase_summary[phase_summary["Phase Key"] == phase["key"]].iloc[0]
+                p1, p2, p3, p4 = st.columns(4)
+                p1.metric(T["total_gmv"], money(phase_row["GMV"], 0))
+                p2.metric(T["total_profit"], money(phase_row["Profit"], 0))
+                p3.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
+                p4.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
+                st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
 
         money_cols = [
             "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
