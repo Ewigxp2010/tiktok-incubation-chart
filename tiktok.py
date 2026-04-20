@@ -895,31 +895,63 @@ def make_phase_cumulative_chart(phase_df, title):
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
     temp["Cumulative Sample Investment"] = temp["Samples Cost"].cumsum()
     temp["Cumulative Ads Investment"] = temp["Ads Cost"].cumsum()
+    temp["Cumulative Growth Investment"] = temp["Growth Investment"].cumsum()
 
     fig = go.Figure()
     series = [
-        ("Cumulative GMV", "Cumulative GMV", CHART_COLORS["gmv"]),
-        ("Cumulative Total Cost", "Cumulative Total Cost", CHART_COLORS["cost"]),
-        ("Cumulative Profit", "Cumulative Profit", CHART_COLORS["profit"]),
-        ("Cumulative Sample Investment", "Cumulative Sample Investment", "#8B5CF6"),
-        ("Cumulative Ads Investment", "Cumulative Ads Investment", "#06B6D4"),
+        ("Cumulative GMV", "Cumulative GMV", CHART_COLORS["gmv"], "solid", 4, 9),
+        ("Cumulative Total Cost", "Cumulative Total Cost", CHART_COLORS["cost"], "solid", 4, 9),
+        ("Cumulative Profit", "Cumulative Profit", CHART_COLORS["profit"], "solid", 4, 9),
+        ("Cumulative Growth Investment", "Cumulative Growth Investment", "#8B5CF6", "dash", 3, 8),
+        ("Cumulative Ads Investment", "Cumulative Ads Investment", "#06B6D4", "dot", 2, 7),
     ]
-    for label, col, color in series:
+    for label, col, color, dash, width, marker_size in series:
+        visible = True
+        if col == "Cumulative Ads Investment" and float(temp[col].abs().sum()) == 0:
+            visible = "legendonly"
         fig.add_trace(
             go.Scatter(
                 x=temp["Week in Phase"],
                 y=temp[col],
                 mode="lines+markers",
                 name=label,
-                line=dict(color=color, width=3),
-                marker=dict(size=7),
+                visible=visible,
+                line=dict(color=color, width=width, dash=dash),
+                marker=dict(size=marker_size, color=color, line=dict(color="white", width=1.5)),
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
             )
         )
-    fig.add_hline(y=0, line_color="#6B7280", line_width=1)
+
+    for label, col, color, _, _, _ in series[:4]:
+        last = temp.iloc[-1]
+        fig.add_annotation(
+            x=last["Week in Phase"],
+            y=last[col],
+            text=money(last[col], 0),
+            showarrow=False,
+            xshift=34,
+            font=dict(size=12, color=color),
+            bgcolor="rgba(255,255,255,0.82)",
+            bordercolor=color,
+            borderwidth=1,
+            borderpad=3,
+        )
+
+    fig.add_hline(y=0, line_color="#6B7280", line_width=1, opacity=0.75)
     apply_plotly_layout(fig, f"{title} - Cumulative Trend", height=480)
+    fig.update_layout(
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.08,
+            xanchor="left",
+            x=0,
+            bgcolor="rgba(255,255,255,0.85)",
+        ),
+        margin=dict(l=28, r=92, t=86, b=44),
+    )
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title="Week in Phase", dtick=1)
+    fig.update_xaxes(title="Week in Phase", dtick=1, tickmode="linear")
     return fig
 
 
