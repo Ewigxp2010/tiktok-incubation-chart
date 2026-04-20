@@ -136,6 +136,7 @@ TEXT = {
         "platform_commission": "Platform Commission",
         "avg_sample_cost": "Avg sample cost / unit",
         "sample_investment": "Sample Investment",
+        "ads_investment": "Ads Investment",
         "benchmark_expander": "View / adjust category funnel assumptions",
         "videos_sample": "Videos / sample",
         "clicks_video": "Clicks / video",
@@ -170,6 +171,14 @@ TEXT = {
         "input_error": "Input error",
         "insight": "Plan Insight",
         "insight_text": "Over {weeks} weeks, this plan sends {samples} samples, generates estimated GMV of {gmv}, and ends with {profit} total profit. Weekly break-even: {weekly_be}. Cumulative break-even: {cumulative_be}.",
+        "executive_summary": "Executive Summary",
+        "executive_summary_text": "In this {weeks}-week plan, the brand needs about {growth_investment} in growth investment, including {sample_investment} for samples and {ads_investment} for ads. The model estimates {gmv} GMV and {profit} total profit. Each sample contributes around {gmv_per_sample} GMV and {profit_per_sample} profit. The largest GMV driver is {main_channel}. Weekly break-even: {weekly_be}. Cumulative break-even: {cumulative_be}.",
+        "sample_roi_title": "Sample ROI",
+        "gmv_per_sample": "GMV / Sample",
+        "profit_per_sample": "Profit / Sample",
+        "videos_per_sample_kpi": "Videos / Sample",
+        "orders_per_sample": "Orders / Sample",
+        "sample_gmv_roi": "GMV / Sample Cost",
         "view_details": "View detailed tables",
         "channel_mix": "GMV Channel Mix",
     },
@@ -202,6 +211,7 @@ TEXT = {
         "platform_commission": "平台佣金",
         "avg_sample_cost": "平均样品成本 / 件",
         "sample_investment": "样品投入",
+        "ads_investment": "广告投入",
         "benchmark_expander": "查看 / 调整类目漏斗假设",
         "videos_sample": "每个样品产出视频数",
         "clicks_video": "每条视频商品点击数",
@@ -236,6 +246,14 @@ TEXT = {
         "input_error": "输入错误",
         "insight": "计划解读",
         "insight_text": "按当前计划，品牌将在 {weeks} 周内寄出 {samples} 个样品，预计产生 {gmv} GMV，最终总利润为 {profit}。首次单周盈利：{weekly_be}。累计 Break-even：{cumulative_be}。",
+        "executive_summary": "客户版总结",
+        "executive_summary_text": "按当前 {weeks} 周计划，品牌预计需要准备 {growth_investment} 增长投入，其中样品投入 {sample_investment}，广告投入 {ads_investment}。模型预计产生 {gmv} GMV，最终总利润为 {profit}。平均每个样品预计带来 {gmv_per_sample} GMV 和 {profit_per_sample} 利润。当前最大的 GMV 来源是 {main_channel}。首次单周盈利：{weekly_be}；累计 Break-even：{cumulative_be}。",
+        "sample_roi_title": "样品 ROI",
+        "gmv_per_sample": "GMV / 样品",
+        "profit_per_sample": "利润 / 样品",
+        "videos_per_sample_kpi": "视频 / 样品",
+        "orders_per_sample": "订单 / 样品",
+        "sample_gmv_roi": "GMV / 样品成本",
         "view_details": "查看详细表格",
         "channel_mix": "GMV 渠道拆分",
     },
@@ -268,6 +286,7 @@ TEXT["de"] = {
     "platform_commission": "Plattformkommission",
     "avg_sample_cost": "Ø Sample-Kosten / Stück",
     "sample_investment": "Sample-Investition",
+    "ads_investment": "Ads-Investition",
     "benchmark_expander": "Kategorie-Funnel-Annahmen anzeigen / anpassen",
     "videos_sample": "Videos / Sample",
     "clicks_video": "Klicks / Video",
@@ -301,6 +320,13 @@ TEXT["de"] = {
     "input_error": "Eingabefehler",
     "insight": "Plan-Insight",
     "insight_text": "Über {weeks} Wochen versendet dieser Plan {samples} Samples, erzeugt geschätzten GMV von {gmv} und endet mit {profit} Gesamtgewinn. Erste positive Woche: {weekly_be}. Kumulierter Break-even: {cumulative_be}.",
+    "executive_summary": "Executive Summary",
+    "sample_roi_title": "Sample ROI",
+    "gmv_per_sample": "GMV / Sample",
+    "profit_per_sample": "Gewinn / Sample",
+    "videos_per_sample_kpi": "Videos / Sample",
+    "orders_per_sample": "Bestellungen / Sample",
+    "sample_gmv_roi": "GMV / Sample-Kosten",
     "view_details": "Detaillierte Tabellen anzeigen",
     "channel_mix": "GMV-Kanalmix",
 }
@@ -330,6 +356,7 @@ TEXT["nl"] = {
     "platform_commission": "Platformcommissie",
     "avg_sample_cost": "Gem. samplekosten / stuk",
     "sample_investment": "Sample-investering",
+    "ads_investment": "Ads-investering",
     "benchmark_expander": "Categorie-funnelaannames bekijken / aanpassen",
     "videos_sample": "Video's / sample",
     "clicks_video": "Clicks / video",
@@ -363,6 +390,13 @@ TEXT["nl"] = {
     "input_error": "Invoerfout",
     "insight": "Plan-inzicht",
     "insight_text": "Over {weeks} weken verstuurt dit plan {samples} samples, genereert naar schatting {gmv} GMV en eindigt met {profit} totale winst. Eerste positieve week: {weekly_be}. Cumulatieve break-even: {cumulative_be}.",
+    "executive_summary": "Executive Summary",
+    "sample_roi_title": "Sample ROI",
+    "gmv_per_sample": "GMV / sample",
+    "profit_per_sample": "Winst / sample",
+    "videos_per_sample_kpi": "Video's / sample",
+    "orders_per_sample": "Orders / sample",
+    "sample_gmv_roi": "GMV / samplekosten",
     "view_details": "Gedetailleerde tabellen bekijken",
     "channel_mix": "GMV-kanaalmix",
 }
@@ -662,6 +696,8 @@ def build_overall_summary(df):
     total_gmv = df["GMV"].sum()
     total_profit = df["Profit"].sum()
     total_samples = df["Samples Sent"].sum()
+    total_sample_cost = df["Samples Cost"].sum()
+    total_ads_cost = df["Ads Cost"].sum()
     return pd.DataFrame([{
         "Total Samples": total_samples,
         "Avg Sample Cost / Unit": df["Avg Sample Cost / Unit"].mean(),
@@ -671,9 +707,15 @@ def build_overall_summary(df):
         "Total GMV": total_gmv,
         "Total Cost": df["Total Cost"].sum(),
         "Total Profit": total_profit,
+        "Sample Investment": total_sample_cost,
+        "Ads Investment": total_ads_cost,
         "Growth Investment": df["Growth Investment"].sum(),
         "Profit Margin": total_profit / total_gmv if total_gmv > 0 else 0,
         "GMV / Sample": total_gmv / total_samples if total_samples > 0 else 0,
+        "Profit / Sample": total_profit / total_samples if total_samples > 0 else 0,
+        "Videos / Sample": df["New Videos"].sum() / total_samples if total_samples > 0 else 0,
+        "Orders / Sample": df["Orders"].sum() / total_samples if total_samples > 0 else 0,
+        "GMV / Sample Cost": total_gmv / total_sample_cost if total_sample_cost > 0 else 0,
     }])
 
 
@@ -687,6 +729,14 @@ def first_cumulative_break_even_week(df):
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
     hit = temp[temp["Cumulative Profit"] >= 0]
     return None if hit.empty else int(hit["Global Week"].iloc[0])
+
+
+def main_gmv_channel(df):
+    shop_tab_gmv = float(df["ShopTab GMV"].sum())
+    affiliate_gmv = float(df["Affiliate Video GMV"].sum())
+    if shop_tab_gmv >= affiliate_gmv:
+        return f"ShopTab ({pct(shop_tab_gmv / (shop_tab_gmv + affiliate_gmv), 0)})" if shop_tab_gmv + affiliate_gmv > 0 else "ShopTab"
+    return f"Affiliate video ({pct(affiliate_gmv / (shop_tab_gmv + affiliate_gmv), 0)})"
 
 
 def apply_plotly_layout(fig, title, height=420):
@@ -824,7 +874,7 @@ def make_channel_mix_chart(phase_summary):
     return fig
 
 
-def format_table(df, money_cols=None, pct_cols=None, number_cols=None):
+def format_table(df, money_cols=None, pct_cols=None, number_cols=None, decimal_cols=None):
     out = df.copy()
     for col in dict.fromkeys(money_cols or []):
         if col in out.columns:
@@ -835,6 +885,9 @@ def format_table(df, money_cols=None, pct_cols=None, number_cols=None):
     for col in dict.fromkeys(number_cols or []):
         if col in out.columns:
             out[col] = out[col].map(lambda x: f"{float(x):,.0f}")
+    for col in dict.fromkeys(decimal_cols or []):
+        if col in out.columns:
+            out[col] = out[col].map(lambda x: f"{float(x):,.2f}")
     return out
 
 
@@ -948,13 +1001,19 @@ if generate:
         weekly_be_label = f"Week {weekly_be}" if weekly_be else T["not_reached"]
         cumulative_be_label = f"Week {cumulative_be}" if cumulative_be else T["not_reached"]
 
-        st.subheader(T["insight"])
-        st.info(
-            T["insight_text"].format(
+        st.subheader(T["executive_summary"])
+        st.success(
+            T["executive_summary_text"].format(
                 weeks=int(weeks_per_phase) * len(PHASES),
                 samples=f"{overall['Total Samples']:,.0f}",
                 gmv=money(overall["Total GMV"], 0),
                 profit=money(overall["Total Profit"], 0),
+                growth_investment=money(overall["Growth Investment"], 0),
+                sample_investment=money(overall["Sample Investment"], 0),
+                ads_investment=money(overall["Ads Investment"], 0),
+                gmv_per_sample=money(overall["GMV / Sample"], 0),
+                profit_per_sample=money(overall["Profit / Sample"], 0),
+                main_channel=main_gmv_channel(df_all),
                 weekly_be=weekly_be_label,
                 cumulative_be=cumulative_be_label,
             )
@@ -985,6 +1044,16 @@ if generate:
         m9.metric(T["sample_investment"], money(df_all["Samples Cost"].sum(), 0))
         m10.metric(T["avg_sample_cost"], money(overall["Avg Sample Cost / Unit"], 2))
 
+        st.subheader(T["sample_roi_title"])
+        r1, r2, r3, r4 = st.columns(4)
+        r1.metric(T["gmv_per_sample"], money(overall["GMV / Sample"], 0))
+        r2.metric(T["profit_per_sample"], money(overall["Profit / Sample"], 0))
+        r3.metric(T["videos_per_sample_kpi"], f"{overall['Videos / Sample']:.2f}")
+        r4.metric(T["orders_per_sample"], f"{overall['Orders / Sample']:.2f}")
+        r5, r6 = st.columns(2)
+        r5.metric(T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x")
+        r6.metric(T["ads_investment"], money(overall["Ads Investment"], 0))
+
         st.subheader(T["charts"])
         c1, c2 = st.columns(2)
         with c1:
@@ -1010,17 +1079,21 @@ if generate:
             "Affiliate Video GMV", "COGS", "Gross Profit", "Platform Fee",
             "Creator Commission", "Ads Cost", "Samples Cost", "Fulfillment Cost",
             "Growth Investment", "Total Cost", "Profit", "GMV / Sample",
-            "Total GMV", "Total Profit", "Avg Sample Cost / Unit",
+            "Profit / Sample", "Total GMV", "Total Profit", "Avg Sample Cost / Unit",
+            "Sample Investment", "Ads Investment",
         ]
         number_cols = [
             "Samples Sent", "New Videos", "Active Videos", "Cumulative Videos", "Product Clicks", "Orders",
             "Total Samples", "Total Videos", "Total Clicks", "Total Orders",
         ]
+        decimal_cols = [
+            "Videos / Sample", "Orders / Sample", "GMV / Sample Cost",
+        ]
 
         st.subheader(T["summary"])
         st.markdown(f"**{T['phase_summary']}**")
         st.dataframe(
-            format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols),
+            format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
             use_container_width=True,
         )
 
@@ -1040,11 +1113,11 @@ if generate:
         with st.expander(T["view_details"], expanded=False):
             st.markdown(f"**{T['overall_summary']}**")
             st.dataframe(
-                format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols),
+                format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
                 use_container_width=True,
             )
             st.markdown(f"**{T['weekly_details']}**")
-            weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate"], number_cols=number_cols)
+            weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate"], number_cols=number_cols, decimal_cols=decimal_cols)
             st.dataframe(weekly_display, use_container_width=True)
 
             d1, d2 = st.columns(2)
