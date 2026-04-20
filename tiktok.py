@@ -142,6 +142,7 @@ TEXT = {
         "generate": "Generate Simulator",
         "sku_mix": "SKU Mix & Funnel Assumptions",
         "total_gmv": "Total GMV",
+        "total_cost": "Total Cost",
         "total_profit": "Total Profit",
         "profit_margin": "Profit Margin",
         "growth_investment": "Growth Investment",
@@ -222,6 +223,7 @@ TEXT = {
         "generate": "生成模拟结果",
         "sku_mix": "SKU 组合与漏斗假设",
         "total_gmv": "总 GMV",
+        "total_cost": "总成本",
         "total_profit": "总利润",
         "profit_margin": "利润率",
         "growth_investment": "增长投入",
@@ -302,6 +304,7 @@ TEXT["de"] = {
     "generate": "Simulator erzeugen",
     "sku_mix": "SKU-Mix & Funnel-Annahmen",
     "total_gmv": "Gesamt-GMV",
+    "total_cost": "Gesamtkosten",
     "total_profit": "Gesamtgewinn",
     "profit_margin": "Gewinnmarge",
     "growth_investment": "Wachstumsinvestition",
@@ -377,6 +380,7 @@ TEXT["nl"] = {
     "generate": "Simulator genereren",
     "sku_mix": "SKU-mix & funnelaannames",
     "total_gmv": "Totale GMV",
+    "total_cost": "Totale kosten",
     "total_profit": "Totale winst",
     "profit_margin": "Winstmarge",
     "growth_investment": "Groei-investering",
@@ -863,25 +867,70 @@ def make_channel_mix_chart(phase_summary):
 
 
 def make_phase_total_chart(phase_row):
-    values = pd.Series({
-        "Forecast GMV": float(phase_row["GMV"]),
-        "Total Cost": float(phase_row["Total Cost"]),
-        "Profit": float(phase_row["Profit"]),
-        "Sample Investment": float(phase_row["Samples Cost"]),
-        "Ads Investment": float(phase_row["Ads Cost"]),
-    })
-    colors = ["#2563EB", "#F97316", "#16A34A", "#8B5CF6", "#06B6D4"]
-    fig = go.Figure(
+    fig = go.Figure()
+    fig.add_trace(
         go.Bar(
-            x=values.index,
-            y=values.values,
-            marker=dict(color=colors),
-            text=[money(v, 0) for v in values.values],
+            x=["Forecast GMV"],
+            y=[float(phase_row["GMV"])],
+            name="Forecast GMV",
+            marker_color="#2563EB",
+            text=[money(phase_row["GMV"], 0)],
             textposition="outside",
-            hovertemplate="%{x}: €%{y:,.0f}<extra></extra>",
+            hovertemplate="Forecast GMV: €%{y:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, str(phase_row["Phase"]), height=480)
+
+    cost_parts = [
+        ("COGS", "COGS", "#FB923C"),
+        ("Platform Fee", "Platform Fee", "#F97316"),
+        ("Creator Commission", "Creator Commission", "#EA580C"),
+        ("Fulfillment Cost", "Fulfillment Cost", "#FDBA74"),
+        ("Sample Investment", "Samples Cost", "#8B5CF6"),
+        ("Ads Investment", "Ads Cost", "#06B6D4"),
+    ]
+    for label, col, color in cost_parts:
+        value = float(phase_row[col])
+        if abs(value) <= 0:
+            continue
+        fig.add_trace(
+            go.Bar(
+                x=["Total Cost"],
+                y=[value],
+                name=label,
+                marker_color=color,
+                text=[money(value, 0)],
+                textposition="inside",
+                insidetextanchor="middle",
+                hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
+            )
+        )
+
+    profit_color = "#16A34A" if float(phase_row["Profit"]) >= 0 else "#DC2626"
+    fig.add_trace(
+        go.Bar(
+            x=["Profit"],
+            y=[float(phase_row["Profit"])],
+            name="Profit",
+            marker_color=profit_color,
+            text=[money(phase_row["Profit"], 0)],
+            textposition="outside",
+            hovertemplate="Profit: €%{y:,.0f}<extra></extra>",
+        )
+    )
+
+    apply_plotly_layout(fig, f"{phase_row['Phase']} - P&L Breakdown", height=540)
+    fig.update_layout(
+        barmode="stack",
+        legend=dict(
+            orientation="h",
+            yanchor="top",
+            y=-0.16,
+            xanchor="left",
+            x=0,
+            bgcolor="rgba(255,255,255,0.85)",
+        ),
+        margin=dict(l=28, r=32, t=78, b=118),
+    )
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title="")
@@ -1140,11 +1189,12 @@ if st.session_state.get("has_generated", False):
             with tab:
                 phase_df = df_all[df_all["Phase Key"] == phase["key"]].copy()
                 phase_row = phase_summary[phase_summary["Phase Key"] == phase["key"]].iloc[0]
-                p1, p2, p3, p4 = st.columns(4)
+                p1, p2, p3, p4, p5 = st.columns(5)
                 p1.metric(T["total_gmv"], money(phase_row["GMV"], 0))
-                p2.metric(T["total_profit"], money(phase_row["Profit"], 0))
-                p3.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
-                p4.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
+                p2.metric(T["total_cost"], money(phase_row["Total Cost"], 0))
+                p3.metric(T["total_profit"], money(phase_row["Profit"], 0))
+                p4.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
+                p5.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
 
                 chart_mode = st.radio(
                     T["phase_chart_mode"],
