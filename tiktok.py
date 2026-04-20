@@ -559,6 +559,7 @@ for i in range(int(n_skus)):
                 value=float(st.session_state[f"platform_fee_{i}"] * 100),
                 step=1.0,
                 disabled=True,
+                key=f"platform_fee_display_{i}",
             )
 
         with st.expander("View / adjust category funnel assumptions", expanded=False):
