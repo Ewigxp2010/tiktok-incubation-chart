@@ -1428,19 +1428,20 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
 
 
 def render_kpi_grid(items):
-    columns = min(max(len(items), 1), 4)
-    html = [f'<div class="kpi-grid" style="grid-template-columns: repeat({columns}, minmax(0, 1fr));">']
-    for label, value, accent in items:
-        html.append(
-            f"""
-            <div class="premium-kpi" style="--accent:{escape(str(accent))};">
-                <div class="premium-kpi-label">{escape(str(label))}</div>
-                <div class="premium-kpi-value">{escape(str(value))}</div>
-            </div>
-            """
-        )
-    html.append("</div>")
-    st.markdown("".join(html), unsafe_allow_html=True)
+    for start in range(0, len(items), 4):
+        row_items = items[start:start + 4]
+        cols = st.columns(len(row_items))
+        for col, (label, value, accent) in zip(cols, row_items):
+            with col:
+                st.markdown(
+                    f"""
+                    <div class="premium-kpi" style="border-top-color:{escape(str(accent))};">
+                        <div class="premium-kpi-label">{escape(str(label))}</div>
+                        <div class="premium-kpi-value">{escape(str(value))}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 
 
 def render_hero(overall, weeks, skus, break_even_label):
