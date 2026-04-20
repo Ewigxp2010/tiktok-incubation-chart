@@ -912,16 +912,20 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid var(--tts-line);
         border-radius: 8px;
-        padding: 18px 12px 8px 12px;
+        padding: 28px 14px 14px 14px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
-        min-height: 470px;
+        min-height: 520px;
         display: flex;
         align-items: stretch;
         overflow: visible !important;
     }
 
     div[data-testid="stPlotlyChart"] > div {
-        min-height: 430px;
+        min-height: 480px;
+        overflow: visible !important;
+    }
+
+    div[data-testid="stPlotlyChart"] svg {
         overflow: visible !important;
     }
 
@@ -2034,7 +2038,7 @@ def make_funnel_chart(df):
             hovertemplate="%{y}: %{x:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, T["funnel_summary"], height=450)
+    apply_plotly_layout(fig, T["funnel_summary"], height=500)
     fig.update_xaxes(showticklabels=False, title="")
     fig.update_yaxes(title="")
     return fig
@@ -2056,7 +2060,7 @@ def make_channel_mix_chart(phase_summary):
         marker_color="#F97316",
         hovertemplate=f"{T['affiliate_video_gmv']}: €%{{y:,.0f}}<extra></extra>",
     ))
-    apply_plotly_layout(fig, T["channel_mix"], height=450)
+    apply_plotly_layout(fig, T["channel_mix"], height=500)
     fig.update_layout(barmode="stack")
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     return fig
@@ -2571,12 +2575,13 @@ if st.session_state.get("has_generated", False):
             st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True)
         render_insight(overall_chart_insight(df_all))
         st.subheader(T["supporting_charts"])
-        c3, c4 = st.columns(2)
-        with c3:
+        support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
+        with support_tabs[0]:
             st.plotly_chart(make_funnel_chart(df_all), use_container_width=True)
-        with c4:
+        with support_tabs[1]:
             st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True)
-        st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True)
+        with support_tabs[2]:
+            st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True)
         st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
 
         st.subheader(T["phase_trend"])
@@ -2594,14 +2599,14 @@ if st.session_state.get("has_generated", False):
         objective = phase_objective(selected_phase["key"])
         if objective:
             st.info(f"**{T['phase_objective']}**: {objective}")
-        p1, p2, p3 = st.columns(3)
-        p1.metric(T["total_gmv"], money(phase_row["GMV"], 0))
-        p2.metric(T["total_cost"], money(phase_row["Total Cost"], 0))
-        p3.metric(T["sales_contribution"], money(phase_row["Sales Contribution"], 0))
-        p4, p5, p6 = st.columns(3)
-        p4.metric(T["total_profit"], money(phase_row["Profit"], 0))
-        p5.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
-        p6.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
+        render_kpi_grid([
+            (T["total_gmv"], money(phase_row["GMV"], 0), "#2563EB"),
+            (T["total_cost"], money(phase_row["Total Cost"], 0), "#F97316"),
+            (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#10B981"),
+            (T["total_profit"], money(phase_row["Profit"], 0), "#16A34A" if phase_row["Profit"] >= 0 else "#DC2626"),
+            (T["sample_investment"], money(phase_row["Samples Cost"], 0), "#8B5CF6"),
+            (T["ads_investment"], money(phase_row["Ads Cost"], 0), "#06B6D4"),
+        ])
 
         chart_mode = st.radio(
             T["phase_chart_mode"],
