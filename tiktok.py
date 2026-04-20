@@ -535,18 +535,47 @@ st.markdown(
         background: var(--tts-panel);
         border: 1px solid var(--tts-line);
         border-radius: 8px;
-        padding: 14px 16px;
+        padding: 12px 14px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
+        min-height: 92px;
     }
 
     div[data-testid="stMetricLabel"] {
         color: var(--tts-muted);
         font-weight: 650;
+        white-space: normal;
+        line-height: 1.25;
     }
 
     div[data-testid="stMetricValue"] {
         color: var(--tts-ink);
         font-weight: 760;
+        font-size: clamp(1.25rem, 2.2vw, 1.9rem);
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: 1.12;
+    }
+
+    .readonly-rate {
+        background: #F8FAFC;
+        border: 1px solid #E5E7EB;
+        border-radius: 8px;
+        padding: 9px 12px;
+        min-height: 68px;
+    }
+
+    .readonly-rate-label {
+        color: #6B7280;
+        font-size: 0.86rem;
+        font-weight: 650;
+        margin-bottom: 6px;
+    }
+
+    .readonly-rate-value {
+        color: #111827;
+        font-size: 1.08rem;
+        font-weight: 720;
+        line-height: 1.2;
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
@@ -1303,7 +1332,15 @@ for i in range(int(n_skus)):
         with c5:
             st.number_input(T["gross_margin"], min_value=5.0, max_value=90.0, step=1.0, key=f"gross_margin_pct_{i}", help=T["gross_margin_help"])
         with c6:
-            st.metric(T["platform_commission"], pct(PLATFORM_COMMISSION[category], 0))
+            st.markdown(
+                f"""
+                <div class="readonly-rate">
+                    <div class="readonly-rate-label">{T["platform_commission"]}</div>
+                    <div class="readonly-rate-value">{pct(PLATFORM_COMMISSION[category], 0)}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
         c7, c8 = st.columns(2)
         with c7:
@@ -1431,10 +1468,11 @@ if st.session_state.get("has_generated", False):
             with tab:
                 phase_df = df_all[df_all["Phase Key"] == phase["key"]].copy()
                 phase_row = phase_summary[phase_summary["Phase Key"] == phase["key"]].iloc[0]
-                p1, p2, p3, p4, p5, p6 = st.columns(6)
+                p1, p2, p3 = st.columns(3)
                 p1.metric(T["total_gmv"], money(phase_row["GMV"], 0))
                 p2.metric(T["total_cost"], money(phase_row["Total Cost"], 0))
                 p3.metric(T["sales_contribution"], money(phase_row["Sales Contribution"], 0))
+                p4, p5, p6 = st.columns(3)
                 p4.metric(T["total_profit"], money(phase_row["Profit"], 0))
                 p5.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
                 p6.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
