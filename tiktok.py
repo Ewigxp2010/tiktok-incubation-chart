@@ -237,6 +237,7 @@ TEXT = {
         "merchant_confirmed_input": "Merchant-confirmed input",
         "commercial_takeaways": "Commercial Takeaways",
         "forecast_range": "Forecast Range",
+        "forecast_range_prompt": "! Forecast range available",
         "conservative_case": "Conservative",
         "base_case": "Base",
         "upside_case": "Upside",
@@ -431,6 +432,7 @@ TEXT = {
         "merchant_confirmed_input": "商家已确认",
         "commercial_takeaways": "商业结论",
         "forecast_range": "结果可信区间",
+        "forecast_range_prompt": "! 可查看结果可信区间",
         "conservative_case": "保守",
         "base_case": "基准",
         "upside_case": "乐观",
@@ -908,11 +910,17 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid var(--tts-line);
         border-radius: 8px;
-        padding: 8px 8px 2px 8px;
+        padding: 18px 12px 8px 12px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
-        min-height: 430px;
+        min-height: 470px;
         display: flex;
         align-items: stretch;
+        overflow: visible !important;
+    }
+
+    div[data-testid="stPlotlyChart"] > div {
+        min-height: 430px;
+        overflow: visible !important;
     }
 
     .dashboard-note {
@@ -1919,9 +1927,9 @@ def reset_defaults():
 
 def apply_plotly_layout(fig, title, height=420):
     fig.update_layout(
-        title={"text": title, "x": 0.02, "xanchor": "left"},
+        title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.98, "yanchor": "top"},
         height=height,
-        margin=dict(l=24, r=24, t=64, b=36),
+        margin=dict(l=28, r=28, t=88, b=46),
         paper_bgcolor="white",
         plot_bgcolor="#FAFBFC",
         font=dict(color="#111827", family="Arial, sans-serif"),
@@ -2024,7 +2032,7 @@ def make_funnel_chart(df):
             hovertemplate="%{y}: %{x:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, T["funnel_summary"], height=390)
+    apply_plotly_layout(fig, T["funnel_summary"], height=450)
     fig.update_xaxes(showticklabels=False, title="")
     fig.update_yaxes(title="")
     return fig
@@ -2046,7 +2054,7 @@ def make_channel_mix_chart(phase_summary):
         marker_color="#F97316",
         hovertemplate=f"{T['affiliate_video_gmv']}: €%{{y:,.0f}}<extra></extra>",
     ))
-    apply_plotly_layout(fig, T["channel_mix"], height=390)
+    apply_plotly_layout(fig, T["channel_mix"], height=450)
     fig.update_layout(barmode="stack")
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     return fig
@@ -2532,13 +2540,13 @@ if st.session_state.get("has_generated", False):
         ])
         st.warning(f"**{takeaways[4][0]}**: {takeaways[4][1]}")
 
-        st.subheader(T["forecast_range"])
-        render_kpi_grid([
-            (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
-            (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#2563EB"),
-            (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#16A34A"),
-        ])
-        st.caption(T["forecast_range_note"])
+        with st.expander(T["forecast_range_prompt"], expanded=False):
+            st.caption(T["forecast_range_note"])
+            render_kpi_grid([
+                (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
+                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#2563EB"),
+                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#16A34A"),
+            ])
 
         st.subheader(T["client_narrative"])
         for line in narrative:
