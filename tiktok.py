@@ -608,28 +608,42 @@ def add_phase_backgrounds(ax, df):
     )
     color_map = {p["key"]: p["color"] for p in PHASES}
     for _, row in phase_ranges.iterrows():
-        ax.axvspan(row["start_week"] - 0.5, row["end_week"] + 0.5, color=color_map[row["Phase Key"]], alpha=0.8, zorder=0)
+        ax.axvspan(row["start_week"] - 0.5, row["end_week"] + 0.5, color=color_map[row["Phase Key"]], alpha=0.42, zorder=0)
+
+
+def polish_axis(ax):
+    ax.set_facecolor("#FAFBFC")
+    ax.grid(True, color=CHART_COLORS["grid"], linewidth=0.8, alpha=0.8, zorder=1)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_color("#D1D5DB")
+    ax.spines["bottom"].set_color("#D1D5DB")
+    ax.tick_params(colors="#4B5563", labelsize=9)
+    ax.title.set_color(CHART_COLORS["text"])
+    ax.xaxis.label.set_color("#374151")
+    ax.yaxis.label.set_color("#374151")
 
 
 def make_weekly_chart(df, title, break_even_week=None):
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots(figsize=(11, 5.6), facecolor="white")
     add_phase_backgrounds(ax, df)
-    ax.plot(df["Global Week"], df["GMV"], marker="o", linewidth=2, label="Forecast GMV", zorder=4)
-    ax.plot(df["Global Week"], df["Total Cost"], marker="o", label="Total Cost", zorder=3)
-    ax.plot(df["Global Week"], df["Profit"], marker="o", linewidth=2, label="Profit", zorder=4)
-    ax.axhline(0, linewidth=1, color="#555555", zorder=2)
+    ax.plot(df["Global Week"], df["GMV"], marker="o", markersize=5, linewidth=2.6, color=CHART_COLORS["gmv"], label="Forecast GMV", zorder=4)
+    ax.plot(df["Global Week"], df["Total Cost"], marker="o", markersize=5, linewidth=2.2, color=CHART_COLORS["cost"], label="Total Cost", zorder=3)
+    ax.plot(df["Global Week"], df["Profit"], marker="o", markersize=5, linewidth=2.6, color=CHART_COLORS["profit"], label="Profit", zorder=4)
+    ax.fill_between(df["Global Week"], df["GMV"], alpha=0.08, color=CHART_COLORS["gmv"], zorder=2)
+    ax.axhline(0, linewidth=1.2, color="#6B7280", zorder=2)
     if break_even_week is not None:
         point = df[df["Global Week"] == break_even_week]
         if not point.empty:
             y = float(point["Profit"].iloc[0])
-            ax.scatter([break_even_week], [y], s=80, zorder=5)
-            ax.axvline(break_even_week, linestyle="--", alpha=0.35, zorder=2)
+            ax.scatter([break_even_week], [y], s=90, color=CHART_COLORS["profit"], edgecolor="white", linewidth=1.5, zorder=5)
+            ax.axvline(break_even_week, linestyle="--", color="#6B7280", alpha=0.35, zorder=2)
             ax.annotate(f"Weekly BE: W{break_even_week}", xy=(break_even_week, y), xytext=(8, 8), textcoords="offset points")
-    ax.set_title(title)
+    ax.set_title(title, fontsize=14, fontweight="bold", pad=14)
     ax.set_xlabel("Week")
     ax.set_ylabel("€")
-    ax.grid(True, alpha=0.3, zorder=1)
-    ax.legend()
+    polish_axis(ax)
+    ax.legend(loc="upper left", frameon=False, ncols=3, bbox_to_anchor=(0, 1.02))
     format_eur_axis(ax)
     fig.tight_layout()
     return fig
@@ -638,22 +652,23 @@ def make_weekly_chart(df, title, break_even_week=None):
 def make_cumulative_profit_chart(df, break_even_week=None):
     temp = df.copy()
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots(figsize=(11, 5.6), facecolor="white")
     add_phase_backgrounds(ax, temp)
-    ax.plot(temp["Global Week"], temp["Cumulative Profit"], marker="o", linewidth=2, label="Cumulative Profit", zorder=3)
-    ax.axhline(0, linewidth=1, color="#555555", zorder=2)
+    ax.plot(temp["Global Week"], temp["Cumulative Profit"], marker="o", markersize=5, linewidth=2.8, color=CHART_COLORS["cumulative"], label="Cumulative Profit", zorder=3)
+    ax.fill_between(temp["Global Week"], temp["Cumulative Profit"], 0, alpha=0.10, color=CHART_COLORS["cumulative"], zorder=2)
+    ax.axhline(0, linewidth=1.2, color="#6B7280", zorder=2)
     if break_even_week is not None:
         point = temp[temp["Global Week"] == break_even_week]
         if not point.empty:
             y = float(point["Cumulative Profit"].iloc[0])
-            ax.scatter([break_even_week], [y], s=80, zorder=5)
-            ax.axvline(break_even_week, linestyle="--", alpha=0.35, zorder=2)
+            ax.scatter([break_even_week], [y], s=90, color=CHART_COLORS["cumulative"], edgecolor="white", linewidth=1.5, zorder=5)
+            ax.axvline(break_even_week, linestyle="--", color="#6B7280", alpha=0.35, zorder=2)
             ax.annotate(f"Cumulative BE: W{break_even_week}", xy=(break_even_week, y), xytext=(8, 8), textcoords="offset points")
-    ax.set_title("Cumulative Profit Trend")
+    ax.set_title("Cumulative Profit Trend", fontsize=14, fontweight="bold", pad=14)
     ax.set_xlabel("Week")
     ax.set_ylabel("€")
-    ax.grid(True, alpha=0.3, zorder=1)
-    ax.legend()
+    polish_axis(ax)
+    ax.legend(loc="upper left", frameon=False)
     format_eur_axis(ax)
     fig.tight_layout()
     return fig
@@ -666,24 +681,44 @@ def make_funnel_chart(df):
         "Clicks": df["Product Clicks"].sum(),
         "Orders": df["Orders"].sum(),
     })
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.bar(values.index, values.values)
-    ax.set_title("Funnel Summary")
-    ax.grid(True, axis="y", alpha=0.3)
-    ax.yaxis.set_major_formatter(ticker.StrMethodFormatter("{x:,.0f}"))
+    display = values.sort_values(ascending=True)
+    width = display / display.max()
+
+    fig, ax = plt.subplots(figsize=(11, 4.8), facecolor="white")
+    colors = ["#93C5FD", "#60A5FA", "#2563EB", "#1D4ED8"]
+    bars = ax.barh(display.index, width.values, color=colors[: len(display)], height=0.58, zorder=3)
+    for bar, raw_value in zip(bars, display.values):
+        ax.text(
+            min(bar.get_width() + 0.025, 0.94),
+            bar.get_y() + bar.get_height() / 2,
+            f"{raw_value:,.0f}",
+            va="center",
+            ha="left",
+            fontsize=10,
+            color="#111827",
+            fontweight="bold",
+        )
+    ax.set_xlim(0, 1.12)
+    ax.set_title("Funnel Summary", fontsize=14, fontweight="bold", pad=14)
+    ax.set_xlabel("")
+    ax.set_xticks([])
+    ax.grid(False)
+    for spine_name in ["top", "right", "bottom", "left"]:
+        ax.spines[spine_name].set_visible(False)
+    ax.tick_params(axis="y", colors="#374151", labelsize=10)
     fig.tight_layout()
     return fig
 
 
 def format_table(df, money_cols=None, pct_cols=None, number_cols=None):
     out = df.copy()
-    for col in money_cols or []:
+    for col in dict.fromkeys(money_cols or []):
         if col in out.columns:
             out[col] = out[col].map(lambda x: money(x, 0))
-    for col in pct_cols or []:
+    for col in dict.fromkeys(pct_cols or []):
         if col in out.columns:
             out[col] = out[col].map(lambda x: pct(x, 1))
-    for col in number_cols or []:
+    for col in dict.fromkeys(number_cols or []):
         if col in out.columns:
             out[col] = out[col].map(lambda x: f"{float(x):,.0f}")
     return out
