@@ -899,23 +899,20 @@ def make_phase_cumulative_chart(phase_df, title):
 
     fig = go.Figure()
     series = [
-        ("Cumulative GMV", "Cumulative GMV", CHART_COLORS["gmv"], "solid", 4, 9),
-        ("Cumulative Total Cost", "Cumulative Total Cost", CHART_COLORS["cost"], "solid", 4, 9),
-        ("Cumulative Profit", "Cumulative Profit", CHART_COLORS["profit"], "solid", 4, 9),
-        ("Cumulative Growth Investment", "Cumulative Growth Investment", "#8B5CF6", "dash", 3, 8),
-        ("Cumulative Ads Investment", "Cumulative Ads Investment", "#06B6D4", "dot", 2, 7),
+        ("GMV", "Cumulative GMV", CHART_COLORS["gmv"], "solid", 4, 9),
+        ("Total Cost", "Cumulative Total Cost", CHART_COLORS["cost"], "solid", 4, 9),
+        ("Profit", "Cumulative Profit", CHART_COLORS["profit"], "solid", 4, 9),
+        ("Growth Investment", "Cumulative Growth Investment", "#8B5CF6", "dash", 3, 8),
     ]
+    if float(temp["Cumulative Ads Investment"].abs().sum()) > 0:
+        series.append(("Ads Investment", "Cumulative Ads Investment", "#06B6D4", "dot", 2, 7))
     for label, col, color, dash, width, marker_size in series:
-        visible = True
-        if col == "Cumulative Ads Investment" and float(temp[col].abs().sum()) == 0:
-            visible = "legendonly"
         fig.add_trace(
             go.Scatter(
                 x=temp["Week in Phase"],
                 y=temp[col],
                 mode="lines+markers",
                 name=label,
-                visible=visible,
                 line=dict(color=color, width=width, dash=dash),
                 marker=dict(size=marker_size, color=color, line=dict(color="white", width=1.5)),
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
@@ -938,17 +935,17 @@ def make_phase_cumulative_chart(phase_df, title):
         )
 
     fig.add_hline(y=0, line_color="#6B7280", line_width=1, opacity=0.75)
-    apply_plotly_layout(fig, f"{title} - Cumulative Trend", height=480)
+    apply_plotly_layout(fig, f"{title} - Cumulative Trend", height=520)
     fig.update_layout(
         legend=dict(
             orientation="h",
-            yanchor="bottom",
-            y=1.08,
+            yanchor="top",
+            y=-0.18,
             xanchor="left",
             x=0,
             bgcolor="rgba(255,255,255,0.85)",
         ),
-        margin=dict(l=28, r=92, t=86, b=44),
+        margin=dict(l=28, r=98, t=78, b=104),
     )
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title="Week in Phase", dtick=1, tickmode="linear")
