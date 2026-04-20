@@ -107,6 +107,10 @@ TEXT = {
         "promo_yes": "Yes, 5% platform fee for first ~60 days",
         "promo_no": "No, use default category commission",
         "fulfillment": "Logistics cost €/unit or order",
+        "fbt": "Fulfilled by TikTok (FBT)",
+        "fbt_yes": "Yes, set logistics cost to €0",
+        "fbt_no": "No, use manual logistics cost",
+        "fbt_help": "Planning assumption: when FBT free shipping applies, the simulator treats both sample shipping and order logistics as €0.",
         "creator_commission": "Organic creator commission",
         "paid_creator_commission": "Paid-traffic creator commission",
         "organic_click_window": "Organic click window (weeks)",
@@ -196,6 +200,10 @@ TEXT = {
         "promo_yes": "是，前约60天平台费 5%",
         "promo_no": "否，使用默认类目佣金",
         "fulfillment": "物流成本 €/件/单",
+        "fbt": "是否使用 FBT 包邮",
+        "fbt_yes": "是，物流成本按 €0 计算",
+        "fbt_no": "否，使用手动物流成本",
+        "fbt_help": "沙盘假设：如果该商品适用 FBT 包邮，模型会把寄样物流和订单物流都按 €0 计算。",
         "creator_commission": "自然流达人佣金",
         "paid_creator_commission": "广告流达人佣金",
         "organic_click_window": "自然点击消耗周期（周）",
@@ -288,6 +296,10 @@ TEXT["de"] = {
     "promo_yes": "Ja, 5% Plattformgebühr für die ersten ~60 Tage",
     "promo_no": "Nein, Standard-Kategoriekommission verwenden",
     "fulfillment": "Logistikkosten €/Stück oder Bestellung",
+    "fbt": "Fulfilled by TikTok (FBT)",
+    "fbt_yes": "Ja, Logistikkosten auf €0 setzen",
+    "fbt_no": "Nein, manuelle Logistikkosten nutzen",
+    "fbt_help": "Planungsannahme: Wenn FBT-Gratisversand gilt, setzt der Simulator Sample-Versand und Bestelllogistik auf €0.",
     "creator_commission": "Organische Creator-Provision",
     "paid_creator_commission": "Paid-Traffic-Creator-Provision",
     "organic_click_window": "Organisches Klickfenster (Wochen)",
@@ -372,6 +384,10 @@ TEXT["nl"] = {
     "promo_yes": "Ja, 5% platform fee voor de eerste ~60 dagen",
     "promo_no": "Nee, standaard categoriecommissie gebruiken",
     "fulfillment": "Logistieke kosten €/stuk of order",
+    "fbt": "Fulfilled by TikTok (FBT)",
+    "fbt_yes": "Ja, logistieke kosten op €0 zetten",
+    "fbt_no": "Nee, handmatige logistieke kosten gebruiken",
+    "fbt_help": "Planningsaanname: wanneer FBT gratis verzending geldt, behandelt de simulator sample shipping en orderlogistiek als €0.",
     "creator_commission": "Organische creator commissie",
     "paid_creator_commission": "Paid-traffic creator commissie",
     "organic_click_window": "Organische clickperiode (weken)",
@@ -603,8 +619,9 @@ st.markdown(
     }
 
     .stTabs [aria-selected="true"] {
-        color: white;
-        background: var(--tts-red);
+        color: #111827;
+        background: #FFFFFF;
+        box-shadow: inset 0 -3px 0 var(--tts-red);
     }
 
     div[role="radiogroup"] {
@@ -622,30 +639,30 @@ st.markdown(
     }
 
     div[role="radiogroup"] label:has(input:checked) {
-        background: var(--tts-red);
-        border-color: var(--tts-red);
-        color: #FFFFFF;
-        box-shadow: 0 10px 22px rgba(254, 44, 85, 0.18);
+        background: #FFFFFF;
+        border-color: #334155;
+        color: #111827;
+        box-shadow: inset 0 -3px 0 var(--tts-red), 0 8px 20px rgba(15, 23, 42, 0.08);
     }
 
     div[role="radiogroup"] label:has(input:checked) p,
     div[role="radiogroup"] label:has(input:checked) span {
-        color: #FFFFFF;
+        color: #111827;
         font-weight: 700;
     }
 
     .stButton > button {
         border-radius: 8px;
         border: 0;
-        background: var(--tts-red);
+        background: #111827;
         color: white;
         font-weight: 720;
         min-height: 44px;
-        box-shadow: 0 12px 24px rgba(254, 44, 85, 0.22);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
     }
 
     .stButton > button:hover {
-        background: #E9274E;
+        background: #1F2937;
         color: white;
         border: 0;
     }
@@ -1315,7 +1332,32 @@ with st.sidebar:
         format_func=lambda x: T["promo_yes"] if x else T["promo_no"],
         index=0,
     )
-    logistics_cost = st.number_input(T["fulfillment"], min_value=0.0, value=5.0, step=0.5)
+    use_fbt = st.radio(
+        T["fbt"],
+        options=[True, False],
+        format_func=lambda x: T["fbt_yes"] if x else T["fbt_no"],
+        index=1,
+        help=T["fbt_help"],
+    )
+    if use_fbt:
+        st.number_input(
+            T["fulfillment"],
+            min_value=0.0,
+            value=0.0,
+            step=0.5,
+            disabled=True,
+            help=T["fbt_help"],
+            key="logistics_cost_fbt_display",
+        )
+        logistics_cost = 0.0
+    else:
+        logistics_cost = st.number_input(
+            T["fulfillment"],
+            min_value=0.0,
+            value=5.0,
+            step=0.5,
+            key="logistics_cost_manual",
+        )
     ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1)
     organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1)
     weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
