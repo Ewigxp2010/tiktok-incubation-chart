@@ -84,13 +84,6 @@ PHASES = [
     {"key": "phase3", "name": "Phase 3 - Scale", "samples_per_sku": 20, "take_rate": 0.10, "color": "#FFF4E8"},
 ]
 
-# Videos generated in week 1 keep contributing in later weeks. This long-tail
-# curve approximates evergreen content rather than a one-week sales spike.
-CONTENT_DECAY_WEIGHTS = [
-    1.00, 0.90, 0.82, 0.75, 0.68, 0.62, 0.56, 0.51,
-    0.46, 0.42, 0.38, 0.35, 0.32, 0.30, 0.28, 0.26,
-    0.24, 0.23, 0.22, 0.21, 0.20, 0.19, 0.18, 0.18,
-]
 PROMO_WEEKS = 9
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 CHART_COLORS = {
@@ -114,7 +107,9 @@ TEXT = {
         "promo_yes": "Yes, 5% platform fee for first ~60 days",
         "promo_no": "No, use default category commission",
         "fulfillment": "Logistics cost €/unit or order",
-        "creator_commission": "Creator affiliate commission",
+        "creator_commission": "Organic creator commission",
+        "paid_creator_commission": "Paid-traffic creator commission",
+        "organic_click_window": "Organic click window (weeks)",
         "ads_roas": "Ads ROAS assumption",
         "weeks_phase": "Weeks / phase",
         "phase_controls": "Phase Controls",
@@ -197,7 +192,9 @@ TEXT = {
         "promo_yes": "是，前约60天平台费 5%",
         "promo_no": "否，使用默认类目佣金",
         "fulfillment": "物流成本 €/件/单",
-        "creator_commission": "达人佣金",
+        "creator_commission": "自然流达人佣金",
+        "paid_creator_commission": "广告流达人佣金",
+        "organic_click_window": "自然点击消耗周期（周）",
         "ads_roas": "广告 ROAS 假设",
         "weeks_phase": "每阶段周数",
         "phase_controls": "阶段控制",
@@ -283,7 +280,9 @@ TEXT["de"] = {
     "promo_yes": "Ja, 5% Plattformgebühr für die ersten ~60 Tage",
     "promo_no": "Nein, Standard-Kategoriekommission verwenden",
     "fulfillment": "Logistikkosten €/Stück oder Bestellung",
-    "creator_commission": "Creator-Affiliate-Provision",
+    "creator_commission": "Organische Creator-Provision",
+    "paid_creator_commission": "Paid-Traffic-Creator-Provision",
+    "organic_click_window": "Organisches Klickfenster (Wochen)",
     "ads_roas": "Ads-ROAS-Annahme",
     "weeks_phase": "Wochen / Phase",
     "phase_controls": "Phasensteuerung",
@@ -361,7 +360,9 @@ TEXT["nl"] = {
     "promo_yes": "Ja, 5% platform fee voor de eerste ~60 dagen",
     "promo_no": "Nee, standaard categoriecommissie gebruiken",
     "fulfillment": "Logistieke kosten €/stuk of order",
-    "creator_commission": "Creator affiliate commissie",
+    "creator_commission": "Organische creator commissie",
+    "paid_creator_commission": "Paid-traffic creator commissie",
+    "organic_click_window": "Organische clickperiode (weken)",
     "ads_roas": "Ads ROAS-aanname",
     "weeks_phase": "Weken / fase",
     "phase_controls": "Fase-instellingen",
@@ -548,6 +549,8 @@ def build_weekly_model(
     promo_60d,
     logistics_cost,
     affiliate_commission_rate,
+    paid_affiliate_commission_rate,
+    organic_click_window_weeks,
     ads_roas,
 ):
     aov = product_df["AOV"].to_numpy()
@@ -565,6 +568,7 @@ def build_weekly_model(
     video_history = []
     cumulative_videos_p = np.zeros(len(product_df))
     global_week = 0
+    organic_click_window_weeks = max(1, int(organic_click_window_weeks))
 
     for phase in phase_inputs:
         for week_idx in range(int(weeks_per_phase)):
@@ -576,10 +580,10 @@ def build_weekly_model(
             cumulative_videos_p += new_videos_p
 
             active_videos_p = np.zeros(len(product_df))
-            for age, weight in enumerate(CONTENT_DECAY_WEIGHTS):
+            for age in range(organic_click_window_weeks):
                 history_idx = len(video_history) - 1 - age
                 if history_idx >= 0:
-                    active_videos_p += video_history[history_idx] * weight
+                    active_videos_p += video_history[history_idx] / organic_click_window_weeks
 
             organic_clicks_p = active_videos_p * clicks_per_video
             organic_orders_p = organic_clicks_p * click_to_order_rate
@@ -627,7 +631,9 @@ def build_weekly_model(
             platform_fee = float(np.sum(platform_fee_p))
             samples_cost = float(np.sum(samples_cost_p))
             fulfillment_cost = orders * float(logistics_cost)
-            creator_commission = affiliate_gmv * float(affiliate_commission_rate)
+            organic_creator_commission = float(np.sum(affiliate_organic_gmv_p)) * float(affiliate_commission_rate)
+            paid_creator_commission = float(np.sum(affiliate_paid_gmv_p)) * float(paid_affiliate_commission_rate)
+            creator_commission = organic_creator_commission + paid_creator_commission
             ads_cost = gmv * take_rate
             sales_contribution = gmv - cogs - platform_fee - creator_commission - fulfillment_cost
             growth_investment = samples_cost + ads_cost
@@ -649,12 +655,16 @@ def build_weekly_model(
                 "Affiliate Organic GMV": float(np.sum(affiliate_organic_gmv_p)),
                 "ShopTab Organic GMV": float(np.sum(shop_tab_organic_gmv_p)),
                 "Paid GMV Lift": float(np.sum(paid_gmv_p)),
+                "Affiliate Paid GMV": float(np.sum(affiliate_paid_gmv_p)),
+                "ShopTab Paid GMV": float(np.sum(shop_tab_paid_gmv_p)),
                 "GMV": gmv,
                 "ShopTab GMV": float(np.sum(shop_tab_gmv_p)),
                 "Affiliate Video GMV": affiliate_gmv,
                 "COGS": cogs,
                 "Gross Profit": gmv - cogs,
                 "Platform Fee": platform_fee,
+                "Organic Creator Commission": organic_creator_commission,
+                "Paid Creator Commission": paid_creator_commission,
                 "Creator Commission": creator_commission,
                 "Ads Cost": ads_cost,
                 "Samples Cost": samples_cost,
@@ -682,12 +692,16 @@ def build_phase_summary(df):
         "Affiliate Organic GMV": "sum",
         "ShopTab Organic GMV": "sum",
         "Paid GMV Lift": "sum",
+        "Affiliate Paid GMV": "sum",
+        "ShopTab Paid GMV": "sum",
         "GMV": "sum",
         "ShopTab GMV": "sum",
         "Affiliate Video GMV": "sum",
         "COGS": "sum",
         "Gross Profit": "sum",
         "Platform Fee": "sum",
+        "Organic Creator Commission": "sum",
+        "Paid Creator Commission": "sum",
         "Creator Commission": "sum",
         "Ads Cost": "sum",
         "Samples Cost": "sum",
@@ -904,7 +918,8 @@ def make_phase_total_chart(phase_row):
     cost_parts = [
         ("COGS", "COGS", "#64748B"),
         ("Platform Fee", "Platform Fee", "#F97316"),
-        ("Creator Commission", "Creator Commission", "#EC4899"),
+        ("Organic Creator Commission", "Organic Creator Commission", "#EC4899"),
+        ("Paid Creator Commission", "Paid Creator Commission", "#F472B6"),
         ("Fulfillment Cost", "Fulfillment Cost", "#14B8A6"),
         ("Sample Investment", "Samples Cost", "#8B5CF6"),
         ("Ads Investment", "Ads Cost", "#06B6D4"),
@@ -1066,7 +1081,9 @@ with st.sidebar:
     )
     logistics_cost = st.number_input(T["fulfillment"], min_value=0.0, value=5.0, step=0.5)
     affiliate_commission_rate = st.slider(T["creator_commission"], min_value=0.0, max_value=0.5, value=0.10, step=0.01)
+    paid_affiliate_commission_rate = st.slider(T["paid_creator_commission"], min_value=0.0, max_value=0.5, value=0.05, step=0.01)
     ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=5.0, step=0.1)
+    organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1)
     weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
 
     st.header(T["phase_controls"])
@@ -1143,6 +1160,8 @@ if st.session_state.get("has_generated", False):
             promo_60d=bool(promo_60d),
             logistics_cost=float(logistics_cost),
             affiliate_commission_rate=float(affiliate_commission_rate),
+            paid_affiliate_commission_rate=float(paid_affiliate_commission_rate),
+            organic_click_window_weeks=int(organic_click_window_weeks),
             ads_roas=float(ads_roas),
         )
         phase_summary = build_phase_summary(df_all)
@@ -1245,8 +1264,9 @@ if st.session_state.get("has_generated", False):
         money_cols = [
             "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
             "Paid GMV Lift", "GMV", "ShopTab GMV",
-            "Affiliate Video GMV", "COGS", "Gross Profit", "Platform Fee",
-            "Creator Commission", "Ads Cost", "Samples Cost", "Fulfillment Cost",
+            "Affiliate Video GMV", "Affiliate Paid GMV", "ShopTab Paid GMV",
+            "COGS", "Gross Profit", "Platform Fee", "Organic Creator Commission",
+            "Paid Creator Commission", "Creator Commission", "Ads Cost", "Samples Cost", "Fulfillment Cost",
             "Sales Contribution", "Growth Investment", "Total Cost", "Profit", "GMV / Sample",
             "Profit / Sample", "Total GMV", "Total Profit", "Avg Sample Cost / Unit",
             "Sample Investment", "Ads Investment",
