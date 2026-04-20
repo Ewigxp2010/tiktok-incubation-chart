@@ -167,7 +167,7 @@ TEXT = {
         "sku_mix": "SKU Mix & Funnel Assumptions",
         "total_gmv": "Total GMV",
         "total_cost": "Total Cost",
-        "sales_contribution": "Sales Contribution",
+        "sales_contribution": "Profit before samples & ads",
         "contribution_margin": "Contribution Margin",
         "total_profit": "Total Profit",
         "profit_margin": "Profit Margin",
@@ -183,6 +183,7 @@ TEXT = {
         "forecast_gmv": "Forecast GMV",
         "total_cost_label": "Total Cost",
         "profit_label": "Profit",
+        "net_profit": "Net Profit",
         "week": "Week",
         "samples_label": "Samples",
         "videos_label": "Videos",
@@ -190,7 +191,7 @@ TEXT = {
         "orders_label": "Orders",
         "affiliate_video_gmv": "Affiliate Video GMV",
         "shoptab_gmv": "Store/Search GMV",
-        "phase_total_breakdown": "P&L Breakdown",
+        "phase_total_breakdown": "Profit Bridge",
         "supporting_charts": "Supporting Charts",
         "investment_split": "Investment Split",
         "product_profile": "Product Profile",
@@ -255,7 +256,7 @@ TEXT = {
         "summary": "Summary",
         "phase_summary": "Phase Summary",
         "phase_chart_mode": "Phase chart view",
-        "phase_chart_total": "Total view",
+        "phase_chart_total": "Profit bridge",
         "phase_chart_cumulative": "Cumulative trend",
         "overall_summary": "Overall Summary",
         "break_even": "Break-even Signals",
@@ -362,7 +363,7 @@ TEXT = {
         "sku_mix": "SKU 组合与漏斗假设",
         "total_gmv": "总 GMV",
         "total_cost": "总成本",
-        "sales_contribution": "销售贡献利润",
+        "sales_contribution": "样品广告前利润",
         "contribution_margin": "贡献利润率",
         "total_profit": "总利润",
         "profit_margin": "利润率",
@@ -378,6 +379,7 @@ TEXT = {
         "forecast_gmv": "预测 GMV",
         "total_cost_label": "总成本",
         "profit_label": "利润",
+        "net_profit": "净利润",
         "week": "周",
         "samples_label": "样品",
         "videos_label": "视频",
@@ -385,7 +387,7 @@ TEXT = {
         "orders_label": "订单",
         "affiliate_video_gmv": "达人视频 GMV",
         "shoptab_gmv": "店铺/Search GMV",
-        "phase_total_breakdown": "P&L 拆解",
+        "phase_total_breakdown": "利润桥",
         "supporting_charts": "辅助图表",
         "investment_split": "投入拆分",
         "product_profile": "产品组合",
@@ -450,7 +452,7 @@ TEXT = {
         "summary": "汇总",
         "phase_summary": "阶段汇总",
         "phase_chart_mode": "阶段图表视图",
-        "phase_chart_total": "阶段总和",
+        "phase_chart_total": "利润桥",
         "phase_chart_cumulative": "累计走势",
         "overall_summary": "整体汇总",
         "break_even": "Break-even 信号",
@@ -2061,85 +2063,46 @@ def make_channel_mix_chart(phase_summary):
 
 
 def make_phase_total_chart(phase_row):
-    fig = go.Figure()
-    fig.add_trace(
-        go.Bar(
-            x=[T["forecast_gmv"]],
-            y=[float(phase_row["GMV"])],
-            name=T["forecast_gmv"],
-            marker_color="#2563EB",
-            text=[money(phase_row["GMV"], 0)],
-            textposition="outside",
-            hovertemplate=f"{T['forecast_gmv']}: €%{{y:,.0f}}<extra></extra>",
-        )
-    )
-
-    cost_parts = [
-        (T["cost_cogs"], "COGS", "#64748B"),
-        (T["cost_platform_fee"], "Platform Fee", "#F97316"),
-        ("Organic Creator Commission", "Organic Creator Commission", "#EC4899"),
-        ("Paid Creator Commission", "Paid Creator Commission", "#F472B6"),
-        (T["cost_fulfillment"], "Fulfillment Cost", "#14B8A6"),
-        (T["cost_samples"], "Samples Cost", "#8B5CF6"),
-        (T["cost_ads"], "Ads Cost", "#06B6D4"),
+    steps = [
+        (T["forecast_gmv"], float(phase_row["GMV"]), "absolute"),
+        (T["cost_cogs"], -float(phase_row["COGS"]), "relative"),
+        (T["cost_platform_fee"], -float(phase_row["Platform Fee"]), "relative"),
+        (T["cost_creator_commission"], -float(phase_row["Creator Commission"]), "relative"),
+        (T["cost_fulfillment"], -float(phase_row["Fulfillment Cost"]), "relative"),
+        (T["cost_samples"], -float(phase_row["Samples Cost"]), "relative"),
+        (T["cost_ads"], -float(phase_row["Ads Cost"]), "relative"),
+        (T["net_profit"], float(phase_row["Profit"]), "total"),
     ]
-    for label, col, color in cost_parts:
-        value = float(phase_row[col])
-        if abs(value) <= 0:
-            continue
-        fig.add_trace(
-            go.Bar(
-                x=[T["total_cost_label"]],
-                y=[value],
-                name=label,
-                marker_color=color,
-                text=[money(value, 0)],
-                textposition="inside",
-                insidetextanchor="middle",
-                hovertemplate=f"<b>{label}</b><br>Cost: €%{{y:,.0f}}<extra></extra>",
-            )
-        )
+    labels = [item[0] for item in steps]
+    values = [item[1] for item in steps]
+    measures = [item[2] for item in steps]
+    text = [money(abs(value), 0) if measure == "relative" else money(value, 0) for label, value, measure in steps]
 
-    profit_color = "#16A34A" if float(phase_row["Profit"]) >= 0 else "#DC2626"
-    fig.add_trace(
-        go.Bar(
-            x=[T["profit_label"]],
-            y=[float(phase_row["Profit"])],
-            name=T["profit_label"],
-            marker_color=profit_color,
-            text=[money(phase_row["Profit"], 0)],
+    fig = go.Figure(
+        go.Waterfall(
+            orientation="v",
+            measure=measures,
+            x=labels,
+            y=values,
+            text=text,
             textposition="outside",
-            hovertemplate=f"{T['profit_label']}: €%{{y:,.0f}}<extra></extra>",
-        )
-    )
-    fig.add_trace(
-        go.Bar(
-            x=["Sales Contribution"],
-            y=[float(phase_row["Sales Contribution"])],
-            name="Sales Contribution",
-            marker_color="#10B981",
-            text=[money(phase_row["Sales Contribution"], 0)],
-            textposition="outside",
-            hovertemplate="Sales Contribution: €%{y:,.0f}<extra></extra>",
+            connector={"line": {"color": "#CBD5E1", "width": 1}},
+            increasing={"marker": {"color": "#2563EB"}},
+            decreasing={"marker": {"color": "#F97316"}},
+            totals={"marker": {"color": "#16A34A" if float(phase_row["Profit"]) >= 0 else "#DC2626"}},
+            hovertemplate="<b>%{x}</b><br>€%{y:,.0f}<extra></extra>",
         )
     )
 
-    apply_plotly_layout(fig, f"{phase_row['Phase']} - {T['phase_total_breakdown']}", height=540)
+    apply_plotly_layout(fig, f"{phase_row['Phase']} - {T['phase_total_breakdown']}", height=560)
     fig.update_layout(
-        barmode="stack",
-        legend=dict(
-            orientation="h",
-            yanchor="top",
-            y=-0.16,
-            xanchor="left",
-            x=0,
-            bgcolor="rgba(255,255,255,0.85)",
-        ),
-        margin=dict(l=28, r=32, t=78, b=118),
+        showlegend=False,
+        margin=dict(l=36, r=36, t=96, b=108),
+        bargap=0.34,
     )
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title="")
+    fig.update_xaxes(title="", tickangle=0, automargin=True)
     return fig
 
 
