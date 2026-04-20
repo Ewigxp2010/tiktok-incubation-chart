@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from io import BytesIO
+from datetime import datetime
 
 
 st.set_page_config(page_title="TikTok Shop Growth Visualizer", layout="wide")
@@ -108,8 +109,11 @@ TEXT = {
         "cost_assumptions": "Cost Assumptions",
         "growth_levers": "Growth Levers",
         "reset_defaults": "Reset defaults",
+        "reset_confirm": "Confirm reset",
+        "reset_pending": "This will reset all inputs to the default planning setup. Click Confirm reset to continue.",
         "meeting_mode": "Meeting mode",
         "meeting_mode_help": "Hide detailed setup and data tables after generation, keeping the page focused on the client-facing summary and charts.",
+        "meeting_mode_sidebar_note": "Meeting mode is on. Detailed controls are hidden after generation; turn it off to edit assumptions.",
         "sku_count": "Number of SKUs",
         "promo": "New seller: apply first-60-day 5% platform fee",
         "promo_yes": "Apply first-60-day 5% platform fee",
@@ -212,6 +216,10 @@ TEXT = {
         "path_be_reached": "Cumulative break-even is reached in {week}. The final cumulative profit is {profit}.",
         "path_be_gap": "Cumulative break-even is not reached. The remaining gap is {gap}, with {driver} as the largest cost driver.",
         "download_meeting_html": "Download meeting summary HTML",
+        "export_materials": "Export Meeting Materials",
+        "generated_on": "Generated on",
+        "plan_length": "Plan length",
+        "sku_count_meta": "SKU count",
         "phase_trend": "Phase-by-Phase Trend",
         "summary": "Summary",
         "phase_summary": "Phase Summary",
@@ -266,8 +274,11 @@ TEXT = {
         "cost_assumptions": "成本假设",
         "growth_levers": "增长杠杆",
         "reset_defaults": "恢复默认值",
+        "reset_confirm": "确认恢复默认值",
+        "reset_pending": "此操作会将所有输入恢复到默认沙盘设置。如需继续，请点击确认恢复默认值。",
         "meeting_mode": "会议展示模式",
         "meeting_mode_help": "生成结果后隐藏详细设置和数据表，让页面聚焦总结和图表。",
+        "meeting_mode_sidebar_note": "会议展示模式已开启。生成结果后详细参数会收起；如需修改假设，请关闭该模式。",
         "sku_count": "SKU 数量",
         "promo": "是否为新商家：适用前约60天平台费 5%",
         "promo_yes": "适用前约60天平台费 5%",
@@ -370,6 +381,10 @@ TEXT = {
         "path_be_reached": "累计 Break-even 在 {week} 达成，最终累计利润为 {profit}。",
         "path_be_gap": "当前计划尚未达到累计 Break-even，距离回本还差 {gap}，最大成本项是 {driver}。",
         "download_meeting_html": "下载会议总结 HTML",
+        "export_materials": "导出会议材料",
+        "generated_on": "生成时间",
+        "plan_length": "计划周期",
+        "sku_count_meta": "SKU 数量",
         "phase_trend": "分阶段趋势",
         "summary": "汇总",
         "phase_summary": "阶段汇总",
@@ -1458,7 +1473,7 @@ def make_investment_split_chart(df_all):
     return fig
 
 
-def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus):
+def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus, generated_at):
     narrative_html = "".join(f"<li>{line}</li>" for line in narrative)
     health_html = "".join(f'<li class="{level}">{text}</li>' for level, text in health_checks)
     return f"""<!doctype html>
@@ -1470,6 +1485,8 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
     body {{ font-family: Arial, sans-serif; color: #111827; margin: 0; line-height: 1.5; background: #f6f7fb; }}
     .page {{ max-width: 980px; margin: 28px auto; padding: 0 24px 32px; }}
     .topline {{ color: #6b7280; font-size: 13px; font-weight: 700; margin-bottom: 10px; }}
+    .meta {{ color: #6b7280; font-size: 12px; margin: 10px 0 18px; display: flex; flex-wrap: wrap; gap: 8px 16px; }}
+    .meta span {{ background: #fff; border: 1px solid #e5e7eb; border-radius: 999px; padding: 5px 10px; }}
     .hero {{ background: #fff; border: 1px solid #e5e7eb; border-left: 5px solid #FE2C55; border-radius: 8px; padding: 22px 24px; box-shadow: 0 14px 30px rgba(15,23,42,.07); }}
     .hero h1 {{ margin: 0 0 8px; font-size: 28px; }}
     .hero p {{ margin: 0; color: #4b5563; }}
@@ -1488,6 +1505,11 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
 <body>
   <div class="page">
     <div class="topline">TikTok Shop Growth Visualizer</div>
+    <div class="meta">
+      <span>{T["generated_on"]}: {generated_at}</span>
+      <span>{T["plan_length"]}: {weeks} {T["week"]}</span>
+      <span>{T["sku_count_meta"]}: {skus}</span>
+    </div>
     <div class="hero">
       <h1>{T["hero_title"].format(weeks=weeks, skus=skus)}</h1>
       <p>{T["hero_subtitle"].format(gmv=money(overall["Total GMV"], 0), growth_investment=money(overall["Growth Investment"], 0), break_even=path_text)}</p>
@@ -1531,7 +1553,7 @@ def wrap_pdf_text(text, max_width, font_name, font_size):
     return words
 
 
-def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus):
+def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at):
     from reportlab.lib.pagesizes import A4
     from reportlab.lib import colors
     from reportlab.pdfgen import canvas
@@ -1573,6 +1595,18 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
     pdf.setFont(font_name, 20)
     pdf.drawString(margin, y, clean(T["hero_title"].format(weeks=weeks, skus=skus)))
     y -= 24
+
+    pdf.setFillColor(colors.HexColor("#6B7280"))
+    pdf.setFont(font_name, 9)
+    meta_line = (
+        f"{T['generated_on']}: {generated_at}  |  "
+        f"{T['plan_length']}: {weeks} {T['week']}  |  "
+        f"{T['sku_count_meta']}: {skus}"
+    )
+    pdf.drawString(margin, y, clean(meta_line))
+    y -= 18
+
+    pdf.setFillColor(colors.HexColor("#111827"))
     y = draw_wrapped(
         T["hero_subtitle"].format(
             gmv=money(overall["Total GMV"], 0),
@@ -1632,12 +1666,13 @@ def reset_defaults():
         "sku_name_", "category_", "subcategory_", "aov_", "gross_margin_pct_",
         "organic_commission_pct_", "paid_commission_pct_", "videos_per_sample_",
         "clicks_per_video_", "click_to_order_pct_", "shop_tab_share_pct_",
-        "take_rate_", "samples_per_sku_", "phase_chart_mode_",
+        "take_rate_", "samples_per_sku_", "phase_chart_mode_", "_model_",
     )
     exact_keys = {
         "has_generated", "selected_phase_view", "logistics_cost_manual",
         "meeting_mode_input", "n_skus_input", "promo_60d_input", "use_fbt_input",
         "weeks_per_phase_input", "ads_roas_input", "organic_window_input",
+        "reset_confirm_pending",
     }
     for key in list(st.session_state.keys()):
         if key in exact_keys or any(key.startswith(prefix) for prefix in prefixes):
@@ -1952,60 +1987,91 @@ st.caption(T["caption"])
 with st.sidebar:
     st.header(T["plan_setup"])
     n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
-    if st.button(T["reset_defaults"]):
-        reset_defaults()
+    if st.button(T["reset_defaults"], key="reset_request_btn"):
+        st.session_state["reset_confirm_pending"] = True
+    if st.session_state.get("reset_confirm_pending", False):
+        st.warning(T["reset_pending"])
+        if st.button(T["reset_confirm"], key="reset_confirm_btn"):
+            reset_defaults()
+
     meeting_mode = st.checkbox(
         T["meeting_mode"],
         value=False,
         help=T["meeting_mode_help"],
         key="meeting_mode_input",
     )
-    promo_60d = st.checkbox(
-        T["promo"],
-        value=True,
-        help=T["promo_yes"],
-        key="promo_60d_input",
-    )
-    use_fbt = st.checkbox(
-        T["fbt"],
-        value=False,
-        help=T["fbt_help"],
-        key="use_fbt_input",
-    )
-    weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1, key="weeks_per_phase_input")
 
-    st.header(T["cost_assumptions"])
-    logistics_cost = st.number_input(
-        T["fulfillment"],
-        min_value=0.0,
-        value=5.0,
-        step=0.5,
-        key="logistics_cost_manual",
-    )
-
-    st.header(T["growth_levers"])
-    ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
-    organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1, key="organic_window_input")
-    st.header(T["phase_controls"])
-    phase_inputs = []
-    for idx, phase in enumerate(PHASES):
-        st.subheader(phase_label(phase))
-        take_rate = st.number_input(
-            f"{T['take_rate']} - {phase_label(phase)}",
-            min_value=0.0,
-            max_value=30.0,
-            value=float(phase["take_rate"] * 100),
-            step=1.0,
-            key=f"take_rate_{idx}",
-        ) / 100
-        samples_per_sku = st.number_input(
-            f"{T['samples_sku_week']} - {phase_label(phase)}",
-            min_value=0,
-            value=int(phase["samples_per_sku"]),
-            step=1,
-            key=f"samples_per_sku_{idx}",
+    sidebar_meeting_compact = meeting_mode and st.session_state.get("has_generated", False)
+    if sidebar_meeting_compact:
+        st.info(T["meeting_mode_sidebar_note"])
+        promo_60d = bool(st.session_state.get("_model_promo_60d", st.session_state.get("promo_60d_input", True)))
+        use_fbt = bool(st.session_state.get("_model_use_fbt", st.session_state.get("use_fbt_input", False)))
+        weeks_per_phase = int(st.session_state.get("_model_weeks_per_phase", st.session_state.get("weeks_per_phase_input", 4)))
+        logistics_cost = float(st.session_state.get("_model_logistics_cost", st.session_state.get("logistics_cost_manual", 5.0)))
+        ads_roas = float(st.session_state.get("_model_ads_roas", st.session_state.get("ads_roas_input", 6.0)))
+        organic_click_window_weeks = int(st.session_state.get("_model_organic_click_window_weeks", st.session_state.get("organic_window_input", 4)))
+        phase_inputs = []
+        for idx, phase in enumerate(PHASES):
+            take_rate_pct = float(st.session_state.get(f"_model_take_rate_pct_{idx}", st.session_state.get(f"take_rate_{idx}", phase["take_rate"] * 100)))
+            samples_per_sku = int(st.session_state.get(f"_model_samples_per_sku_{idx}", st.session_state.get(f"samples_per_sku_{idx}", phase["samples_per_sku"])))
+            phase_inputs.append({**phase, "take_rate": take_rate_pct / 100, "samples_per_sku": samples_per_sku})
+    else:
+        promo_60d = st.checkbox(
+            T["promo"],
+            value=True,
+            help=T["promo_yes"],
+            key="promo_60d_input",
         )
-        phase_inputs.append({**phase, "take_rate": take_rate, "samples_per_sku": samples_per_sku})
+        use_fbt = st.checkbox(
+            T["fbt"],
+            value=False,
+            help=T["fbt_help"],
+            key="use_fbt_input",
+        )
+        weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1, key="weeks_per_phase_input")
+
+        st.header(T["cost_assumptions"])
+        logistics_cost = st.number_input(
+            T["fulfillment"],
+            min_value=0.0,
+            value=5.0,
+            step=0.5,
+            key="logistics_cost_manual",
+        )
+
+        st.header(T["growth_levers"])
+        ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
+        organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1, key="organic_window_input")
+        st.header(T["phase_controls"])
+        phase_inputs = []
+        for idx, phase in enumerate(PHASES):
+            st.subheader(phase_label(phase))
+            take_rate = st.number_input(
+                f"{T['take_rate']} - {phase_label(phase)}",
+                min_value=0.0,
+                max_value=30.0,
+                value=float(phase["take_rate"] * 100),
+                step=1.0,
+                key=f"take_rate_{idx}",
+            ) / 100
+            samples_per_sku = st.number_input(
+                f"{T['samples_sku_week']} - {phase_label(phase)}",
+                min_value=0,
+                value=int(phase["samples_per_sku"]),
+                step=1,
+                key=f"samples_per_sku_{idx}",
+            )
+            phase_inputs.append({**phase, "take_rate": take_rate, "samples_per_sku": samples_per_sku})
+
+        st.session_state["_model_promo_60d"] = bool(promo_60d)
+        st.session_state["_model_use_fbt"] = bool(use_fbt)
+        st.session_state["_model_weeks_per_phase"] = int(weeks_per_phase)
+        st.session_state["_model_logistics_cost"] = float(logistics_cost)
+        st.session_state["_model_ads_roas"] = float(ads_roas)
+        st.session_state["_model_organic_click_window_weeks"] = int(organic_click_window_weeks)
+        for idx, phase in enumerate(phase_inputs):
+            st.session_state[f"_model_take_rate_pct_{idx}"] = float(phase["take_rate"] * 100)
+            st.session_state[f"_model_samples_per_sku_{idx}"] = int(phase["samples_per_sku"])
 
 show_setup = (not meeting_mode) or (not st.session_state.get("has_generated", False))
 
@@ -2297,8 +2363,9 @@ if st.session_state.get("has_generated", False):
             "Videos / Sample", "Orders / Sample", "GMV / Sample Cost",
         ]
 
-        st.subheader(T["summary"])
+        st.subheader(T["export_materials"])
         customer_summary = build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_be_label)
+        generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
         meeting_html = meeting_recap_html(
             overall=overall,
             narrative=narrative,
@@ -2306,6 +2373,7 @@ if st.session_state.get("has_generated", False):
             path_text=path_text,
             weeks=int(weeks_per_phase) * len(PHASES),
             skus=int(n_skus),
+            generated_at=generated_at,
         )
         meeting_pdf = meeting_summary_pdf(
             overall=overall,
@@ -2314,6 +2382,7 @@ if st.session_state.get("has_generated", False):
             path_text=path_text,
             weeks=int(weeks_per_phase) * len(PHASES),
             skus=int(n_skus),
+            generated_at=generated_at,
         )
         dl_summary, dl_html, dl_pdf = st.columns(3)
         with dl_summary:
@@ -2338,6 +2407,7 @@ if st.session_state.get("has_generated", False):
                 mime="application/pdf",
             )
         if not meeting_mode:
+            st.subheader(T["summary"])
             with st.expander(T["phase_summary"], expanded=False):
                 st.dataframe(
                     format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
