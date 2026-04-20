@@ -1283,18 +1283,12 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
     return pd.DataFrame(rows, columns=["Metric", "Value"])
 
 
-def kpi_card(label, value, accent="#2563EB"):
-    return f"""
-    <div class="premium-kpi" style="--accent:{accent};">
-        <div class="premium-kpi-label">{label}</div>
-        <div class="premium-kpi-value">{value}</div>
-    </div>
-    """
-
-
 def render_kpi_grid(items):
-    cards = "".join(kpi_card(label, value, accent) for label, value, accent in items)
-    st.markdown(f'<div class="kpi-grid">{cards}</div>', unsafe_allow_html=True)
+    for start in range(0, len(items), 4):
+        cols = st.columns(4)
+        for col, item in zip(cols, items[start:start + 4]):
+            label, value, _accent = item
+            col.metric(label, value)
 
 
 def render_hero(overall, weeks, skus, break_even_label):
