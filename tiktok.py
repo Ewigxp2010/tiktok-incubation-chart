@@ -106,6 +106,7 @@ TEXT = {
         "plan_setup": "Plan Setup",
         "cost_assumptions": "Cost Assumptions",
         "growth_levers": "Growth Levers",
+        "reset_defaults": "Reset defaults",
         "meeting_mode": "Meeting mode",
         "meeting_mode_help": "Hide detailed setup and data tables after generation, keeping the page focused on the client-facing summary and charts.",
         "sku_count": "Number of SKUs",
@@ -185,6 +186,7 @@ TEXT = {
         "shoptab_gmv": "ShopTab GMV",
         "phase_total_breakdown": "P&L Breakdown",
         "supporting_charts": "Supporting Charts",
+        "investment_split": "Investment Split",
         "product_profile": "Product Profile",
         "hero_title": "{weeks}-week incubation plan for {skus} SKUs",
         "hero_subtitle": "Projected {gmv} GMV with {growth_investment} growth investment. Break-even: {break_even}.",
@@ -194,6 +196,21 @@ TEXT = {
         "chart_insight": "Chart Insight",
         "overall_chart_insight": "GMV moves from {start_gmv} in Week 1 to {end_gmv} by Week {end_week}. The plan's cumulative profit ends at {cum_profit}.",
         "phase_chart_insight": "{phase} ends with {gmv} GMV, {profit} profit, and {investment} growth investment.",
+        "client_narrative": "Client Narrative",
+        "narrative_what": "What happens: The model estimates {gmv} GMV and {profit} total profit over {weeks} weeks.",
+        "narrative_why": "Why it happens: The largest GMV source is {channel}, supported by {samples} samples and {videos} creator videos.",
+        "narrative_next": "What to do next: Focus the next discussion on {driver}, the largest cost driver, and validate funnel assumptions with internal subcategory data.",
+        "health_check": "Assumption Health Check",
+        "health_ok": "No major assumption risk detected under the current setup.",
+        "health_take_rate": "Take Rate x ROAS is high in at least one phase. Check whether the implied paid GMV lift is realistic.",
+        "health_sample_roi": "Sample ROI is low. Review sample quantity, AOV, conversion rate, or sample cost.",
+        "health_profit_negative": "Total profit is negative. The largest cost driver is {driver}.",
+        "health_shoptab": "At least one SKU has a high ShopTab GMV share. Validate this with internal data before presenting as a firm forecast.",
+        "health_conversion": "At least one SKU has a high click-to-order conversion rate. Consider using a conservative value unless internal data supports it.",
+        "path_to_be": "Path to Break-even",
+        "path_be_reached": "Cumulative break-even is reached in {week}. The final cumulative profit is {profit}.",
+        "path_be_gap": "Cumulative break-even is not reached. The remaining gap is {gap}, with {driver} as the largest cost driver.",
+        "download_meeting_html": "Download meeting recap HTML",
         "phase_trend": "Phase-by-Phase Trend",
         "summary": "Summary",
         "phase_summary": "Phase Summary",
@@ -246,6 +263,7 @@ TEXT = {
         "plan_setup": "计划设置",
         "cost_assumptions": "成本假设",
         "growth_levers": "增长杠杆",
+        "reset_defaults": "恢复默认值",
         "meeting_mode": "会议展示模式",
         "meeting_mode_help": "生成结果后隐藏详细设置和数据表，让页面聚焦客户版总结和图表。",
         "sku_count": "SKU 数量",
@@ -325,6 +343,7 @@ TEXT = {
         "shoptab_gmv": "ShopTab GMV",
         "phase_total_breakdown": "P&L 拆解",
         "supporting_charts": "辅助图表",
+        "investment_split": "投入拆分",
         "product_profile": "产品组合",
         "hero_title": "{weeks} 周、{skus} 个 SKU 的孵化计划",
         "hero_subtitle": "预计产生 {gmv} GMV，需要 {growth_investment} 增长投入。Break-even：{break_even}。",
@@ -334,6 +353,21 @@ TEXT = {
         "chart_insight": "图表解读",
         "overall_chart_insight": "GMV 从第 1 周的 {start_gmv} 增长到第 {end_week} 周的 {end_gmv}，累计利润最终为 {cum_profit}。",
         "phase_chart_insight": "{phase} 结束时预计产生 {gmv} GMV，利润 {profit}，增长投入 {investment}。",
+        "client_narrative": "客户版叙事",
+        "narrative_what": "结果：模型预计在 {weeks} 周内产生 {gmv} GMV，总利润为 {profit}。",
+        "narrative_why": "原因：最大的 GMV 来源是 {channel}，同时由 {samples} 个样品和 {videos} 条达人视频支撑。",
+        "narrative_next": "下一步：建议重点讨论 {driver} 这个最大成本项，并用内部 subcategory 数据验证漏斗假设。",
+        "health_check": "假设健康检查",
+        "health_ok": "当前设置下没有发现明显假设风险。",
+        "health_take_rate": "至少一个阶段的 Take Rate x ROAS 偏高，建议确认广告带来的 GMV 增量是否合理。",
+        "health_sample_roi": "样品 ROI 偏低，建议检查寄样数量、AOV、转化率或样品成本。",
+        "health_profit_negative": "总利润为负，当前最大的成本项是 {driver}。",
+        "health_shoptab": "至少一个 SKU 的 ShopTab GMV 占比较高，建议用内部数据验证后再作为正式预测。",
+        "health_conversion": "至少一个 SKU 的点击到下单转化率偏高，除非有内部数据支持，否则建议使用更保守的假设。",
+        "path_to_be": "Break-even 路径",
+        "path_be_reached": "累计 Break-even 在 {week} 达成，最终累计利润为 {profit}。",
+        "path_be_gap": "当前计划尚未达到累计 Break-even，距离回本还差 {gap}，最大成本项是 {driver}。",
+        "download_meeting_html": "下载会议 recap HTML",
         "phase_trend": "分阶段趋势",
         "summary": "汇总",
         "phase_summary": "阶段汇总",
@@ -1352,6 +1386,128 @@ def phase_chart_insight(row):
     )
 
 
+def client_narrative(overall, df_all, phase_summary, weeks, driver):
+    return [
+        T["narrative_what"].format(
+            gmv=money(overall["Total GMV"], 0),
+            profit=money(overall["Total Profit"], 0),
+            weeks=weeks,
+        ),
+        T["narrative_why"].format(
+            channel=main_gmv_channel(df_all),
+            samples=f"{overall['Total Samples']:,.0f}",
+            videos=f"{overall['Total Videos']:,.0f}",
+        ),
+        T["narrative_next"].format(driver=driver),
+    ]
+
+
+def assumption_health_checks(product_df, phase_inputs, ads_roas, overall, driver):
+    checks = []
+    if any(float(phase["take_rate"]) * float(ads_roas) >= 0.70 for phase in phase_inputs):
+        checks.append(T["health_take_rate"])
+    if float(overall["GMV / Sample Cost"]) < 3.0 and float(overall["Sample Investment"]) > 0:
+        checks.append(T["health_sample_roi"])
+    if float(overall["Total Profit"]) < 0:
+        checks.append(T["health_profit_negative"].format(driver=driver))
+    if product_df["ShopTab GMV Share"].max() >= 0.55:
+        checks.append(T["health_shoptab"])
+    if product_df["Click-to-order Rate"].max() >= 0.08:
+        checks.append(T["health_conversion"])
+    return checks or [T["health_ok"]]
+
+
+def path_to_break_even(df_all, cumulative_be, driver):
+    temp = df_all.copy()
+    temp["Cumulative Profit"] = temp["Profit"].cumsum()
+    final_profit = float(temp["Cumulative Profit"].iloc[-1]) if not temp.empty else 0.0
+    if cumulative_be:
+        return T["path_be_reached"].format(week=f"{T['week']} {cumulative_be}", profit=money(final_profit, 0))
+    return T["path_be_gap"].format(gap=money(abs(final_profit), 0), driver=driver)
+
+
+def make_investment_split_chart(df_all):
+    values = pd.Series({
+        T["cost_samples"]: df_all["Samples Cost"].sum(),
+        T["cost_ads"]: df_all["Ads Cost"].sum(),
+        T["cost_creator_commission"]: df_all["Creator Commission"].sum(),
+        T["cost_platform_fee"]: df_all["Platform Fee"].sum(),
+        T["cost_fulfillment"]: df_all["Fulfillment Cost"].sum(),
+        T["cost_cogs"]: df_all["COGS"].sum(),
+    })
+    values = values[values > 0].sort_values(ascending=True)
+    fig = go.Figure(
+        go.Bar(
+            x=values.values,
+            y=values.index,
+            orientation="h",
+            marker=dict(color=["#8B5CF6", "#06B6D4", "#EC4899", "#F97316", "#14B8A6", "#64748B"][:len(values)]),
+            text=[money(v, 0) for v in values.values],
+            textposition="outside",
+            hovertemplate="%{y}: €%{x:,.0f}<extra></extra>",
+        )
+    )
+    apply_plotly_layout(fig, T["investment_split"], height=390)
+    fig.update_xaxes(tickprefix="€", tickformat=",.0f", title="")
+    fig.update_yaxes(title="")
+    return fig
+
+
+def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus):
+    narrative_html = "".join(f"<li>{line}</li>" for line in narrative)
+    health_html = "".join(f"<li>{line}</li>" for line in health_checks)
+    return f"""<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{T["title"]}</title>
+  <style>
+    body {{ font-family: Arial, sans-serif; color: #111827; margin: 32px; line-height: 1.5; }}
+    .hero {{ border: 1px solid #e5e7eb; border-left: 5px solid #FE2C55; border-radius: 8px; padding: 20px; }}
+    .grid {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }}
+    .card {{ border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; }}
+    .label {{ color: #6b7280; font-size: 12px; font-weight: 700; }}
+    .value {{ font-size: 22px; font-weight: 800; margin-top: 6px; }}
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>{T["hero_title"].format(weeks=weeks, skus=skus)}</h1>
+    <p>{T["hero_subtitle"].format(gmv=money(overall["Total GMV"], 0), growth_investment=money(overall["Growth Investment"], 0), break_even=path_text)}</p>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="label">{T["total_gmv"]}</div><div class="value">{money(overall["Total GMV"], 0)}</div></div>
+    <div class="card"><div class="label">{T["total_profit"]}</div><div class="value">{money(overall["Total Profit"], 0)}</div></div>
+    <div class="card"><div class="label">{T["growth_investment"]}</div><div class="value">{money(overall["Growth Investment"], 0)}</div></div>
+  </div>
+  <h2>{T["client_narrative"]}</h2>
+  <ol>{narrative_html}</ol>
+  <h2>{T["health_check"]}</h2>
+  <ul>{health_html}</ul>
+  <h2>{T["path_to_be"]}</h2>
+  <p>{path_text}</p>
+</body>
+</html>"""
+
+
+def reset_defaults():
+    prefixes = (
+        "sku_name_", "category_", "subcategory_", "aov_", "gross_margin_pct_",
+        "organic_commission_pct_", "paid_commission_pct_", "videos_per_sample_",
+        "clicks_per_video_", "click_to_order_pct_", "shop_tab_share_pct_",
+        "take_rate_", "samples_per_sku_", "phase_chart_mode_",
+    )
+    exact_keys = {
+        "has_generated", "selected_phase_view", "logistics_cost_manual",
+        "meeting_mode_input", "n_skus_input", "promo_60d_input", "use_fbt_input",
+        "weeks_per_phase_input", "ads_roas_input", "organic_window_input",
+    }
+    for key in list(st.session_state.keys()):
+        if key in exact_keys or any(key.startswith(prefix) for prefix in prefixes):
+            del st.session_state[key]
+    st.rerun()
+
+
 def apply_plotly_layout(fig, title, height=420):
     fig.update_layout(
         title={"text": title, "x": 0.02, "xanchor": "left"},
@@ -1658,24 +1814,29 @@ st.caption(T["caption"])
 
 with st.sidebar:
     st.header(T["plan_setup"])
+    if st.button(T["reset_defaults"]):
+        reset_defaults()
     meeting_mode = st.checkbox(
         T["meeting_mode"],
         value=False,
         help=T["meeting_mode_help"],
+        key="meeting_mode_input",
     )
-    n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=5, step=1)
+    n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
     promo_60d = st.radio(
         T["promo"],
         options=[True, False],
         format_func=lambda x: T["promo_yes"] if x else T["promo_no"],
         index=0,
+        key="promo_60d_input",
     )
     use_fbt = st.checkbox(
         T["fbt"],
         value=False,
         help=T["fbt_help"],
+        key="use_fbt_input",
     )
-    weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
+    weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1, key="weeks_per_phase_input")
 
     st.header(T["cost_assumptions"])
     logistics_cost = st.number_input(
@@ -1687,8 +1848,8 @@ with st.sidebar:
     )
 
     st.header(T["growth_levers"])
-    ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1)
-    organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1)
+    ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
+    organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1, key="organic_window_input")
     st.header(T["phase_controls"])
     phase_inputs = []
     for idx, phase in enumerate(PHASES):
@@ -1820,6 +1981,23 @@ if st.session_state.get("has_generated", False):
         overall = overall_summary.iloc[0]
         weekly_be_label = f"Week {weekly_be}" if weekly_be else T["not_reached"]
         cumulative_be_label = f"Week {cumulative_be}" if cumulative_be else T["not_reached"]
+        total_cost_row = df_all.sum(numeric_only=True)
+        total_cost_driver, _, _ = cost_driver(total_cost_row)
+        narrative = client_narrative(
+            overall=overall,
+            df_all=df_all,
+            phase_summary=phase_summary,
+            weeks=int(weeks_per_phase) * len(PHASES),
+            driver=total_cost_driver,
+        )
+        health_checks = assumption_health_checks(
+            product_df=product_df,
+            phase_inputs=phase_inputs,
+            ads_roas=float(ads_roas),
+            overall=overall,
+            driver=total_cost_driver,
+        )
+        path_text = path_to_break_even(df_all, cumulative_be, total_cost_driver)
 
         render_hero(
             overall=overall,
@@ -1860,6 +2038,23 @@ if st.session_state.get("has_generated", False):
             """,
             unsafe_allow_html=True,
         )
+
+        st.subheader(T["client_narrative"])
+        for line in narrative:
+            st.write(f"- {line}")
+
+        st.subheader(T["health_check"])
+        for check in health_checks:
+            if check == T["health_ok"]:
+                st.success(check)
+            else:
+                st.warning(check)
+
+        st.subheader(T["path_to_be"])
+        if cumulative_be:
+            st.success(path_text)
+        else:
+            st.warning(path_text)
 
         st.subheader(T["sample_roi_title"])
         r1, r2, r3, r4 = st.columns(4)
@@ -1902,6 +2097,7 @@ if st.session_state.get("has_generated", False):
             st.plotly_chart(make_funnel_chart(df_all), use_container_width=True)
         with c4:
             st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True)
+        st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True)
 
         st.subheader(T["phase_trend"])
         selected_phase_key = st.radio(
@@ -1965,12 +2161,29 @@ if st.session_state.get("has_generated", False):
 
         st.subheader(T["summary"])
         customer_summary = build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_be_label)
-        st.download_button(
-            T["download_customer_summary"],
-            data=csv_bytes(customer_summary),
-            file_name="customer_summary.csv",
-            mime="text/csv",
+        meeting_html = meeting_recap_html(
+            overall=overall,
+            narrative=narrative,
+            health_checks=health_checks,
+            path_text=path_text,
+            weeks=int(weeks_per_phase) * len(PHASES),
+            skus=int(n_skus),
         )
+        dl_summary, dl_html = st.columns(2)
+        with dl_summary:
+            st.download_button(
+                T["download_customer_summary"],
+                data=csv_bytes(customer_summary),
+                file_name="customer_summary.csv",
+                mime="text/csv",
+            )
+        with dl_html:
+            st.download_button(
+                T["download_meeting_html"],
+                data=meeting_html.encode("utf-8"),
+                file_name="meeting_recap.html",
+                mime="text/html",
+            )
         if not meeting_mode:
             with st.expander(T["phase_summary"], expanded=False):
                 st.dataframe(
