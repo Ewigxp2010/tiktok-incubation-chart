@@ -1405,16 +1405,16 @@ def client_narrative(overall, df_all, phase_summary, weeks, driver):
 def assumption_health_checks(product_df, phase_inputs, ads_roas, overall, driver):
     checks = []
     if any(float(phase["take_rate"]) * float(ads_roas) >= 0.70 for phase in phase_inputs):
-        checks.append(T["health_take_rate"])
+        checks.append(("warning", T["health_take_rate"]))
     if float(overall["GMV / Sample Cost"]) < 3.0 and float(overall["Sample Investment"]) > 0:
-        checks.append(T["health_sample_roi"])
+        checks.append(("warning", T["health_sample_roi"]))
     if float(overall["Total Profit"]) < 0:
-        checks.append(T["health_profit_negative"].format(driver=driver))
+        checks.append(("warning", T["health_profit_negative"].format(driver=driver)))
     if product_df["ShopTab GMV Share"].max() >= 0.55:
-        checks.append(T["health_shoptab"])
+        checks.append(("info", T["health_shoptab"]))
     if product_df["Click-to-order Rate"].max() >= 0.08:
-        checks.append(T["health_conversion"])
-    return checks or [T["health_ok"]]
+        checks.append(("info", T["health_conversion"]))
+    return checks or [("ok", T["health_ok"])]
 
 
 def path_to_break_even(df_all, cumulative_be, driver):
@@ -1435,57 +1435,78 @@ def make_investment_split_chart(df_all):
         T["cost_fulfillment"]: df_all["Fulfillment Cost"].sum(),
         T["cost_cogs"]: df_all["COGS"].sum(),
     })
-    values = values[values > 0].sort_values(ascending=True)
+    values = values[values > 0].sort_values(ascending=False)
     fig = go.Figure(
-        go.Bar(
-            x=values.values,
-            y=values.index,
-            orientation="h",
-            marker=dict(color=["#8B5CF6", "#06B6D4", "#EC4899", "#F97316", "#14B8A6", "#64748B"][:len(values)]),
-            text=[money(v, 0) for v in values.values],
-            textposition="outside",
-            hovertemplate="%{y}: €%{x:,.0f}<extra></extra>",
+        go.Pie(
+            labels=values.index,
+            values=values.values,
+            hole=0.46,
+            marker=dict(colors=["#64748B", "#8B5CF6", "#06B6D4", "#EC4899", "#F97316", "#14B8A6"][:len(values)]),
+            textinfo="label+percent",
+            hovertemplate="%{label}: €%{value:,.0f}<extra></extra>",
         )
     )
     apply_plotly_layout(fig, T["investment_split"], height=390)
-    fig.update_xaxes(tickprefix="€", tickformat=",.0f", title="")
-    fig.update_yaxes(title="")
+    fig.update_layout(
+        showlegend=True,
+        legend=dict(orientation="h", yanchor="top", y=-0.06, xanchor="center", x=0.5),
+        margin=dict(l=24, r=24, t=64, b=80),
+    )
     return fig
 
 
 def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus):
     narrative_html = "".join(f"<li>{line}</li>" for line in narrative)
-    health_html = "".join(f"<li>{line}</li>" for line in health_checks)
+    health_html = "".join(f'<li class="{level}">{text}</li>' for level, text in health_checks)
     return f"""<!doctype html>
 <html>
 <head>
   <meta charset="utf-8">
   <title>{T["title"]}</title>
   <style>
-    body {{ font-family: Arial, sans-serif; color: #111827; margin: 32px; line-height: 1.5; }}
-    .hero {{ border: 1px solid #e5e7eb; border-left: 5px solid #FE2C55; border-radius: 8px; padding: 20px; }}
+    body {{ font-family: Arial, sans-serif; color: #111827; margin: 0; line-height: 1.5; background: #f6f7fb; }}
+    .page {{ max-width: 980px; margin: 28px auto; padding: 0 24px 32px; }}
+    .topline {{ color: #6b7280; font-size: 13px; font-weight: 700; margin-bottom: 10px; }}
+    .hero {{ background: #fff; border: 1px solid #e5e7eb; border-left: 5px solid #FE2C55; border-radius: 8px; padding: 22px 24px; box-shadow: 0 14px 30px rgba(15,23,42,.07); }}
+    .hero h1 {{ margin: 0 0 8px; font-size: 28px; }}
+    .hero p {{ margin: 0; color: #4b5563; }}
     .grid {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }}
-    .card {{ border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; }}
+    .card {{ background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; box-shadow: 0 8px 18px rgba(15,23,42,.04); }}
     .label {{ color: #6b7280; font-size: 12px; font-weight: 700; }}
     .value {{ font-size: 22px; font-weight: 800; margin-top: 6px; }}
+    .section {{ background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 18px 20px; margin-top: 14px; }}
+    h2 {{ margin: 0 0 10px; font-size: 18px; }}
+    li {{ margin-bottom: 8px; }}
+    li.ok {{ color: #166534; }}
+    li.info {{ color: #1d4ed8; }}
+    li.warning {{ color: #92400e; }}
   </style>
 </head>
 <body>
-  <div class="hero">
-    <h1>{T["hero_title"].format(weeks=weeks, skus=skus)}</h1>
-    <p>{T["hero_subtitle"].format(gmv=money(overall["Total GMV"], 0), growth_investment=money(overall["Growth Investment"], 0), break_even=path_text)}</p>
+  <div class="page">
+    <div class="topline">TikTok Shop Growth Visualizer</div>
+    <div class="hero">
+      <h1>{T["hero_title"].format(weeks=weeks, skus=skus)}</h1>
+      <p>{T["hero_subtitle"].format(gmv=money(overall["Total GMV"], 0), growth_investment=money(overall["Growth Investment"], 0), break_even=path_text)}</p>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="label">{T["total_gmv"]}</div><div class="value">{money(overall["Total GMV"], 0)}</div></div>
+      <div class="card"><div class="label">{T["total_profit"]}</div><div class="value">{money(overall["Total Profit"], 0)}</div></div>
+      <div class="card"><div class="label">{T["growth_investment"]}</div><div class="value">{money(overall["Growth Investment"], 0)}</div></div>
+    </div>
+    <div class="section">
+      <h2>{T["client_narrative"]}</h2>
+      <ol>{narrative_html}</ol>
+    </div>
+    <div class="section">
+      <h2>{T["health_check"]}</h2>
+      <ul>{health_html}</ul>
+    </div>
+    <div class="section">
+      <h2>{T["path_to_be"]}</h2>
+      <p>{path_text}</p>
+    </div>
   </div>
-  <div class="grid">
-    <div class="card"><div class="label">{T["total_gmv"]}</div><div class="value">{money(overall["Total GMV"], 0)}</div></div>
-    <div class="card"><div class="label">{T["total_profit"]}</div><div class="value">{money(overall["Total Profit"], 0)}</div></div>
-    <div class="card"><div class="label">{T["growth_investment"]}</div><div class="value">{money(overall["Growth Investment"], 0)}</div></div>
-  </div>
-  <h2>{T["client_narrative"]}</h2>
-  <ol>{narrative_html}</ol>
-  <h2>{T["health_check"]}</h2>
-  <ul>{health_html}</ul>
-  <h2>{T["path_to_be"]}</h2>
-  <p>{path_text}</p>
 </body>
 </html>"""
 
@@ -2044,9 +2065,11 @@ if st.session_state.get("has_generated", False):
             st.write(f"- {line}")
 
         st.subheader(T["health_check"])
-        for check in health_checks:
-            if check == T["health_ok"]:
+        for level, check in health_checks:
+            if level == "ok":
                 st.success(check)
+            elif level == "info":
+                st.info(check)
             else:
                 st.warning(check)
 
