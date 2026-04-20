@@ -2,13 +2,14 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+from io import BytesIO
 
 
 st.set_page_config(page_title="TikTok Shop Growth Visualizer", layout="wide")
 
 
-# Public benchmark estimates. Replace CATEGORY_PRESETS with internal data
-# when a data-team subcategory table is available.
+# Planning benchmark estimates. Align inputs with AM guidance and
+# similar TikTok Shop category or merchant data when available.
 
 
 PLATFORM_COMMISSION = {
@@ -252,6 +253,7 @@ TEXT = {
         "model_assumptions": "Model Logic",
         "model_assumptions_text": "The model uses SKU-level content funnel assumptions, Ads Take Rate x ROAS to estimate paid GMV lift, ShopTab GMV with no creator commission, and FBT free shipping only for SKUs above €20 AOV when selected.",
         "download_customer_summary": "Download meeting summary CSV",
+        "download_meeting_pdf": "Download meeting summary PDF",
         "view_details": "View detailed tables",
         "channel_mix": "GMV Channel Mix",
     },
@@ -409,6 +411,7 @@ TEXT = {
         "model_assumptions": "模型逻辑",
         "model_assumptions_text": "模型基于 SKU level 内容漏斗假设，用 Ads Take Rate x ROAS 估算广告带来的 GMV 增量；ShopTab GMV 不计达人佣金；勾选 FBT 时，仅 AOV 高于 €20 的 SKU 物流成本按 €0 计算。",
         "download_customer_summary": "下载会议总结 CSV",
+        "download_meeting_pdf": "下载会议总结 PDF",
         "view_details": "查看详细表格",
         "channel_mix": "GMV 渠道拆分",
     },
@@ -1511,6 +1514,119 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
 </html>"""
 
 
+def wrap_pdf_text(text, max_width, font_name, font_size):
+    words = []
+    current = ""
+    for char in str(text):
+        trial = current + char
+        from reportlab.pdfbase import pdfmetrics
+        if pdfmetrics.stringWidth(trial, font_name, font_size) <= max_width:
+            current = trial
+        else:
+            if current:
+                words.append(current)
+            current = char
+    if current:
+        words.append(current)
+    return words
+
+
+def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus):
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib import colors
+    from reportlab.pdfgen import canvas
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+    margin = 42
+    font_name = "STSong-Light"
+    pdfmetrics.registerFont(UnicodeCIDFont(font_name))
+
+    def clean(value):
+        return str(value).replace("€", "EUR ")
+
+    def new_page_if_needed(y, needed=56):
+        if y < margin + needed:
+            pdf.showPage()
+            pdf.setFont(font_name, 10)
+            return height - margin
+        return y
+
+    def draw_wrapped(text, x, y, max_width, font_size=10, leading=14):
+        pdf.setFont(font_name, font_size)
+        for line in wrap_pdf_text(clean(text), max_width, font_name, font_size):
+            y = new_page_if_needed(y, leading + 4)
+            pdf.drawString(x, y, line)
+            y -= leading
+        return y
+
+    y = height - margin
+    pdf.setFillColor(colors.HexColor("#6B7280"))
+    pdf.setFont(font_name, 9)
+    pdf.drawString(margin, y, "TikTok Shop Growth Visualizer")
+    y -= 20
+
+    pdf.setFillColor(colors.HexColor("#111827"))
+    pdf.setFont(font_name, 20)
+    pdf.drawString(margin, y, clean(T["hero_title"].format(weeks=weeks, skus=skus)))
+    y -= 24
+    y = draw_wrapped(
+        T["hero_subtitle"].format(
+            gmv=money(overall["Total GMV"], 0),
+            growth_investment=money(overall["Growth Investment"], 0),
+            break_even=path_text,
+        ),
+        margin,
+        y,
+        width - margin * 2,
+        font_size=10,
+        leading=14,
+    )
+    y -= 10
+
+    card_w = (width - margin * 2 - 20) / 3
+    cards = [
+        (T["total_gmv"], money(overall["Total GMV"], 0)),
+        (T["total_profit"], money(overall["Total Profit"], 0)),
+        (T["growth_investment"], money(overall["Growth Investment"], 0)),
+    ]
+    for idx, (label, value) in enumerate(cards):
+        x = margin + idx * (card_w + 10)
+        pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
+        pdf.setFillColor(colors.white)
+        pdf.roundRect(x, y - 58, card_w, 52, 6, stroke=1, fill=1)
+        pdf.setFillColor(colors.HexColor("#6B7280"))
+        pdf.setFont(font_name, 8)
+        pdf.drawString(x + 10, y - 24, clean(label))
+        pdf.setFillColor(colors.HexColor("#111827"))
+        pdf.setFont(font_name, 14)
+        pdf.drawString(x + 10, y - 43, clean(value))
+    y -= 82
+
+    sections = [
+        (T["client_narrative"], [clean(item) for item in narrative]),
+        (T["health_check"], [clean(text) for _level, text in health_checks]),
+        (T["path_to_be"], [clean(path_text)]),
+    ]
+    for title, lines in sections:
+        y = new_page_if_needed(y, 90)
+        pdf.setFillColor(colors.HexColor("#111827"))
+        pdf.setFont(font_name, 14)
+        pdf.drawString(margin, y, clean(title))
+        y -= 18
+        for idx, line in enumerate(lines, start=1):
+            prefix = f"{idx}. " if title == T["client_narrative"] else "- "
+            y = draw_wrapped(prefix + line, margin, y, width - margin * 2, font_size=10, leading=14)
+        y -= 10
+
+    pdf.save()
+    buffer.seek(0)
+    return buffer.getvalue()
+
+
 def reset_defaults():
     prefixes = (
         "sku_name_", "category_", "subcategory_", "aov_", "gross_margin_pct_",
@@ -1835,6 +1951,7 @@ st.caption(T["caption"])
 
 with st.sidebar:
     st.header(T["plan_setup"])
+    n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
     if st.button(T["reset_defaults"]):
         reset_defaults()
     meeting_mode = st.checkbox(
@@ -1843,7 +1960,6 @@ with st.sidebar:
         help=T["meeting_mode_help"],
         key="meeting_mode_input",
     )
-    n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
     promo_60d = st.checkbox(
         T["promo"],
         value=True,
@@ -2191,7 +2307,15 @@ if st.session_state.get("has_generated", False):
             weeks=int(weeks_per_phase) * len(PHASES),
             skus=int(n_skus),
         )
-        dl_summary, dl_html = st.columns(2)
+        meeting_pdf = meeting_summary_pdf(
+            overall=overall,
+            narrative=narrative,
+            health_checks=health_checks,
+            path_text=path_text,
+            weeks=int(weeks_per_phase) * len(PHASES),
+            skus=int(n_skus),
+        )
+        dl_summary, dl_html, dl_pdf = st.columns(3)
         with dl_summary:
             st.download_button(
                 T["download_customer_summary"],
@@ -2205,6 +2329,13 @@ if st.session_state.get("has_generated", False):
                 data=meeting_html.encode("utf-8"),
                 file_name="meeting_summary.html",
                 mime="text/html",
+            )
+        with dl_pdf:
+            st.download_button(
+                T["download_meeting_pdf"],
+                data=meeting_pdf,
+                file_name="meeting_summary.pdf",
+                mime="application/pdf",
             )
         if not meeting_mode:
             with st.expander(T["phase_summary"], expanded=False):
