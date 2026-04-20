@@ -28,52 +28,52 @@ PLATFORM_COMMISSION = {
 # shop_tab_share: reference share used to seed the ShopTab natural-sales assumption
 CATEGORY_PRESETS = {
     "Home Living": {
-        "Kitchenware": {"aov": 29.90, "videos_per_sample": 1.50, "clicks_per_video": 450, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
-        "Home Supplies": {"aov": 24.90, "videos_per_sample": 1.45, "clicks_per_video": 400, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
-        "Textiles & Soft Furnishings": {"aov": 34.90, "videos_per_sample": 1.35, "clicks_per_video": 350, "click_to_order_rate": 0.028, "shop_tab_share": 0.38},
-        "Tools & Hardware": {"aov": 27.90, "videos_per_sample": 1.15, "clicks_per_video": 260, "click_to_order_rate": 0.024, "shop_tab_share": 0.40},
-        "Furniture": {"aov": 129.00, "videos_per_sample": 1.00, "clicks_per_video": 180, "click_to_order_rate": 0.010, "shop_tab_share": 0.45},
-        "Home Improvement": {"aov": 39.90, "videos_per_sample": 1.20, "clicks_per_video": 280, "click_to_order_rate": 0.022, "shop_tab_share": 0.40},
-        "Toys & Hobbies": {"aov": 24.90, "videos_per_sample": 1.55, "clicks_per_video": 380, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
-        "Books, Magazines & Audio": {"aov": 18.90, "videos_per_sample": 1.00, "clicks_per_video": 180, "click_to_order_rate": 0.022, "shop_tab_share": 0.40},
-        "Collectibles": {"aov": 39.90, "videos_per_sample": 1.35, "clicks_per_video": 350, "click_to_order_rate": 0.030, "shop_tab_share": 0.35},
+        "Kitchenware": {"aov": 29.90, "videos_per_sample": 1.50, "clicks_per_video": 750, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
+        "Home Supplies": {"aov": 24.90, "videos_per_sample": 1.45, "clicks_per_video": 680, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Textiles & Soft Furnishings": {"aov": 34.90, "videos_per_sample": 1.35, "clicks_per_video": 620, "click_to_order_rate": 0.028, "shop_tab_share": 0.38},
+        "Tools & Hardware": {"aov": 27.90, "videos_per_sample": 1.15, "clicks_per_video": 430, "click_to_order_rate": 0.024, "shop_tab_share": 0.40},
+        "Furniture": {"aov": 129.00, "videos_per_sample": 1.00, "clicks_per_video": 300, "click_to_order_rate": 0.010, "shop_tab_share": 0.45},
+        "Home Improvement": {"aov": 39.90, "videos_per_sample": 1.20, "clicks_per_video": 460, "click_to_order_rate": 0.022, "shop_tab_share": 0.40},
+        "Toys & Hobbies": {"aov": 24.90, "videos_per_sample": 1.55, "clicks_per_video": 720, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
+        "Books, Magazines & Audio": {"aov": 18.90, "videos_per_sample": 1.00, "clicks_per_video": 300, "click_to_order_rate": 0.022, "shop_tab_share": 0.40},
+        "Collectibles": {"aov": 39.90, "videos_per_sample": 1.35, "clicks_per_video": 600, "click_to_order_rate": 0.030, "shop_tab_share": 0.35},
     },
     "Electronics": {
-        "Phones & Electronics": {"aov": 69.00, "videos_per_sample": 1.10, "clicks_per_video": 300, "click_to_order_rate": 0.018, "shop_tab_share": 0.42},
-        "Computers & Office Equipment": {"aov": 89.00, "videos_per_sample": 1.00, "clicks_per_video": 220, "click_to_order_rate": 0.013, "shop_tab_share": 0.45},
-        "Household Appliances": {"aov": 59.00, "videos_per_sample": 1.15, "clicks_per_video": 280, "click_to_order_rate": 0.018, "shop_tab_share": 0.42},
-        "Automotive & Motorcycle": {"aov": 39.90, "videos_per_sample": 1.00, "clicks_per_video": 220, "click_to_order_rate": 0.015, "shop_tab_share": 0.45},
-        "Smart Home Systems": {"aov": 79.00, "videos_per_sample": 1.05, "clicks_per_video": 240, "click_to_order_rate": 0.015, "shop_tab_share": 0.44},
-        "Audio & Headphones": {"aov": 49.90, "videos_per_sample": 1.20, "clicks_per_video": 360, "click_to_order_rate": 0.020, "shop_tab_share": 0.40},
-        "Mobile Accessories": {"aov": 19.90, "videos_per_sample": 1.45, "clicks_per_video": 500, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Phones & Electronics": {"aov": 69.00, "videos_per_sample": 1.10, "clicks_per_video": 520, "click_to_order_rate": 0.018, "shop_tab_share": 0.42},
+        "Computers & Office Equipment": {"aov": 89.00, "videos_per_sample": 1.00, "clicks_per_video": 360, "click_to_order_rate": 0.013, "shop_tab_share": 0.45},
+        "Household Appliances": {"aov": 59.00, "videos_per_sample": 1.15, "clicks_per_video": 460, "click_to_order_rate": 0.018, "shop_tab_share": 0.42},
+        "Automotive & Motorcycle": {"aov": 39.90, "videos_per_sample": 1.00, "clicks_per_video": 360, "click_to_order_rate": 0.015, "shop_tab_share": 0.45},
+        "Smart Home Systems": {"aov": 79.00, "videos_per_sample": 1.05, "clicks_per_video": 420, "click_to_order_rate": 0.015, "shop_tab_share": 0.44},
+        "Audio & Headphones": {"aov": 49.90, "videos_per_sample": 1.20, "clicks_per_video": 650, "click_to_order_rate": 0.020, "shop_tab_share": 0.40},
+        "Mobile Accessories": {"aov": 19.90, "videos_per_sample": 1.45, "clicks_per_video": 850, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
     },
     "FMCG": {
-        "Food & Beverages": {"aov": 18.90, "videos_per_sample": 1.80, "clicks_per_video": 550, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
-        "Health": {"aov": 29.90, "videos_per_sample": 1.45, "clicks_per_video": 420, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
-        "Baby & Maternity": {"aov": 34.90, "videos_per_sample": 1.55, "clicks_per_video": 450, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
-        "Pet Supplies": {"aov": 24.90, "videos_per_sample": 1.75, "clicks_per_video": 500, "click_to_order_rate": 0.038, "shop_tab_share": 0.32},
-        "Household Consumables": {"aov": 19.90, "videos_per_sample": 1.55, "clicks_per_video": 420, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
-        "Personal Care Consumables": {"aov": 19.90, "videos_per_sample": 1.90, "clicks_per_video": 600, "click_to_order_rate": 0.050, "shop_tab_share": 0.30},
+        "Food & Beverages": {"aov": 18.90, "videos_per_sample": 1.80, "clicks_per_video": 950, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
+        "Health": {"aov": 29.90, "videos_per_sample": 1.45, "clicks_per_video": 720, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Baby & Maternity": {"aov": 34.90, "videos_per_sample": 1.55, "clicks_per_video": 780, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
+        "Pet Supplies": {"aov": 24.90, "videos_per_sample": 1.75, "clicks_per_video": 900, "click_to_order_rate": 0.038, "shop_tab_share": 0.32},
+        "Household Consumables": {"aov": 19.90, "videos_per_sample": 1.55, "clicks_per_video": 720, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
+        "Personal Care Consumables": {"aov": 19.90, "videos_per_sample": 1.90, "clicks_per_video": 1000, "click_to_order_rate": 0.050, "shop_tab_share": 0.30},
     },
     "Beauty": {
-        "Beauty & Personal Care": {"aov": 24.90, "videos_per_sample": 2.00, "clicks_per_video": 700, "click_to_order_rate": 0.055, "shop_tab_share": 0.30},
-        "Skincare": {"aov": 29.90, "videos_per_sample": 2.10, "clicks_per_video": 800, "click_to_order_rate": 0.060, "shop_tab_share": 0.28},
-        "Makeup": {"aov": 22.90, "videos_per_sample": 2.25, "clicks_per_video": 850, "click_to_order_rate": 0.065, "shop_tab_share": 0.28},
-        "Hair Care & Styling": {"aov": 34.90, "videos_per_sample": 1.85, "clicks_per_video": 650, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
-        "Fragrance": {"aov": 39.90, "videos_per_sample": 1.30, "clicks_per_video": 400, "click_to_order_rate": 0.025, "shop_tab_share": 0.40},
-        "Beauty Devices": {"aov": 59.00, "videos_per_sample": 1.35, "clicks_per_video": 450, "click_to_order_rate": 0.030, "shop_tab_share": 0.38},
-        "Men's Grooming": {"aov": 24.90, "videos_per_sample": 1.50, "clicks_per_video": 420, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Beauty & Personal Care": {"aov": 24.90, "videos_per_sample": 2.00, "clicks_per_video": 1200, "click_to_order_rate": 0.055, "shop_tab_share": 0.30},
+        "Skincare": {"aov": 29.90, "videos_per_sample": 2.10, "clicks_per_video": 1400, "click_to_order_rate": 0.060, "shop_tab_share": 0.28},
+        "Makeup": {"aov": 22.90, "videos_per_sample": 2.25, "clicks_per_video": 1500, "click_to_order_rate": 0.065, "shop_tab_share": 0.28},
+        "Hair Care & Styling": {"aov": 34.90, "videos_per_sample": 1.85, "clicks_per_video": 1100, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
+        "Fragrance": {"aov": 39.90, "videos_per_sample": 1.30, "clicks_per_video": 650, "click_to_order_rate": 0.025, "shop_tab_share": 0.40},
+        "Beauty Devices": {"aov": 59.00, "videos_per_sample": 1.35, "clicks_per_video": 750, "click_to_order_rate": 0.030, "shop_tab_share": 0.38},
+        "Men's Grooming": {"aov": 24.90, "videos_per_sample": 1.50, "clicks_per_video": 720, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
     },
     "Fashion": {
-        "Womenswear & Underwear": {"aov": 29.90, "videos_per_sample": 1.70, "clicks_per_video": 550, "click_to_order_rate": 0.036, "shop_tab_share": 0.35},
-        "Menswear & Underwear": {"aov": 34.90, "videos_per_sample": 1.50, "clicks_per_video": 450, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
-        "Fashion Accessories": {"aov": 19.90, "videos_per_sample": 1.85, "clicks_per_video": 650, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
-        "Shoes": {"aov": 49.90, "videos_per_sample": 1.25, "clicks_per_video": 380, "click_to_order_rate": 0.028, "shop_tab_share": 0.38},
-        "Luggage & Bags": {"aov": 45.90, "videos_per_sample": 1.10, "clicks_per_video": 300, "click_to_order_rate": 0.020, "shop_tab_share": 0.42},
-        "Jewelry Accessories & Derivatives": {"aov": 24.90, "videos_per_sample": 1.80, "clicks_per_video": 650, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
-        "Kids' Fashion": {"aov": 24.90, "videos_per_sample": 1.40, "clicks_per_video": 420, "click_to_order_rate": 0.032, "shop_tab_share": 0.38},
-        "Modest Fashion": {"aov": 29.90, "videos_per_sample": 1.35, "clicks_per_video": 400, "click_to_order_rate": 0.032, "shop_tab_share": 0.38},
-        "Sports & Outdoor": {"aov": 49.90, "videos_per_sample": 1.20, "clicks_per_video": 360, "click_to_order_rate": 0.022, "shop_tab_share": 0.38},
+        "Womenswear & Underwear": {"aov": 29.90, "videos_per_sample": 1.70, "clicks_per_video": 950, "click_to_order_rate": 0.036, "shop_tab_share": 0.35},
+        "Menswear & Underwear": {"aov": 34.90, "videos_per_sample": 1.50, "clicks_per_video": 780, "click_to_order_rate": 0.032, "shop_tab_share": 0.35},
+        "Fashion Accessories": {"aov": 19.90, "videos_per_sample": 1.85, "clicks_per_video": 1100, "click_to_order_rate": 0.045, "shop_tab_share": 0.32},
+        "Shoes": {"aov": 49.90, "videos_per_sample": 1.25, "clicks_per_video": 650, "click_to_order_rate": 0.028, "shop_tab_share": 0.38},
+        "Luggage & Bags": {"aov": 45.90, "videos_per_sample": 1.10, "clicks_per_video": 520, "click_to_order_rate": 0.020, "shop_tab_share": 0.42},
+        "Jewelry Accessories & Derivatives": {"aov": 24.90, "videos_per_sample": 1.80, "clicks_per_video": 1050, "click_to_order_rate": 0.040, "shop_tab_share": 0.35},
+        "Kids' Fashion": {"aov": 24.90, "videos_per_sample": 1.40, "clicks_per_video": 700, "click_to_order_rate": 0.032, "shop_tab_share": 0.38},
+        "Modest Fashion": {"aov": 29.90, "videos_per_sample": 1.35, "clicks_per_video": 680, "click_to_order_rate": 0.032, "shop_tab_share": 0.38},
+        "Sports & Outdoor": {"aov": 49.90, "videos_per_sample": 1.20, "clicks_per_video": 620, "click_to_order_rate": 0.022, "shop_tab_share": 0.38},
     },
 }
 
@@ -473,6 +473,151 @@ with st.sidebar:
     )
 
 T = TEXT[lang]
+
+st.markdown(
+    """
+    <style>
+    :root {
+        --tts-red: #FE2C55;
+        --tts-cyan: #25F4EE;
+        --tts-ink: #111827;
+        --tts-muted: #6B7280;
+        --tts-line: #E5E7EB;
+        --tts-panel: #FFFFFF;
+        --tts-bg: #F6F7FB;
+    }
+
+    .stApp {
+        background: var(--tts-bg);
+    }
+
+    [data-testid="stAppViewContainer"] > .main {
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(246,247,251,1) 340px),
+            var(--tts-bg);
+    }
+
+    [data-testid="stSidebar"] {
+        background: #F1F3F7;
+        border-right: 1px solid #E1E5EC;
+    }
+
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3 {
+        color: #1F2937;
+        letter-spacing: 0;
+    }
+
+    .block-container {
+        max-width: 1240px;
+        padding-top: 2.2rem;
+        padding-bottom: 4rem;
+    }
+
+    h1 {
+        color: var(--tts-ink);
+        font-weight: 760;
+        letter-spacing: 0;
+        margin-bottom: 0.2rem;
+    }
+
+    h2, h3 {
+        color: #1F2937;
+        letter-spacing: 0;
+    }
+
+    div[data-testid="stCaptionContainer"] {
+        color: var(--tts-muted);
+        font-size: 1rem;
+    }
+
+    div[data-testid="stMetric"] {
+        background: var(--tts-panel);
+        border: 1px solid var(--tts-line);
+        border-radius: 8px;
+        padding: 14px 16px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
+    }
+
+    div[data-testid="stMetricLabel"] {
+        color: var(--tts-muted);
+        font-weight: 650;
+    }
+
+    div[data-testid="stMetricValue"] {
+        color: var(--tts-ink);
+        font-weight: 760;
+    }
+
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        border-color: #DDE3EA;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.055);
+    }
+
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 18px;
+        border-bottom: 1px solid var(--tts-line);
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        height: 44px;
+        padding: 0 2px;
+        color: #4B5563;
+        font-weight: 650;
+    }
+
+    .stTabs [aria-selected="true"] {
+        color: var(--tts-red);
+    }
+
+    .stButton > button {
+        border-radius: 8px;
+        border: 0;
+        background: var(--tts-red);
+        color: white;
+        font-weight: 720;
+        min-height: 44px;
+        box-shadow: 0 12px 24px rgba(254, 44, 85, 0.22);
+    }
+
+    .stButton > button:hover {
+        background: #E9274E;
+        color: white;
+        border: 0;
+    }
+
+    div[data-testid="stDataFrame"] {
+        border: 1px solid var(--tts-line);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+    }
+
+    div[data-testid="stExpander"] {
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        background: #FFFFFF;
+    }
+
+    div[data-testid="stAlert"] {
+        border-radius: 8px;
+        border: 1px solid #DDE3EA;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+    }
+
+    div[data-testid="stPlotlyChart"] {
+        background: #FFFFFF;
+        border: 1px solid var(--tts-line);
+        border-radius: 8px;
+        padding: 8px 8px 2px 8px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 def phase_label(phase):
@@ -1106,7 +1251,7 @@ with st.sidebar:
         index=0,
     )
     logistics_cost = st.number_input(T["fulfillment"], min_value=0.0, value=5.0, step=0.5)
-    ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=5.0, step=0.1)
+    ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1)
     organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1)
     weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
 
