@@ -4,16 +4,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
+
+st.set_page_config(page_title="TikTok Shop Growth Visualizer", layout="wide")
 plt.rcParams["axes.unicode_minus"] = False
 
-st.set_page_config(
-    page_title="TikTok Shop Growth Visualizer",
-    layout="wide"
-)
 
-# ======================
-# Presets
-# ======================
 AOV_PRESETS = {
     "Home & Living": {
         "Kitchenware": 39.68,
@@ -39,1030 +34,795 @@ AOV_PRESETS = {
         "Beauty & Personal Care": 34.14,
         "Baby & Maternity": 51.12,
         "Books, Magazines & Audio": 21.11,
-    }
+    },
 }
 
+
+# 临时公开 benchmark。拿到数据组真实数据后，主要替换这里。
+FUNNEL_PRESETS = {
+    "Home & Living": {
+        "Kitchenware": {"videos_per_sample": 0.40, "clicks_per_video": 120, "click_to_order_rate": 0.038, "shop_tab_share": 0.30},
+        "Pet Supplies": {"videos_per_sample": 0.45, "clicks_per_video": 110, "click_to_order_rate": 0.040, "shop_tab_share": 0.28},
+        "Sports & Outdoor": {"videos_per_sample": 0.35, "clicks_per_video": 80, "click_to_order_rate": 0.025, "shop_tab_share": 0.32},
+        "Textiles & Soft Furnishings": {"videos_per_sample": 0.35, "clicks_per_video": 90, "click_to_order_rate": 0.030, "shop_tab_share": 0.35},
+        "Tools & Hardware": {"videos_per_sample": 0.35, "clicks_per_video": 90, "click_to_order_rate": 0.030, "shop_tab_share": 0.30},
+        "Luggage & Bags": {"videos_per_sample": 0.30, "clicks_per_video": 70, "click_to_order_rate": 0.025, "shop_tab_share": 0.35},
+        "Shoes": {"videos_per_sample": 0.35, "clicks_per_video": 85, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Menswear & Underwear": {"videos_per_sample": 0.35, "clicks_per_video": 95, "click_to_order_rate": 0.038, "shop_tab_share": 0.35},
+        "Modest Fashion": {"videos_per_sample": 0.35, "clicks_per_video": 90, "click_to_order_rate": 0.035, "shop_tab_share": 0.35},
+        "Womenswear & Underwear": {"videos_per_sample": 0.40, "clicks_per_video": 110, "click_to_order_rate": 0.042, "shop_tab_share": 0.35},
+        "Furniture": {"videos_per_sample": 0.25, "clicks_per_video": 45, "click_to_order_rate": 0.015, "shop_tab_share": 0.40},
+        "Home Improvement": {"videos_per_sample": 0.30, "clicks_per_video": 70, "click_to_order_rate": 0.025, "shop_tab_share": 0.35},
+        "Home Supplies": {"videos_per_sample": 0.40, "clicks_per_video": 100, "click_to_order_rate": 0.038, "shop_tab_share": 0.32},
+    },
+    "Electronics": {
+        "Phones & Electronics": {"videos_per_sample": 0.30, "clicks_per_video": 70, "click_to_order_rate": 0.025, "shop_tab_share": 0.35},
+        "Computers & Office Equipment": {"videos_per_sample": 0.25, "clicks_per_video": 55, "click_to_order_rate": 0.018, "shop_tab_share": 0.40},
+        "Household Appliances": {"videos_per_sample": 0.30, "clicks_per_video": 75, "click_to_order_rate": 0.025, "shop_tab_share": 0.35},
+        "Automotive & Motorcycle": {"videos_per_sample": 0.25, "clicks_per_video": 50, "click_to_order_rate": 0.020, "shop_tab_share": 0.35},
+        "Collectibles": {"videos_per_sample": 0.35, "clicks_per_video": 80, "click_to_order_rate": 0.035, "shop_tab_share": 0.30},
+        "Beauty & Personal Care": {"videos_per_sample": 0.50, "clicks_per_video": 150, "click_to_order_rate": 0.065, "shop_tab_share": 0.25},
+        "Baby & Maternity": {"videos_per_sample": 0.45, "clicks_per_video": 110, "click_to_order_rate": 0.050, "shop_tab_share": 0.30},
+        "Books, Magazines & Audio": {"videos_per_sample": 0.30, "clicks_per_video": 50, "click_to_order_rate": 0.025, "shop_tab_share": 0.35},
+    },
+}
+
+
+SCENARIOS = {
+    "保守": {"videos_per_sample": 0.75, "clicks_per_video": 0.70, "click_to_order_rate": 0.75},
+    "基准": {"videos_per_sample": 1.00, "clicks_per_video": 1.00, "click_to_order_rate": 1.00},
+    "激进": {"videos_per_sample": 1.25, "clicks_per_video": 1.30, "click_to_order_rate": 1.20},
+}
+
+
+PHASE_DEFAULTS = [
+    {"name": "阶段 1 - 冷启动", "gmv_start": 2000, "gmv_end": 10000, "ads_take_rate": 0.00, "samples": 30},
+    {"name": "阶段 2 - 增长", "gmv_start": 10000, "gmv_end": 30000, "ads_take_rate": 0.05, "samples": 25},
+    {"name": "阶段 3 - 爆发", "gmv_start": 30000, "gmv_end": 100000, "ads_take_rate": 0.10, "samples": 20},
+]
+
+
+PHASE_COLORS = {
+    "阶段 1 - 冷启动": "#EAF4FF",
+    "阶段 2 - 增长": "#EEFBEF",
+    "阶段 3 - 爆发": "#FFF4E8",
+}
+
+
+ELECTRONICS_FEE_CATEGORIES = {
+    "Phones & Electronics",
+    "Computers & Office Equipment",
+    "Household Appliances",
+    "Automotive & Motorcycle",
+}
+
+
+CONTENT_DECAY_WEIGHTS = [1.00, 0.55, 0.30, 0.15]
+PROMO_WEEKS = 9
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-PHASE_KEYS = ["phase1", "phase2", "phase3"]
 
-PHASE_DEFAULTS = {
-    "phase1": {"gmv_start": 2_000, "gmv_end": 10_000, "ads_take_rate": 0.00, "samples": 30, "affiliate_share": 0.60},
-    "phase2": {"gmv_start": 10_000, "gmv_end": 30_000, "ads_take_rate": 0.05, "samples": 25, "affiliate_share": 0.40},
-    "phase3": {"gmv_start": 30_000, "gmv_end": 100_000, "ads_take_rate": 0.10, "samples": 20, "affiliate_share": 0.25},
-}
+def money(x, digits=0):
+    return f"€{float(x):,.{digits}f}"
 
-PHASE_COLOR_KEYS = {
-    "phase1": {"bg": "#EAF4FF", "badge_bg": "#DCEEFF", "badge_text": "#1D4E89"},
-    "phase2": {"bg": "#EEFBEF", "badge_bg": "#DFF5E3", "badge_text": "#1E6B35"},
-    "phase3": {"bg": "#FFF4E8", "badge_bg": "#FFE8D6", "badge_text": "#A14B00"},
-}
 
-# ======================
-# i18n
-# ======================
-TEXT = {
-    "en": {
-        "app_title": "TikTok Shop Growth Visualizer",
-        "app_caption": "Enhanced Streamlit version for GMV / Cost / Profit modeling",
-        "language": "Language",
-        "global_inputs": "Global Inputs",
-        "num_products": "No. of products",
-        "promo_60d": "60-day fee promo",
-        "promo_yes": "Yes (5% first ~60 days)",
-        "promo_no": "No promo",
-        "fulfillment": "Fulfillment €/order",
-        "sample_product": "Sample product €/unit",
-        "sample_shipping": "Sample shipping €/unit",
-        "affiliate_commission": "Affiliate commission",
-        "weeks_per_phase": "Weeks / phase",
-        "phase_controls": "Phase Controls",
-        "phase1": "Phase 1 — Cold Start",
-        "phase2": "Phase 2 — Growth",
-        "phase3": "Phase 3 — Breakout",
-        "ads_rate": "Ads Take Rate",
-        "samples_per_week": "Samples / week",
-        "affiliate_share": "Affiliate share",
-        "product_setup": "Product Setup",
-        "product_setup_caption": "Set up each product below. Preset is used as category reference; AOV can still be manually overridden.",
-        "generate": "Generate charts",
-        "product_mix": "Product Mix Used",
-        "charts": "Charts",
-        "overall_weekly_trend": "Overall Weekly Trend",
-        "cumulative_profit_trend": "Cumulative Profit Trend",
-        "phase_by_phase": "Phase-by-Phase Weekly Trend",
-        "summary": "Summary",
-        "phase_summary": "Phase summary",
-        "overall_summary": "Overall summary",
-        "break_even_signals": "Break-even Signals",
-        "weekly_details": "Weekly Details",
-        "download_weekly": "Download weekly details CSV",
-        "download_phase": "Download phase summary CSV",
-        "total_gmv": "Total GMV",
-        "total_profit": "Total Profit",
-        "profit_margin": "Profit Margin",
-        "first_positive_profit": "First positive weekly profit",
-        "cumulative_break_even": "Cumulative break-even",
-        "not_reached": "Not reached",
-        "weekly_be_label": "Weekly BE",
-        "cumulative_be_label": "Cumulative BE",
-        "week": "Week",
-        "product": "Product",
-        "preset": "Preset",
-        "sales_share": "Sales Share (%)",
-        "sales_share_help": "Enter a percentage like 50 or 20. It does not need to total 100. The system auto-normalizes.",
-        "aov": "AOV (€)",
-        "gross_margin": "Gross Margin (%)",
-        "fee_type": "Fee Type",
-        "electronics_fee": "Electronics (7%)",
-        "other_fee": "Other (9%)",
-        "family": "Family",
-        "preset_category": "Preset Category",
-        "platform_fee_default": "Platform Fee Rate Default",
-        "input_error": "Input error",
-        "ads_take_rate_col": "Ads Take Rate",
-        "affiliate_share_col": "Affiliate Share",
-        "sales_share_col": "Sales Share",
-        "product_block": "Product",
-        "gross_margin_help": "Enter gross margin as a percentage, e.g. 40 = 40%",
-        "gmv_start": "GMV start",
-        "gmv_end": "GMV end",
-    },
-    "de": {
-        "app_title": "TikTok Shop Growth Visualizer",
-        "app_caption": "Erweiterte Streamlit-Version für GMV-, Kosten- und Gewinnmodellierung",
-        "language": "Sprache",
-        "global_inputs": "Globale Eingaben",
-        "num_products": "Anzahl Produkte",
-        "promo_60d": "60-Tage-Gebührenpromo",
-        "promo_yes": "Ja (5% in den ersten ~60 Tagen)",
-        "promo_no": "Keine Promo",
-        "fulfillment": "Fulfillment €/Bestellung",
-        "sample_product": "Sample-Produkt €/Einheit",
-        "sample_shipping": "Sample-Versand €/Einheit",
-        "affiliate_commission": "Affiliate-Provision",
-        "weeks_per_phase": "Wochen / Phase",
-        "phase_controls": "Phasensteuerung",
-        "phase1": "Phase 1 — Kaltstart",
-        "phase2": "Phase 2 — Wachstum",
-        "phase3": "Phase 3 — Skalierung",
-        "ads_rate": "Ads Take Rate",
-        "samples_per_week": "Samples / Woche",
-        "affiliate_share": "Affiliate-Anteil",
-        "product_setup": "Produkteinstellung",
-        "product_setup_caption": "Richte unten jedes Produkt ein. Preset dient als Kategoriereferenz; AOV kann weiterhin manuell überschrieben werden.",
-        "generate": "Charts erzeugen",
-        "product_mix": "Verwendeter Produktmix",
-        "charts": "Charts",
-        "overall_weekly_trend": "Gesamter Wochenverlauf",
-        "cumulative_profit_trend": "Kumulierter Gewinnverlauf",
-        "phase_by_phase": "Wochenverlauf je Phase",
-        "summary": "Zusammenfassung",
-        "phase_summary": "Phasenübersicht",
-        "overall_summary": "Gesamtübersicht",
-        "break_even_signals": "Break-even-Signale",
-        "weekly_details": "Wöchentliche Details",
-        "download_weekly": "Wöchentliche Details als CSV herunterladen",
-        "download_phase": "Phasenübersicht als CSV herunterladen",
-        "total_gmv": "Gesamt-GMV",
-        "total_profit": "Gesamtgewinn",
-        "profit_margin": "Gewinnmarge",
-        "first_positive_profit": "Erste positive Wochenprofitabilität",
-        "cumulative_break_even": "Kumulierter Break-even",
-        "not_reached": "Nicht erreicht",
-        "weekly_be_label": "Wochen-BE",
-        "cumulative_be_label": "Kumulierter BE",
-        "week": "Woche",
-        "product": "Produkt",
-        "preset": "Preset",
-        "sales_share": "Umsatzanteil (%)",
-        "sales_share_help": "Prozentwert eingeben, z. B. 50 oder 20. Muss nicht 100 ergeben. Das System normalisiert automatisch.",
-        "aov": "AOV (€)",
-        "gross_margin": "Bruttomarge (%)",
-        "fee_type": "Gebührentyp",
-        "electronics_fee": "Elektronik (7%)",
-        "other_fee": "Sonstige (9%)",
-        "family": "Familie",
-        "preset_category": "Preset-Kategorie",
-        "platform_fee_default": "Standard-Plattformgebühr",
-        "input_error": "Eingabefehler",
-        "ads_take_rate_col": "Ads Take Rate",
-        "affiliate_share_col": "Affiliate-Anteil",
-        "sales_share_col": "Umsatzanteil",
-        "product_block": "Produkt",
-        "gross_margin_help": "Bruttomarge in Prozent eingeben, z. B. 40 = 40%",
-        "gmv_start": "GMV-Start",
-        "gmv_end": "GMV-Ende",
-    },
-    "zh": {
-        "app_title": "TikTok Shop Growth Visualizer",
-        "app_caption": "用于 GMV / 成本 / 利润建模的增强版 Streamlit 工具",
-        "language": "语言",
-        "global_inputs": "全局输入",
-        "num_products": "产品数量",
-        "promo_60d": "60天费率优惠",
-        "promo_yes": "是（前约60天 5%）",
-        "promo_no": "否",
-        "fulfillment": "履约成本 €/订单",
-        "sample_product": "样品产品成本 €/件",
-        "sample_shipping": "样品运费 €/件",
-        "affiliate_commission": "达人佣金",
-        "weeks_per_phase": "每阶段周数",
-        "phase_controls": "阶段控制",
-        "phase1": "阶段 1 — 冷启动",
-        "phase2": "阶段 2 — 增长",
-        "phase3": "阶段 3 — 爆发",
-        "ads_rate": "Ads Take Rate",
-        "samples_per_week": "每周样品数",
-        "affiliate_share": "达人 GMV 占比",
-        "product_setup": "产品设置",
-        "product_setup_caption": "请在下方逐个设置产品。Preset 作为类目参考；AOV 仍可手动修改。",
-        "generate": "生成图表",
-        "product_mix": "使用的产品组合",
-        "charts": "图表",
-        "overall_weekly_trend": "整体周趋势",
-        "cumulative_profit_trend": "累计利润趋势",
-        "phase_by_phase": "分阶段周趋势",
-        "summary": "汇总",
-        "phase_summary": "阶段汇总",
-        "overall_summary": "整体汇总",
-        "break_even_signals": "Break-even 信号",
-        "weekly_details": "每周明细",
-        "download_weekly": "下载每周明细 CSV",
-        "download_phase": "下载阶段汇总 CSV",
-        "total_gmv": "总 GMV",
-        "total_profit": "总利润",
-        "profit_margin": "利润率",
-        "first_positive_profit": "首次单周盈利",
-        "cumulative_break_even": "累计 Break-even",
-        "not_reached": "未达到",
-        "weekly_be_label": "单周 BE",
-        "cumulative_be_label": "累计 BE",
-        "week": "周",
-        "product": "产品",
-        "preset": "Preset",
-        "sales_share": "销售占比 (%)",
-        "sales_share_help": "请输入百分比，比如 50 或 20。不需要加起来等于100，系统会自动标准化。",
-        "aov": "AOV (€)",
-        "gross_margin": "毛利率 (%)",
-        "fee_type": "费率类型",
-        "electronics_fee": "电子类 (7%)",
-        "other_fee": "其他 (9%)",
-        "family": "大类",
-        "preset_category": "Preset 类目",
-        "platform_fee_default": "默认平台费率",
-        "input_error": "输入错误",
-        "ads_take_rate_col": "Ads Take Rate",
-        "affiliate_share_col": "达人占比",
-        "sales_share_col": "销售占比",
-        "product_block": "产品",
-        "gross_margin_help": "请输入百分比，例如 40 = 40%",
-        "gmv_start": "GMV 起点",
-        "gmv_end": "GMV 终点",
-    },
-    "nl": {
-        "app_title": "TikTok Shop Growth Visualizer",
-        "app_caption": "Verbeterde Streamlit-versie voor GMV / kosten / winstmodellering",
-        "language": "Taal",
-        "global_inputs": "Algemene invoer",
-        "num_products": "Aantal producten",
-        "promo_60d": "60-dagen fee promo",
-        "promo_yes": "Ja (5% gedurende de eerste ~60 dagen)",
-        "promo_no": "Geen promo",
-        "fulfillment": "Fulfillment €/bestelling",
-        "sample_product": "Sample product €/stuk",
-        "sample_shipping": "Sample verzending €/stuk",
-        "affiliate_commission": "Affiliate commissie",
-        "weeks_per_phase": "Weken / fase",
-        "phase_controls": "Fase-instellingen",
-        "phase1": "Fase 1 — Koude start",
-        "phase2": "Fase 2 — Groei",
-        "phase3": "Fase 3 — Doorbraak",
-        "ads_rate": "Ads Take Rate",
-        "samples_per_week": "Samples / week",
-        "affiliate_share": "Affiliate aandeel",
-        "product_setup": "Productinstellingen",
-        "product_setup_caption": "Stel hieronder elk product in. Preset dient als categorieverwijzing; AOV kan nog steeds handmatig worden aangepast.",
-        "generate": "Grafieken genereren",
-        "product_mix": "Gebruikte productmix",
-        "charts": "Grafieken",
-        "overall_weekly_trend": "Totale wekelijkse trend",
-        "cumulative_profit_trend": "Cumulatieve winsttrend",
-        "phase_by_phase": "Wekelijkse trend per fase",
-        "summary": "Samenvatting",
-        "phase_summary": "Faseoverzicht",
-        "overall_summary": "Totaaloverzicht",
-        "break_even_signals": "Break-even signalen",
-        "weekly_details": "Wekelijkse details",
-        "download_weekly": "Download wekelijkse details CSV",
-        "download_phase": "Download faseoverzicht CSV",
-        "total_gmv": "Totale GMV",
-        "total_profit": "Totale winst",
-        "profit_margin": "Winstmarge",
-        "first_positive_profit": "Eerste positieve weekwinst",
-        "cumulative_break_even": "Cumulatieve break-even",
-        "not_reached": "Niet bereikt",
-        "weekly_be_label": "Wekelijkse BE",
-        "cumulative_be_label": "Cumulatieve BE",
-        "week": "Week",
-        "product": "Product",
-        "preset": "Preset",
-        "sales_share": "Verkoopaandeel (%)",
-        "sales_share_help": "Voer een percentage in, zoals 50 of 20. Hoeft niet op te tellen tot 100. Het systeem normaliseert automatisch.",
-        "aov": "AOV (€)",
-        "gross_margin": "Brutomarge (%)",
-        "fee_type": "Fee type",
-        "electronics_fee": "Elektronica (7%)",
-        "other_fee": "Overig (9%)",
-        "family": "Familie",
-        "preset_category": "Preset-categorie",
-        "platform_fee_default": "Standaard platform fee",
-        "input_error": "Invoerfout",
-        "ads_take_rate_col": "Ads Take Rate",
-        "affiliate_share_col": "Affiliate aandeel",
-        "sales_share_col": "Verkoopaandeel",
-        "product_block": "Product",
-        "gross_margin_help": "Voer brutomarge in als percentage, bijv. 40 = 40%",
-        "gmv_start": "GMV start",
-        "gmv_end": "GMV einde",
-    },
-}
+def pct(x, digits=1):
+    return f"{float(x):.{digits}%}"
 
-# ======================
-# Language
-# ======================
-with st.sidebar:
-    lang = st.selectbox(
-        "Language",
-        options=["en", "de", "zh", "nl"],
-        format_func=lambda x: {
-            "en": "English",
-            "de": "Deutsch",
-            "zh": "简体中文",
-            "nl": "Nederlands",
-        }[x],
-        index=0
-    )
 
-T = TEXT[lang]
-
-# ======================
-# Localized phase helpers
-# ======================
-def phase_label(phase_key: str) -> str:
-    return T[phase_key]
-
-def phase_key_from_label(label: str) -> str:
-    reverse_map = {T[k]: k for k in PHASE_KEYS}
-    return reverse_map[label]
-
-def build_phase_inputs():
-    phase_inputs = []
-    for phase_key in PHASE_KEYS:
-        defaults = PHASE_DEFAULTS[phase_key]
-        phase_inputs.append({
-            "key": phase_key,
-            "name": phase_label(phase_key),
-            "gmv_start": defaults["gmv_start"],
-            "gmv_end": defaults["gmv_end"],
-            "ads_take_rate": defaults["ads_take_rate"],
-            "samples": defaults["samples"],
-            "affiliate_share": defaults["affiliate_share"],
-        })
-    return phase_inputs
-
-# ======================
-# Helpers
-# ======================
-def parse_percent_text(value) -> float:
-    if value is None:
+def parse_percent(x):
+    if x is None:
         return 0.0
-    text = str(value).strip().replace("%", "").replace(",", ".")
-    if text == "":
-        return 0.0
-    return float(text)
+    text = str(x).strip().replace("%", "").replace(",", ".")
+    return 0.0 if text == "" else float(text)
 
-def normalize_sales_shares(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.copy()
-    df["Sales Share (%)"] = pd.to_numeric(df["Sales Share (%)"], errors="coerce").fillna(0).clip(lower=0)
-    s = df["Sales Share (%)"].sum()
-    if s <= 0:
-        raise ValueError("At least one product sales share must be > 0.")
-    df["SalesShareNorm"] = df["Sales Share (%)"] / s
-    return df
+
+def get_benchmark(family, preset):
+    data = FUNNEL_PRESETS[family][preset].copy()
+    data["aov"] = AOV_PRESETS[family][preset]
+    return data
+
+
+def guess_fee_type(preset):
+    return "electronics" if preset in ELECTRONICS_FEE_CATEGORIES else "other"
+
+
+def fee_label(x):
+    return "电子类 / Electronics (7%)" if x == "electronics" else "其他 / Other (9%)"
+
+
+def platform_fee_rate(global_week, promo_60d, base_rates):
+    if promo_60d and global_week <= PROMO_WEEKS:
+        return np.full(len(base_rates), 0.05)
+    return base_rates
+
 
 def format_eur_axis(ax):
     ax.yaxis.set_major_formatter(ticker.StrMethodFormatter("€{x:,.0f}"))
 
-def get_product_platform_fee_rate(phase_idx: int, promo_60d: bool, fee_type_series: pd.Series) -> np.ndarray:
-    if promo_60d and phase_idx in (0, 1):
-        return np.full(len(fee_type_series), 0.05)
-    return fee_type_series.to_numpy()
 
-def add_phase_backgrounds(ax, df: pd.DataFrame):
-    phase_ranges = (
-        df.groupby("Phase", as_index=False)
-        .agg(
-            start_week=("Global Week", "min"),
-            end_week=("Global Week", "max")
-        )
+def add_phase_backgrounds(ax, df):
+    ranges = df.groupby("Phase", as_index=False).agg(
+        start=("Global Week", "min"),
+        end=("Global Week", "max"),
     )
-
-    for _, row in phase_ranges.iterrows():
-        phase_name = row["Phase"]
-        phase_key = phase_key_from_label(phase_name)
-        start_week = row["start_week"]
-        end_week = row["end_week"]
-        color = PHASE_COLOR_KEYS.get(phase_key, {}).get("bg", "#F5F5F5")
-
+    for _, row in ranges.iterrows():
         ax.axvspan(
-            start_week - 0.5,
-            end_week + 0.5,
-            color=color,
+            row["start"] - 0.5,
+            row["end"] + 0.5,
+            color=PHASE_COLORS.get(row["Phase"], "#F5F5F5"),
             alpha=0.8,
-            zorder=0
+            zorder=0,
         )
 
-def render_phase_badges(phase_keys):
-    html_parts = []
-    for pkey in phase_keys:
-        style = PHASE_COLOR_KEYS.get(pkey, {"badge_bg": "#EEEEEE", "badge_text": "#333333"})
-        html_parts.append(
-            f"""
-            <span style="
-                display:inline-block;
-                padding:8px 14px;
-                margin-right:10px;
-                margin-bottom:8px;
-                border-radius:999px;
-                background:{style['badge_bg']};
-                color:{style['badge_text']};
-                font-weight:600;
-                font-size:14px;
-            ">
-                {phase_label(pkey)}
-            </span>
-            """
-        )
-    st.markdown("".join(html_parts), unsafe_allow_html=True)
 
-def phase_weekly_series(
-    phase_idx: int,
-    phase_name: str,
-    gmv_start: float,
-    gmv_end: float,
-    ads_take_rate: float,
-    samples_per_week: int,
-    fulfill_cost: float,
-    sample_product_cost: float,
-    sample_ship_cost: float,
-    promo_60d: bool,
-    weeks_in_phase: int,
-    prod_df: pd.DataFrame,
-    affiliate_share: float,
-    affiliate_commission_rate: float,
-    week_offset: int = 0,
-) -> pd.DataFrame:
-    gmv_series = np.linspace(gmv_start, gmv_end, weeks_in_phase)
+def init_product_state(i, n_products):
+    if f"product_name_{i}" not in st.session_state:
+        st.session_state[f"product_name_{i}"] = LETTERS[i]
+    if f"family_{i}" not in st.session_state:
+        st.session_state[f"family_{i}"] = "Home & Living"
 
-    share = prod_df["SalesShareNorm"].to_numpy()
-    aov = prod_df["AOV"].to_numpy()
-    gross_margin = prod_df["Gross Margin"].to_numpy()
-    fee_type = prod_df["Platform Fee Rate Default"]
+    family = st.session_state[f"family_{i}"]
+    presets = list(AOV_PRESETS[family].keys())
 
-    sample_allin_unit = float(sample_product_cost) + float(sample_ship_cost)
-    product_fee_rates = get_product_platform_fee_rate(phase_idx, promo_60d, fee_type)
+    if f"preset_{i}" not in st.session_state or st.session_state[f"preset_{i}"] not in presets:
+        st.session_state[f"preset_{i}"] = presets[0]
 
-    rows = []
-    for i in range(weeks_in_phase):
-        gmv = float(gmv_series[i])
+    preset = st.session_state[f"preset_{i}"]
+    b = get_benchmark(family, preset)
 
-        affiliate_gmv = gmv * affiliate_share
-        non_affiliate_gmv = gmv * (1 - affiliate_share)
+    defaults = {
+        f"sample_share_{i}": f"{round(100 / n_products, 1)}",
+        f"aov_{i}": b["aov"],
+        f"gross_margin_pct_{i}": 40.0,
+        f"fee_type_{i}": guess_fee_type(preset),
+        f"videos_per_sample_{i}": b["videos_per_sample"],
+        f"clicks_per_video_{i}": b["clicks_per_video"],
+        f"click_to_order_pct_{i}": b["click_to_order_rate"] * 100,
+        f"shop_tab_share_pct_{i}": b["shop_tab_share"] * 100,
+    }
 
-        rev = gmv * share
-        orders_p = rev / aov
-        orders_total = float(np.sum(orders_p))
+    for key, val in defaults.items():
+        if key not in st.session_state:
+            st.session_state[key] = val
 
-        cogs_p = rev * (1.0 - gross_margin)
-        cogs_total = float(np.sum(cogs_p))
 
-        platform_fee_p = rev * product_fee_rates
-        platform_fee_total = float(np.sum(platform_fee_p))
+def apply_benchmark(i):
+    family = st.session_state[f"family_{i}"]
+    preset = st.session_state[f"preset_{i}"]
+    b = get_benchmark(family, preset)
 
-        ads_cost = gmv * ads_take_rate
-        samples_cost = float(samples_per_week) * sample_allin_unit
-        fulfillment = orders_total * float(fulfill_cost)
-        creator_commission = affiliate_gmv * affiliate_commission_rate
+    st.session_state[f"aov_{i}"] = b["aov"]
+    st.session_state[f"fee_type_{i}"] = guess_fee_type(preset)
+    st.session_state[f"videos_per_sample_{i}"] = b["videos_per_sample"]
+    st.session_state[f"clicks_per_video_{i}"] = b["clicks_per_video"]
+    st.session_state[f"click_to_order_pct_{i}"] = b["click_to_order_rate"] * 100
+    st.session_state[f"shop_tab_share_pct_{i}"] = b["shop_tab_share"] * 100
 
-        total_cost = (
-            cogs_total
-            + ads_cost
-            + samples_cost
-            + fulfillment
-            + platform_fee_total
-            + creator_commission
-        )
-        profit = gmv - total_cost
 
-        rows.append({
-            "Phase": phase_name,
-            "Week in Phase": i + 1,
-            "Global Week": week_offset + i + 1,
-            "GMV": gmv,
-            "Affiliate GMV": affiliate_gmv,
-            "Non-affiliate GMV": non_affiliate_gmv,
-            "Creator Commission": creator_commission,
-            "Platform Fee": platform_fee_total,
-            "Ads Cost": ads_cost,
-            "Samples Cost": samples_cost,
-            "Fulfillment Cost": fulfillment,
-            "COGS": cogs_total,
-            "Total Cost": total_cost,
-            "Profit": profit,
-            "Orders (est.)": orders_total,
-            "Ads Take Rate": ads_take_rate,
-            "Samples / Week": samples_per_week,
-            "Affiliate Share": affiliate_share,
-        })
-
-    return pd.DataFrame(rows)
-
-def build_phase_summary(df_all: pd.DataFrame) -> pd.DataFrame:
-    summary = (
-        df_all.groupby("Phase", as_index=False)
-        .agg({
-            "GMV": "sum",
-            "Total Cost": "sum",
-            "Profit": "sum",
-            "Orders (est.)": "sum",
-            "Platform Fee": "sum",
-            "Ads Cost": "sum",
-            "Samples Cost": "sum",
-            "Fulfillment Cost": "sum",
-            "Creator Commission": "sum",
-            "COGS": "sum"
-        })
-    )
-    summary["Profit Margin"] = np.where(summary["GMV"] > 0, summary["Profit"] / summary["GMV"], 0)
-    return summary
-
-def build_overall_summary(df_all: pd.DataFrame) -> pd.DataFrame:
-    total_gmv = df_all["GMV"].sum()
-    total_cost = df_all["Total Cost"].sum()
-    total_profit = df_all["Profit"].sum()
-    total_orders = df_all["Orders (est.)"].sum()
-
-    return pd.DataFrame([{
-        "Total GMV": total_gmv,
-        "Total Cost": total_cost,
-        "Total Profit": total_profit,
-        "Total Orders (est.)": total_orders,
-        "Overall Profit Margin": (total_profit / total_gmv) if total_gmv > 0 else 0
-    }])
-
-def first_positive_profit_week(df_all: pd.DataFrame):
-    tmp = df_all[df_all["Profit"] > 0]
-    if len(tmp) == 0:
-        return None
-    return int(tmp["Global Week"].iloc[0])
-
-def first_cumulative_break_even_week(df_all: pd.DataFrame):
-    tmp = df_all.copy()
-    tmp["Cumulative Profit"] = tmp["Profit"].cumsum()
-    pos = tmp[tmp["Cumulative Profit"] >= 0]
-    if len(pos) == 0:
-        return None
-    return int(pos["Global Week"].iloc[0])
-
-def get_point_by_week(df: pd.DataFrame, week: int, y_col: str):
-    match = df[df["Global Week"] == week]
-    if match.empty:
-        return None
-    return float(match.iloc[0][y_col])
-
-def make_chart(
-    df: pd.DataFrame,
-    title: str,
-    weekly_be_week=None,
-    annotate_break_even: bool = False
-):
-    fig, ax = plt.subplots(figsize=(10, 5))
-
-    add_phase_backgrounds(ax, df)
-
-    ax.plot(df["Global Week"], df["GMV"], marker="o", label="GMV", zorder=3)
-    ax.plot(df["Global Week"], df["Total Cost"], marker="o", label="Total Cost", zorder=3)
-    ax.plot(df["Global Week"], df["Profit"], marker="o", linewidth=2, label="Profit", zorder=4)
-    ax.axhline(0, linewidth=1, zorder=2)
-
-    if annotate_break_even and weekly_be_week is not None:
-        y_weekly = get_point_by_week(df, weekly_be_week, "Profit")
-        if y_weekly is not None:
-            ax.scatter([weekly_be_week], [y_weekly], s=80, zorder=5)
-            ax.annotate(
-                f"{T['weekly_be_label']}: W{weekly_be_week}",
-                xy=(weekly_be_week, y_weekly),
-                xytext=(8, 8),
-                textcoords="offset points"
-            )
-            ax.axvline(weekly_be_week, linestyle="--", alpha=0.35, zorder=2)
-
-    ax.set_title(title)
-    ax.set_xlabel(T["week"])
-    ax.set_ylabel("€")
-    ax.grid(True, alpha=0.3, zorder=1)
-    ax.legend()
-    format_eur_axis(ax)
-    fig.tight_layout()
-    return fig
-
-def make_cumulative_profit_chart(df_all: pd.DataFrame, cumulative_be_week=None):
-    tmp = df_all.copy()
-    tmp["Cumulative Profit"] = tmp["Profit"].cumsum()
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-
-    add_phase_backgrounds(ax, tmp)
-
-    ax.plot(tmp["Global Week"], tmp["Cumulative Profit"], marker="o", linewidth=2, label="Cumulative Profit", zorder=3)
-    ax.axhline(0, linewidth=1, zorder=2)
-
-    if cumulative_be_week is not None:
-        y_cum = get_point_by_week(tmp, cumulative_be_week, "Cumulative Profit")
-        if y_cum is not None:
-            ax.scatter([cumulative_be_week], [y_cum], s=80, zorder=5)
-            ax.annotate(
-                f"{T['cumulative_be_label']}: W{cumulative_be_week}",
-                xy=(cumulative_be_week, y_cum),
-                xytext=(8, 8),
-                textcoords="offset points"
-            )
-            ax.axvline(cumulative_be_week, linestyle="--", alpha=0.35, zorder=2)
-
-    ax.set_title(T["cumulative_profit_trend"])
-    ax.set_xlabel("Global Week")
-    ax.set_ylabel("€")
-    ax.grid(True, alpha=0.3, zorder=1)
-    ax.legend()
-    format_eur_axis(ax)
-    fig.tight_layout()
-    return fig
-
-def to_csv_bytes(df: pd.DataFrame) -> bytes:
-    return df.to_csv(index=False).encode("utf-8")
-
-def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
+def build_product_df(n_products):
     rows = []
 
-    for i in range(int(n_products)):
-        family = st.session_state[f"family_{i}"]
-        preset = st.session_state[f"preset_{i}"]
-
-        fee_label = st.session_state[f"fee_type_{i}"]
-        fee_rate = 0.07 if fee_label == T["electronics_fee"] else 0.09
-
-        gross_margin_pct = float(st.session_state[f"gross_margin_pct_{i}"])
-        gross_margin_decimal = gross_margin_pct / 100.0
-
-        sales_share_pct = parse_percent_text(st.session_state[f"sales_share_text_{i}"])
-
+    for i in range(n_products):
+        fee_type = st.session_state[f"fee_type_{i}"]
         rows.append({
             "Product": st.session_state[f"product_name_{i}"],
-            "Family": family,
-            "Preset Category": preset,
-            "Sales Share (%)": sales_share_pct,
+            "Family": st.session_state[f"family_{i}"],
+            "Subcategory": st.session_state[f"preset_{i}"],
+            "Sample Allocation (%)": parse_percent(st.session_state[f"sample_share_{i}"]),
             "AOV": float(st.session_state[f"aov_{i}"]),
-            "Gross Margin": gross_margin_decimal,
-            "Platform Fee Rate Default": float(fee_rate),
+            "Gross Margin": float(st.session_state[f"gross_margin_pct_{i}"]) / 100,
+            "Platform Fee Rate": 0.07 if fee_type == "electronics" else 0.09,
+            "Videos / Sample": float(st.session_state[f"videos_per_sample_{i}"]),
+            "Clicks / Video": float(st.session_state[f"clicks_per_video_{i}"]),
+            "Click-to-order Rate": float(st.session_state[f"click_to_order_pct_{i}"]) / 100,
+            "ShopTab GMV Share": float(st.session_state[f"shop_tab_share_pct_{i}"]) / 100,
         })
 
     df = pd.DataFrame(rows)
 
-    if df["Product"].isna().any() or (df["Product"].astype(str).str.strip() == "").any():
-        raise ValueError("Product name cannot be empty.")
+    if df["Product"].astype(str).str.strip().eq("").any():
+        raise ValueError("产品名称不能为空")
+    if df["AOV"].le(0).any():
+        raise ValueError("AOV 必须大于 0")
+    if df["Gross Margin"].lt(0.05).any() or df["Gross Margin"].gt(0.90).any():
+        raise ValueError("毛利率必须在 5% 到 90% 之间")
+    if df["Sample Allocation (%)"].sum() <= 0:
+        raise ValueError("至少一个产品的寄样分配占比必须大于 0")
+    if df["Click-to-order Rate"].lt(0).any() or df["Click-to-order Rate"].gt(1).any():
+        raise ValueError("点击到下单转化率必须在 0% 到 100% 之间")
+    if df["ShopTab GMV Share"].lt(0).any() or df["ShopTab GMV Share"].gt(1).any():
+        raise ValueError("ShopTab GMV 占比必须在 0% 到 100% 之间")
 
-    if (df["AOV"] <= 0).any() or df["AOV"].isna().any():
-        raise ValueError("AOV must be > 0 for all products.")
-
-    if ((df["Gross Margin"] < 0.05) | (df["Gross Margin"] > 0.90) | df["Gross Margin"].isna()).any():
-        raise ValueError("Gross Margin must be between 5% and 90% for all products.")
-
-    df = normalize_sales_shares(df)
+    df["SampleShareNorm"] = df["Sample Allocation (%)"] / df["Sample Allocation (%)"].sum()
     return df
 
-# ======================
-# UI
-# ======================
-st.title(T["app_title"])
-st.caption(T["app_caption"])
+
+def build_weekly_model(
+    product_df,
+    phases,
+    weeks_per_phase,
+    scenario_name,
+    promo_60d,
+    fulfillment_per_order,
+    sample_shipping_cost,
+    affiliate_commission_rate,
+    ads_roas,
+):
+    scenario = SCENARIOS[scenario_name]
+
+    share = product_df["SampleShareNorm"].to_numpy()
+    aov = product_df["AOV"].to_numpy()
+    gross_margin = product_df["Gross Margin"].to_numpy()
+    base_fee_rates = product_df["Platform Fee Rate"].to_numpy()
+
+    sample_product_cost = aov * (1 - gross_margin)
+    videos_per_sample = product_df["Videos / Sample"].to_numpy() * scenario["videos_per_sample"]
+    clicks_per_video = product_df["Clicks / Video"].to_numpy() * scenario["clicks_per_video"]
+    click_to_order = np.minimum(
+        product_df["Click-to-order Rate"].to_numpy() * scenario["click_to_order_rate"],
+        1.0,
+    )
+    shop_tab_share = product_df["ShopTab GMV Share"].to_numpy()
+
+    rows = []
+    video_history = []
+    global_week = 0
+
+    for phase in phases:
+        target_series = np.linspace(phase["gmv_start"], phase["gmv_end"], weeks_per_phase)
+
+        for week_idx in range(weeks_per_phase):
+            global_week += 1
+
+            samples_total = float(phase["samples"])
+            samples_p = samples_total * share
+
+            new_videos_p = samples_p * videos_per_sample
+            video_history.append(new_videos_p)
+
+            active_videos_p = np.zeros(len(product_df))
+            for age, weight in enumerate(CONTENT_DECAY_WEIGHTS):
+                idx = len(video_history) - 1 - age
+                if idx >= 0:
+                    active_videos_p += video_history[idx] * weight
+
+            organic_clicks_p = active_videos_p * clicks_per_video
+            organic_orders_p = organic_clicks_p * click_to_order
+            organic_gmv_p = organic_orders_p * aov
+
+            ads_take_rate = float(phase["ads_take_rate"])
+            if ads_take_rate * ads_roas >= 0.90:
+                raise ValueError("Ads Take Rate x Ads ROAS 必须低于 90%，否则模型会不稳定")
+
+            denominator = 1 - ads_take_rate * ads_roas
+            total_gmv_p = organic_gmv_p / denominator
+            paid_gmv_p = total_gmv_p - organic_gmv_p
+
+            orders_p = total_gmv_p / aov
+            shop_tab_gmv_p = total_gmv_p * shop_tab_share
+            affiliate_gmv_p = total_gmv_p - shop_tab_gmv_p
+
+            week_fee_rates = platform_fee_rate(global_week, promo_60d, base_fee_rates)
+            cogs_p = total_gmv_p * (1 - gross_margin)
+            platform_fee_p = total_gmv_p * week_fee_rates
+            sample_cost_p = samples_p * (sample_product_cost + sample_shipping_cost)
+
+            gmv = float(np.sum(total_gmv_p))
+            orders = float(np.sum(orders_p))
+            shop_tab_gmv = float(np.sum(shop_tab_gmv_p))
+            affiliate_gmv = float(np.sum(affiliate_gmv_p))
+
+            cogs = float(np.sum(cogs_p))
+            platform_fee = float(np.sum(platform_fee_p))
+            samples_cost = float(np.sum(sample_cost_p))
+            fulfillment_cost = orders * fulfillment_per_order
+            creator_commission = affiliate_gmv * affiliate_commission_rate
+            ads_cost = gmv * ads_take_rate
+
+            total_cost = cogs + platform_fee + samples_cost + fulfillment_cost + creator_commission + ads_cost
+            profit = gmv - total_cost
+
+            rows.append({
+                "Phase": phase["name"],
+                "Week in Phase": week_idx + 1,
+                "Global Week": global_week,
+                "Samples Sent": samples_total,
+                "New Videos": float(np.sum(new_videos_p)),
+                "Active Videos": float(np.sum(active_videos_p)),
+                "Product Clicks": float(np.sum(organic_clicks_p)),
+                "Orders": orders,
+                "Organic Funnel GMV": float(np.sum(organic_gmv_p)),
+                "Paid GMV Lift": float(np.sum(paid_gmv_p)),
+                "GMV": gmv,
+                "Target GMV": float(target_series[week_idx]),
+                "Target Gap": gmv - float(target_series[week_idx]),
+                "ShopTab GMV": shop_tab_gmv,
+                "Affiliate Video GMV": affiliate_gmv,
+                "COGS": cogs,
+                "Gross Profit": gmv - cogs,
+                "Platform Fee": platform_fee,
+                "Creator Commission": creator_commission,
+                "Ads Cost": ads_cost,
+                "Samples Cost": samples_cost,
+                "Fulfillment Cost": fulfillment_cost,
+                "Growth Investment": samples_cost + ads_cost,
+                "Total Cost": total_cost,
+                "Profit": profit,
+                "Ads Take Rate": ads_take_rate,
+            })
+
+    return pd.DataFrame(rows)
+
+
+def summarize_phase(df):
+    summary = df.groupby("Phase", as_index=False).agg({
+        "Samples Sent": "sum",
+        "New Videos": "sum",
+        "Product Clicks": "sum",
+        "Orders": "sum",
+        "Organic Funnel GMV": "sum",
+        "Paid GMV Lift": "sum",
+        "GMV": "sum",
+        "Target GMV": "sum",
+        "Target Gap": "sum",
+        "ShopTab GMV": "sum",
+        "Affiliate Video GMV": "sum",
+        "COGS": "sum",
+        "Gross Profit": "sum",
+        "Platform Fee": "sum",
+        "Creator Commission": "sum",
+        "Ads Cost": "sum",
+        "Samples Cost": "sum",
+        "Fulfillment Cost": "sum",
+        "Growth Investment": "sum",
+        "Total Cost": "sum",
+        "Profit": "sum",
+    })
+    summary["Profit Margin"] = np.where(summary["GMV"] > 0, summary["Profit"] / summary["GMV"], 0)
+    summary["GMV / Sample"] = np.where(summary["Samples Sent"] > 0, summary["GMV"] / summary["Samples Sent"], 0)
+    return summary
+
+
+def summarize_overall(df):
+    total_gmv = df["GMV"].sum()
+    total_profit = df["Profit"].sum()
+    total_samples = df["Samples Sent"].sum()
+    return pd.DataFrame([{
+        "Total Samples": total_samples,
+        "Total Videos": df["New Videos"].sum(),
+        "Total Clicks": df["Product Clicks"].sum(),
+        "Total Orders": df["Orders"].sum(),
+        "Total GMV": total_gmv,
+        "Total Target GMV": df["Target GMV"].sum(),
+        "Total Cost": df["Total Cost"].sum(),
+        "Total Profit": total_profit,
+        "Growth Investment": df["Growth Investment"].sum(),
+        "Profit Margin": total_profit / total_gmv if total_gmv > 0 else 0,
+        "GMV / Sample": total_gmv / total_samples if total_samples > 0 else 0,
+    }])
+
+
+def first_positive_profit_week(df):
+    hit = df[df["Profit"] > 0]
+    return None if hit.empty else int(hit["Global Week"].iloc[0])
+
+
+def first_cumulative_break_even_week(df):
+    temp = df.copy()
+    temp["Cumulative Profit"] = temp["Profit"].cumsum()
+    hit = temp[temp["Cumulative Profit"] >= 0]
+    return None if hit.empty else int(hit["Global Week"].iloc[0])
+
+
+def make_weekly_chart(df, title, be_week=None):
+    fig, ax = plt.subplots(figsize=(10, 5))
+    add_phase_backgrounds(ax, df)
+
+    ax.plot(df["Global Week"], df["GMV"], marker="o", linewidth=2, label="Forecast GMV", zorder=4)
+    ax.plot(df["Global Week"], df["Target GMV"], linestyle="--", label="Target GMV", zorder=3)
+    ax.plot(df["Global Week"], df["Total Cost"], marker="o", label="Total Cost", zorder=3)
+    ax.plot(df["Global Week"], df["Profit"], marker="o", linewidth=2, label="Profit", zorder=4)
+    ax.axhline(0, linewidth=1, color="#555555", zorder=2)
+
+    if be_week is not None:
+        point = df[df["Global Week"] == be_week]
+        if not point.empty:
+            y = float(point["Profit"].iloc[0])
+            ax.scatter([be_week], [y], s=80, zorder=5)
+            ax.axvline(be_week, linestyle="--", alpha=0.35, zorder=2)
+            ax.annotate(f"Weekly BE: W{be_week}", xy=(be_week, y), xytext=(8, 8), textcoords="offset points")
+
+    ax.set_title(title)
+    ax.set_xlabel("Week")
+    ax.set_ylabel("€")
+    ax.grid(True, alpha=0.3, zorder=1)
+    ax.legend()
+    format_eur_axis(ax)
+    fig.tight_layout()
+    return fig
+
+
+def make_cumulative_chart(df, be_week=None):
+    temp = df.copy()
+    temp["Cumulative Profit"] = temp["Profit"].cumsum()
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    add_phase_backgrounds(ax, temp)
+    ax.plot(temp["Global Week"], temp["Cumulative Profit"], marker="o", linewidth=2, label="Cumulative Profit")
+    ax.axhline(0, linewidth=1, color="#555555")
+
+    if be_week is not None:
+        point = temp[temp["Global Week"] == be_week]
+        if not point.empty:
+            y = float(point["Cumulative Profit"].iloc[0])
+            ax.scatter([be_week], [y], s=80)
+            ax.axvline(be_week, linestyle="--", alpha=0.35)
+            ax.annotate(f"Cumulative BE: W{be_week}", xy=(be_week, y), xytext=(8, 8), textcoords="offset points")
+
+    ax.set_title("Cumulative Profit Trend")
+    ax.set_xlabel("Week")
+    ax.set_ylabel("€")
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+    format_eur_axis(ax)
+    fig.tight_layout()
+    return fig
+
+
+def make_funnel_chart(df):
+    values = pd.Series({
+        "Samples": df["Samples Sent"].sum(),
+        "Videos": df["New Videos"].sum(),
+        "Clicks": df["Product Clicks"].sum(),
+        "Orders": df["Orders"].sum(),
+    })
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.bar(values.index, values.values)
+    ax.set_title("Funnel Summary")
+    ax.grid(True, axis="y", alpha=0.3)
+    ax.yaxis.set_major_formatter(ticker.StrMethodFormatter("{x:,.0f}"))
+    fig.tight_layout()
+    return fig
+
+
+def format_table(df, money_cols=None, pct_cols=None, number_cols=None):
+    out = df.copy()
+    for col in money_cols or []:
+        if col in out.columns:
+            out[col] = out[col].map(lambda x: money(x, 0))
+    for col in pct_cols or []:
+        if col in out.columns:
+            out[col] = out[col].map(lambda x: pct(x, 1))
+    for col in number_cols or []:
+        if col in out.columns:
+            out[col] = out[col].map(lambda x: f"{float(x):,.0f}")
+    return out
+
+
+def csv_bytes(df):
+    return df.to_csv(index=False).encode("utf-8-sig")
+
+
+st.title("TikTok Shop Growth Visualizer")
+st.caption("基于寄样、视频、点击、转化、GMV、成本和利润的 Streamlit 增长漏斗模拟器")
+st.info("当前 subcategory 漏斗参数是临时 benchmark。拿到数据组真实数据后，请替换代码顶部的 FUNNEL_PRESETS。")
+
 
 with st.sidebar:
-    st.header(T["global_inputs"])
+    st.header("全局输入")
 
-    n_products = st.number_input(
-        T["num_products"],
-        min_value=1,
-        max_value=26,
-        value=3,
-        step=1,
-    )
+    n_products = st.number_input("产品数量", min_value=1, max_value=26, value=3, step=1)
+    scenario_name = st.selectbox("情景假设", options=list(SCENARIOS.keys()), index=1)
 
     promo_60d = st.radio(
-        T["promo_60d"],
+        "60天费率优惠",
         options=[True, False],
-        format_func=lambda x: T["promo_yes"] if x else T["promo_no"],
+        format_func=lambda x: "是，前约60天平台费 5%" if x else "否，使用默认平台费",
         index=0,
     )
 
-    fulfillment_per_order = st.number_input(
-        T["fulfillment"],
-        min_value=0.0,
-        value=6.0,
-        step=0.5,
+    fulfillment_per_order = st.number_input("履约成本 €/订单", min_value=0.0, value=6.0, step=0.5)
+    sample_shipping_cost = st.number_input("样品物流成本 €/件", min_value=0.0, value=5.0, step=1.0)
+
+    affiliate_commission_rate = st.slider("达人佣金", min_value=0.0, max_value=0.5, value=0.15, step=0.01)
+
+    ads_roas = st.number_input(
+        "广告 ROAS 假设",
+        min_value=0.1,
+        max_value=8.0,
+        value=3.0,
+        step=0.1,
+        help="例如 3.0 表示 €1 广告费带来 €3 GMV。",
     )
 
-    sample_product_cost = st.number_input(
-        T["sample_product"],
-        min_value=0.0,
-        value=30.0,
-        step=1.0,
-    )
+    weeks_per_phase = st.slider("每阶段周数", min_value=2, max_value=8, value=4, step=1)
 
-    sample_ship_cost = st.number_input(
-        T["sample_shipping"],
-        min_value=0.0,
-        value=5.0,
-        step=1.0,
-    )
+    st.header("阶段控制")
+    phase_inputs = []
 
-    affiliate_commission_rate = st.slider(
-        T["affiliate_commission"],
-        min_value=0.0,
-        max_value=0.5,
-        value=0.15,
-        step=0.01,
-    )
+    for idx, default in enumerate(PHASE_DEFAULTS):
+        st.subheader(default["name"])
 
-    weeks_in_phase = st.slider(
-        T["weeks_per_phase"],
-        min_value=2,
-        max_value=8,
-        value=4,
-        step=1,
-    )
+        gmv_start = st.number_input(
+            f"目标 GMV 起点 - {default['name']}",
+            min_value=0.0,
+            value=float(default["gmv_start"]),
+            step=1000.0,
+            key=f"phase_gmv_start_{idx}",
+        )
 
-    st.header(T["phase_controls"])
-    phase_inputs = build_phase_inputs()
+        gmv_end = st.number_input(
+            f"目标 GMV 终点 - {default['name']}",
+            min_value=0.0,
+            value=float(default["gmv_end"]),
+            step=1000.0,
+            key=f"phase_gmv_end_{idx}",
+        )
 
-    for i, phase in enumerate(phase_inputs):
-        st.subheader(phase["name"])
-
-        phase["ads_take_rate"] = st.slider(
-            f"{T['ads_rate']} - {phase['name']}",
+        ads_take_rate = st.slider(
+            f"Ads Take Rate - {default['name']}",
             min_value=0.0,
             max_value=0.30,
-            value=float(phase["ads_take_rate"]),
+            value=float(default["ads_take_rate"]),
             step=0.01,
-            key=f"ads_{i}"
+            key=f"phase_ads_{idx}",
+            help="内部 KPI 口径：广告花费 / 总 GMV。",
         )
 
-        phase["samples"] = st.number_input(
-            f"{T['samples_per_week']} - {phase['name']}",
+        samples = st.number_input(
+            f"每周总寄样数 - {default['name']}",
             min_value=0,
-            value=int(phase["samples"]),
+            value=int(default["samples"]),
             step=1,
-            key=f"samples_{i}"
+            key=f"phase_samples_{idx}",
         )
 
-        phase["affiliate_share"] = st.slider(
-            f"{T['affiliate_share']} - {phase['name']}",
-            min_value=0.0,
-            max_value=1.0,
-            value=float(phase["affiliate_share"]),
-            step=0.01,
-            key=f"aff_{i}"
-        )
+        phase_inputs.append({
+            "name": default["name"],
+            "gmv_start": gmv_start,
+            "gmv_end": gmv_end,
+            "ads_take_rate": ads_take_rate,
+            "samples": samples,
+        })
 
-# ======================
-# Product Setup
-# ======================
-st.subheader(T["product_setup"])
-st.caption(T["product_setup_caption"])
+
+st.subheader("产品设置")
+st.caption("选择 subcategory 后会带出 AOV 和漏斗 benchmark。所有假设都可以手动修改。")
+
 
 for i in range(int(n_products)):
-    if f"product_name_{i}" not in st.session_state:
-        st.session_state[f"product_name_{i}"] = LETTERS[i]
-
-    if f"family_{i}" not in st.session_state:
-        st.session_state[f"family_{i}"] = "Home & Living"
-
-    current_family = st.session_state[f"family_{i}"]
-    available_presets = list(AOV_PRESETS[current_family].keys())
-
-    if f"preset_{i}" not in st.session_state or st.session_state[f"preset_{i}"] not in available_presets:
-        st.session_state[f"preset_{i}"] = available_presets[0]
-
-    current_preset = st.session_state[f"preset_{i}"]
-    default_aov = AOV_PRESETS[current_family][current_preset]
-
-    if f"aov_{i}" not in st.session_state:
-        st.session_state[f"aov_{i}"] = float(default_aov)
-
-    if f"sales_share_text_{i}" not in st.session_state:
-        st.session_state[f"sales_share_text_{i}"] = f"{round(100.0 / float(n_products), 1)}"
-
-    if f"gross_margin_pct_{i}" not in st.session_state:
-        st.session_state[f"gross_margin_pct_{i}"] = 40.0
-
-    if f"fee_type_{i}" not in st.session_state:
-        st.session_state[f"fee_type_{i}"] = T["other_fee"]
+    init_product_state(i, int(n_products))
 
     with st.container(border=True):
-        st.markdown(f"**{T['product_block']} {i + 1}**")
+        st.markdown(f"**产品 {i + 1}**")
 
-        col1, col2, col3 = st.columns(3)
+        c1, c2, c3 = st.columns(3)
 
-        with col1:
-            st.text_input(T["product"], key=f"product_name_{i}")
+        with c1:
+            st.text_input("产品名称", key=f"product_name_{i}")
 
-        with col2:
-            st.selectbox(T["family"], options=list(AOV_PRESETS.keys()), key=f"family_{i}")
+        with c2:
+            st.selectbox("大类", options=list(AOV_PRESETS.keys()), key=f"family_{i}")
 
-        selected_family = st.session_state[f"family_{i}"]
-        updated_presets = list(AOV_PRESETS[selected_family].keys())
+        family = st.session_state[f"family_{i}"]
+        presets = list(AOV_PRESETS[family].keys())
 
-        if st.session_state[f"preset_{i}"] not in updated_presets:
-            st.session_state[f"preset_{i}"] = updated_presets[0]
+        if st.session_state[f"preset_{i}"] not in presets:
+            st.session_state[f"preset_{i}"] = presets[0]
 
-        with col3:
-            st.selectbox(T["preset"], options=updated_presets, key=f"preset_{i}")
+        with c3:
+            st.selectbox("Subcategory", options=presets, key=f"preset_{i}")
 
-        selected_preset = st.session_state[f"preset_{i}"]
-        preset_aov = AOV_PRESETS[selected_family][selected_preset]
+        if st.button(f"应用类目 benchmark - 产品 {i + 1}", key=f"apply_benchmark_{i}"):
+            apply_benchmark(i)
+            st.rerun()
 
-        if st.session_state[f"aov_{i}"] <= 0:
-            st.session_state[f"aov_{i}"] = float(preset_aov)
+        c4, c5, c6 = st.columns(3)
 
-        col4, col5, col6 = st.columns(3)
-
-        with col4:
+        with c4:
             st.text_input(
-                T["sales_share"],
-                key=f"sales_share_text_{i}",
-                help=T["sales_share_help"]
+                "寄样分配占比 (%)",
+                key=f"sample_share_{i}",
+                help="例如 50 或 20。不需要加起来等于 100，系统会自动标准化。",
             )
 
-        with col5:
-            st.number_input(
-                T["aov"],
-                min_value=0.01,
-                step=1.0,
-                key=f"aov_{i}"
-            )
+        with c5:
+            st.number_input("AOV (€)", min_value=0.01, step=1.0, key=f"aov_{i}")
 
-        with col6:
-            st.selectbox(
-                T["fee_type"],
-                options=[T["electronics_fee"], T["other_fee"]],
-                key=f"fee_type_{i}"
-            )
+        with c6:
+            st.selectbox("费率类型", options=["electronics", "other"], format_func=fee_label, key=f"fee_type_{i}")
 
-        st.number_input(
-            T["gross_margin"],
-            min_value=5.0,
-            max_value=90.0,
+        c7, c8, c9, c10 = st.columns(4)
+
+        with c7:
+            st.number_input("毛利率 (%)", min_value=5.0, max_value=90.0, step=1.0, key=f"gross_margin_pct_{i}")
+
+        with c8:
+            st.number_input("每个样品产出视频数", min_value=0.0, max_value=5.0, step=0.05, key=f"videos_per_sample_{i}")
+
+        with c9:
+            st.number_input("每条视频商品点击数", min_value=0.0, max_value=100000.0, step=10.0, key=f"clicks_per_video_{i}")
+
+        with c10:
+            st.number_input("点击到下单转化率 (%)", min_value=0.0, max_value=100.0, step=0.1, key=f"click_to_order_pct_{i}")
+
+        st.slider(
+            "ShopTab GMV 占比 (%)",
+            min_value=0.0,
+            max_value=100.0,
             step=1.0,
-            key=f"gross_margin_pct_{i}",
-            help=T["gross_margin_help"]
+            key=f"shop_tab_share_pct_{i}",
+            help="ShopTab / 商城成交不计达人销售佣金。",
         )
 
-generate = st.button(T["generate"], type="primary")
 
-# ======================
-# Run
-# ======================
+generate = st.button("生成模拟结果", type="primary")
+
+
 if generate:
     try:
-        prod_df = build_product_df_from_ui(int(n_products))
+        product_df = build_product_df(int(n_products))
 
-        mix_display = prod_df[[
-            "Product", "Family", "Preset Category", "Sales Share (%)", "SalesShareNorm",
-            "AOV", "Gross Margin", "Platform Fee Rate Default"
-        ]].copy()
+        df_all = build_weekly_model(
+            product_df=product_df,
+            phases=phase_inputs,
+            weeks_per_phase=int(weeks_per_phase),
+            scenario_name=scenario_name,
+            promo_60d=bool(promo_60d),
+            fulfillment_per_order=float(fulfillment_per_order),
+            sample_shipping_cost=float(sample_shipping_cost),
+            affiliate_commission_rate=float(affiliate_commission_rate),
+            ads_roas=float(ads_roas),
+        )
 
-        mix_display.columns = [
-            T["product"],
-            T["family"],
-            T["preset_category"],
-            T["sales_share"],
-            "SalesShareNorm",
-            T["aov"],
-            T["gross_margin"],
-            T["platform_fee_default"],
-        ]
+        phase_summary = summarize_phase(df_all)
+        overall_summary = summarize_overall(df_all)
 
-        mix_display[T["sales_share"]] = mix_display[T["sales_share"]].map(lambda v: f"{v:,.1f}%")
-        mix_display["SalesShareNorm"] = mix_display["SalesShareNorm"].map(lambda v: f"{v:.0%}")
-        mix_display[T["aov"]] = mix_display[T["aov"]].map(lambda v: f"€{v:,.2f}")
-        mix_display[T["gross_margin"]] = mix_display[T["gross_margin"]].map(lambda v: f"{v:.0%}")
-        mix_display[T["platform_fee_default"]] = mix_display[T["platform_fee_default"]].map(lambda v: f"{v:.0%}")
+        weekly_be = first_positive_profit_week(df_all)
+        cumulative_be = first_cumulative_break_even_week(df_all)
 
-        st.subheader(T["product_mix"])
-        st.dataframe(mix_display, use_container_width=True)
+        st.subheader("产品组合与漏斗假设")
 
-        all_tables = []
-        for idx, phase in enumerate(phase_inputs):
-            dfp = phase_weekly_series(
-                idx,
-                phase["name"],
-                phase["gmv_start"],
-                phase["gmv_end"],
-                phase["ads_take_rate"],
-                phase["samples"],
-                float(fulfillment_per_order),
-                float(sample_product_cost),
-                float(sample_ship_cost),
-                bool(promo_60d),
-                int(weeks_in_phase),
-                prod_df,
-                float(phase["affiliate_share"]),
-                float(affiliate_commission_rate),
-                week_offset=idx * int(weeks_in_phase),
-            )
-            all_tables.append(dfp)
+        product_display = product_df.copy()
+        product_display["SampleShareNorm"] = product_display["SampleShareNorm"].map(lambda x: pct(x, 0))
+        product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
+        product_display["Gross Margin"] = product_display["Gross Margin"].map(lambda x: pct(x, 0))
+        product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
+        product_display["Click-to-order Rate"] = product_display["Click-to-order Rate"].map(lambda x: pct(x, 1))
+        product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
 
-        df_all = pd.concat(all_tables, ignore_index=True)
+        st.dataframe(product_display, use_container_width=True)
 
-        phase_summary = build_phase_summary(df_all)
-        overall_summary = build_overall_summary(df_all)
+        overall = overall_summary.iloc[0]
 
-        single_week_break_even = first_positive_profit_week(df_all)
-        cumulative_break_even = first_cumulative_break_even_week(df_all)
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("总 GMV", money(overall["Total GMV"], 0))
+        m2.metric("总利润", money(overall["Total Profit"], 0))
+        m3.metric("利润率", pct(overall["Profit Margin"], 1))
+        m4.metric("增长投入", money(overall["Growth Investment"], 0))
 
-        metric1, metric2, metric3 = st.columns(3)
-        with metric1:
-            st.metric(T["total_gmv"], f"€{overall_summary.iloc[0]['Total GMV']:,.0f}")
-        with metric2:
-            st.metric(T["total_profit"], f"€{overall_summary.iloc[0]['Total Profit']:,.0f}")
-        with metric3:
-            st.metric(T["profit_margin"], f"{overall_summary.iloc[0]['Overall Profit Margin']:.1%}")
+        m5, m6, m7, m8 = st.columns(4)
+        m5.metric("寄样数", f"{overall['Total Samples']:,.0f}")
+        m6.metric("产出视频数", f"{overall['Total Videos']:,.0f}")
+        m7.metric("商品点击数", f"{overall['Total Clicks']:,.0f}")
+        m8.metric("订单数", f"{overall['Total Orders']:,.0f}")
 
-        st.subheader(T["charts"])
-        render_phase_badges([p["key"] for p in phase_inputs])
+        st.subheader("图表")
 
-        chart_col1, chart_col2 = st.columns(2)
+        c1, c2 = st.columns(2)
+        with c1:
+            st.pyplot(make_weekly_chart(df_all, "Overall Weekly Trend", weekly_be))
+        with c2:
+            st.pyplot(make_cumulative_chart(df_all, cumulative_be))
 
-        with chart_col1:
-            st.pyplot(
-                make_chart(
-                    df_all,
-                    T["overall_weekly_trend"],
-                    weekly_be_week=single_week_break_even,
-                    annotate_break_even=True
-                )
-            )
+        st.pyplot(make_funnel_chart(df_all))
 
-        with chart_col2:
-            st.pyplot(
-                make_cumulative_profit_chart(
-                    df_all,
-                    cumulative_be_week=cumulative_break_even
-                )
-            )
+        st.subheader("分阶段趋势")
+        tabs = st.tabs([p["name"] for p in phase_inputs])
 
-        st.subheader(T["phase_by_phase"])
-        phase_tabs = st.tabs([p["name"] for p in phase_inputs])
-
-        for tab, phase in zip(phase_tabs, phase_inputs):
+        for tab, phase in zip(tabs, phase_inputs):
             with tab:
                 phase_df = df_all[df_all["Phase"] == phase["name"]].copy()
-                phase_weekly_be = None
-                tmp_phase_be = phase_df[phase_df["Profit"] > 0]
-                if not tmp_phase_be.empty:
-                    phase_weekly_be = int(tmp_phase_be["Global Week"].iloc[0])
+                phase_be = first_positive_profit_week(phase_df)
+                st.pyplot(make_weekly_chart(phase_df, phase["name"], phase_be))
 
-                render_phase_badges([phase["key"]])
-
-                st.pyplot(
-                    make_chart(
-                        phase_df,
-                        phase["name"],
-                        weekly_be_week=phase_weekly_be,
-                        annotate_break_even=True
-                    )
-                )
-
-        phase_summary_fmt = phase_summary.copy()
-        for col in [
-            "GMV", "Total Cost", "Profit", "Orders (est.)", "Platform Fee",
-            "Ads Cost", "Samples Cost", "Fulfillment Cost", "Creator Commission", "COGS"
-        ]:
-            phase_summary_fmt[col] = phase_summary_fmt[col].map(lambda v: f"{v:,.0f}")
-        phase_summary_fmt["Profit Margin"] = phase_summary["Profit Margin"].map(lambda v: f"{v:.1%}")
-
-        overall_summary_fmt = overall_summary.copy()
-        overall_summary_fmt["Total GMV"] = overall_summary_fmt["Total GMV"].map(lambda v: f"{v:,.0f}")
-        overall_summary_fmt["Total Cost"] = overall_summary_fmt["Total Cost"].map(lambda v: f"{v:,.0f}")
-        overall_summary_fmt["Total Profit"] = overall_summary_fmt["Total Profit"].map(lambda v: f"{v:,.0f}")
-        overall_summary_fmt["Total Orders (est.)"] = overall_summary_fmt["Total Orders (est.)"].map(lambda v: f"{v:,.0f}")
-        overall_summary_fmt["Overall Profit Margin"] = overall_summary["Overall Profit Margin"].map(lambda v: f"{v:.1%}")
-
-        st.subheader(T["summary"])
-        sum_col1, sum_col2 = st.columns(2)
-        with sum_col1:
-            st.markdown(f"**{T['phase_summary']}**")
-            st.dataframe(phase_summary_fmt, use_container_width=True)
-        with sum_col2:
-            st.markdown(f"**{T['overall_summary']}**")
-            st.dataframe(overall_summary_fmt, use_container_width=True)
-
-        st.subheader(T["break_even_signals"])
-        be_col1, be_col2 = st.columns(2)
-        with be_col1:
-            if single_week_break_even is not None:
-                st.success(f"{T['first_positive_profit']}: {T['week']} {single_week_break_even}")
-            else:
-                st.warning(f"{T['first_positive_profit']}: {T['not_reached']}")
-
-        with be_col2:
-            if cumulative_break_even is not None:
-                st.success(f"{T['cumulative_break_even']}: {T['week']} {cumulative_break_even}")
-            else:
-                st.warning(f"{T['cumulative_break_even']}: {T['not_reached']}")
-
-        st.subheader(T["weekly_details"])
-        df_all_display = df_all.copy()
         money_cols = [
-            "GMV", "Affiliate GMV", "Non-affiliate GMV", "Creator Commission",
-            "Platform Fee", "Ads Cost", "Samples Cost", "Fulfillment Cost",
-            "COGS", "Total Cost", "Profit"
+            "Organic Funnel GMV",
+            "Paid GMV Lift",
+            "GMV",
+            "Target GMV",
+            "Target Gap",
+            "ShopTab GMV",
+            "Affiliate Video GMV",
+            "COGS",
+            "Gross Profit",
+            "Platform Fee",
+            "Creator Commission",
+            "Ads Cost",
+            "Samples Cost",
+            "Fulfillment Cost",
+            "Growth Investment",
+            "Total Cost",
+            "Profit",
+            "GMV / Sample",
         ]
-        for col in money_cols:
-            df_all_display[col] = df_all_display[col].map(lambda v: f"{v:,.2f}")
-        df_all_display["Orders (est.)"] = df_all_display["Orders (est.)"].map(lambda v: f"{v:,.2f}")
-        df_all_display[T["ads_take_rate_col"]] = df_all["Ads Take Rate"].map(lambda v: f"{v:.0%}")
-        df_all_display[T["affiliate_share_col"]] = df_all["Affiliate Share"].map(lambda v: f"{v:.0%}")
-        if "Ads Take Rate" in df_all_display.columns:
-            df_all_display = df_all_display.drop(columns=["Ads Take Rate"])
 
-        st.dataframe(df_all_display, use_container_width=True)
+        number_cols = ["Samples Sent", "New Videos", "Product Clicks", "Orders"]
 
-        dl1, dl2 = st.columns(2)
-        with dl1:
-            st.download_button(
-                T["download_weekly"],
-                data=to_csv_bytes(df_all),
-                file_name="weekly_details.csv",
-                mime="text/csv"
+        st.subheader("汇总")
+
+        s1, s2 = st.columns(2)
+
+        with s1:
+            st.markdown("**阶段汇总**")
+            st.dataframe(
+                format_table(
+                    phase_summary,
+                    money_cols=money_cols,
+                    pct_cols=["Profit Margin"],
+                    number_cols=number_cols,
+                ),
+                use_container_width=True,
             )
-        with dl2:
+
+        with s2:
+            st.markdown("**整体汇总**")
+            st.dataframe(
+                format_table(
+                    overall_summary,
+                    money_cols=["Total GMV", "Total Target GMV", "Total Cost", "Total Profit", "Growth Investment", "GMV / Sample"],
+                    pct_cols=["Profit Margin"],
+                    number_cols=["Total Samples", "Total Videos", "Total Clicks", "Total Orders"],
+                ),
+                use_container_width=True,
+            )
+
+        st.subheader("Break-even 信号")
+
+        b1, b2 = st.columns(2)
+
+        with b1:
+            if weekly_be is None:
+                st.warning("首次单周盈利：未达到")
+            else:
+                st.success(f"首次单周盈利：第 {weekly_be} 周")
+
+        with b2:
+            if cumulative_be is None:
+                st.warning("累计 Break-even：未达到")
+            else:
+                st.success(f"累计 Break-even：第 {cumulative_be} 周")
+
+        st.subheader("每周明细")
+
+        weekly_display = format_table(
+            df_all,
+            money_cols=money_cols,
+            pct_cols=["Ads Take Rate"],
+            number_cols=["Samples Sent", "New Videos", "Active Videos", "Product Clicks", "Orders"],
+        )
+
+        st.dataframe(weekly_display, use_container_width=True)
+
+        d1, d2 = st.columns(2)
+
+        with d1:
             st.download_button(
-                T["download_phase"],
-                data=to_csv_bytes(phase_summary),
+                "下载每周明细 CSV",
+                data=csv_bytes(df_all),
+                file_name="weekly_details.csv",
+                mime="text/csv",
+            )
+
+        with d2:
+            st.download_button(
+                "下载阶段汇总 CSV",
+                data=csv_bytes(phase_summary),
                 file_name="phase_summary.csv",
-                mime="text/csv"
+                mime="text/csv",
             )
 
     except Exception as e:
-        st.error(f"{T['input_error']}: {e}")
+        st.error(f"输入错误：{e}")
