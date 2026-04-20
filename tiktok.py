@@ -1459,16 +1459,39 @@ def make_investment_split_chart(df_all):
             labels=values.index,
             values=values.values,
             hole=0.46,
+            domain=dict(x=[0.02, 0.70], y=[0.02, 0.98]),
             marker=dict(colors=["#64748B", "#8B5CF6", "#06B6D4", "#EC4899", "#F97316", "#14B8A6"][:len(values)]),
-            textinfo="label+percent",
+            textinfo="percent",
+            textposition="inside",
+            insidetextorientation="radial",
+            textfont=dict(size=13, color="white"),
             hovertemplate="%{label}: €%{value:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, T["investment_split"], height=390)
+    apply_plotly_layout(fig, T["investment_split"], height=460)
     fig.update_layout(
         showlegend=True,
-        legend=dict(orientation="h", yanchor="top", y=-0.06, xanchor="center", x=0.5),
-        margin=dict(l=24, r=24, t=64, b=80),
+        legend=dict(
+            orientation="v",
+            yanchor="middle",
+            y=0.5,
+            xanchor="left",
+            x=0.76,
+            bgcolor="rgba(255,255,255,0.86)",
+            bordercolor="#E5E7EB",
+            borderwidth=1,
+            font=dict(size=12),
+        ),
+        margin=dict(l=28, r=28, t=72, b=36),
+        annotations=[
+            dict(
+                text=T["total_cost"],
+                x=0.36,
+                y=0.50,
+                showarrow=False,
+                font=dict(size=13, color="#6B7280"),
+            )
+        ],
     )
     return fig
 
