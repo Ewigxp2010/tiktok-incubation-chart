@@ -431,7 +431,7 @@ with st.sidebar:
         "Language",
         options=["en", "zh", "de", "nl"],
         format_func=lambda code: LANG_LABELS[code],
-        index=1,
+        index=0,
     )
 
 T = TEXT[lang]
@@ -971,9 +971,9 @@ with st.sidebar:
         format_func=lambda x: T["promo_yes"] if x else T["promo_no"],
         index=0,
     )
-    logistics_cost = st.number_input(T["fulfillment"], min_value=0.0, value=6.0, step=0.5)
-    affiliate_commission_rate = st.slider(T["creator_commission"], min_value=0.0, max_value=0.5, value=0.15, step=0.01)
-    ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=3.0, step=0.1)
+    logistics_cost = st.number_input(T["fulfillment"], min_value=0.0, value=5.0, step=0.5)
+    affiliate_commission_rate = st.slider(T["creator_commission"], min_value=0.0, max_value=0.5, value=0.10, step=0.01)
+    ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=5.0, step=0.1)
     weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
 
     st.header(T["phase_controls"])
