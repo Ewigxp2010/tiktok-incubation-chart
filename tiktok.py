@@ -107,7 +107,7 @@ TEXT = {
         "promo_yes": "Yes, 5% platform fee for first ~60 days",
         "promo_no": "No, use default category commission",
         "fulfillment": "Logistics cost €/unit or order",
-        "fbt": "Fulfilled by TikTok (FBT)",
+        "fbt": "Use FBT free shipping",
         "fbt_yes": "Yes, set logistics cost to €0",
         "fbt_no": "No, use manual logistics cost",
         "fbt_help": "Planning assumption: when FBT free shipping applies, the simulator treats both sample shipping and order logistics as €0.",
@@ -200,7 +200,7 @@ TEXT = {
         "promo_yes": "是，前约60天平台费 5%",
         "promo_no": "否，使用默认类目佣金",
         "fulfillment": "物流成本 €/件/单",
-        "fbt": "是否使用 FBT 包邮",
+        "fbt": "使用 FBT 包邮",
         "fbt_yes": "是，物流成本按 €0 计算",
         "fbt_no": "否，使用手动物流成本",
         "fbt_help": "沙盘假设：如果该商品适用 FBT 包邮，模型会把寄样物流和订单物流都按 €0 计算。",
@@ -296,7 +296,7 @@ TEXT["de"] = {
     "promo_yes": "Ja, 5% Plattformgebühr für die ersten ~60 Tage",
     "promo_no": "Nein, Standard-Kategoriekommission verwenden",
     "fulfillment": "Logistikkosten €/Stück oder Bestellung",
-    "fbt": "Fulfilled by TikTok (FBT)",
+    "fbt": "FBT-Gratisversand nutzen",
     "fbt_yes": "Ja, Logistikkosten auf €0 setzen",
     "fbt_no": "Nein, manuelle Logistikkosten nutzen",
     "fbt_help": "Planungsannahme: Wenn FBT-Gratisversand gilt, setzt der Simulator Sample-Versand und Bestelllogistik auf €0.",
@@ -384,7 +384,7 @@ TEXT["nl"] = {
     "promo_yes": "Ja, 5% platform fee voor de eerste ~60 dagen",
     "promo_no": "Nee, standaard categoriecommissie gebruiken",
     "fulfillment": "Logistieke kosten €/stuk of order",
-    "fbt": "Fulfilled by TikTok (FBT)",
+    "fbt": "FBT gratis verzending gebruiken",
     "fbt_yes": "Ja, logistieke kosten op €0 zetten",
     "fbt_no": "Nee, handmatige logistieke kosten gebruiken",
     "fbt_help": "Planningsaanname: wanneer FBT gratis verzending geldt, behandelt de simulator sample shipping en orderlogistiek als €0.",
@@ -624,45 +624,18 @@ st.markdown(
         box-shadow: inset 0 -3px 0 var(--tts-red);
     }
 
-    div[role="radiogroup"] {
-        gap: 8px;
-        align-items: center;
-    }
-
-    div[role="radiogroup"] label {
-        background: #EEF2F7;
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
-        padding: 8px 14px;
-        min-height: 40px;
-        transition: all 120ms ease;
-    }
-
-    div[role="radiogroup"] label:has(input:checked) {
-        background: #FFFFFF;
-        border-color: #334155;
-        color: #111827;
-        box-shadow: inset 0 -3px 0 var(--tts-red), 0 8px 20px rgba(15, 23, 42, 0.08);
-    }
-
-    div[role="radiogroup"] label:has(input:checked) p,
-    div[role="radiogroup"] label:has(input:checked) span {
-        color: #111827;
-        font-weight: 700;
-    }
-
     .stButton > button {
         border-radius: 8px;
         border: 0;
-        background: #111827;
+        background: var(--tts-red);
         color: white;
         font-weight: 720;
         min-height: 44px;
-        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+        box-shadow: 0 12px 24px rgba(254, 44, 85, 0.18);
     }
 
     .stButton > button:hover {
-        background: #1F2937;
+        background: #E9274E;
         color: white;
         border: 0;
     }
@@ -1332,11 +1305,9 @@ with st.sidebar:
         format_func=lambda x: T["promo_yes"] if x else T["promo_no"],
         index=0,
     )
-    use_fbt = st.radio(
+    use_fbt = st.checkbox(
         T["fbt"],
-        options=[True, False],
-        format_func=lambda x: T["fbt_yes"] if x else T["fbt_no"],
-        index=1,
+        value=False,
         help=T["fbt_help"],
     )
     if use_fbt:
