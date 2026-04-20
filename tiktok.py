@@ -3,10 +3,24 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import matplotlib.font_manager as fm
 
 
 st.set_page_config(page_title="TikTok Shop Growth Visualizer", layout="wide")
 plt.rcParams["axes.unicode_minus"] = False
+
+for font_name in [
+    "Noto Sans CJK SC",
+    "Noto Sans CJK",
+    "Microsoft YaHei",
+    "SimHei",
+    "PingFang SC",
+    "Arial Unicode MS",
+    "WenQuanYi Zen Hei",
+]:
+    if any(font_name in font.name for font in fm.fontManager.ttflist):
+        plt.rcParams["font.sans-serif"] = [font_name, "DejaVu Sans"]
+        break
 
 
 # Public benchmark estimates. Replace CATEGORY_PRESETS with internal data
@@ -847,7 +861,7 @@ if generate:
         st.subheader(T["charts"])
         c1, c2 = st.columns(2)
         with c1:
-            st.pyplot(make_weekly_chart(df_all, T["overall_weekly"], weekly_be))
+            st.pyplot(make_weekly_chart(df_all, "Overall Weekly Trend", weekly_be))
         with c2:
             st.pyplot(make_cumulative_profit_chart(df_all, cumulative_be))
         st.pyplot(make_funnel_chart(df_all))
@@ -857,7 +871,7 @@ if generate:
         for tab, phase in zip(tabs, phase_inputs):
             with tab:
                 phase_df = df_all[df_all["Phase Key"] == phase["key"]].copy()
-                st.pyplot(make_weekly_chart(phase_df, phase_label(phase), first_positive_profit_week(phase_df)))
+                st.pyplot(make_weekly_chart(phase_df, phase["name"], first_positive_profit_week(phase_df)))
 
         money_cols = [
             "Organic Funnel GMV", "Paid GMV Lift", "GMV", "ShopTab GMV",
@@ -888,8 +902,16 @@ if generate:
 
         st.subheader(T["break_even"])
         b1, b2 = st.columns(2)
-        b1.success(f"{T['weekly_profit']}: Week {weekly_be}") if weekly_be else b1.warning(f"{T['weekly_profit']}: {T['not_reached']}")
-        b2.success(f"{T['cumulative_be']}: Week {cumulative_be}") if cumulative_be else b2.warning(f"{T['cumulative_be']}: {T['not_reached']}")
+        with b1:
+            if weekly_be:
+                st.success(f"{T['weekly_profit']}: Week {weekly_be}")
+            else:
+                st.warning(f"{T['weekly_profit']}: {T['not_reached']}")
+        with b2:
+            if cumulative_be:
+                st.success(f"{T['cumulative_be']}: Week {cumulative_be}")
+            else:
+                st.warning(f"{T['cumulative_be']}: {T['not_reached']}")
 
         st.subheader(T["weekly_details"])
         weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate"], number_cols=number_cols)
