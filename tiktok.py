@@ -91,12 +91,261 @@ PROMO_WEEKS = 9
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 
+TEXT = {
+    "en": {
+        "language": "Language",
+        "title": "TikTok Shop Growth Visualizer",
+        "caption": "Germany public-benchmark simulator for SKU samples, creator videos, clicks, GMV, costs, and profit",
+        "global_inputs": "Global Inputs",
+        "sku_count": "Number of SKUs",
+        "promo": "60-day platform fee promo",
+        "promo_yes": "Yes, 5% platform fee for first ~60 days",
+        "promo_no": "No, use default category commission",
+        "fulfillment": "Fulfillment €/order",
+        "sample_shipping": "Sample shipping €/unit",
+        "creator_commission": "Creator affiliate commission",
+        "ads_roas": "Ads ROAS assumption",
+        "weeks_phase": "Weeks / phase",
+        "phase_controls": "Phase Controls",
+        "phase1": "Phase 1 - Cold Start",
+        "phase2": "Phase 2 - Growth",
+        "phase3": "Phase 3 - Scale",
+        "take_rate": "Ads Take Rate (%)",
+        "samples_sku_week": "Samples / SKU / week",
+        "sku_setup": "SKU Setup",
+        "sku_caption": "Category selection auto-loads AOV and funnel assumptions. Electronics uses 7% platform commission; all other categories use 9%.",
+        "sku_name": "SKU name",
+        "category": "Category",
+        "subcategory": "Subcategory",
+        "gross_margin": "Gross Margin (%)",
+        "platform_commission": "Platform Commission",
+        "benchmark_expander": "View / adjust category funnel assumptions",
+        "videos_sample": "Videos / sample",
+        "clicks_video": "Clicks / video",
+        "click_order": "Click-to-order (%)",
+        "shoptab_share": "ShopTab GMV share (%)",
+        "generate": "Generate Simulator",
+        "sku_mix": "SKU Mix & Funnel Assumptions",
+        "total_gmv": "Total GMV",
+        "total_profit": "Total Profit",
+        "profit_margin": "Profit Margin",
+        "growth_investment": "Growth Investment",
+        "samples_sent": "Samples Sent",
+        "videos_generated": "Videos Generated",
+        "product_clicks": "Product Clicks",
+        "orders": "Orders",
+        "charts": "Charts",
+        "overall_weekly": "Overall Weekly Trend",
+        "phase_trend": "Phase-by-Phase Trend",
+        "summary": "Summary",
+        "phase_summary": "Phase Summary",
+        "overall_summary": "Overall Summary",
+        "break_even": "Break-even Signals",
+        "weekly_profit": "First positive weekly profit",
+        "cumulative_be": "Cumulative break-even",
+        "not_reached": "Not reached",
+        "weekly_details": "Weekly Details",
+        "download_weekly": "Download weekly details CSV",
+        "download_phase": "Download phase summary CSV",
+        "input_error": "Input error",
+    },
+    "zh": {
+        "language": "语言",
+        "title": "TikTok Shop Growth Visualizer",
+        "caption": "基于德国公开 benchmark 的 SKU 寄样、达人视频、点击、GMV、成本和利润模拟器",
+        "global_inputs": "全局输入",
+        "sku_count": "SKU 数量",
+        "promo": "60天平台费优惠",
+        "promo_yes": "是，前约60天平台费 5%",
+        "promo_no": "否，使用默认类目佣金",
+        "fulfillment": "履约成本 €/订单",
+        "sample_shipping": "样品物流成本 €/件",
+        "creator_commission": "达人佣金",
+        "ads_roas": "广告 ROAS 假设",
+        "weeks_phase": "每阶段周数",
+        "phase_controls": "阶段控制",
+        "phase1": "阶段 1 - 冷启动",
+        "phase2": "阶段 2 - 增长",
+        "phase3": "阶段 3 - 放量",
+        "take_rate": "Ads Take Rate (%)",
+        "samples_sku_week": "每个 SKU 每周寄样数",
+        "sku_setup": "SKU 设置",
+        "sku_caption": "选择 Category/Subcategory 后会自动加载 AOV 和漏斗假设。Electronics 平台佣金为 7%，其他类目为 9%。",
+        "sku_name": "SKU 名称",
+        "category": "Category",
+        "subcategory": "Subcategory",
+        "gross_margin": "毛利率 (%)",
+        "platform_commission": "平台佣金",
+        "benchmark_expander": "查看 / 调整类目漏斗假设",
+        "videos_sample": "每个样品产出视频数",
+        "clicks_video": "每条视频商品点击数",
+        "click_order": "点击到下单转化率 (%)",
+        "shoptab_share": "ShopTab GMV 占比 (%)",
+        "generate": "生成模拟结果",
+        "sku_mix": "SKU 组合与漏斗假设",
+        "total_gmv": "总 GMV",
+        "total_profit": "总利润",
+        "profit_margin": "利润率",
+        "growth_investment": "增长投入",
+        "samples_sent": "寄样数",
+        "videos_generated": "产出视频数",
+        "product_clicks": "商品点击数",
+        "orders": "订单数",
+        "charts": "图表",
+        "overall_weekly": "整体周趋势",
+        "phase_trend": "分阶段趋势",
+        "summary": "汇总",
+        "phase_summary": "阶段汇总",
+        "overall_summary": "整体汇总",
+        "break_even": "Break-even 信号",
+        "weekly_profit": "首次单周盈利",
+        "cumulative_be": "累计 Break-even",
+        "not_reached": "未达到",
+        "weekly_details": "每周明细",
+        "download_weekly": "下载每周明细 CSV",
+        "download_phase": "下载阶段汇总 CSV",
+        "input_error": "输入错误",
+    },
+    "de": {},
+    "nl": {},
+}
+TEXT["de"] = {
+    **TEXT["en"],
+    "language": "Sprache",
+    "caption": "Deutschland-Benchmark-Simulator für SKU-Samples, Creator-Videos, Klicks, GMV, Kosten und Gewinn",
+    "global_inputs": "Globale Eingaben",
+    "sku_count": "Anzahl SKUs",
+    "promo": "60-Tage-Plattformgebühr-Promo",
+    "promo_yes": "Ja, 5% Plattformgebühr für die ersten ~60 Tage",
+    "promo_no": "Nein, Standard-Kategoriekommission verwenden",
+    "fulfillment": "Fulfillment €/Bestellung",
+    "sample_shipping": "Sample-Versand €/Stück",
+    "creator_commission": "Creator-Affiliate-Provision",
+    "ads_roas": "Ads-ROAS-Annahme",
+    "weeks_phase": "Wochen / Phase",
+    "phase_controls": "Phasensteuerung",
+    "phase1": "Phase 1 - Kaltstart",
+    "phase2": "Phase 2 - Wachstum",
+    "phase3": "Phase 3 - Skalierung",
+    "samples_sku_week": "Samples / SKU / Woche",
+    "sku_setup": "SKU-Einstellung",
+    "sku_caption": "Die Kategorieauswahl lädt AOV und Funnel-Annahmen automatisch. Electronics nutzt 7% Plattformkommission; alle anderen Kategorien 9%.",
+    "sku_name": "SKU-Name",
+    "category": "Kategorie",
+    "platform_commission": "Plattformkommission",
+    "benchmark_expander": "Kategorie-Funnel-Annahmen anzeigen / anpassen",
+    "videos_sample": "Videos / Sample",
+    "clicks_video": "Klicks / Video",
+    "click_order": "Klick-zu-Bestellung (%)",
+    "shoptab_share": "ShopTab GMV-Anteil (%)",
+    "generate": "Simulator erzeugen",
+    "sku_mix": "SKU-Mix & Funnel-Annahmen",
+    "total_gmv": "Gesamt-GMV",
+    "total_profit": "Gesamtgewinn",
+    "profit_margin": "Gewinnmarge",
+    "growth_investment": "Wachstumsinvestition",
+    "samples_sent": "Samples",
+    "videos_generated": "Videos",
+    "product_clicks": "Produktklicks",
+    "orders": "Bestellungen",
+    "charts": "Charts",
+    "phase_trend": "Trend je Phase",
+    "summary": "Zusammenfassung",
+    "phase_summary": "Phasenübersicht",
+    "overall_summary": "Gesamtübersicht",
+    "break_even": "Break-even-Signale",
+    "weekly_profit": "Erste positive Wochenprofitabilität",
+    "cumulative_be": "Kumulierter Break-even",
+    "not_reached": "Nicht erreicht",
+    "weekly_details": "Wöchentliche Details",
+    "download_weekly": "Wöchentliche Details CSV herunterladen",
+    "download_phase": "Phasenübersicht CSV herunterladen",
+    "input_error": "Eingabefehler",
+}
+TEXT["nl"] = {
+    **TEXT["en"],
+    "language": "Taal",
+    "caption": "Duitse benchmark-simulator voor SKU-samples, creator-video's, clicks, GMV, kosten en winst",
+    "global_inputs": "Algemene invoer",
+    "sku_count": "Aantal SKU's",
+    "promo": "60-dagen platform fee promo",
+    "promo_yes": "Ja, 5% platform fee voor de eerste ~60 dagen",
+    "promo_no": "Nee, standaard categoriecommissie gebruiken",
+    "fulfillment": "Fulfillment €/order",
+    "sample_shipping": "Sample verzending €/stuk",
+    "creator_commission": "Creator affiliate commissie",
+    "ads_roas": "Ads ROAS-aanname",
+    "weeks_phase": "Weken / fase",
+    "phase_controls": "Fase-instellingen",
+    "phase1": "Fase 1 - Koude start",
+    "phase2": "Fase 2 - Groei",
+    "phase3": "Fase 3 - Schaalvergroting",
+    "samples_sku_week": "Samples / SKU / week",
+    "sku_setup": "SKU-instellingen",
+    "sku_caption": "Categoriekeuze laadt AOV en funnelaannames automatisch. Electronics gebruikt 7% platformcommissie; alle andere categorieen 9%.",
+    "sku_name": "SKU-naam",
+    "category": "Categorie",
+    "platform_commission": "Platformcommissie",
+    "benchmark_expander": "Categorie-funnelaannames bekijken / aanpassen",
+    "videos_sample": "Video's / sample",
+    "clicks_video": "Clicks / video",
+    "click_order": "Click-to-order (%)",
+    "shoptab_share": "ShopTab GMV-aandeel (%)",
+    "generate": "Simulator genereren",
+    "sku_mix": "SKU-mix & funnelaannames",
+    "total_gmv": "Totale GMV",
+    "total_profit": "Totale winst",
+    "profit_margin": "Winstmarge",
+    "growth_investment": "Groei-investering",
+    "samples_sent": "Samples",
+    "videos_generated": "Video's",
+    "product_clicks": "Productclicks",
+    "orders": "Orders",
+    "charts": "Grafieken",
+    "phase_trend": "Trend per fase",
+    "summary": "Samenvatting",
+    "phase_summary": "Faseoverzicht",
+    "overall_summary": "Totaaloverzicht",
+    "break_even": "Break-even signalen",
+    "weekly_profit": "Eerste positieve weekwinst",
+    "cumulative_be": "Cumulatieve break-even",
+    "not_reached": "Niet bereikt",
+    "weekly_details": "Wekelijkse details",
+    "download_weekly": "Wekelijkse details CSV downloaden",
+    "download_phase": "Faseoverzicht CSV downloaden",
+    "input_error": "Invoerfout",
+}
+
+
+LANG_LABELS = {
+    "en": "English",
+    "zh": "简体中文",
+    "de": "Deutsch",
+    "nl": "Nederlands",
+}
+
+
 def money(value, digits=0):
     return f"€{float(value):,.{digits}f}"
 
 
 def pct(value, digits=1):
     return f"{float(value):.{digits}%}"
+
+
+with st.sidebar:
+    lang = st.selectbox(
+        "Language",
+        options=["en", "zh", "de", "nl"],
+        format_func=lambda code: LANG_LABELS[code],
+        index=1,
+    )
+
+T = TEXT[lang]
+
+
+def phase_label(phase):
+    return T[phase["key"]]
 
 
 def csv_bytes(df):
@@ -159,7 +408,7 @@ def build_product_df(n_skus):
             "Subcategory": st.session_state[f"subcategory_{i}"],
             "AOV": float(st.session_state[f"aov_{i}"]),
             "Gross Margin": float(st.session_state[f"gross_margin_pct_{i}"]) / 100,
-            "Platform Fee Rate": float(st.session_state[f"platform_fee_{i}"]),
+            "Platform Fee Rate": PLATFORM_COMMISSION[st.session_state[f"category_{i}"]],
             "Videos / Sample": float(st.session_state[f"videos_per_sample_{i}"]),
             "Clicks / Video": float(st.session_state[f"clicks_per_video_{i}"]),
             "Click-to-order Rate": float(st.session_state[f"click_to_order_pct_{i}"]) / 100,
@@ -257,7 +506,7 @@ def build_weekly_model(
             total_cost = cogs + platform_fee + creator_commission + ads_cost + samples_cost + fulfillment_cost
 
             rows.append({
-                "Phase": phase["name"],
+                "Phase": phase_label(phase),
                 "Phase Key": phase["key"],
                 "Week in Phase": week_idx + 1,
                 "Global Week": global_week,
@@ -432,30 +681,30 @@ def format_table(df, money_cols=None, pct_cols=None, number_cols=None):
     return out
 
 
-st.title("TikTok Shop Growth Visualizer")
-st.caption("Germany public-benchmark simulator for SKU samples, creator videos, clicks, GMV, costs, and profit")
+st.title(T["title"])
+st.caption(T["caption"])
 
 with st.sidebar:
-    st.header("Global Inputs")
-    n_skus = st.number_input("Number of SKUs", min_value=1, max_value=26, value=3, step=1)
+    st.header(T["global_inputs"])
+    n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=3, step=1)
     promo_60d = st.radio(
-        "60-day platform fee promo",
+        T["promo"],
         options=[True, False],
-        format_func=lambda x: "Yes, 5% platform fee for first ~60 days" if x else "No, use default category commission",
+        format_func=lambda x: T["promo_yes"] if x else T["promo_no"],
         index=0,
     )
-    fulfillment_per_order = st.number_input("Fulfillment €/order", min_value=0.0, value=6.0, step=0.5)
-    sample_shipping_cost = st.number_input("Sample shipping €/unit", min_value=0.0, value=5.0, step=1.0)
-    affiliate_commission_rate = st.slider("Creator affiliate commission", min_value=0.0, max_value=0.5, value=0.15, step=0.01)
-    ads_roas = st.number_input("Ads ROAS assumption", min_value=0.1, max_value=8.0, value=3.0, step=0.1)
-    weeks_per_phase = st.slider("Weeks / phase", min_value=2, max_value=8, value=4, step=1)
+    fulfillment_per_order = st.number_input(T["fulfillment"], min_value=0.0, value=6.0, step=0.5)
+    sample_shipping_cost = st.number_input(T["sample_shipping"], min_value=0.0, value=5.0, step=1.0)
+    affiliate_commission_rate = st.slider(T["creator_commission"], min_value=0.0, max_value=0.5, value=0.15, step=0.01)
+    ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=3.0, step=0.1)
+    weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
 
-    st.header("Phase Controls")
+    st.header(T["phase_controls"])
     phase_inputs = []
     for idx, phase in enumerate(PHASES):
-        st.subheader(phase["name"])
+        st.subheader(phase_label(phase))
         take_rate = st.number_input(
-            f"Ads Take Rate (%) - {phase['name']}",
+            f"{T['take_rate']} - {phase_label(phase)}",
             min_value=0.0,
             max_value=30.0,
             value=float(phase["take_rate"] * 100),
@@ -463,7 +712,7 @@ with st.sidebar:
             key=f"take_rate_{idx}",
         ) / 100
         samples_per_sku = st.number_input(
-            f"Samples / SKU / week - {phase['name']}",
+            f"{T['samples_sku_week']} - {phase_label(phase)}",
             min_value=0,
             value=int(phase["samples_per_sku"]),
             step=1,
@@ -471,8 +720,8 @@ with st.sidebar:
         )
         phase_inputs.append({**phase, "take_rate": take_rate, "samples_per_sku": samples_per_sku})
 
-st.subheader("SKU Setup")
-st.caption("Category selection auto-loads AOV and funnel assumptions. Electronics uses 7% platform commission; all other categories use 9%.")
+st.subheader(T["sku_setup"])
+st.caption(T["sku_caption"])
 
 for i in range(int(n_skus)):
     initialize_sku(i)
@@ -480,15 +729,15 @@ for i in range(int(n_skus)):
         st.markdown(f"**SKU {i + 1}**")
         c1, c2, c3 = st.columns(3)
         with c1:
-            st.text_input("SKU name", key=f"sku_name_{i}")
+            st.text_input(T["sku_name"], key=f"sku_name_{i}")
         with c2:
-            st.selectbox("Category", options=list(CATEGORY_PRESETS.keys()), key=f"category_{i}")
+            st.selectbox(T["category"], options=list(CATEGORY_PRESETS.keys()), key=f"category_{i}")
         category = st.session_state[f"category_{i}"]
         subcategories = list(CATEGORY_PRESETS[category].keys())
         if st.session_state[f"subcategory_{i}"] not in subcategories:
             st.session_state[f"subcategory_{i}"] = subcategories[0]
         with c3:
-            st.selectbox("Subcategory", options=subcategories, key=f"subcategory_{i}")
+            st.selectbox(T["subcategory"], options=subcategories, key=f"subcategory_{i}")
 
         refresh_if_category_changed(i)
 
@@ -496,30 +745,22 @@ for i in range(int(n_skus)):
         with c4:
             st.number_input("AOV (€)", min_value=0.01, step=1.0, key=f"aov_{i}")
         with c5:
-            st.number_input("Gross Margin (%)", min_value=5.0, max_value=90.0, step=1.0, key=f"gross_margin_pct_{i}")
+            st.number_input(T["gross_margin"], min_value=5.0, max_value=90.0, step=1.0, key=f"gross_margin_pct_{i}")
         with c6:
-            st.number_input(
-                "Platform Commission (%)",
-                min_value=0.0,
-                max_value=30.0,
-                value=float(st.session_state[f"platform_fee_{i}"] * 100),
-                step=1.0,
-                disabled=True,
-                key=f"platform_fee_display_{i}",
-            )
+            st.metric(T["platform_commission"], pct(PLATFORM_COMMISSION[category], 0))
 
-        with st.expander("View / adjust category funnel assumptions", expanded=False):
+        with st.expander(T["benchmark_expander"], expanded=False):
             b1, b2, b3, b4 = st.columns(4)
             with b1:
-                st.number_input("Videos / sample", min_value=0.0, max_value=5.0, step=0.05, key=f"videos_per_sample_{i}")
+                st.number_input(T["videos_sample"], min_value=0.0, max_value=5.0, step=0.05, key=f"videos_per_sample_{i}")
             with b2:
-                st.number_input("Clicks / video", min_value=0.0, max_value=100000.0, step=10.0, key=f"clicks_per_video_{i}")
+                st.number_input(T["clicks_video"], min_value=0.0, max_value=100000.0, step=10.0, key=f"clicks_per_video_{i}")
             with b3:
-                st.number_input("Click-to-order (%)", min_value=0.0, max_value=100.0, step=0.1, key=f"click_to_order_pct_{i}")
+                st.number_input(T["click_order"], min_value=0.0, max_value=100.0, step=0.1, key=f"click_to_order_pct_{i}")
             with b4:
-                st.number_input("ShopTab GMV share (%)", min_value=0.0, max_value=100.0, step=1.0, key=f"shop_tab_share_pct_{i}")
+                st.number_input(T["shoptab_share"], min_value=0.0, max_value=100.0, step=1.0, key=f"shop_tab_share_pct_{i}")
 
-generate = st.button("Generate Simulator", type="primary")
+generate = st.button(T["generate"], type="primary")
 
 if generate:
     try:
@@ -539,7 +780,7 @@ if generate:
         weekly_be = first_positive_profit_week(df_all)
         cumulative_be = first_cumulative_break_even_week(df_all)
 
-        st.subheader("SKU Mix & Funnel Assumptions")
+        st.subheader(T["sku_mix"])
         product_display = product_df.copy()
         product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
         product_display["Gross Margin"] = product_display["Gross Margin"].map(lambda x: pct(x, 0))
@@ -550,30 +791,30 @@ if generate:
 
         overall = overall_summary.iloc[0]
         m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Total GMV", money(overall["Total GMV"], 0))
-        m2.metric("Total Profit", money(overall["Total Profit"], 0))
-        m3.metric("Profit Margin", pct(overall["Profit Margin"], 1))
-        m4.metric("Growth Investment", money(overall["Growth Investment"], 0))
+        m1.metric(T["total_gmv"], money(overall["Total GMV"], 0))
+        m2.metric(T["total_profit"], money(overall["Total Profit"], 0))
+        m3.metric(T["profit_margin"], pct(overall["Profit Margin"], 1))
+        m4.metric(T["growth_investment"], money(overall["Growth Investment"], 0))
         m5, m6, m7, m8 = st.columns(4)
-        m5.metric("Samples Sent", f"{overall['Total Samples']:,.0f}")
-        m6.metric("Videos Generated", f"{overall['Total Videos']:,.0f}")
-        m7.metric("Product Clicks", f"{overall['Total Clicks']:,.0f}")
-        m8.metric("Orders", f"{overall['Total Orders']:,.0f}")
+        m5.metric(T["samples_sent"], f"{overall['Total Samples']:,.0f}")
+        m6.metric(T["videos_generated"], f"{overall['Total Videos']:,.0f}")
+        m7.metric(T["product_clicks"], f"{overall['Total Clicks']:,.0f}")
+        m8.metric(T["orders"], f"{overall['Total Orders']:,.0f}")
 
-        st.subheader("Charts")
+        st.subheader(T["charts"])
         c1, c2 = st.columns(2)
         with c1:
-            st.pyplot(make_weekly_chart(df_all, "Overall Weekly Trend", weekly_be))
+            st.pyplot(make_weekly_chart(df_all, T["overall_weekly"], weekly_be))
         with c2:
             st.pyplot(make_cumulative_profit_chart(df_all, cumulative_be))
         st.pyplot(make_funnel_chart(df_all))
 
-        st.subheader("Phase-by-Phase Trend")
-        tabs = st.tabs([p["name"] for p in phase_inputs])
+        st.subheader(T["phase_trend"])
+        tabs = st.tabs([phase_label(p) for p in phase_inputs])
         for tab, phase in zip(tabs, phase_inputs):
             with tab:
                 phase_df = df_all[df_all["Phase Key"] == phase["key"]].copy()
-                st.pyplot(make_weekly_chart(phase_df, phase["name"], first_positive_profit_week(phase_df)))
+                st.pyplot(make_weekly_chart(phase_df, phase_label(phase), first_positive_profit_week(phase_df)))
 
         money_cols = [
             "Organic Funnel GMV", "Paid GMV Lift", "GMV", "ShopTab GMV",
@@ -587,33 +828,33 @@ if generate:
             "Total Samples", "Total Videos", "Total Clicks", "Total Orders",
         ]
 
-        st.subheader("Summary")
+        st.subheader(T["summary"])
         s1, s2 = st.columns(2)
         with s1:
-            st.markdown("**Phase Summary**")
+            st.markdown(f"**{T['phase_summary']}**")
             st.dataframe(
                 format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols),
                 use_container_width=True,
             )
         with s2:
-            st.markdown("**Overall Summary**")
+            st.markdown(f"**{T['overall_summary']}**")
             st.dataframe(
                 format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin"], number_cols=number_cols),
                 use_container_width=True,
             )
 
-        st.subheader("Break-even Signals")
+        st.subheader(T["break_even"])
         b1, b2 = st.columns(2)
-        b1.success(f"First positive weekly profit: Week {weekly_be}") if weekly_be else b1.warning("First positive weekly profit: Not reached")
-        b2.success(f"Cumulative break-even: Week {cumulative_be}") if cumulative_be else b2.warning("Cumulative break-even: Not reached")
+        b1.success(f"{T['weekly_profit']}: Week {weekly_be}") if weekly_be else b1.warning(f"{T['weekly_profit']}: {T['not_reached']}")
+        b2.success(f"{T['cumulative_be']}: Week {cumulative_be}") if cumulative_be else b2.warning(f"{T['cumulative_be']}: {T['not_reached']}")
 
-        st.subheader("Weekly Details")
+        st.subheader(T["weekly_details"])
         weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate"], number_cols=number_cols)
         st.dataframe(weekly_display, use_container_width=True)
 
         d1, d2 = st.columns(2)
-        d1.download_button("Download weekly details CSV", data=csv_bytes(df_all), file_name="weekly_details.csv", mime="text/csv")
-        d2.download_button("Download phase summary CSV", data=csv_bytes(phase_summary), file_name="phase_summary.csv", mime="text/csv")
+        d1.download_button(T["download_weekly"], data=csv_bytes(df_all), file_name="weekly_details.csv", mime="text/csv")
+        d2.download_button(T["download_phase"], data=csv_bytes(phase_summary), file_name="phase_summary.csv", mime="text/csv")
 
     except Exception as e:
-        st.error(f"Input error: {e}")
+        st.error(f"{T['input_error']}: {e}")
