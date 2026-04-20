@@ -557,24 +557,24 @@ st.markdown(
     }
 
     .readonly-rate {
-        background: #F8FAFC;
-        border: 1px solid #E5E7EB;
-        border-radius: 8px;
-        padding: 9px 12px;
-        min-height: 68px;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        padding: 0.35rem 0 0 0;
+        min-height: 0;
     }
 
     .readonly-rate-label {
         color: #6B7280;
         font-size: 0.86rem;
         font-weight: 650;
-        margin-bottom: 6px;
+        margin-bottom: 3px;
     }
 
     .readonly-rate-value {
         color: #111827;
-        font-size: 1.08rem;
-        font-weight: 720;
+        font-size: 1rem;
+        font-weight: 500;
         line-height: 1.2;
     }
 
@@ -586,19 +586,52 @@ st.markdown(
     }
 
     .stTabs [data-baseweb="tab-list"] {
-        gap: 18px;
-        border-bottom: 1px solid var(--tts-line);
+        gap: 8px;
+        border-bottom: 0;
+        background: #EEF2F7;
+        padding: 6px;
+        border-radius: 8px;
     }
 
     .stTabs [data-baseweb="tab"] {
         height: 44px;
-        padding: 0 2px;
+        padding: 0 18px;
         color: #4B5563;
         font-weight: 650;
+        border-radius: 7px;
+        background: transparent;
     }
 
     .stTabs [aria-selected="true"] {
-        color: var(--tts-red);
+        color: white;
+        background: var(--tts-red);
+    }
+
+    div[role="radiogroup"] {
+        gap: 8px;
+        align-items: center;
+    }
+
+    div[role="radiogroup"] label {
+        background: #EEF2F7;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 8px 14px;
+        min-height: 40px;
+        transition: all 120ms ease;
+    }
+
+    div[role="radiogroup"] label:has(input:checked) {
+        background: var(--tts-red);
+        border-color: var(--tts-red);
+        color: #FFFFFF;
+        box-shadow: 0 10px 22px rgba(254, 44, 85, 0.18);
+    }
+
+    div[role="radiogroup"] label:has(input:checked) p,
+    div[role="radiogroup"] label:has(input:checked) span {
+        color: #FFFFFF;
+        font-weight: 700;
     }
 
     .stButton > button {
@@ -642,6 +675,9 @@ st.markdown(
         border-radius: 8px;
         padding: 8px 8px 2px 8px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+        min-height: 430px;
+        display: flex;
+        align-items: stretch;
     }
     </style>
     """,
@@ -1073,7 +1109,7 @@ def make_funnel_chart(df):
             hovertemplate="%{y}: %{x:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, "Funnel Summary", height=360)
+    apply_plotly_layout(fig, "Funnel Summary", height=390)
     fig.update_xaxes(showticklabels=False, title="")
     fig.update_yaxes(title="")
     return fig
@@ -1463,30 +1499,36 @@ if st.session_state.get("has_generated", False):
             st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True)
 
         st.subheader(T["phase_trend"])
-        tabs = st.tabs([phase_label(p) for p in phase_inputs])
-        for tab, phase in zip(tabs, phase_inputs):
-            with tab:
-                phase_df = df_all[df_all["Phase Key"] == phase["key"]].copy()
-                phase_row = phase_summary[phase_summary["Phase Key"] == phase["key"]].iloc[0]
-                p1, p2, p3 = st.columns(3)
-                p1.metric(T["total_gmv"], money(phase_row["GMV"], 0))
-                p2.metric(T["total_cost"], money(phase_row["Total Cost"], 0))
-                p3.metric(T["sales_contribution"], money(phase_row["Sales Contribution"], 0))
-                p4, p5, p6 = st.columns(3)
-                p4.metric(T["total_profit"], money(phase_row["Profit"], 0))
-                p5.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
-                p6.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
+        selected_phase_key = st.radio(
+            "",
+            options=[p["key"] for p in phase_inputs],
+            format_func=lambda key: phase_label(next(p for p in phase_inputs if p["key"] == key)),
+            horizontal=True,
+            label_visibility="collapsed",
+            key="selected_phase_view",
+        )
+        selected_phase = next(p for p in phase_inputs if p["key"] == selected_phase_key)
+        phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
+        phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
+        p1, p2, p3 = st.columns(3)
+        p1.metric(T["total_gmv"], money(phase_row["GMV"], 0))
+        p2.metric(T["total_cost"], money(phase_row["Total Cost"], 0))
+        p3.metric(T["sales_contribution"], money(phase_row["Sales Contribution"], 0))
+        p4, p5, p6 = st.columns(3)
+        p4.metric(T["total_profit"], money(phase_row["Profit"], 0))
+        p5.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
+        p6.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
 
-                chart_mode = st.radio(
-                    T["phase_chart_mode"],
-                    options=[T["phase_chart_cumulative"], T["phase_chart_total"]],
-                    horizontal=True,
-                    key=f"phase_chart_mode_{phase['key']}",
-                )
-                if chart_mode == T["phase_chart_cumulative"]:
-                    st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(phase)), use_container_width=True)
-                else:
-                    st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
+        chart_mode = st.radio(
+            T["phase_chart_mode"],
+            options=[T["phase_chart_cumulative"], T["phase_chart_total"]],
+            horizontal=True,
+            key=f"phase_chart_mode_{selected_phase['key']}",
+        )
+        if chart_mode == T["phase_chart_cumulative"]:
+            st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True)
+        else:
+            st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
 
         money_cols = [
             "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
