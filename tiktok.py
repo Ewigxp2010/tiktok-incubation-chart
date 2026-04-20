@@ -9,62 +9,8 @@ st.set_page_config(page_title="TikTok Shop Growth Visualizer", layout="wide")
 plt.rcParams["axes.unicode_minus"] = False
 
 
-# =============================================================================
-# Sources and assumptions
-# =============================================================================
-# This file uses external public benchmarks where TikTok Shop Germany internal
-# subcategory data is not available.
-#
-# Public sources used:
-# 1. TikTok Shop Germany first-anniversary/NielsenIQ data:
-#    - Overall Germany TikTok Shop AOV: EUR 29.80
-#    - 60%-70% revenue generated through shoppable video/live formats
-#    - Fashion 17%, Electronics 16%, Home/Household 14% revenue shares
-#    https://ppc.land/tiktok-shop-turns-one-in-germany-gen-x-drives-37-of-sales-revenue/
-#    https://www.cross-border-association.com/tiktok-shop-grows-in-germany-after-first-year/
-#
-# 2. TikTok Shop category references:
-#    - Official/category examples include Beauty & Personal Care,
-#      Womenswear & Underwear, Menswear & Underwear, Phones & Electronics,
-#      Fashion Accessories, Home Supplies, Kitchenware, Shoes, Sports & Outdoor.
-#    https://shop.tiktok.com/merchant/
-#    https://seller-us.tiktok.com/university/essay?knowledge_id=2276419631646507
-#
-# 3. TikTok Shop affiliate/category grouping references:
-#    - Electronics includes Computers & Office Equipment, Household Appliances,
-#      Phones & Electronics.
-#    - Fashion/Lifestyle/FMCG category examples include Fashion Accessories,
-#      Jewelry, Luggage & Bags, Menswear, Shoes, Womenswear, Textiles, Home
-#      Supplies, Kitchenware, Tools, Furniture, Food & Beverages, Health,
-#      Baby & Maternity, Pet Supplies, Beauty & Personal Care.
-#    https://seller-vn.tiktok.com/university/essay?knowledge_id=10016232&lang=en
-#    https://seller-th.tiktok.com/university/essay?knowledge_id=2874121260271361&lang=en
-#
-# 4. Product seeding benchmarks:
-#    - Typical post/content rate from samples is around 20%-50%; healthy often
-#      around 30%-50%.
-#    https://seedingops.com/what-is-product-seeding
-#    https://www.joinstatus.com/blog-for-brands/product-seeding-guide
-#
-# 5. TikTok/TikTok Shop conversion and ads benchmarks:
-#    - TikTok Shop/integrated checkout conversion often cited around 2%-5%;
-#      low-ticket impulse categories can be higher, high-ticket can be lower.
-#    - TikTok Ads overall/eCommerce CTR and CVR benchmarks are used only as
-#      directional support for click/conversion assumptions.
-#    https://calcix.net/calculators/business-startup/predictive-tiktok-shop-affiliate-simulator
-#    https://www.triplewhale.com/blog/tiktok-benchmarks
-#    https://www.dataslayer.ai/blog/tiktok-ads-reporting-metrics-dashboards-2025
-#
-# 6. German eCommerce category AOV benchmarks:
-#    - ECDB Germany category AOVs are higher than TikTok Shop's discovery-led
-#      AOV, so they are used only as a ceiling/directional category signal.
-#    https://ecommercedb.com/benchmarks/de/electronics
-#    https://ecommercedb.com/benchmarks/de/fashion
-#    https://ecommercedb.com/benchmarks/de/furniture-homeware
-#
-# Important:
-# These values are Germany public benchmark estimates, not TikTok internal data.
-# Replace CATEGORY_PRESETS with your internal data team table when available.
+# Public benchmark estimates. Replace CATEGORY_PRESETS with internal data
+# when a data-team subcategory table is available.
 
 
 PLATFORM_COMMISSION = {
