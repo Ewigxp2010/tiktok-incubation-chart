@@ -85,6 +85,7 @@ PHASES = [
 ]
 
 PROMO_WEEKS = 9
+FBT_FREE_SHIPPING_AOV_THRESHOLD = 20.0
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 CHART_COLORS = {
     "gmv": "#2563EB",
@@ -110,7 +111,7 @@ TEXT = {
         "fbt": "Use FBT free shipping",
         "fbt_yes": "Yes, set logistics cost to €0",
         "fbt_no": "No, use manual logistics cost",
-        "fbt_help": "Planning assumption: when FBT free shipping applies, the simulator treats both sample shipping and order logistics as €0.",
+        "fbt_help": "Planning assumption: when selected, SKUs with AOV above €20 use €0 logistics cost; lower-AOV SKUs keep the manual logistics cost.",
         "creator_commission": "Organic creator commission",
         "paid_creator_commission": "Paid-traffic creator commission",
         "organic_click_window": "Organic click window (weeks)",
@@ -120,6 +121,9 @@ TEXT = {
         "phase1": "Phase 1 - Cold Start",
         "phase2": "Phase 2 - Growth",
         "phase3": "Phase 3 - Scale",
+        "phase1_objective": "Objective: validate creator content, seed first product videos, and build initial conversion signals.",
+        "phase2_objective": "Objective: reduce sample intensity, start paid amplification, and convert validated content into scalable GMV.",
+        "phase3_objective": "Objective: scale winning content with a higher ads take rate while ShopTab and content-tail sales continue compounding.",
         "take_rate": "Ads Take Rate (%)",
         "samples_sku_week": "Samples / SKU / week",
         "sku_setup": "SKU Setup",
@@ -187,6 +191,19 @@ TEXT = {
         "videos_per_sample_kpi": "Videos / Sample",
         "orders_per_sample": "Orders / Sample",
         "sample_gmv_roi": "GMV / Sample Cost",
+        "sample_roi_text": "Commercial read: every sample is expected to generate {gmv_per_sample} GMV and {orders_per_sample} orders across the full simulation period.",
+        "cost_breakdown": "Cost Breakdown",
+        "cost_breakdown_text": "Largest cost driver in this view is {driver}: {amount}, equal to {share} of total cost.",
+        "cost_cogs": "Product cost / COGS",
+        "cost_platform_fee": "Platform fee",
+        "cost_creator_commission": "Creator commission",
+        "cost_fulfillment": "Logistics",
+        "cost_samples": "Sample investment",
+        "cost_ads": "Ads investment",
+        "phase_objective": "Phase Objective",
+        "benchmark_info": "About benchmark assumptions",
+        "benchmark_info_text": "Current AOV, video, click, conversion, and ShopTab assumptions are planning benchmarks based on public market signals. Replace these values with internal TikTok Shop Germany subcategory data when available.",
+        "download_customer_summary": "Download customer summary CSV",
         "view_details": "View detailed tables",
         "channel_mix": "GMV Channel Mix",
     },
@@ -203,7 +220,7 @@ TEXT = {
         "fbt": "使用 FBT 包邮",
         "fbt_yes": "是，物流成本按 €0 计算",
         "fbt_no": "否，使用手动物流成本",
-        "fbt_help": "沙盘假设：如果该商品适用 FBT 包邮，模型会把寄样物流和订单物流都按 €0 计算。",
+        "fbt_help": "沙盘假设：勾选后，AOV 高于 €20 的 SKU 物流成本按 €0 计算；AOV 不高于 €20 的 SKU 仍使用手动物流成本。",
         "creator_commission": "自然流达人佣金",
         "paid_creator_commission": "广告流达人佣金",
         "organic_click_window": "自然点击消耗周期（周）",
@@ -213,6 +230,9 @@ TEXT = {
         "phase1": "阶段 1 - 冷启动",
         "phase2": "阶段 2 - 增长",
         "phase3": "阶段 3 - 放量",
+        "phase1_objective": "目标：验证达人内容，沉淀第一批商品视频，并建立早期转化信号。",
+        "phase2_objective": "目标：降低寄样强度，开始广告加热，把已验证内容转化为可放大的 GMV。",
+        "phase3_objective": "目标：用更高 Ads Take Rate 放大优质内容，同时让 ShopTab 和内容长尾成交继续累积。",
         "take_rate": "Ads Take Rate (%)",
         "samples_sku_week": "每个 SKU 每周寄样数",
         "sku_setup": "SKU 设置",
@@ -280,6 +300,19 @@ TEXT = {
         "videos_per_sample_kpi": "视频 / 样品",
         "orders_per_sample": "订单 / 样品",
         "sample_gmv_roi": "GMV / 样品成本",
+        "sample_roi_text": "商业解读：在完整模拟周期内，平均每个样品预计带来 {gmv_per_sample} GMV 和 {orders_per_sample} 个订单。",
+        "cost_breakdown": "成本拆解",
+        "cost_breakdown_text": "当前视图中最大的成本项是 {driver}：{amount}，占总成本 {share}。",
+        "cost_cogs": "商品成本 / COGS",
+        "cost_platform_fee": "平台费",
+        "cost_creator_commission": "达人佣金",
+        "cost_fulfillment": "物流成本",
+        "cost_samples": "样品投入",
+        "cost_ads": "广告投入",
+        "phase_objective": "阶段目标",
+        "benchmark_info": "关于 benchmark 假设",
+        "benchmark_info_text": "当前 AOV、视频、点击、转化率和 ShopTab 占比是基于公开市场信号的 planning benchmark。拿到 TikTok Shop 德国内部 subcategory 数据后，建议直接替换这些默认值。",
+        "download_customer_summary": "下载客户版 summary CSV",
         "view_details": "查看详细表格",
         "channel_mix": "GMV 渠道拆分",
     },
@@ -299,7 +332,7 @@ TEXT["de"] = {
     "fbt": "FBT-Gratisversand nutzen",
     "fbt_yes": "Ja, Logistikkosten auf €0 setzen",
     "fbt_no": "Nein, manuelle Logistikkosten nutzen",
-    "fbt_help": "Planungsannahme: Wenn FBT-Gratisversand gilt, setzt der Simulator Sample-Versand und Bestelllogistik auf €0.",
+    "fbt_help": "Planungsannahme: Bei Auswahl nutzen SKUs mit AOV über €20 Logistikkosten von €0; SKUs mit niedrigerem AOV behalten die manuellen Logistikkosten.",
     "creator_commission": "Organische Creator-Provision",
     "paid_creator_commission": "Paid-Traffic-Creator-Provision",
     "organic_click_window": "Organisches Klickfenster (Wochen)",
@@ -387,7 +420,7 @@ TEXT["nl"] = {
     "fbt": "FBT gratis verzending gebruiken",
     "fbt_yes": "Ja, logistieke kosten op €0 zetten",
     "fbt_no": "Nee, handmatige logistieke kosten gebruiken",
-    "fbt_help": "Planningsaanname: wanneer FBT gratis verzending geldt, behandelt de simulator sample shipping en orderlogistiek als €0.",
+    "fbt_help": "Planningsaanname: wanneer geselecteerd, gebruiken SKU's met AOV boven €20 logistieke kosten van €0; lagere-AOV SKU's gebruiken de handmatige logistieke kosten.",
     "creator_commission": "Organische creator commissie",
     "paid_creator_commission": "Paid-traffic creator commissie",
     "organic_click_window": "Organische clickperiode (weken)",
@@ -774,6 +807,7 @@ def build_weekly_model(
     weeks_per_phase,
     promo_60d,
     logistics_cost,
+    use_fbt,
     organic_click_window_weeks,
     ads_roas,
 ):
@@ -781,7 +815,11 @@ def build_weekly_model(
     gross_margin = product_df["Gross Margin"].to_numpy()
     platform_fee_rates = product_df["Platform Fee Rate"].to_numpy()
     product_cost_per_unit = aov * (1 - gross_margin)
-    sample_all_in_cost_per_unit = product_cost_per_unit + float(logistics_cost)
+    base_logistics_cost = float(logistics_cost)
+    logistics_cost_per_unit = np.full(len(product_df), base_logistics_cost)
+    if use_fbt:
+        logistics_cost_per_unit = np.where(aov > FBT_FREE_SHIPPING_AOV_THRESHOLD, 0.0, base_logistics_cost)
+    sample_all_in_cost_per_unit = product_cost_per_unit + logistics_cost_per_unit
 
     videos_per_sample = product_df["Videos / Sample"].to_numpy()
     clicks_per_video = product_df["Clicks / Video"].to_numpy()
@@ -856,7 +894,7 @@ def build_weekly_model(
             cogs = float(np.sum(cogs_p))
             platform_fee = float(np.sum(platform_fee_p))
             samples_cost = float(np.sum(samples_cost_p))
-            fulfillment_cost = orders * float(logistics_cost)
+            fulfillment_cost = float(np.sum(orders_p * logistics_cost_per_unit))
             organic_creator_commission = float(np.sum(affiliate_organic_gmv_p * organic_creator_commission_rate))
             paid_creator_commission = float(np.sum(affiliate_paid_gmv_p * paid_creator_commission_rate))
             creator_commission = organic_creator_commission + paid_creator_commission
@@ -990,6 +1028,44 @@ def main_gmv_channel(df):
     if shop_tab_gmv >= affiliate_gmv:
         return f"ShopTab ({pct(shop_tab_gmv / (shop_tab_gmv + affiliate_gmv), 0)})" if shop_tab_gmv + affiliate_gmv > 0 else "ShopTab"
     return f"Affiliate video ({pct(affiliate_gmv / (shop_tab_gmv + affiliate_gmv), 0)})"
+
+
+def phase_objective(phase_key):
+    return T.get(f"{phase_key}_objective", "")
+
+
+def cost_driver(row):
+    cost_map = {
+        T["cost_cogs"]: float(row["COGS"]),
+        T["cost_platform_fee"]: float(row["Platform Fee"]),
+        T["cost_creator_commission"]: float(row["Creator Commission"]),
+        T["cost_fulfillment"]: float(row["Fulfillment Cost"]),
+        T["cost_samples"]: float(row["Samples Cost"]),
+        T["cost_ads"]: float(row["Ads Cost"]),
+    }
+    driver, amount = max(cost_map.items(), key=lambda item: item[1])
+    total_cost = float(row["Total Cost"])
+    share = amount / total_cost if total_cost > 0 else 0
+    return driver, amount, share
+
+
+def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_be_label):
+    rows = [
+        ("Total GMV", money(overall["Total GMV"], 0)),
+        ("Total Profit", money(overall["Total Profit"], 0)),
+        ("Growth Investment", money(overall["Growth Investment"], 0)),
+        ("Sample Investment", money(overall["Sample Investment"], 0)),
+        ("Ads Investment", money(overall["Ads Investment"], 0)),
+        ("GMV / Sample", money(overall["GMV / Sample"], 0)),
+        ("Profit / Sample", money(overall["Profit / Sample"], 0)),
+        ("Orders / Sample", f"{overall['Orders / Sample']:.2f}"),
+        ("Weekly Break-even", weekly_be_label),
+        ("Cumulative Break-even", cumulative_be_label),
+    ]
+    for _, phase_row in phase_summary.iterrows():
+        rows.append((f"{phase_row['Phase']} GMV", money(phase_row["GMV"], 0)))
+        rows.append((f"{phase_row['Phase']} Profit", money(phase_row["Profit"], 0)))
+    return pd.DataFrame(rows, columns=["Metric", "Value"])
 
 
 def apply_plotly_layout(fig, title, height=420):
@@ -1310,25 +1386,13 @@ with st.sidebar:
         value=False,
         help=T["fbt_help"],
     )
-    if use_fbt:
-        st.number_input(
-            T["fulfillment"],
-            min_value=0.0,
-            value=0.0,
-            step=0.5,
-            disabled=True,
-            help=T["fbt_help"],
-            key="logistics_cost_fbt_display",
-        )
-        logistics_cost = 0.0
-    else:
-        logistics_cost = st.number_input(
-            T["fulfillment"],
-            min_value=0.0,
-            value=5.0,
-            step=0.5,
-            key="logistics_cost_manual",
-        )
+    logistics_cost = st.number_input(
+        T["fulfillment"],
+        min_value=0.0,
+        value=5.0,
+        step=0.5,
+        key="logistics_cost_manual",
+    )
     ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1)
     organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1)
     weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
@@ -1356,6 +1420,8 @@ with st.sidebar:
 
 st.subheader(T["sku_setup"])
 st.caption(T["sku_caption"])
+with st.expander(T["benchmark_info"], expanded=False):
+    st.write(T["benchmark_info_text"])
 
 for i in range(int(n_skus)):
     initialize_sku(i)
@@ -1434,6 +1500,7 @@ if st.session_state.get("has_generated", False):
             weeks_per_phase=int(weeks_per_phase),
             promo_60d=bool(promo_60d),
             logistics_cost=float(logistics_cost),
+            use_fbt=bool(use_fbt),
             organic_click_window_weeks=int(organic_click_window_weeks),
             ads_roas=float(ads_roas),
         )
@@ -1498,6 +1565,12 @@ if st.session_state.get("has_generated", False):
         r5, r6 = st.columns(2)
         r5.metric(T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x")
         r6.metric(T["ads_investment"], money(overall["Ads Investment"], 0))
+        st.info(
+            T["sample_roi_text"].format(
+                gmv_per_sample=money(overall["GMV / Sample"], 0),
+                orders_per_sample=f"{overall['Orders / Sample']:.2f}",
+            )
+        )
 
         st.subheader(T["charts"])
         c1, c2 = st.columns(2)
@@ -1523,6 +1596,9 @@ if st.session_state.get("has_generated", False):
         selected_phase = next(p for p in phase_inputs if p["key"] == selected_phase_key)
         phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
         phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
+        objective = phase_objective(selected_phase["key"])
+        if objective:
+            st.info(f"**{T['phase_objective']}**: {objective}")
         p1, p2, p3 = st.columns(3)
         p1.metric(T["total_gmv"], money(phase_row["GMV"], 0))
         p2.metric(T["total_cost"], money(phase_row["Total Cost"], 0))
@@ -1542,6 +1618,12 @@ if st.session_state.get("has_generated", False):
             st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True)
         else:
             st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
+
+        driver, amount, share = cost_driver(phase_row)
+        st.info(
+            f"**{T['cost_breakdown']}**: "
+            + T["cost_breakdown_text"].format(driver=driver, amount=money(amount, 0), share=pct(share, 0))
+        )
 
         money_cols = [
             "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
@@ -1566,6 +1648,13 @@ if st.session_state.get("has_generated", False):
         st.dataframe(
             format_table(phase_summary.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
             use_container_width=True,
+        )
+        customer_summary = build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_be_label)
+        st.download_button(
+            T["download_customer_summary"],
+            data=csv_bytes(customer_summary),
+            file_name="customer_summary.csv",
+            mime="text/csv",
         )
 
         st.subheader(T["break_even"])
