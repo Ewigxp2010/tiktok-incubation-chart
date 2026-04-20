@@ -159,6 +159,9 @@ TEXT = {
         "phase_trend": "Phase-by-Phase Trend",
         "summary": "Summary",
         "phase_summary": "Phase Summary",
+        "phase_chart_mode": "Phase chart view",
+        "phase_chart_total": "Total view",
+        "phase_chart_cumulative": "Cumulative trend",
         "overall_summary": "Overall Summary",
         "break_even": "Break-even Signals",
         "weekly_profit": "First positive weekly profit",
@@ -233,6 +236,9 @@ TEXT = {
         "phase_trend": "分阶段趋势",
         "summary": "汇总",
         "phase_summary": "阶段汇总",
+        "phase_chart_mode": "阶段图表视图",
+        "phase_chart_total": "阶段总和",
+        "phase_chart_cumulative": "累计走势",
         "overall_summary": "整体汇总",
         "break_even": "Break-even 信号",
         "weekly_profit": "首次单周盈利",
@@ -306,6 +312,9 @@ TEXT["de"] = {
     "phase_trend": "Trend je Phase",
     "summary": "Zusammenfassung",
     "phase_summary": "Phasenübersicht",
+    "phase_chart_mode": "Phasen-Chartansicht",
+    "phase_chart_total": "Gesamtansicht",
+    "phase_chart_cumulative": "Kumulativer Trend",
     "overall_summary": "Gesamtübersicht",
     "break_even": "Break-even-Signale",
     "weekly_profit": "Erste positive Wochenprofitabilität",
@@ -375,6 +384,9 @@ TEXT["nl"] = {
     "phase_trend": "Trend per fase",
     "summary": "Samenvatting",
     "phase_summary": "Faseoverzicht",
+    "phase_chart_mode": "Fasegrafiek",
+    "phase_chart_total": "Totaaloverzicht",
+    "phase_chart_cumulative": "Cumulatieve trend",
     "overall_summary": "Totaaloverzicht",
     "break_even": "Break-even signalen",
     "weekly_profit": "Eerste positieve weekwinst",
@@ -888,7 +900,7 @@ def make_phase_total_chart(phase_row):
             hovertemplate="%{x}: €%{y:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, str(phase_row["Phase"]), height=390)
+    apply_plotly_layout(fig, str(phase_row["Phase"]), height=480)
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title="")
@@ -924,7 +936,7 @@ def make_phase_cumulative_chart(phase_df, title):
             )
         )
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
-    apply_plotly_layout(fig, f"{title} - Cumulative Trend", height=420)
+    apply_plotly_layout(fig, f"{title} - Cumulative Trend", height=480)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title="Week in Phase", dtick=1)
     return fig
@@ -1131,10 +1143,16 @@ if generate:
                 p2.metric(T["total_profit"], money(phase_row["Profit"], 0))
                 p3.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
                 p4.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
-                chart_left, chart_right = st.columns(2)
-                with chart_left:
+
+                chart_mode = st.radio(
+                    T["phase_chart_mode"],
+                    options=[T["phase_chart_total"], T["phase_chart_cumulative"]],
+                    horizontal=True,
+                    key=f"phase_chart_mode_{phase['key']}",
+                )
+                if chart_mode == T["phase_chart_total"]:
                     st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
-                with chart_right:
+                else:
                     st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(phase)), use_container_width=True)
 
         money_cols = [
