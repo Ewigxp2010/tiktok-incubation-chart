@@ -116,8 +116,7 @@ TEXT = {
         "promo": "60-day platform fee promo",
         "promo_yes": "Yes, 5% platform fee for first ~60 days",
         "promo_no": "No, use default category commission",
-        "fulfillment": "Fulfillment €/order",
-        "sample_shipping": "Sample shipping €/unit",
+        "fulfillment": "Logistics cost €/unit or order",
         "creator_commission": "Creator affiliate commission",
         "ads_roas": "Ads ROAS assumption",
         "weeks_phase": "Weeks / phase",
@@ -191,8 +190,7 @@ TEXT = {
         "promo": "60天平台费优惠",
         "promo_yes": "是，前约60天平台费 5%",
         "promo_no": "否，使用默认类目佣金",
-        "fulfillment": "履约成本 €/订单",
-        "sample_shipping": "样品物流成本 €/件",
+        "fulfillment": "物流成本 €/件/单",
         "creator_commission": "达人佣金",
         "ads_roas": "广告 ROAS 假设",
         "weeks_phase": "每阶段周数",
@@ -269,8 +267,7 @@ TEXT["de"] = {
     "promo": "60-Tage-Plattformgebühr-Promo",
     "promo_yes": "Ja, 5% Plattformgebühr für die ersten ~60 Tage",
     "promo_no": "Nein, Standard-Kategoriekommission verwenden",
-    "fulfillment": "Fulfillment €/Bestellung",
-    "sample_shipping": "Sample-Versand €/Stück",
+    "fulfillment": "Logistikkosten €/Stück oder Bestellung",
     "creator_commission": "Creator-Affiliate-Provision",
     "ads_roas": "Ads-ROAS-Annahme",
     "weeks_phase": "Wochen / Phase",
@@ -339,8 +336,7 @@ TEXT["nl"] = {
     "promo": "60-dagen platform fee promo",
     "promo_yes": "Ja, 5% platform fee voor de eerste ~60 dagen",
     "promo_no": "Nee, standaard categoriecommissie gebruiken",
-    "fulfillment": "Fulfillment €/order",
-    "sample_shipping": "Sample verzending €/stuk",
+    "fulfillment": "Logistieke kosten €/stuk of order",
     "creator_commission": "Creator affiliate commissie",
     "ads_roas": "Ads ROAS-aanname",
     "weeks_phase": "Weken / fase",
@@ -541,8 +537,7 @@ def build_weekly_model(
     phase_inputs,
     weeks_per_phase,
     promo_60d,
-    fulfillment_per_order,
-    sample_shipping_cost,
+    logistics_cost,
     affiliate_commission_rate,
     ads_roas,
 ):
@@ -550,7 +545,7 @@ def build_weekly_model(
     gross_margin = product_df["Gross Margin"].to_numpy()
     platform_fee_rates = product_df["Platform Fee Rate"].to_numpy()
     product_cost_per_unit = aov * (1 - gross_margin)
-    sample_all_in_cost_per_unit = product_cost_per_unit + float(sample_shipping_cost)
+    sample_all_in_cost_per_unit = product_cost_per_unit + float(logistics_cost)
 
     videos_per_sample = product_df["Videos / Sample"].to_numpy()
     clicks_per_video = product_df["Clicks / Video"].to_numpy()
@@ -621,7 +616,7 @@ def build_weekly_model(
             cogs = float(np.sum(cogs_p))
             platform_fee = float(np.sum(platform_fee_p))
             samples_cost = float(np.sum(samples_cost_p))
-            fulfillment_cost = orders * float(fulfillment_per_order)
+            fulfillment_cost = orders * float(logistics_cost)
             creator_commission = affiliate_gmv * float(affiliate_commission_rate)
             ads_cost = gmv * take_rate
             total_cost = cogs + platform_fee + creator_commission + ads_cost + samples_cost + fulfillment_cost
@@ -900,6 +895,41 @@ def make_phase_total_chart(phase_row):
     return fig
 
 
+def make_phase_cumulative_chart(phase_df, title):
+    temp = phase_df.sort_values("Week in Phase").copy()
+    temp["Cumulative GMV"] = temp["GMV"].cumsum()
+    temp["Cumulative Total Cost"] = temp["Total Cost"].cumsum()
+    temp["Cumulative Profit"] = temp["Profit"].cumsum()
+    temp["Cumulative Sample Investment"] = temp["Samples Cost"].cumsum()
+    temp["Cumulative Ads Investment"] = temp["Ads Cost"].cumsum()
+
+    fig = go.Figure()
+    series = [
+        ("Cumulative GMV", "Cumulative GMV", CHART_COLORS["gmv"]),
+        ("Cumulative Total Cost", "Cumulative Total Cost", CHART_COLORS["cost"]),
+        ("Cumulative Profit", "Cumulative Profit", CHART_COLORS["profit"]),
+        ("Cumulative Sample Investment", "Cumulative Sample Investment", "#8B5CF6"),
+        ("Cumulative Ads Investment", "Cumulative Ads Investment", "#06B6D4"),
+    ]
+    for label, col, color in series:
+        fig.add_trace(
+            go.Scatter(
+                x=temp["Week in Phase"],
+                y=temp[col],
+                mode="lines+markers",
+                name=label,
+                line=dict(color=color, width=3),
+                marker=dict(size=7),
+                hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
+            )
+        )
+    fig.add_hline(y=0, line_color="#6B7280", line_width=1)
+    apply_plotly_layout(fig, f"{title} - Cumulative Trend", height=420)
+    fig.update_yaxes(tickprefix="€", tickformat=",.0f")
+    fig.update_xaxes(title="Week in Phase", dtick=1)
+    return fig
+
+
 def format_table(df, money_cols=None, pct_cols=None, number_cols=None, decimal_cols=None):
     out = df.copy()
     for col in dict.fromkeys(money_cols or []):
@@ -929,8 +959,7 @@ with st.sidebar:
         format_func=lambda x: T["promo_yes"] if x else T["promo_no"],
         index=0,
     )
-    fulfillment_per_order = st.number_input(T["fulfillment"], min_value=0.0, value=6.0, step=0.5)
-    sample_shipping_cost = st.number_input(T["sample_shipping"], min_value=0.0, value=5.0, step=1.0)
+    logistics_cost = st.number_input(T["fulfillment"], min_value=0.0, value=6.0, step=0.5)
     affiliate_commission_rate = st.slider(T["creator_commission"], min_value=0.0, max_value=0.5, value=0.15, step=0.01)
     ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=3.0, step=0.1)
     weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1)
@@ -1013,8 +1042,7 @@ if generate:
             phase_inputs=phase_inputs,
             weeks_per_phase=int(weeks_per_phase),
             promo_60d=bool(promo_60d),
-            fulfillment_per_order=float(fulfillment_per_order),
-            sample_shipping_cost=float(sample_shipping_cost),
+            logistics_cost=float(logistics_cost),
             affiliate_commission_rate=float(affiliate_commission_rate),
             ads_roas=float(ads_roas),
         )
@@ -1096,13 +1124,18 @@ if generate:
         tabs = st.tabs([phase_label(p) for p in phase_inputs])
         for tab, phase in zip(tabs, phase_inputs):
             with tab:
+                phase_df = df_all[df_all["Phase Key"] == phase["key"]].copy()
                 phase_row = phase_summary[phase_summary["Phase Key"] == phase["key"]].iloc[0]
                 p1, p2, p3, p4 = st.columns(4)
                 p1.metric(T["total_gmv"], money(phase_row["GMV"], 0))
                 p2.metric(T["total_profit"], money(phase_row["Profit"], 0))
                 p3.metric(T["sample_investment"], money(phase_row["Samples Cost"], 0))
                 p4.metric(T["ads_investment"], money(phase_row["Ads Cost"], 0))
-                st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
+                chart_left, chart_right = st.columns(2)
+                with chart_left:
+                    st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
+                with chart_right:
+                    st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(phase)), use_container_width=True)
 
         money_cols = [
             "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
