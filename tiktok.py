@@ -881,10 +881,10 @@ def make_phase_total_chart(phase_row):
     )
 
     cost_parts = [
-        ("COGS", "COGS", "#FB923C"),
+        ("COGS", "COGS", "#64748B"),
         ("Platform Fee", "Platform Fee", "#F97316"),
-        ("Creator Commission", "Creator Commission", "#EA580C"),
-        ("Fulfillment Cost", "Fulfillment Cost", "#FDBA74"),
+        ("Creator Commission", "Creator Commission", "#EC4899"),
+        ("Fulfillment Cost", "Fulfillment Cost", "#14B8A6"),
         ("Sample Investment", "Samples Cost", "#8B5CF6"),
         ("Ads Investment", "Ads Cost", "#06B6D4"),
     ]
@@ -901,7 +901,7 @@ def make_phase_total_chart(phase_row):
                 text=[money(value, 0)],
                 textposition="inside",
                 insidetextanchor="middle",
-                hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
+                hovertemplate=f"<b>{label}</b><br>Cost: €%{{y:,.0f}}<extra></extra>",
             )
         )
 
@@ -1198,14 +1198,14 @@ if st.session_state.get("has_generated", False):
 
                 chart_mode = st.radio(
                     T["phase_chart_mode"],
-                    options=[T["phase_chart_total"], T["phase_chart_cumulative"]],
+                    options=[T["phase_chart_cumulative"], T["phase_chart_total"]],
                     horizontal=True,
                     key=f"phase_chart_mode_{phase['key']}",
                 )
-                if chart_mode == T["phase_chart_total"]:
-                    st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
-                else:
+                if chart_mode == T["phase_chart_cumulative"]:
                     st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(phase)), use_container_width=True)
+                else:
+                    st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
 
         money_cols = [
             "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
