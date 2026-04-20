@@ -1018,9 +1018,10 @@ for i in range(int(n_skus)):
             with b4:
                 st.number_input(T["shoptab_share"], min_value=0.0, max_value=90.0, step=1.0, key=f"shop_tab_share_pct_{i}", help=T["shoptab_share_help"])
 
-generate = st.button(T["generate"], type="primary")
+if st.button(T["generate"], type="primary"):
+    st.session_state["has_generated"] = True
 
-if generate:
+if st.session_state.get("has_generated", False):
     try:
         product_df = build_product_df(int(n_skus))
         df_all = build_weekly_model(
