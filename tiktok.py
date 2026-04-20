@@ -4,6 +4,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from io import BytesIO
 from datetime import datetime
+from html import escape
 
 
 st.set_page_config(page_title="TikTok Shop Growth Visualizer", layout="wide")
@@ -758,7 +759,16 @@ st.markdown(
         border-radius: 8px;
         padding: 12px 14px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
-        min-height: 92px;
+        min-height: 104px;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    div[data-testid="stMetric"] * {
+        max-height: none !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
     }
 
     div[data-testid="stMetricLabel"] {
@@ -766,15 +776,24 @@ st.markdown(
         font-weight: 650;
         white-space: normal;
         line-height: 1.25;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     div[data-testid="stMetricValue"] {
         color: var(--tts-ink);
         font-weight: 760;
-        font-size: clamp(1.25rem, 2.2vw, 1.9rem);
-        white-space: normal;
+        font-size: clamp(1.12rem, 1.85vw, 1.75rem);
+        white-space: normal !important;
         overflow-wrap: anywhere;
-        line-height: 1.12;
+        word-break: break-word;
+        line-height: 1.18;
+    }
+
+    div[data-testid="stMetricValue"] > div {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
     }
 
     .readonly-rate {
@@ -970,6 +989,8 @@ st.markdown(
         border-radius: 8px;
         padding: 13px 14px;
         min-height: 94px;
+        height: auto;
+        overflow: visible;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045);
     }
 
@@ -979,6 +1000,8 @@ st.markdown(
         font-weight: 720;
         margin-bottom: 8px;
         line-height: 1.25;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .premium-kpi-value {
@@ -987,6 +1010,7 @@ st.markdown(
         font-weight: 800;
         line-height: 1.1;
         overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .insight-strip {
@@ -1352,7 +1376,7 @@ def main_gmv_channel(df):
     affiliate_gmv = float(df["Affiliate Video GMV"].sum())
     if shop_tab_gmv >= affiliate_gmv:
         return f"{T['shoptab_gmv']} ({pct(shop_tab_gmv / (shop_tab_gmv + affiliate_gmv), 0)})" if shop_tab_gmv + affiliate_gmv > 0 else T["shoptab_gmv"]
-    return f"Affiliate video ({pct(affiliate_gmv / (shop_tab_gmv + affiliate_gmv), 0)})"
+    return f"{T['affiliate_video_gmv']} ({pct(affiliate_gmv / (shop_tab_gmv + affiliate_gmv), 0)})"
 
 
 def phase_objective(phase_key):
@@ -1404,11 +1428,19 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
 
 
 def render_kpi_grid(items):
-    for start in range(0, len(items), 4):
-        cols = st.columns(4)
-        for col, item in zip(cols, items[start:start + 4]):
-            label, value, _accent = item
-            col.metric(label, value)
+    columns = min(max(len(items), 1), 4)
+    html = [f'<div class="kpi-grid" style="grid-template-columns: repeat({columns}, minmax(0, 1fr));">']
+    for label, value, accent in items:
+        html.append(
+            f"""
+            <div class="premium-kpi" style="--accent:{escape(str(accent))};">
+                <div class="premium-kpi-label">{escape(str(label))}</div>
+                <div class="premium-kpi-value">{escape(str(value))}</div>
+            </div>
+            """
+        )
+    html.append("</div>")
+    st.markdown("".join(html), unsafe_allow_html=True)
 
 
 def render_hero(overall, weeks, skus, break_even_label):
@@ -2491,18 +2523,20 @@ if st.session_state.get("has_generated", False):
         st.info(f"**{T['assumption_status']}**: {assumption_status}")
 
         st.subheader(T["commercial_takeaways"])
-        t1, t2, t3, t4 = st.columns(4)
-        t1.metric(takeaways[0][0], takeaways[0][1])
-        t2.metric(takeaways[1][0], takeaways[1][1])
-        t3.metric(takeaways[2][0], takeaways[2][1])
-        t4.metric(takeaways[3][0], takeaways[3][1])
+        render_kpi_grid([
+            (takeaways[0][0], takeaways[0][1], "#7C3AED"),
+            (takeaways[1][0], takeaways[1][1], "#2563EB"),
+            (takeaways[2][0], takeaways[2][1], "#14B8A6"),
+            (takeaways[3][0], takeaways[3][1], "#F97316"),
+        ])
         st.warning(f"**{takeaways[4][0]}**: {takeaways[4][1]}")
 
         st.subheader(T["forecast_range"])
-        fr1, fr2, fr3 = st.columns(3)
-        fr1.metric(T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0))
-        fr2.metric(T["base_case"], money(forecast_range_values["base_gmv"], 0))
-        fr3.metric(T["upside_case"], money(forecast_range_values["upside_gmv"], 0))
+        render_kpi_grid([
+            (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
+            (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#2563EB"),
+            (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#16A34A"),
+        ])
         st.caption(T["forecast_range_note"])
 
         st.subheader(T["client_narrative"])
