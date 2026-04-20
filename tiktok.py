@@ -225,19 +225,19 @@ PHASE_DEFAULTS = {
         "gmv_start": 2_000,
         "gmv_end": 10_000,
         "ads_take_rate": 0.00,
-        "samples": 30,
+        "default_sku_samples": 30,
     },
     "phase2": {
         "gmv_start": 10_000,
         "gmv_end": 30_000,
         "ads_take_rate": 0.05,
-        "samples": 25,
+        "default_sku_samples": 25,
     },
     "phase3": {
         "gmv_start": 30_000,
         "gmv_end": 100_000,
         "ads_take_rate": 0.10,
-        "samples": 20,
+        "default_sku_samples": 20,
     },
 }
 
@@ -286,7 +286,7 @@ TEXT = {
         "phase3": "Phase 3 - Breakout",
         "ads_rate": "Ads Take Rate",
         "ads_rate_help": "Internal KPI: ad spend as % of total GMV.",
-        "samples_per_week": "Total samples / week",
+        "samples_per_week": "Samples / week",
         "product_setup": "Product Setup",
         "product_setup_caption": "Choose a subcategory to load benchmark AOV and funnel assumptions. All assumptions can be manually overridden.",
         "apply_benchmark": "Apply category benchmark",
@@ -320,8 +320,8 @@ TEXT = {
         "week": "Week",
         "product": "Product",
         "preset": "Preset",
-        "sample_share": "Sample Allocation (%)",
-        "sample_share_help": "Enter a percentage like 50 or 20. It does not need to total 100. The system auto-normalizes.",
+        "sku_samples": "SKU samples / week",
+        "sku_samples_help": "Samples sent per week for this SKU in each phase.",
         "aov": "AOV (€)",
         "gross_margin": "Gross Margin (%)",
         "fee_type": "Fee Type",
@@ -371,7 +371,7 @@ TEXT = {
         "phase3": "阶段 3 - 爆发",
         "ads_rate": "Ads Take Rate",
         "ads_rate_help": "内部 KPI 口径：广告花费 / 总 GMV。",
-        "samples_per_week": "每周总寄样数",
+        "samples_per_week": "每周寄样数",
         "product_setup": "产品设置",
         "product_setup_caption": "选择 subcategory 后会带出 AOV 和漏斗 benchmark；所有假设都可以手动修改。",
         "apply_benchmark": "应用类目 benchmark",
@@ -405,8 +405,8 @@ TEXT = {
         "week": "周",
         "product": "产品",
         "preset": "Preset",
-        "sample_share": "寄样分配占比 (%)",
-        "sample_share_help": "请输入百分比，比如 50 或 20。不需要加起来等于100，系统会自动标准化。",
+        "sku_samples": "SKU 每周寄样数",
+        "sku_samples_help": "这个 SKU 在每个阶段每周寄出的样品数量。",
         "aov": "AOV (€)",
         "gross_margin": "毛利率 (%)",
         "fee_type": "费率类型",
@@ -456,7 +456,7 @@ TEXT = {
         "phase3": "Phase 3 - Skalierung",
         "ads_rate": "Ads Take Rate",
         "ads_rate_help": "Interne KPI: Ads Spend als Anteil am Gesamt-GMV.",
-        "samples_per_week": "Samples gesamt / Woche",
+        "samples_per_week": "Samples / Woche",
         "product_setup": "Produkteinstellung",
         "product_setup_caption": "Wähle eine Subcategory, um AOV und Funnel-Benchmarks zu laden. Alle Annahmen können überschrieben werden.",
         "apply_benchmark": "Kategorie-Benchmark anwenden",
@@ -490,8 +490,8 @@ TEXT = {
         "week": "Woche",
         "product": "Produkt",
         "preset": "Preset",
-        "sample_share": "Sample-Verteilung (%)",
-        "sample_share_help": "Prozentwert eingeben, z. B. 50 oder 20. Muss nicht 100 ergeben. Das System normalisiert automatisch.",
+        "sku_samples": "SKU Samples / Woche",
+        "sku_samples_help": "Samples pro Woche für dieses SKU in jeder Phase.",
         "aov": "AOV (€)",
         "gross_margin": "Bruttomarge (%)",
         "fee_type": "Gebührentyp",
@@ -541,7 +541,7 @@ TEXT = {
         "phase3": "Fase 3 - Doorbraak",
         "ads_rate": "Ads Take Rate",
         "ads_rate_help": "Interne KPI: advertentie-uitgaven als % van totale GMV.",
-        "samples_per_week": "Totale samples / week",
+        "samples_per_week": "Samples / week",
         "product_setup": "Productinstellingen",
         "product_setup_caption": "Kies een subcategory om AOV en funnelbenchmarks te laden. Alle aannames kunnen handmatig worden aangepast.",
         "apply_benchmark": "Categoriebenchmark toepassen",
@@ -575,8 +575,8 @@ TEXT = {
         "week": "Week",
         "product": "Product",
         "preset": "Preset",
-        "sample_share": "Sampleverdeling (%)",
-        "sample_share_help": "Voer een percentage in, zoals 50 of 20. Hoeft niet op te tellen tot 100. Het systeem normaliseert automatisch.",
+        "sku_samples": "SKU samples / week",
+        "sku_samples_help": "Samples per week voor deze SKU in elke fase.",
         "aov": "AOV (€)",
         "gross_margin": "Brutomarge (%)",
         "fee_type": "Fee type",
@@ -650,20 +650,6 @@ def pct(v: float, digits: int = 1) -> str:
     return f"{v:.{digits}%}"
 
 
-def normalize_sample_shares(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.copy()
-    df["Sample Allocation (%)"] = (
-        pd.to_numeric(df["Sample Allocation (%)"], errors="coerce")
-        .fillna(0)
-        .clip(lower=0)
-    )
-    s = df["Sample Allocation (%)"].sum()
-    if s <= 0:
-        raise ValueError("At least one product sample allocation must be > 0.")
-    df["SampleShareNorm"] = df["Sample Allocation (%)"] / s
-    return df
-
-
 def get_benchmark(family: str, preset: str) -> dict:
     benchmark = FUNNEL_PRESETS[family][preset].copy()
     benchmark["aov"] = AOV_PRESETS[family][preset]
@@ -702,7 +688,7 @@ def build_phase_inputs():
             "gmv_start": defaults["gmv_start"],
             "gmv_end": defaults["gmv_end"],
             "ads_take_rate": defaults["ads_take_rate"],
-            "samples": defaults["samples"],
+            "default_sku_samples": defaults["default_sku_samples"],
         })
     return phase_inputs
 
@@ -770,13 +756,11 @@ def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
 
         gross_margin_pct = float(st.session_state[f"gross_margin_pct_{i}"])
         gross_margin_decimal = gross_margin_pct / 100.0
-        sample_share_pct = parse_percent_text(st.session_state[f"sample_share_text_{i}"])
 
         rows.append({
             "Product": st.session_state[f"product_name_{i}"],
             "Family": family,
             "Preset Category": preset,
-            "Sample Allocation (%)": sample_share_pct,
             "AOV": float(st.session_state[f"aov_{i}"]),
             "Gross Margin": gross_margin_decimal,
             "Platform Fee Rate Default": float(fee_rate),
@@ -784,6 +768,9 @@ def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
             "Clicks / Video": float(st.session_state[f"clicks_per_video_{i}"]),
             "Click-to-order Rate": float(st.session_state[f"click_to_order_pct_{i}"]) / 100.0,
             "ShopTab GMV Share": float(st.session_state[f"shop_tab_share_pct_{i}"]) / 100.0,
+            "phase1_samples_per_week": float(st.session_state[f"phase1_samples_{i}"]),
+            "phase2_samples_per_week": float(st.session_state[f"phase2_samples_{i}"]),
+            "phase3_samples_per_week": float(st.session_state[f"phase3_samples_{i}"]),
         })
 
     df = pd.DataFrame(rows)
@@ -806,7 +793,14 @@ def build_product_df_from_ui(n_products: int) -> pd.DataFrame:
     if ((df["ShopTab GMV Share"] < 0) | (df["ShopTab GMV Share"] > 1)).any():
         raise ValueError("ShopTab GMV share must be between 0% and 100%.")
 
-    return normalize_sample_shares(df)
+    sample_cols = [f"{phase_key}_samples_per_week" for phase_key in PHASE_KEYS]
+    if (df[sample_cols] < 0).any().any() or df[sample_cols].isna().any().any():
+        raise ValueError("SKU samples / week must be >= 0 for all phases.")
+
+    if df[sample_cols].sum().sum() <= 0:
+        raise ValueError("At least one SKU must have samples / week > 0 in one phase.")
+
+    return df
 
 
 def build_weekly_plan(
@@ -822,7 +816,6 @@ def build_weekly_plan(
 ) -> pd.DataFrame:
     scenario = SCENARIO_MULTIPLIERS[scenario_key]
 
-    share = prod_df["SampleShareNorm"].to_numpy()
     aov = prod_df["AOV"].to_numpy()
     gross_margin = prod_df["Gross Margin"].to_numpy()
     fee_type = prod_df["Platform Fee Rate Default"]
@@ -849,8 +842,9 @@ def build_weekly_plan(
 
         for week_idx in range(int(weeks_in_phase)):
             global_week += 1
-            samples_total = float(phase["samples"])
-            samples_p = samples_total * share
+            sample_col = f"{phase['key']}_samples_per_week"
+            samples_p = prod_df[sample_col].to_numpy(dtype=float)
+            samples_total = float(np.sum(samples_p))
             new_videos_p = samples_p * videos_per_sample
             video_history.append(new_videos_p)
 
@@ -1152,13 +1146,17 @@ def initialize_product_state(i: int, n_products: int):
 
     defaults = {
         f"aov_{i}": float(benchmark["aov"]),
-        f"sample_share_text_{i}": f"{round(100.0 / float(n_products), 1)}",
         f"gross_margin_pct_{i}": 40.0,
         f"fee_type_{i}": guess_fee_type(preset),
         f"videos_per_sample_{i}": float(benchmark["videos_per_sample"]),
         f"clicks_per_video_{i}": float(benchmark["clicks_per_video"]),
         f"click_to_order_pct_{i}": float(benchmark["click_to_order_rate"] * 100.0),
         f"shop_tab_share_pct_{i}": float(benchmark["shop_tab_share"] * 100.0),
+        f"phase1_samples_{i}": float(PHASE_DEFAULTS["phase1"]["default_sku_samples"]),
+        f"phase2_samples_{i}": float(PHASE_DEFAULTS["phase2"]["default_sku_samples"]),
+        f"phase3_samples_{i}": float(PHASE_DEFAULTS["phase3"]["default_sku_samples"]),
+        f"last_family_{i}": current_family,
+        f"last_preset_{i}": preset,
     }
 
     for key, value in defaults.items():
@@ -1176,6 +1174,18 @@ def apply_category_benchmark(i: int):
     st.session_state[f"clicks_per_video_{i}"] = float(benchmark["clicks_per_video"])
     st.session_state[f"click_to_order_pct_{i}"] = float(benchmark["click_to_order_rate"] * 100.0)
     st.session_state[f"shop_tab_share_pct_{i}"] = float(benchmark["shop_tab_share"] * 100.0)
+    st.session_state[f"last_family_{i}"] = family
+    st.session_state[f"last_preset_{i}"] = preset
+
+
+def refresh_benchmark_if_category_changed(i: int):
+    family = st.session_state[f"family_{i}"]
+    preset = st.session_state[f"preset_{i}"]
+    if (
+        st.session_state.get(f"last_family_{i}") != family
+        or st.session_state.get(f"last_preset_{i}") != preset
+    ):
+        apply_category_benchmark(i)
 
 
 # ======================
@@ -1284,14 +1294,6 @@ with st.sidebar:
             help=T["ads_rate_help"],
         )
 
-        phase["samples"] = st.number_input(
-            f"{T['samples_per_week']} - {phase['name']}",
-            min_value=0,
-            value=int(phase["samples"]),
-            step=1,
-            key=f"samples_{i}",
-        )
-
 
 # ======================
 # Product Setup
@@ -1321,20 +1323,26 @@ for i in range(int(n_products)):
         with col3:
             st.selectbox(T["preset"], options=updated_presets, key=f"preset_{i}")
 
+        refresh_benchmark_if_category_changed(i)
+
         if st.button(f"{T['apply_benchmark']} - {T['product_block']} {i + 1}", key=f"apply_benchmark_{i}"):
             apply_category_benchmark(i)
             st.rerun()
 
+        sample_cols = st.columns(3)
+        for sample_col, phase_key in zip(sample_cols, PHASE_KEYS):
+            with sample_col:
+                st.number_input(
+                    f"{phase_label(phase_key)} - {T['sku_samples']}",
+                    min_value=0.0,
+                    step=1.0,
+                    key=f"{phase_key}_samples_{i}",
+                    help=T["sku_samples_help"],
+                )
+
         col4, col5, col6 = st.columns(3)
 
         with col4:
-            st.text_input(
-                T["sample_share"],
-                key=f"sample_share_text_{i}",
-                help=T["sample_share_help"],
-            )
-
-        with col5:
             st.number_input(
                 T["aov"],
                 min_value=0.01,
@@ -1342,7 +1350,7 @@ for i in range(int(n_products)):
                 key=f"aov_{i}",
             )
 
-        with col6:
+        with col5:
             st.selectbox(
                 T["fee_type"],
                 options=["electronics", "other"],
@@ -1431,8 +1439,9 @@ if generate:
             "Product",
             "Family",
             "Preset Category",
-            "Sample Allocation (%)",
-            "SampleShareNorm",
+            "phase1_samples_per_week",
+            "phase2_samples_per_week",
+            "phase3_samples_per_week",
             "AOV",
             "Gross Margin",
             "Platform Fee Rate Default",
@@ -1446,8 +1455,9 @@ if generate:
             T["product"],
             T["family"],
             T["preset_category"],
-            T["sample_share"],
-            "SampleShareNorm",
+            f"{phase_label('phase1')} - {T['sku_samples']}",
+            f"{phase_label('phase2')} - {T['sku_samples']}",
+            f"{phase_label('phase3')} - {T['sku_samples']}",
             T["aov"],
             T["gross_margin"],
             T["platform_fee_default"],
@@ -1457,8 +1467,9 @@ if generate:
             T["shop_tab_share"],
         ]
 
-        mix_display[T["sample_share"]] = mix_display[T["sample_share"]].map(lambda v: f"{v:,.1f}%")
-        mix_display["SampleShareNorm"] = mix_display["SampleShareNorm"].map(lambda v: f"{v:.0%}")
+        for phase_key in PHASE_KEYS:
+            col_name = f"{phase_label(phase_key)} - {T['sku_samples']}"
+            mix_display[col_name] = mix_display[col_name].map(lambda v: f"{v:,.0f}")
         mix_display[T["aov"]] = mix_display[T["aov"]].map(lambda v: money(float(v), 2))
         mix_display[T["gross_margin"]] = mix_display[T["gross_margin"]].map(lambda v: pct(float(v), 0))
         mix_display[T["platform_fee_default"]] = mix_display[T["platform_fee_default"]].map(lambda v: pct(float(v), 0))
