@@ -89,6 +89,14 @@ PHASES = [
 CONTENT_DECAY_WEIGHTS = [1.00, 0.55, 0.30, 0.15]
 PROMO_WEEKS = 9
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+CHART_COLORS = {
+    "gmv": "#2563EB",
+    "cost": "#F97316",
+    "profit": "#16A34A",
+    "cumulative": "#7C3AED",
+    "grid": "#E5E7EB",
+    "text": "#111827",
+}
 
 
 TEXT = {
