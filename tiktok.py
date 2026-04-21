@@ -1265,6 +1265,10 @@ st.markdown(
         align-items: stretch;
     }
 
+    .kpi-grid.kpi-grid-compact {
+        grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    }
+
     .premium-kpi {
         background: #FFFFFF;
         border: 1px solid #E5E7EB;
@@ -1279,6 +1283,19 @@ st.markdown(
         flex-direction: column;
         justify-content: center;
         gap: 6px;
+    }
+
+    .kpi-grid.kpi-grid-compact .premium-kpi {
+        min-height: 92px;
+        padding: 12px 13px;
+    }
+
+    .kpi-grid.kpi-grid-compact .premium-kpi-value {
+        font-size: clamp(0.94rem, 1.35vw, 1.18rem);
+    }
+
+    .kpi-grid.kpi-grid-compact .premium-kpi-label {
+        font-size: 0.7rem;
     }
 
     .premium-kpi-label {
@@ -1719,7 +1736,7 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
     return pd.DataFrame(rows, columns=["Metric", "Value"])
 
 
-def render_kpi_grid(items):
+def render_kpi_grid(items, compact=False):
     cards = [
         (
             f'<div class="premium-kpi" style="border-top-color:{escape(str(accent))};">'
@@ -1729,7 +1746,8 @@ def render_kpi_grid(items):
         )
         for label, value, accent in items
     ]
-    st.markdown(f'<div class="kpi-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
+    class_name = "kpi-grid kpi-grid-compact" if compact else "kpi-grid"
+    st.markdown(f'<div class="{class_name}">{"".join(cards)}</div>', unsafe_allow_html=True)
 
 
 def render_meeting_header(meeting_notes, generated_at, assumption_status):
@@ -1900,12 +1918,10 @@ def render_phase_overview(phase_summary):
             for label, value in metrics
         )
         cards.append(
-            f"""
-            <div class="phase-overview-card" style="border-top-color:{escape(color_map.get(row["Phase Key"], "#64748B"))};">
-                <div class="phase-overview-title">{escape(str(row["Phase"]))}</div>
-                <div class="phase-overview-metrics">{metric_html}</div>
-            </div>
-            """
+            f'<div class="phase-overview-card" style="border-top-color:{escape(color_map.get(row["Phase Key"], "#64748B"))};">'
+            f'<div class="phase-overview-title">{escape(str(row["Phase"]))}</div>'
+            f'<div class="phase-overview-metrics">{metric_html}</div>'
+            "</div>"
         )
     st.markdown(f'<div class="phase-overview-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
 
@@ -3220,7 +3236,7 @@ if st.session_state.get("has_generated", False):
             (T["orders_per_sample"], f"{overall['Orders / Sample']:.2f}", "#14B8A6"),
             (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#8B5CF6"),
             (T["ads_investment"], money(overall["Ads Investment"], 0), "#F97316"),
-        ])
+        ], compact=True)
         st.info(
             T["sample_roi_text"].format(
                 gmv_per_sample=money(overall["GMV / Sample"], 0),
