@@ -144,9 +144,20 @@ TEXT = {
         "scenario_base": "Base",
         "scenario_upside": "Upside",
         "scenario_case_help": "Optional lens for fast meeting discussion. It adjusts clicks, click-to-order rate, and ROAS for the simulation only; it does not overwrite SKU inputs.",
+        "scenario_case_detail": "Conservative applies -15% clicks, -15% click-to-order rate, and -10% ROAS. Base keeps current inputs. Upside applies +15% clicks, +15% click-to-order rate, and +10% ROAS.",
         "lock_plan": "Lock current plan",
         "unlock_plan": "Unlock plan",
         "plan_locked": "Current plan is locked. Unlock to refresh results from changed inputs.",
+        "debug_details": "Debug Details",
+        "debug_metric": "Metric",
+        "debug_value": "Value",
+        "debug_lock_status": "Plan locked",
+        "debug_effective_roas": "Effective ROAS",
+        "debug_multiplier_clicks": "Clicks multiplier",
+        "debug_multiplier_cvr": "Conversion multiplier",
+        "debug_multiplier_roas": "ROAS multiplier",
+        "debug_target_gmv_gap": "Target GMV gap",
+        "debug_target_profit_gap": "Target profit gap",
         "scenario_snapshot": "Scenario Snapshot",
         "model_last_reviewed": "Model last reviewed",
         "chart_read": "How to read",
@@ -424,9 +435,20 @@ TEXT = {
         "scenario_base": "基准",
         "scenario_upside": "乐观",
         "scenario_case_help": "会议中快速讨论不同结果区间用。仅在模拟中调整点击、点击到下单转化率和 ROAS，不覆盖 SKU 输入。",
+        "scenario_case_detail": "保守：点击 -15%、点击到下单转化率 -15%、ROAS -10%。基准：保持当前输入。乐观：点击 +15%、点击到下单转化率 +15%、ROAS +10%。",
         "lock_plan": "锁定当前方案",
         "unlock_plan": "解锁方案",
         "plan_locked": "当前方案已锁定。如需根据新输入刷新结果，请先解锁。",
+        "debug_details": "Debug Details",
+        "debug_metric": "指标",
+        "debug_value": "当前值",
+        "debug_lock_status": "方案是否锁定",
+        "debug_effective_roas": "有效 ROAS",
+        "debug_multiplier_clicks": "点击 multiplier",
+        "debug_multiplier_cvr": "转化 multiplier",
+        "debug_multiplier_roas": "ROAS multiplier",
+        "debug_target_gmv_gap": "目标 GMV 差距",
+        "debug_target_profit_gap": "目标利润差距",
         "scenario_snapshot": "方案快照",
         "model_last_reviewed": "模型最近校准",
         "chart_read": "怎么看",
@@ -2091,6 +2113,32 @@ def target_comparison_items(overall, target_gmv, target_profit):
     return items
 
 
+def debug_details_table(overall, scenario_key, effective_ads_roas, target_gmv, target_profit, n_skus, locked):
+    factors = SCENARIO_ADJUSTMENTS.get(scenario_key, SCENARIO_ADJUSTMENTS["base"])
+    target_gmv = float(target_gmv or 0)
+    target_profit = float(target_profit or 0)
+    gmv_gap = float(overall["Total GMV"]) - target_gmv if target_gmv > 0 else None
+    profit_gap = float(overall["Total Profit"]) - target_profit if target_profit > 0 else None
+    rows = [
+        (T["scenario_case"], {
+            "conservative": T["scenario_conservative"],
+            "base": T["scenario_base"],
+            "upside": T["scenario_upside"],
+        }.get(scenario_key, T["scenario_base"])),
+        (T["debug_multiplier_clicks"], f"{factors['clicks']:.2f}x"),
+        (T["debug_multiplier_cvr"], f"{factors['conversion']:.2f}x"),
+        (T["debug_multiplier_roas"], f"{factors['roas']:.2f}x"),
+        (T["debug_effective_roas"], f"{float(effective_ads_roas):.2f}"),
+        (T["debug_lock_status"], T["yes"] if locked else T["no"]),
+        (T["debug_target_gmv_gap"], money(gmv_gap, 0) if gmv_gap is not None else T["target_not_set"]),
+        (T["debug_target_profit_gap"], money(profit_gap, 0) if profit_gap is not None else T["target_not_set"]),
+        (T["sku_count"], f"{int(n_skus)}"),
+        (T["model_version"], MODEL_VERSION),
+        (T["model_last_reviewed"], MODEL_LAST_REVIEWED),
+    ]
+    return pd.DataFrame(rows, columns=[T["debug_metric"], T["debug_value"]])
+
+
 def apply_scenario_adjustment(product_df, ads_roas, scenario_key):
     adjusted = product_df.copy()
     factors = SCENARIO_ADJUSTMENTS.get(scenario_key, SCENARIO_ADJUSTMENTS["base"])
@@ -2886,6 +2934,7 @@ def reset_defaults():
         "_model_target_gmv", "_model_target_profit", "_model_scenario_case",
         "_locked_df_all", "_locked_product_df", "_locked_phase_inputs",
         "_locked_weeks_per_phase", "_locked_ads_roas", "_locked_scenario_label",
+        "_locked_scenario_case",
     }
     for key in list(st.session_state.keys()):
         if key in exact_keys or any(key.startswith(prefix) for prefix in prefixes):
@@ -3308,6 +3357,7 @@ with st.sidebar:
             key="scenario_case_input",
             help=T["scenario_case_help"],
         )
+        st.caption(T["scenario_case_detail"])
         st.header(T["target_setup"])
         target_gmv = st.number_input(T["target_gmv"], min_value=0.0, value=0.0, step=1000.0, key="target_gmv_input", help=T["target_gmv_help"])
         target_profit = st.number_input(T["target_profit"], min_value=0.0, value=0.0, step=1000.0, key="target_profit_input", help=T["target_profit_help"])
@@ -3505,6 +3555,7 @@ if st.session_state.get("has_generated", False):
             weeks_per_phase = st.session_state["_locked_weeks_per_phase"]
             effective_ads_roas = st.session_state["_locked_ads_roas"]
             scenario_label = st.session_state.get("_locked_scenario_label", scenario_label)
+            scenario_case = st.session_state.get("_locked_scenario_case", scenario_case)
         else:
             product_df = build_product_df(int(n_skus))
             adjusted_product_df, effective_ads_roas = apply_scenario_adjustment(product_df, ads_roas, scenario_case)
@@ -3587,6 +3638,7 @@ if st.session_state.get("has_generated", False):
                 st.session_state["_locked_weeks_per_phase"] = int(weeks_per_phase)
                 st.session_state["_locked_ads_roas"] = float(effective_ads_roas)
                 st.session_state["_locked_scenario_label"] = scenario_label
+                st.session_state["_locked_scenario_case"] = scenario_case
                 st.rerun()
         render_kpi_grid([
             (T["total_gmv"], money(overall["Total GMV"], 0), "#2563EB"),
@@ -3626,6 +3678,21 @@ if st.session_state.get("has_generated", False):
         if target_items:
             st.subheader(T["target_comparison"])
             render_kpi_grid(target_items)
+
+        with st.expander(T["debug_details"], expanded=False):
+            st.dataframe(
+                debug_details_table(
+                    overall=overall,
+                    scenario_key=scenario_case,
+                    effective_ads_roas=effective_ads_roas,
+                    target_gmv=target_gmv,
+                    target_profit=target_profit,
+                    n_skus=n_skus,
+                    locked=st.session_state.get("plan_locked", False),
+                ),
+                use_container_width=True,
+                hide_index=True,
+            )
 
         st.subheader(T["commercial_takeaways"])
         render_kpi_grid([
