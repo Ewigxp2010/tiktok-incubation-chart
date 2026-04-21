@@ -2057,18 +2057,62 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=A4)
     width, height = A4
-    margin = 42
+    margin = 38
     font_name = "STSong-Light"
     pdfmetrics.registerFont(UnicodeCIDFont(font_name))
 
     def clean(value):
         return str(value).replace("€", "EUR ")
 
-    def new_page_if_needed(y, needed=56):
+    brand_title = meeting_notes.get("brand_name") or T["hero_title"].format(weeks=weeks, skus=skus)
+    page_no = 1
+
+    def draw_logo(x, y):
+        pdf.setFillColor(colors.HexColor("#111827"))
+        pdf.setFont(font_name, 15)
+        pdf.drawString(x + 30, y - 3, "TikTok Shop")
+
+        bag_x = x
+        bag_y = y - 15
+        pdf.setFillColor(colors.white)
+        pdf.setStrokeColor(colors.HexColor("#111827"))
+        pdf.setLineWidth(1.1)
+        pdf.roundRect(bag_x, bag_y, 22, 20, 4, stroke=1, fill=1)
+        pdf.setStrokeColor(colors.HexColor("#111827"))
+        pdf.arc(bag_x + 6, bag_y + 12, bag_x + 16, bag_y + 24, 200, 140)
+        pdf.setFillColor(colors.HexColor("#25F4EE"))
+        pdf.circle(bag_x + 9, bag_y + 9, 3.2, stroke=0, fill=1)
+        pdf.setFillColor(colors.HexColor("#FE2C55"))
+        pdf.circle(bag_x + 13, bag_y + 8, 3.2, stroke=0, fill=1)
+        pdf.setFillColor(colors.HexColor("#111827"))
+        pdf.circle(bag_x + 11, bag_y + 10, 3.0, stroke=0, fill=1)
+
+    def draw_footer():
+        pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
+        pdf.setLineWidth(0.8)
+        pdf.line(margin, 34, width - margin, 34)
+        pdf.setFillColor(colors.HexColor("#94A3B8"))
+        pdf.setFont(font_name, 7.5)
+        pdf.drawString(margin, 22, clean(T["planning_disclaimer"]))
+        pdf.drawRightString(width - margin, 22, f"{page_no}")
+
+    def draw_page_header():
+        draw_logo(margin, height - 34)
+        pdf.setFillColor(colors.HexColor("#64748B"))
+        pdf.setFont(font_name, 8)
+        pdf.drawRightString(width - margin, height - 39, clean(f"{T['generated_on']}: {generated_at}"))
+
+    def new_page():
+        nonlocal page_no
+        draw_footer()
+        pdf.showPage()
+        page_no += 1
+        draw_page_header()
+        return height - 74
+
+    def new_page_if_needed(y, needed=72):
         if y < margin + needed:
-            pdf.showPage()
-            pdf.setFont(font_name, 10)
-            return height - margin
+            return new_page()
         return y
 
     def draw_wrapped(text, x, y, max_width, font_size=10, leading=14):
@@ -2079,40 +2123,94 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
             y -= leading
         return y
 
-    y = height - margin
-    brand_title = meeting_notes.get("brand_name") or T["hero_title"].format(weeks=weeks, skus=skus)
+    def draw_chip(text, x, y):
+        chip_text = clean(text)
+        chip_w = min(pdfmetrics.stringWidth(chip_text, font_name, 8) + 18, width - margin * 2)
+        pdf.setFillColor(colors.HexColor("#F1F5F9"))
+        pdf.setStrokeColor(colors.HexColor("#E2E8F0"))
+        pdf.roundRect(x, y - 15, chip_w, 19, 9, stroke=1, fill=1)
+        pdf.setFillColor(colors.HexColor("#475569"))
+        pdf.setFont(font_name, 8)
+        pdf.drawString(x + 9, y - 10, chip_text)
+        return x + chip_w + 7
 
-    pdf.setFillColor(colors.HexColor("#6B7280"))
-    pdf.setFont(font_name, 9)
-    pdf.drawString(margin, y, clean(T["meeting_header"]))
-    y -= 20
+    def draw_metric_cards(cards, y):
+        card_gap = 10
+        card_w = (width - margin * 2 - card_gap * (len(cards) - 1)) / len(cards)
+        card_h = 58
+        for idx, (label, value, accent) in enumerate(cards):
+            x = margin + idx * (card_w + card_gap)
+            pdf.setFillColor(colors.white)
+            pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
+            pdf.roundRect(x, y - card_h, card_w, card_h, 7, stroke=1, fill=1)
+            pdf.setFillColor(colors.HexColor(accent))
+            pdf.roundRect(x, y - 4, card_w, 4, 2, stroke=0, fill=1)
+            pdf.setFillColor(colors.HexColor("#64748B"))
+            pdf.setFont(font_name, 8)
+            pdf.drawString(x + 12, y - 20, clean(label))
+            pdf.setFillColor(colors.HexColor("#111827"))
+            pdf.setFont(font_name, 15)
+            pdf.drawString(x + 12, y - 42, clean(value))
+        return y - card_h - 16
+
+    def draw_section(title, lines, y, accent="#2563EB", ordered=False, compact=False):
+        line_height = 12 if compact else 14
+        estimated = 36 + max(1, len(lines)) * line_height * 2
+        y = new_page_if_needed(y, estimated)
+        box_top = y
+        pdf.setFillColor(colors.white)
+        pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
+        box_h = min(estimated, max(88, y - margin - 12))
+        pdf.roundRect(margin, box_top - box_h, width - margin * 2, box_h, 8, stroke=1, fill=1)
+        pdf.setFillColor(colors.HexColor(accent))
+        pdf.roundRect(margin, box_top - 4, width - margin * 2, 4, 2, stroke=0, fill=1)
+        pdf.setFillColor(colors.HexColor("#111827"))
+        pdf.setFont(font_name, 13)
+        pdf.drawString(margin + 14, box_top - 24, clean(title))
+        cursor = box_top - 43
+        for idx, line in enumerate(lines, start=1):
+            prefix = f"{idx}. " if ordered else "- "
+            pdf.setFillColor(colors.HexColor("#334155"))
+            cursor = draw_wrapped(prefix + line, margin + 18, cursor, width - margin * 2 - 36, font_size=8.8 if compact else 9.4, leading=line_height)
+            cursor -= 2
+            if cursor < box_top - box_h + 14:
+                break
+        return box_top - box_h - 12
+
+    def draw_two_column_section(title, pairs, y, accent="#7C3AED"):
+        rows = [pairs[i:i + 2] for i in range(0, len(pairs), 2)]
+        y = new_page_if_needed(y, 120)
+        box_h = 42 + len(rows) * 44
+        pdf.setFillColor(colors.white)
+        pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
+        pdf.roundRect(margin, y - box_h, width - margin * 2, box_h, 8, stroke=1, fill=1)
+        pdf.setFillColor(colors.HexColor(accent))
+        pdf.roundRect(margin, y - 4, width - margin * 2, 4, 2, stroke=0, fill=1)
+        pdf.setFillColor(colors.HexColor("#111827"))
+        pdf.setFont(font_name, 13)
+        pdf.drawString(margin + 14, y - 24, clean(title))
+        col_w = (width - margin * 2 - 42) / 2
+        cursor_y = y - 50
+        for row in rows:
+            for col_idx, (label, value, _accent) in enumerate(row):
+                x = margin + 18 + col_idx * (col_w + 16)
+                pdf.setFillColor(colors.HexColor("#64748B"))
+                pdf.setFont(font_name, 8)
+                pdf.drawString(x, cursor_y + 12, clean(label))
+                pdf.setFillColor(colors.HexColor("#111827"))
+                draw_wrapped(value, x, cursor_y, col_w, font_size=8.8, leading=11)
+            cursor_y -= 44
+        return y - box_h - 12
+
+    draw_page_header()
+    y = height - 78
 
     pdf.setFillColor(colors.HexColor("#111827"))
-    pdf.setFont(font_name, 22)
+    pdf.setFont(font_name, 24)
     pdf.drawString(margin, y, clean(brand_title))
-    y -= 24
+    y -= 26
 
-    pdf.setFillColor(colors.HexColor("#6B7280"))
-    pdf.setFont(font_name, 9)
-    meta_line = (
-        f"{T['generated_on']}: {generated_at}  |  "
-        f"{T['plan_length']}: {weeks} {T['week']}  |  "
-        f"{T['sku_count_meta']}: {skus}"
-    )
-    pdf.drawString(margin, y, clean(meta_line))
-    y -= 18
-
-    pdf.setFillColor(colors.HexColor("#6B7280"))
-    pdf.setFont(font_name, 9)
-    meeting_line = (
-        f"{T['meeting_date']}: {meeting_notes.get('meeting_date') or '-'}  |  "
-        f"{T['am_name']}: {meeting_notes.get('am_name') or '-'}  |  "
-        f"{T['assumption_status']}: {assumption_status}"
-    )
-    pdf.drawString(margin, y, clean(meeting_line))
-    y -= 18
-
-    pdf.setFillColor(colors.HexColor("#111827"))
+    pdf.setFillColor(colors.HexColor("#475569"))
     y = draw_wrapped(
         T["hero_subtitle"].format(
             gmv=money(overall["Total GMV"], 0),
@@ -2122,60 +2220,76 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         margin,
         y,
         width - margin * 2,
-        font_size=10,
-        leading=14,
+        font_size=9.5,
+        leading=13,
     )
     y -= 10
 
-    card_w = (width - margin * 2 - 20) / 3
-    cards = [
-        (T["total_gmv"], money(overall["Total GMV"], 0)),
-        (T["total_profit"], money(overall["Total Profit"], 0)),
-        (T["growth_investment"], money(overall["Growth Investment"], 0)),
-    ]
-    for idx, (label, value) in enumerate(cards):
-        x = margin + idx * (card_w + 10)
-        pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
-        pdf.setFillColor(colors.white)
-        pdf.roundRect(x, y - 58, card_w, 52, 6, stroke=1, fill=1)
-        pdf.setFillColor(colors.HexColor("#6B7280"))
-        pdf.setFont(font_name, 8)
-        pdf.drawString(x + 10, y - 24, clean(label))
-        pdf.setFillColor(colors.HexColor("#111827"))
-        pdf.setFont(font_name, 14)
-        pdf.drawString(x + 10, y - 43, clean(value))
-    y -= 82
+    chip_x = margin
+    chip_y = y
+    for chip in [
+        f"{T['plan_length']}: {weeks} {T['week']}",
+        f"{T['sku_count_meta']}: {skus}",
+        f"{T['meeting_date']}: {meeting_notes.get('meeting_date') or '-'}",
+        f"{T['am_name']}: {meeting_notes.get('am_name') or '-'}",
+        f"{T['assumption_status']}: {assumption_status}",
+    ]:
+        next_x = draw_chip(chip, chip_x, chip_y)
+        if next_x > width - margin - 120:
+            chip_x = margin
+            chip_y -= 25
+        else:
+            chip_x = next_x
+    y = chip_y - 28
 
+    y = draw_metric_cards(
+        [
+            (T["total_gmv"], money(overall["Total GMV"], 0), "#2563EB"),
+            (T["total_profit"], money(overall["Total Profit"], 0), "#16A34A" if float(overall["Total Profit"]) >= 0 else "#DC2626"),
+            (T["growth_investment"], money(overall["Growth Investment"], 0), "#7C3AED"),
+        ],
+        y,
+    )
+
+    y = draw_section(
+        T["commercial_takeaways"],
+        [f"{label}: {value}" for label, value in takeaways],
+        y,
+        accent="#2563EB",
+        compact=True,
+    )
+    y = draw_two_column_section(T["key_assumptions"], assumption_summary, y, accent="#7C3AED")
+    y = draw_section(T["next_actions"], [clean(action) for action in next_actions], y, accent="#14B8A6", ordered=True, compact=True)
+
+    y = new_page()
+    pdf.setFillColor(colors.HexColor("#111827"))
+    pdf.setFont(font_name, 18)
+    pdf.drawString(margin, y, clean(T["meeting_header"]))
+    y -= 24
     sections = [
-        (T["commercial_takeaways"], [f"{label}: {value}" for label, value in takeaways]),
-        (T["key_assumptions"], [f"{label}: {value}" for label, value, _accent in assumption_summary]),
-        (T["next_actions"], [clean(action) for action in next_actions]),
         (T["forecast_range"], [
             f"{T['conservative_case']}: {money(forecast_range_values['conservative_gmv'], 0)}",
             f"{T['base_case']}: {money(forecast_range_values['base_gmv'], 0)}",
             f"{T['upside_case']}: {money(forecast_range_values['upside_gmv'], 0)}",
             T["forecast_range_note"],
-        ]),
+        ], "#64748B"),
         (T["client_narrative"], [clean(item) for item in narrative]),
         (T["meeting_notes"], [
             f"{T['key_recommendation']}: {meeting_notes.get('key_recommendation') or '-'}",
-        ]),
-        (T["health_check"], [clean(text) for _level, text in health_checks]),
-        (T["path_to_be"], [clean(path_text)]),
-        (T["cost_explanation"], [clean(cost_explanation_text)]),
-        (T["planning_disclaimer"], [clean(T["planning_disclaimer"])]),
+        ], "#8B5CF6"),
+        (T["health_check"], [clean(text) for _level, text in health_checks], "#F97316"),
+        (T["path_to_be"], [clean(path_text)], "#14B8A6"),
+        (T["cost_explanation"], [clean(cost_explanation_text)], "#2563EB"),
     ]
-    for title, lines in sections:
-        y = new_page_if_needed(y, 90)
-        pdf.setFillColor(colors.HexColor("#111827"))
-        pdf.setFont(font_name, 14)
-        pdf.drawString(margin, y, clean(title))
-        y -= 18
-        for idx, line in enumerate(lines, start=1):
-            prefix = f"{idx}. " if title == T["client_narrative"] else "- "
-            y = draw_wrapped(prefix + line, margin, y, width - margin * 2, font_size=10, leading=14)
-        y -= 10
+    for item in sections:
+        if len(item) == 2:
+            title, lines = item
+            accent = "#2563EB"
+        else:
+            title, lines, accent = item
+        y = draw_section(title, lines, y, accent=accent, ordered=(title == T["client_narrative"]), compact=True)
 
+    draw_footer()
     pdf.save()
     buffer.seek(0)
     return buffer.getvalue()
