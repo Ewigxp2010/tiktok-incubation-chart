@@ -2370,7 +2370,6 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         compact=True,
     )
     y = draw_two_column_section(T["key_assumptions"], assumption_summary, y, accent="#7C3AED")
-    y = draw_section(T["next_actions"], [clean(action) for action in next_actions], y, accent="#14B8A6", ordered=True, compact=True)
 
     y = new_page()
     pdf.setFillColor(colors.HexColor("#111827"))
@@ -2391,6 +2390,7 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         (T["health_check"], [clean(text) for _level, text in health_checks], "#F97316"),
         (T["path_to_be"], [clean(path_text)], "#14B8A6"),
         (T["cost_explanation"], [clean(cost_explanation_text)], "#2563EB"),
+        (T["next_actions"], [clean(action) for action in next_actions], "#14B8A6"),
     ]
     for item in sections:
         if len(item) == 2:
@@ -2398,7 +2398,7 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
             accent = "#2563EB"
         else:
             title, lines, accent = item
-        y = draw_section(title, lines, y, accent=accent, ordered=(title == T["client_narrative"]), compact=True)
+        y = draw_section(title, lines, y, accent=accent, ordered=(title in (T["client_narrative"], T["next_actions"])), compact=True)
 
     draw_footer()
     pdf.save()
@@ -3099,9 +3099,6 @@ if st.session_state.get("has_generated", False):
         st.subheader(T["key_assumptions"])
         render_kpi_grid(assumption_summary)
 
-        st.subheader(T["next_actions"])
-        render_action_list(next_actions)
-
         st.subheader(T["client_narrative"])
         for line in narrative:
             st.write(f"- {line}")
@@ -3230,14 +3227,16 @@ if st.session_state.get("has_generated", False):
         objective = phase_objective(selected_phase["key"])
         if objective:
             st.info(f"**{T['phase_objective']}**: {objective}")
-        render_kpi_grid([
+        phase_kpis = [
             (T["total_gmv"], money(phase_row["GMV"], 0), "#2563EB"),
-            (T["total_cost"], money(phase_row["Total Cost"], 0), "#F97316"),
-            (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#10B981"),
             (T["total_profit"], money(phase_row["Profit"], 0), "#16A34A" if phase_row["Profit"] >= 0 else "#DC2626"),
             (T["sample_investment"], money(phase_row["Samples Cost"], 0), "#8B5CF6"),
             (T["ads_investment"], money(phase_row["Ads Cost"], 0), "#06B6D4"),
-        ])
+        ]
+        if not meeting_mode:
+            phase_kpis.insert(1, (T["total_cost"], money(phase_row["Total Cost"], 0), "#F97316"))
+            phase_kpis.insert(2, (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#10B981"))
+        render_kpi_grid(phase_kpis)
 
         chart_mode = st.radio(
             T["phase_chart_mode"],
@@ -3256,6 +3255,9 @@ if st.session_state.get("has_generated", False):
             f"**{T['cost_breakdown']}**: "
             + T["cost_breakdown_text"].format(driver=driver, amount=money(amount, 0), share=pct(share, 0))
         )
+
+        st.subheader(T["next_actions"])
+        render_action_list(next_actions)
 
         money_cols = [
             "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
