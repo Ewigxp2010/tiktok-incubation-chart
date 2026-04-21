@@ -983,19 +983,11 @@ st.markdown(
         border-radius: 8px;
         padding: 24px 22px 20px 22px;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
-        height: auto !important;
-        overflow: visible !important;
+        overflow: hidden;
     }
 
     div[data-testid="stPlotlyChart"] > div {
         width: 100% !important;
-        height: auto !important;
-        min-height: 0 !important;
-        overflow: visible !important;
-    }
-
-    div[data-testid="stPlotlyChart"] svg {
-        overflow: visible !important;
     }
 
     .dashboard-note {
@@ -1116,6 +1108,56 @@ st.markdown(
         color: #4B5563;
         font-size: 0.94rem;
         line-height: 1.55;
+    }
+
+    .funnel-card-wrap {
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-radius: 8px;
+        padding: 22px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
+        margin-bottom: 14px;
+    }
+
+    .funnel-card-title {
+        color: #111827;
+        font-size: 1rem;
+        font-weight: 780;
+        margin-bottom: 16px;
+    }
+
+    .funnel-card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+    }
+
+    .funnel-card {
+        border: 1px solid #E5E7EB;
+        border-left: 5px solid #CBD5E1;
+        border-radius: 8px;
+        padding: 18px 16px;
+        min-height: 112px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        background: #FFFFFF;
+    }
+
+    .funnel-card-label {
+        color: #64748B;
+        font-size: 0.82rem;
+        font-weight: 760;
+        line-height: 1.25;
+    }
+
+    .funnel-card-value {
+        color: #111827;
+        font-size: clamp(1.35rem, 2.2vw, 2rem);
+        font-weight: 820;
+        line-height: 1.12;
+        overflow-wrap: anywhere;
     }
 
     .hero-band {
@@ -2429,11 +2471,11 @@ def reset_defaults():
     st.rerun()
 
 
-def apply_plotly_layout(fig, title, height=500):
+def apply_plotly_layout(fig, title, height=460):
     fig.update_layout(
         title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.96, "yanchor": "top"},
         height=height,
-        margin=dict(l=42, r=34, t=92, b=76),
+        margin=dict(l=64, r=32, t=86, b=64),
         paper_bgcolor="white",
         plot_bgcolor="#FAFBFC",
         font=dict(color="#111827", family="Arial, sans-serif"),
@@ -2517,62 +2559,31 @@ def make_cumulative_profit_chart(df, break_even_week=None):
     return fig
 
 
-def make_funnel_chart(df):
-    labels = [T["samples_label"], T["videos_label"], T["clicks_label"], T["orders_label"]]
-    values = [
-        float(df["Samples Sent"].sum()),
-        float(df["New Videos"].sum()),
-        float(df["Product Clicks"].sum()),
-        float(df["Orders"].sum()),
+def render_funnel_summary(df):
+    items = [
+        (T["samples_label"], f"{df['Samples Sent'].sum():,.0f}", "#8B5CF6"),
+        (T["videos_label"], f"{df['New Videos'].sum():,.0f}", "#06B6D4"),
+        (T["clicks_label"], f"{df['Product Clicks'].sum():,.0f}", "#2563EB"),
+        (T["orders_label"], f"{df['Orders'].sum():,.0f}", "#10B981"),
     ]
-    fig = go.Figure()
-    positions = [
-        (0.00, 0.48, 0.55, 1.00),
-        (0.52, 1.00, 0.55, 1.00),
-        (0.00, 0.48, 0.00, 0.45),
-        (0.52, 1.00, 0.00, 0.45),
+    cards = [
+        (
+            f'<div class="funnel-card" style="border-left-color:{escape(color)};">'
+            f'<div class="funnel-card-label">{escape(label)}</div>'
+            f'<div class="funnel-card-value">{escape(value)}</div>'
+            "</div>"
+        )
+        for label, value, color in items
     ]
-    colors = ["#8B5CF6", "#06B6D4", "#2563EB", "#10B981"]
-    for idx, (label, value, color) in enumerate(zip(labels, values, colors)):
-        x0, x1, y0, y1 = positions[idx]
-        fig.add_trace(
-            go.Indicator(
-                mode="number",
-                value=value,
-                number={"valueformat": ",.0f", "font": {"size": 34, "color": "#111827"}},
-                title={"text": f"<span style='color:#64748B;font-size:15px'>{label}</span>", "font": {"size": 15}},
-                domain={"x": [x0, x1], "y": [y0, y1]},
-            )
-        )
-        fig.add_shape(
-            type="rect",
-            xref="paper",
-            yref="paper",
-            x0=x0,
-            x1=x1,
-            y0=y0,
-            y1=y1,
-            line=dict(color="#E5E7EB", width=1),
-            fillcolor="#FFFFFF",
-            layer="below",
-        )
-        fig.add_shape(
-            type="rect",
-            xref="paper",
-            yref="paper",
-            x0=x0,
-            x1=x0 + 0.012,
-            y0=y0,
-            y1=y1,
-            line=dict(width=0),
-            fillcolor=color,
-            layer="above",
-        )
-    apply_plotly_layout(fig, T["funnel_summary"], height=560)
-    fig.update_layout(showlegend=False, margin=dict(l=42, r=42, t=112, b=44))
-    fig.update_xaxes(visible=False)
-    fig.update_yaxes(visible=False)
-    return fig
+    st.markdown(
+        f"""
+        <div class="funnel-card-wrap">
+            <div class="funnel-card-title">{escape(T["funnel_summary"])}</div>
+            <div class="funnel-card-grid">{"".join(cards)}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def make_channel_mix_chart(phase_summary):
@@ -3163,11 +3174,8 @@ if st.session_state.get("has_generated", False):
                 st.dataframe(product_display, use_container_width=True)
 
         st.subheader(T["charts"])
-        c1, c2 = st.columns(2)
-        with c1:
-            st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True)
-        with c2:
-            st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True)
+        st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True)
+        st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True)
         render_insight(overall_chart_insight(df_all))
         st.subheader(T["supporting_charts"])
         support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
@@ -3186,7 +3194,7 @@ if st.session_state.get("has_generated", False):
                     f"are expected to create {overall['Total Videos']:,.0f} creator videos, {overall['Total Clicks']:,.0f} product clicks, "
                     f"and {overall['Total Orders']:,.0f} orders.",
                 )
-            st.plotly_chart(make_funnel_chart(df_all), use_container_width=True)
+            render_funnel_summary(df_all)
         with support_tabs[1]:
             if lang == "zh":
                 render_chart_lens(
