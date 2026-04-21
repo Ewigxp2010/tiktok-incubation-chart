@@ -3476,7 +3476,7 @@ if st.session_state.get("has_generated", False):
         with b2:
             if cumulative_be:
                 st.success(f"{T['cumulative_be']}: Week {cumulative_be}")
-            else:
+            else: 
                 st.warning(f"{T['cumulative_be']}: {T['not_reached']}")
 
         if not meeting_mode:
