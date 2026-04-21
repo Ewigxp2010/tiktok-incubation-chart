@@ -823,9 +823,9 @@ st.markdown(
         background: var(--tts-panel);
         border: 1px solid var(--tts-line);
         border-radius: 8px;
-        padding: 12px 14px;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
-        min-height: 104px;
+        padding: 14px 15px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.035);
+        min-height: 116px;
         height: auto !important;
         max-height: none !important;
         overflow: visible !important;
@@ -888,7 +888,7 @@ st.markdown(
         border-color: #DDE3EA;
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.92);
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.055);
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
     }
 
     .stTabs [data-baseweb="tab-list"] {
@@ -962,7 +962,7 @@ st.markdown(
         border: 1px solid var(--tts-line);
         border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
     }
 
     div[data-testid="stExpander"] {
@@ -974,7 +974,7 @@ st.markdown(
     div[data-testid="stAlert"] {
         border-radius: 8px;
         border: 1px solid #DDE3EA;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
     }
 
     div[data-testid="stPlotlyChart"] {
@@ -982,7 +982,7 @@ st.markdown(
         border: 1px solid var(--tts-line);
         border-radius: 8px;
         padding: 24px 22px 20px 22px;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
         min-height: 560px;
         display: flex;
         align-items: stretch;
@@ -1006,7 +1006,7 @@ st.markdown(
         border-radius: 8px;
         padding: 14px 16px;
         color: #1F2937;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
         line-height: 1.55;
     }
 
@@ -1016,7 +1016,7 @@ st.markdown(
         border-radius: 8px;
         padding: 18px 20px;
         margin-bottom: 14px;
-        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.055);
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
@@ -1103,7 +1103,7 @@ st.markdown(
         border-radius: 8px;
         padding: 16px 18px;
         margin: 10px 0 14px 0;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.028);
     }
 
     .chart-lens-title {
@@ -1127,10 +1127,10 @@ st.markdown(
         border-radius: 8px;
         padding: 22px 24px;
         margin: 18px 0 18px 0;
-        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.07);
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.055);
         display: grid;
-        grid-template-columns: minmax(0, 1.45fr) repeat(3, minmax(120px, 0.55fr));
-        gap: 18px;
+        grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(150px, 0.55fr));
+        gap: 16px;
         align-items: center;
     }
 
@@ -1151,6 +1151,7 @@ st.markdown(
     .hero-kpi {
         border-left: 1px solid #E5E7EB;
         padding-left: 16px;
+        min-width: 0;
     }
 
     .hero-kpi-label {
@@ -1162,48 +1163,53 @@ st.markdown(
 
     .hero-kpi-value {
         color: #111827;
-        font-size: 1.22rem;
+        font-size: clamp(1.02rem, 1.35vw, 1.22rem);
         font-weight: 800;
-        line-height: 1.15;
+        line-height: 1.2;
         overflow-wrap: anywhere;
+        word-break: normal;
     }
 
     .kpi-grid {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
         gap: 12px;
-        margin: 10px 0 14px 0;
+        margin: 10px 0 18px 0;
+        align-items: stretch;
     }
 
     .premium-kpi {
         background: #FFFFFF;
         border: 1px solid #E5E7EB;
-        border-top: 3px solid var(--accent);
+        border-top: 3px solid #CBD5E1;
         border-radius: 8px;
-        padding: 13px 14px;
-        min-height: 94px;
+        padding: 14px 15px 15px 15px;
+        min-height: 106px;
         height: auto;
         overflow: visible;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045);
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.035);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
     }
 
     .premium-kpi-label {
         color: #6B7280;
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         font-weight: 720;
-        margin-bottom: 8px;
-        line-height: 1.25;
+        line-height: 1.3;
         overflow-wrap: anywhere;
         word-break: break-word;
     }
 
     .premium-kpi-value {
         color: #111827;
-        font-size: 1.34rem;
+        font-size: clamp(1.02rem, 1.75vw, 1.34rem);
         font-weight: 800;
-        line-height: 1.1;
+        line-height: 1.18;
         overflow-wrap: anywhere;
-        word-break: break-word;
+        word-break: normal;
     }
 
     .insight-strip {
@@ -1214,7 +1220,7 @@ st.markdown(
         color: #374151;
         padding: 12px 14px;
         margin: 10px 0 18px 0;
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.035);
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.028);
         line-height: 1.45;
     }
 
@@ -1626,20 +1632,16 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
 
 
 def render_kpi_grid(items):
-    for start in range(0, len(items), 4):
-        row_items = items[start:start + 4]
-        cols = st.columns(len(row_items))
-        for col, (label, value, accent) in zip(cols, row_items):
-            with col:
-                st.markdown(
-                    f"""
-                    <div class="premium-kpi" style="border-top-color:{escape(str(accent))};">
-                        <div class="premium-kpi-label">{escape(str(label))}</div>
-                        <div class="premium-kpi-value">{escape(str(value))}</div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+    cards = [
+        (
+            f'<div class="premium-kpi" style="border-top-color:{escape(str(accent))};">'
+            f'<div class="premium-kpi-label">{escape(str(label))}</div>'
+            f'<div class="premium-kpi-value">{escape(str(value))}</div>'
+            "</div>"
+        )
+        for label, value, accent in items
+    ]
+    st.markdown(f'<div class="kpi-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
 
 
 def render_meeting_header(meeting_notes, generated_at, assumption_status):
@@ -3129,14 +3131,14 @@ if st.session_state.get("has_generated", False):
                 st.warning(path_text)
 
         st.subheader(T["sample_roi_title"])
-        r1, r2, r3, r4 = st.columns(4)
-        r1.metric(T["gmv_per_sample"], money(overall["GMV / Sample"], 0))
-        r2.metric(T["profit_per_sample"], money(overall["Profit / Sample"], 0))
-        r3.metric(T["videos_per_sample_kpi"], f"{overall['Videos / Sample']:.2f}")
-        r4.metric(T["orders_per_sample"], f"{overall['Orders / Sample']:.2f}")
-        r5, r6 = st.columns(2)
-        r5.metric(T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x")
-        r6.metric(T["ads_investment"], money(overall["Ads Investment"], 0))
+        render_kpi_grid([
+            (T["gmv_per_sample"], money(overall["GMV / Sample"], 0), "#2563EB"),
+            (T["profit_per_sample"], money(overall["Profit / Sample"], 0), "#16A34A" if overall["Profit / Sample"] >= 0 else "#DC2626"),
+            (T["videos_per_sample_kpi"], f"{overall['Videos / Sample']:.2f}", "#06B6D4"),
+            (T["orders_per_sample"], f"{overall['Orders / Sample']:.2f}", "#14B8A6"),
+            (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#8B5CF6"),
+            (T["ads_investment"], money(overall["Ads Investment"], 0), "#F97316"),
+        ])
         st.info(
             T["sample_roi_text"].format(
                 gmv_per_sample=money(overall["GMV / Sample"], 0),
