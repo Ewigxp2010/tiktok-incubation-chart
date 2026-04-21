@@ -749,7 +749,7 @@ st.markdown(
     }
 
     .block-container {
-        max-width: 1240px;
+        max-width: 1360px;
         padding-top: 2.2rem;
         padding-bottom: 4rem;
     }
@@ -851,6 +851,11 @@ st.markdown(
         border-radius: 8px;
     }
 
+    .stTabs [data-baseweb="tab-highlight"],
+    .stTabs [data-baseweb="tab-border"] {
+        display: none !important;
+    }
+
     .stTabs [data-baseweb="tab"] {
         height: 44px;
         padding: 0 18px;
@@ -858,12 +863,14 @@ st.markdown(
         font-weight: 650;
         border-radius: 7px;
         background: transparent;
+        border: 1px solid transparent;
     }
 
     .stTabs [aria-selected="true"] {
         color: #111827;
         background: #FFFFFF;
-        box-shadow: inset 0 -3px 0 var(--tts-red);
+        border-color: #CBD5E1;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
     }
 
     .st-key-selected_phase_view div[role="radiogroup"],
@@ -884,7 +891,7 @@ st.markdown(
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label:has(input:checked) {
         background: #FFFFFF;
         border-color: #CBD5E1;
-        box-shadow: inset 0 -3px 0 var(--tts-red), 0 6px 16px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
     }
 
     .stButton > button {
@@ -926,16 +933,17 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid var(--tts-line);
         border-radius: 8px;
-        padding: 22px 18px 18px 18px;
+        padding: 24px 22px 20px 22px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
-        min-height: 520px;
+        min-height: 560px;
         display: flex;
         align-items: stretch;
         overflow: visible !important;
     }
 
     div[data-testid="stPlotlyChart"] > div {
-        min-height: 480px;
+        width: 100% !important;
+        min-height: 520px;
         overflow: visible !important;
     }
 
@@ -1697,10 +1705,10 @@ def make_investment_split_chart(df_all):
             hovertemplate="<b>%{y}</b><br>Cost: €%{x:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, T["investment_split"], height=520)
+    apply_plotly_layout(fig, T["investment_split"], height=560)
     fig.update_layout(
         showlegend=False,
-        margin=dict(l=165, r=160, t=86, b=56),
+        margin=dict(l=170, r=170, t=112, b=60),
     )
     max_value = float(display.max()) if len(display) else 0
     fig.update_xaxes(showticklabels=False, title="", range=[0, max_value * 1.25 if max_value > 0 else 1])
@@ -1975,9 +1983,9 @@ def reset_defaults():
 
 def apply_plotly_layout(fig, title, height=420):
     fig.update_layout(
-        title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.98, "yanchor": "top"},
+        title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.94, "yanchor": "top"},
         height=height,
-        margin=dict(l=28, r=28, t=88, b=46),
+        margin=dict(l=32, r=32, t=104, b=54),
         paper_bgcolor="white",
         plot_bgcolor="#FAFBFC",
         font=dict(color="#111827", family="Arial, sans-serif"),
@@ -2112,8 +2120,8 @@ def make_funnel_chart(df):
             fillcolor=color,
             layer="above",
         )
-    apply_plotly_layout(fig, T["funnel_summary"], height=500)
-    fig.update_layout(showlegend=False, margin=dict(l=42, r=42, t=86, b=42))
+    apply_plotly_layout(fig, T["funnel_summary"], height=560)
+    fig.update_layout(showlegend=False, margin=dict(l=42, r=42, t=112, b=44))
     fig.update_xaxes(visible=False)
     fig.update_yaxes(visible=False)
     return fig
@@ -2145,8 +2153,8 @@ def make_channel_mix_chart(phase_summary):
         customdata=temp["Affiliate Video GMV"],
         hovertemplate=f"{T['affiliate_video_gmv']}: €%{{customdata:,.0f}}<br>Share: %{{y:.0%}}<extra></extra>",
     ))
-    apply_plotly_layout(fig, T["channel_mix"], height=500)
-    fig.update_layout(barmode="stack", margin=dict(l=64, r=42, t=86, b=78), bargap=0.42)
+    apply_plotly_layout(fig, T["channel_mix"], height=560)
+    fig.update_layout(barmode="stack", margin=dict(l=70, r=48, t=112, b=86), bargap=0.42)
     fig.update_yaxes(tickformat=".0%", range=[0, 1], title="")
     fig.update_xaxes(title="", automargin=True)
     return fig
