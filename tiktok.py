@@ -227,6 +227,7 @@ TEXT = {
         "plan_length": "Plan length",
         "sku_count_meta": "SKU count",
         "meeting_notes": "Meeting Notes",
+        "meeting_header": "Brand Growth Simulation",
         "brand_name": "Brand name",
         "meeting_date": "Meeting date",
         "am_name": "AM name",
@@ -237,6 +238,22 @@ TEXT = {
         "am_aligned_input": "AM-aligned input",
         "merchant_confirmed_input": "Merchant-confirmed input",
         "commercial_takeaways": "Commercial Takeaways",
+        "key_assumptions": "Key Assumptions",
+        "assumption_phase_plan": "Phase plan",
+        "assumption_phase_plan_value": "{weeks} weeks per phase; samples per SKU/week: {samples}; paid acceleration budget: {take_rates}.",
+        "assumption_operating": "Operating setup",
+        "assumption_operating_value": "{skus} SKUs; logistics cost {logistics}; content traffic tail period {organic_window} weeks.",
+        "assumption_growth": "Growth setup",
+        "assumption_growth_value": "Ads ROAS {ads_roas}; new seller platform-fee benefit: {promo}; FBT free shipping: {fbt}.",
+        "yes": "Yes",
+        "no": "No",
+        "next_actions": "Recommended Next Steps",
+        "action_expand_samples": "Sample ROI is strong. Consider expanding the creator sample pool while keeping SKU-level conversion assumptions aligned with AM data.",
+        "action_fix_profit": "Profit is negative under the current setup. Revisit the largest cost driver, SKU gross margin, and commission structure before scaling budget.",
+        "action_scale_ads": "Paid acceleration is contributing meaningful GMV. Consider preparing Phase 2/3 ad budget scenarios around the current ROAS assumption.",
+        "action_strengthen_store": "Store/Search contribution is material. Strengthen listing quality, product detail pages, and search readiness so content traffic can convert without extra creator commission.",
+        "action_align_inputs": "Before using this as a target, align AOV, videos per sample, clicks per video, and click-to-order rate with your AM using similar TikTok Shop category or merchant data.",
+        "action_default": "Use this simulation to agree the sample plan, paid acceleration budget, and next milestone before moving into execution.",
         "forecast_range": "Forecast Range",
         "forecast_range_prompt": "! Forecast range available",
         "conservative_case": "Conservative",
@@ -423,6 +440,7 @@ TEXT = {
         "plan_length": "计划周期",
         "sku_count_meta": "SKU 数量",
         "meeting_notes": "会议信息",
+        "meeting_header": "品牌增长模拟",
         "brand_name": "品牌名称",
         "meeting_date": "会议日期",
         "am_name": "AM 名称",
@@ -433,6 +451,22 @@ TEXT = {
         "am_aligned_input": "已和 AM 对齐",
         "merchant_confirmed_input": "商家已确认",
         "commercial_takeaways": "商业结论",
+        "key_assumptions": "关键假设摘要",
+        "assumption_phase_plan": "阶段计划",
+        "assumption_phase_plan_value": "每阶段 {weeks} 周；每 SKU 每周寄样：{samples}；付费加热预算占比：{take_rates}。",
+        "assumption_operating": "运营设置",
+        "assumption_operating_value": "{skus} 个 SKU；物流成本 {logistics}；内容流量长尾周期 {organic_window} 周。",
+        "assumption_growth": "增长设置",
+        "assumption_growth_value": "广告 ROAS {ads_roas}；新商家平台费优惠：{promo}；FBT 包邮：{fbt}。",
+        "yes": "是",
+        "no": "否",
+        "next_actions": "建议下一步行动",
+        "action_expand_samples": "样品 ROI 表现较强。可以考虑扩大达人寄样池，同时继续用 AM/类似行业数据校准 SKU level 的转化假设。",
+        "action_fix_profit": "当前设置下利润为负。建议在扩大预算前，优先复核最大成本项、SKU 毛利率和达人佣金结构。",
+        "action_scale_ads": "付费加热对 GMV 有明显贡献。建议围绕当前 ROAS 假设，提前准备 Phase 2/3 的广告预算场景。",
+        "action_strengthen_store": "店铺/Search 贡献较明显。建议强化 listing、商品详情页和搜索承接，让内容种草后的流量尽量以无达人佣金方式成交。",
+        "action_align_inputs": "在把结果作为业务目标前，建议和您的 AM 对齐 AOV、每样品视频数、每视频点击数和点击到下单转化率，并参考 TikTok Shop 类似行业或类似商家数据。",
+        "action_default": "建议用该模拟结果确认寄样计划、付费加热预算和下一阶段里程碑，再进入执行。",
         "forecast_range": "结果可信区间",
         "forecast_range_prompt": "! 可查看结果可信区间",
         "conservative_case": "保守",
@@ -962,6 +996,79 @@ st.markdown(
         line-height: 1.55;
     }
 
+    .meeting-header {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 18px 20px;
+        margin-bottom: 14px;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.055);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .meeting-header-kicker {
+        color: #64748B;
+        font-size: 0.82rem;
+        font-weight: 760;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 5px;
+    }
+
+    .meeting-header-title {
+        color: #111827;
+        font-size: 1.45rem;
+        font-weight: 780;
+        line-height: 1.15;
+    }
+
+    .meeting-header-meta {
+        color: #475569;
+        font-size: 0.92rem;
+        font-weight: 650;
+        text-align: right;
+        line-height: 1.45;
+    }
+
+    .action-list {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 16px 18px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+    }
+
+    .action-item {
+        display: flex;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid #EEF2F7;
+        color: #1F2937;
+        line-height: 1.5;
+    }
+
+    .action-item:last-child {
+        border-bottom: 0;
+    }
+
+    .action-index {
+        flex: 0 0 26px;
+        width: 26px;
+        height: 26px;
+        border-radius: 999px;
+        background: #EEF2F7;
+        color: #334155;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 760;
+        font-size: 0.82rem;
+    }
+
     .chart-lens {
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
@@ -1456,7 +1563,7 @@ def cost_driver(row):
     return driver, amount, share
 
 
-def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_be_label, meeting_notes, assumption_status, cost_explanation_text, forecast_range):
+def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_be_label, meeting_notes, assumption_status, cost_explanation_text, forecast_range, assumption_summary=None, next_actions=None):
     rows = [
         (T["brand_name"], meeting_notes.get("brand_name") or "-"),
         (T["meeting_date"], str(meeting_notes.get("meeting_date") or "-")),
@@ -1479,6 +1586,10 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
         (T["cost_explanation"], cost_explanation_text),
         (T["planning_disclaimer"], T["planning_disclaimer"]),
     ]
+    for label, value, _accent in assumption_summary or []:
+        rows.append((f"{T['key_assumptions']} - {label}", value))
+    for idx, action in enumerate(next_actions or [], start=1):
+        rows.append((f"{T['next_actions']} {idx}", action))
     for _, phase_row in phase_summary.iterrows():
         rows.append((f"{phase_row['Phase']} {T['total_gmv']}", money(phase_row["GMV"], 0)))
         rows.append((f"{phase_row['Phase']} {T['total_profit']}", money(phase_row["Profit"], 0)))
@@ -1500,6 +1611,28 @@ def render_kpi_grid(items):
                     """,
                     unsafe_allow_html=True,
                 )
+
+
+def render_meeting_header(meeting_notes, generated_at):
+    brand = str(meeting_notes.get("brand_name") or "").strip()
+    title = brand if brand else T["meeting_header"]
+    date_text = str(meeting_notes.get("meeting_date") or generated_at.split(" ")[0])
+    am_text = str(meeting_notes.get("am_name") or "-")
+    st.markdown(
+        f"""
+        <div class="meeting-header">
+            <div>
+                <div class="meeting-header-kicker">{escape(T["meeting_header"])}</div>
+                <div class="meeting-header-title">{escape(title)}</div>
+            </div>
+            <div class="meeting-header-meta">
+                {escape(T["meeting_date"])}: {escape(date_text)}<br>
+                {escape(T["am_name"])}: {escape(am_text)}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def render_hero(overall, weeks, skus, break_even_label):
@@ -1532,6 +1665,42 @@ def render_hero(overall, weeks, skus, break_even_label):
     )
 
 
+def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_cost, ads_roas, organic_click_window_weeks, promo_60d, use_fbt):
+    samples = " / ".join(str(int(phase["samples_per_sku"])) for phase in phase_inputs)
+    take_rates = " / ".join(pct(float(phase["take_rate"]), 0) for phase in phase_inputs)
+    yes = T["yes"]
+    no = T["no"]
+    return [
+        (
+            T["assumption_phase_plan"],
+            T["assumption_phase_plan_value"].format(
+                weeks=int(weeks_per_phase),
+                samples=samples,
+                take_rates=take_rates,
+            ),
+            "#2563EB",
+        ),
+        (
+            T["assumption_operating"],
+            T["assumption_operating_value"].format(
+                skus=int(n_skus),
+                logistics=money(float(logistics_cost), 2),
+                organic_window=int(organic_click_window_weeks),
+            ),
+            "#14B8A6",
+        ),
+        (
+            T["assumption_growth"],
+            T["assumption_growth_value"].format(
+                ads_roas=f"{float(ads_roas):.1f}",
+                promo=yes if promo_60d else no,
+                fbt=yes if use_fbt else no,
+            ),
+            "#7C3AED",
+        ),
+    ]
+
+
 def commercial_takeaways(overall, df_all, cumulative_be_label, driver):
     return [
         (T["investment_required"], money(overall["Growth Investment"], 0)),
@@ -1561,6 +1730,45 @@ def forecast_range(overall, assumption_status):
         "base_profit": base_profit,
         "upside_profit": base_profit * (1 + spread) if base_profit >= 0 else base_profit * (1 - spread),
     }
+
+
+def recommended_next_actions(overall, df_all, phase_summary, product_df, cumulative_be, driver):
+    actions = []
+    if float(overall["GMV / Sample Cost"]) >= 5.0:
+        actions.append(T["action_expand_samples"])
+    if float(overall["Total Profit"]) < 0:
+        actions.append(T["action_fix_profit"])
+    paid_gmv = float(df_all["Paid GMV Lift"].sum()) if "Paid GMV Lift" in df_all.columns else 0.0
+    if paid_gmv > float(overall["Total GMV"]) * 0.20 and float(overall["Ads Investment"]) > 0:
+        actions.append(T["action_scale_ads"])
+    shop_gmv = float(df_all["ShopTab GMV"].sum()) if "ShopTab GMV" in df_all.columns else 0.0
+    if float(overall["Total GMV"]) > 0 and shop_gmv / float(overall["Total GMV"]) >= 0.30:
+        actions.append(T["action_strengthen_store"])
+    if product_df["Click-to-order Rate"].max() >= 0.06 or product_df["ShopTab GMV Share"].max() >= 0.45:
+        actions.append(T["action_align_inputs"])
+    if cumulative_be is None and T["action_fix_profit"] not in actions:
+        actions.append(T["action_fix_profit"])
+    actions.append(T["action_align_inputs"])
+
+    unique_actions = []
+    for action in actions:
+        if action not in unique_actions:
+            unique_actions.append(action)
+    return unique_actions[:4] or [T["action_default"]]
+
+
+def render_action_list(actions):
+    items = []
+    for idx, action in enumerate(actions, start=1):
+        items.append(
+            f"""
+            <div class="action-item">
+                <span class="action-index">{idx}</span>
+                <span>{escape(str(action))}</span>
+            </div>
+            """
+        )
+    st.markdown(f'<div class="action-list">{"".join(items)}</div>', unsafe_allow_html=True)
 
 
 def cost_explanation(row):
@@ -1716,10 +1924,12 @@ def make_investment_split_chart(df_all):
     return fig
 
 
-def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values):
+def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values, assumption_summary, next_actions):
     narrative_html = "".join(f"<li>{line}</li>" for line in narrative)
     health_html = "".join(f'<li class="{level}">{text}</li>' for level, text in health_checks)
     takeaways_html = "".join(f"<li><strong>{label}:</strong> {value}</li>" for label, value in takeaways)
+    assumptions_html = "".join(f"<li><strong>{label}:</strong> {value}</li>" for label, value, _accent in assumption_summary)
+    actions_html = "".join(f"<li>{action}</li>" for action in next_actions)
     range_html = "".join(
         f"<li><strong>{label}:</strong> {value}</li>"
         for label, value in [
@@ -1773,7 +1983,7 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
       <span>{T["sku_count_meta"]}: {skus}</span>
     </div>
     <div class="hero">
-      <h1>{T["hero_title"].format(weeks=weeks, skus=skus)}</h1>
+      <h1>{(meeting_notes.get("brand_name") or T["hero_title"].format(weeks=weeks, skus=skus))}</h1>
       <p>{T["hero_subtitle"].format(gmv=money(overall["Total GMV"], 0), growth_investment=money(overall["Growth Investment"], 0), break_even=path_text)}</p>
     </div>
     <div class="grid">
@@ -1788,6 +1998,14 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
     <div class="section">
       <h2>{T["commercial_takeaways"]}</h2>
       <ul>{takeaways_html}</ul>
+    </div>
+    <div class="section">
+      <h2>{T["key_assumptions"]}</h2>
+      <ul>{assumptions_html}</ul>
+    </div>
+    <div class="section">
+      <h2>{T["next_actions"]}</h2>
+      <ol>{actions_html}</ol>
     </div>
     <div class="section">
       <h2>{T["forecast_range"]}</h2>
@@ -1835,7 +2053,7 @@ def wrap_pdf_text(text, max_width, font_name, font_size):
     return words
 
 
-def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values):
+def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values, assumption_summary, next_actions):
     from reportlab.lib.pagesizes import A4
     from reportlab.lib import colors
     from reportlab.pdfgen import canvas
@@ -1868,14 +2086,16 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         return y
 
     y = height - margin
+    brand_title = meeting_notes.get("brand_name") or T["hero_title"].format(weeks=weeks, skus=skus)
+
     pdf.setFillColor(colors.HexColor("#6B7280"))
     pdf.setFont(font_name, 9)
-    pdf.drawString(margin, y, "TikTok Shop Growth Visualizer")
+    pdf.drawString(margin, y, clean(T["meeting_header"]))
     y -= 20
 
     pdf.setFillColor(colors.HexColor("#111827"))
-    pdf.setFont(font_name, 20)
-    pdf.drawString(margin, y, clean(T["hero_title"].format(weeks=weeks, skus=skus)))
+    pdf.setFont(font_name, 22)
+    pdf.drawString(margin, y, clean(brand_title))
     y -= 24
 
     pdf.setFillColor(colors.HexColor("#6B7280"))
@@ -1886,6 +2106,16 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         f"{T['sku_count_meta']}: {skus}"
     )
     pdf.drawString(margin, y, clean(meta_line))
+    y -= 18
+
+    pdf.setFillColor(colors.HexColor("#6B7280"))
+    pdf.setFont(font_name, 9)
+    meeting_line = (
+        f"{T['meeting_date']}: {meeting_notes.get('meeting_date') or '-'}  |  "
+        f"{T['am_name']}: {meeting_notes.get('am_name') or '-'}  |  "
+        f"{T['assumption_status']}: {assumption_status}"
+    )
+    pdf.drawString(margin, y, clean(meeting_line))
     y -= 18
 
     pdf.setFillColor(colors.HexColor("#111827"))
@@ -1923,14 +2153,9 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
     y -= 82
 
     sections = [
-        (T["meeting_notes"], [
-            f"{T['brand_name']}: {meeting_notes.get('brand_name') or '-'}",
-            f"{T['meeting_date']}: {meeting_notes.get('meeting_date') or '-'}",
-            f"{T['am_name']}: {meeting_notes.get('am_name') or '-'}",
-            f"{T['assumption_status']}: {assumption_status}",
-            f"{T['key_recommendation']}: {meeting_notes.get('key_recommendation') or '-'}",
-        ]),
         (T["commercial_takeaways"], [f"{label}: {value}" for label, value in takeaways]),
+        (T["key_assumptions"], [f"{label}: {value}" for label, value, _accent in assumption_summary]),
+        (T["next_actions"], [clean(action) for action in next_actions]),
         (T["forecast_range"], [
             f"{T['conservative_case']}: {money(forecast_range_values['conservative_gmv'], 0)}",
             f"{T['base_case']}: {money(forecast_range_values['base_gmv'], 0)}",
@@ -1938,6 +2163,9 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
             T["forecast_range_note"],
         ]),
         (T["client_narrative"], [clean(item) for item in narrative]),
+        (T["meeting_notes"], [
+            f"{T['key_recommendation']}: {meeting_notes.get('key_recommendation') or '-'}",
+        ]),
         (T["health_check"], [clean(text) for _level, text in health_checks]),
         (T["path_to_be"], [clean(path_text)]),
         (T["cost_explanation"], [clean(cost_explanation_text)]),
@@ -2564,7 +2792,27 @@ if st.session_state.get("has_generated", False):
         total_cost_explanation = cost_explanation(total_cost_row)
         takeaways = commercial_takeaways(overall, df_all, cumulative_be_label, total_cost_driver)
         forecast_range_values = forecast_range(overall, assumption_status)
+        generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+        assumption_summary = build_assumption_summary(
+            phase_inputs=phase_inputs,
+            weeks_per_phase=int(weeks_per_phase),
+            n_skus=int(n_skus),
+            logistics_cost=float(logistics_cost),
+            ads_roas=float(ads_roas),
+            organic_click_window_weeks=int(organic_click_window_weeks),
+            promo_60d=bool(promo_60d),
+            use_fbt=bool(use_fbt),
+        )
+        next_actions = recommended_next_actions(
+            overall=overall,
+            df_all=df_all,
+            phase_summary=phase_summary,
+            product_df=product_df,
+            cumulative_be=cumulative_be,
+            driver=total_cost_driver,
+        )
 
+        render_meeting_header(meeting_notes, generated_at)
         render_hero(
             overall=overall,
             weeks=int(weeks_per_phase) * len(PHASES),
@@ -2623,6 +2871,12 @@ if st.session_state.get("has_generated", False):
                 (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#2563EB"),
                 (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#16A34A"),
             ])
+
+        st.subheader(T["key_assumptions"])
+        render_kpi_grid(assumption_summary)
+
+        st.subheader(T["next_actions"])
+        render_action_list(next_actions)
 
         st.subheader(T["client_narrative"])
         for line in narrative:
@@ -2797,8 +3051,9 @@ if st.session_state.get("has_generated", False):
             assumption_status,
             total_cost_explanation,
             forecast_range_values,
+            assumption_summary=assumption_summary,
+            next_actions=next_actions,
         )
-        generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
         meeting_html = meeting_recap_html(
             overall=overall,
             narrative=narrative,
@@ -2812,6 +3067,8 @@ if st.session_state.get("has_generated", False):
             takeaways=takeaways,
             cost_explanation_text=total_cost_explanation,
             forecast_range_values=forecast_range_values,
+            assumption_summary=assumption_summary,
+            next_actions=next_actions,
         )
         meeting_pdf = meeting_summary_pdf(
             overall=overall,
@@ -2826,6 +3083,8 @@ if st.session_state.get("has_generated", False):
             takeaways=takeaways,
             cost_explanation_text=total_cost_explanation,
             forecast_range_values=forecast_range_values,
+            assumption_summary=assumption_summary,
+            next_actions=next_actions,
         )
         dl_summary, dl_html, dl_pdf = st.columns(3)
         with dl_summary:
