@@ -926,7 +926,7 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid var(--tts-line);
         border-radius: 8px;
-        padding: 28px 14px 14px 14px;
+        padding: 22px 18px 18px 18px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
         min-height: 520px;
         display: flex;
@@ -951,6 +951,28 @@ st.markdown(
         padding: 14px 16px;
         color: #1F2937;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+        line-height: 1.55;
+    }
+
+    .chart-lens {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 16px 18px;
+        margin: 10px 0 14px 0;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+    }
+
+    .chart-lens-title {
+        color: #111827;
+        font-size: 0.92rem;
+        font-weight: 760;
+        margin-bottom: 6px;
+    }
+
+    .chart-lens-body {
+        color: #4B5563;
+        font-size: 0.94rem;
         line-height: 1.55;
     }
 
@@ -1553,6 +1575,18 @@ def render_insight(text):
     )
 
 
+def render_chart_lens(title, body):
+    st.markdown(
+        f"""
+        <div class="chart-lens">
+            <div class="chart-lens-title">{escape(str(title))}</div>
+            <div class="chart-lens-body">{escape(str(body))}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def overall_chart_insight(df):
     ordered = df.sort_values("Global Week")
     if ordered.empty:
@@ -1640,9 +1674,17 @@ def make_investment_split_chart(df_all):
     values = values[values > 0].sort_values(ascending=False)
     total = float(values.sum())
     shares = values / total if total > 0 else values
+    colors_by_label = {
+        T["cost_cogs"]: "#64748B",
+        T["cost_fulfillment"]: "#14B8A6",
+        T["cost_creator_commission"]: "#EC4899",
+        T["cost_platform_fee"]: "#06B6D4",
+        T["cost_ads"]: "#F97316",
+        T["cost_samples"]: "#8B5CF6",
+    }
     display = values.sort_values(ascending=True)
     share_display = shares.loc[display.index]
-    colors = ["#14B8A6", "#06B6D4", "#F97316", "#EC4899", "#8B5CF6", "#64748B"][:len(display)]
+    colors = [colors_by_label.get(label, "#94A3B8") for label in display.index]
     fig = go.Figure(
         go.Bar(
             x=display.values,
@@ -1658,9 +1700,10 @@ def make_investment_split_chart(df_all):
     apply_plotly_layout(fig, T["investment_split"], height=520)
     fig.update_layout(
         showlegend=False,
-        margin=dict(l=150, r=140, t=96, b=56),
+        margin=dict(l=165, r=160, t=86, b=56),
     )
-    fig.update_xaxes(showticklabels=False, title="")
+    max_value = float(display.max()) if len(display) else 0
+    fig.update_xaxes(showticklabels=False, title="", range=[0, max_value * 1.25 if max_value > 0 else 1])
     fig.update_yaxes(title="", automargin=True)
     return fig
 
@@ -2019,30 +2062,60 @@ def make_cumulative_profit_chart(df, break_even_week=None):
 
 
 def make_funnel_chart(df):
-    values = pd.Series({
-        T["samples_label"]: df["Samples Sent"].sum(),
-        T["videos_label"]: df["New Videos"].sum(),
-        T["clicks_label"]: df["Product Clicks"].sum(),
-        T["orders_label"]: df["Orders"].sum(),
-    })
-    display = values.sort_values(ascending=True)
-    max_value = float(display.max()) if len(display) else 0
-    fig = go.Figure(
-        go.Bar(
-            x=display.values,
-            y=display.index,
-            orientation="h",
-            marker=dict(color=["#93C5FD", "#60A5FA", "#2563EB", "#1D4ED8"]),
-            text=[short_number(v) for v in display.values],
-            textposition="outside",
-            cliponaxis=False,
-            hovertemplate="%{y}: %{x:,.0f}<extra></extra>",
+    labels = [T["samples_label"], T["videos_label"], T["clicks_label"], T["orders_label"]]
+    values = [
+        float(df["Samples Sent"].sum()),
+        float(df["New Videos"].sum()),
+        float(df["Product Clicks"].sum()),
+        float(df["Orders"].sum()),
+    ]
+    fig = go.Figure()
+    positions = [
+        (0.00, 0.48, 0.55, 1.00),
+        (0.52, 1.00, 0.55, 1.00),
+        (0.00, 0.48, 0.00, 0.45),
+        (0.52, 1.00, 0.00, 0.45),
+    ]
+    colors = ["#8B5CF6", "#06B6D4", "#2563EB", "#10B981"]
+    for idx, (label, value, color) in enumerate(zip(labels, values, colors)):
+        x0, x1, y0, y1 = positions[idx]
+        fig.add_trace(
+            go.Indicator(
+                mode="number",
+                value=value,
+                number={"valueformat": ",.0f", "font": {"size": 34, "color": "#111827"}},
+                title={"text": f"<span style='color:#64748B;font-size:15px'>{label}</span>", "font": {"size": 15}},
+                domain={"x": [x0, x1], "y": [y0, y1]},
+            )
         )
-    )
+        fig.add_shape(
+            type="rect",
+            xref="paper",
+            yref="paper",
+            x0=x0,
+            x1=x1,
+            y0=y0,
+            y1=y1,
+            line=dict(color="#E5E7EB", width=1),
+            fillcolor="#FFFFFF",
+            layer="below",
+        )
+        fig.add_shape(
+            type="rect",
+            xref="paper",
+            yref="paper",
+            x0=x0,
+            x1=x0 + 0.012,
+            y0=y0,
+            y1=y1,
+            line=dict(width=0),
+            fillcolor=color,
+            layer="above",
+        )
     apply_plotly_layout(fig, T["funnel_summary"], height=500)
-    fig.update_layout(margin=dict(l=96, r=130, t=96, b=56))
-    fig.update_xaxes(showticklabels=False, title="", range=[0, max_value * 1.18 if max_value > 0 else 1])
-    fig.update_yaxes(title="", automargin=True)
+    fig.update_layout(showlegend=False, margin=dict(l=42, r=42, t=86, b=42))
+    fig.update_xaxes(visible=False)
+    fig.update_yaxes(visible=False)
     return fig
 
 
@@ -2073,66 +2146,68 @@ def make_channel_mix_chart(phase_summary):
         hovertemplate=f"{T['affiliate_video_gmv']}: €%{{customdata:,.0f}}<br>Share: %{{y:.0%}}<extra></extra>",
     ))
     apply_plotly_layout(fig, T["channel_mix"], height=500)
-    fig.update_layout(barmode="stack", margin=dict(l=54, r=42, t=96, b=72))
+    fig.update_layout(barmode="stack", margin=dict(l=64, r=42, t=86, b=78), bargap=0.42)
     fig.update_yaxes(tickformat=".0%", range=[0, 1], title="")
     fig.update_xaxes(title="", automargin=True)
     return fig
 
 
 def make_phase_total_chart(phase_row):
-    steps = [
-        (T["forecast_gmv"], float(phase_row["GMV"]), "absolute"),
-        (T["cost_cogs"], -float(phase_row["COGS"]), "relative"),
-        (T["cost_platform_fee"], -float(phase_row["Platform Fee"]), "relative"),
-        (T["cost_creator_commission"], -float(phase_row["Creator Commission"]), "relative"),
-        (T["cost_fulfillment"], -float(phase_row["Fulfillment Cost"]), "relative"),
-        (T["cost_samples"], -float(phase_row["Samples Cost"]), "relative"),
-        (T["cost_ads"], -float(phase_row["Ads Cost"]), "relative"),
-        (T["net_profit"], float(phase_row["Profit"]), "total"),
+    labels = [
+        T["forecast_gmv"],
+        T["cost_cogs"],
+        T["cost_platform_fee"],
+        T["cost_creator_commission"],
+        T["cost_fulfillment"],
+        T["cost_samples"],
+        T["cost_ads"],
+        T["net_profit"],
     ]
-    labels = [item[0] for item in steps]
-    values = [item[1] for item in steps]
-    measures = [item[2] for item in steps]
-    text = [short_money(abs(value)) if measure == "relative" else short_money(value) for label, value, measure in steps]
-    running = []
-    current = 0
-    for _label, value, measure in steps:
-        if measure == "absolute":
-            current = value
-        elif measure == "relative":
-            current += value
-        else:
-            current = value
-        running.append(current)
-    y_min = min(0, min(running)) * 1.18
-    y_max = max(running) * 1.18 if max(running) > 0 else 1
-
+    values = [
+        float(phase_row["GMV"]),
+        -float(phase_row["COGS"]),
+        -float(phase_row["Platform Fee"]),
+        -float(phase_row["Creator Commission"]),
+        -float(phase_row["Fulfillment Cost"]),
+        -float(phase_row["Samples Cost"]),
+        -float(phase_row["Ads Cost"]),
+        float(phase_row["Profit"]),
+    ]
+    colors = [
+        "#2563EB",
+        "#64748B",
+        "#06B6D4",
+        "#EC4899",
+        "#14B8A6",
+        "#8B5CF6",
+        "#F97316",
+        "#16A34A" if float(phase_row["Profit"]) >= 0 else "#DC2626",
+    ]
     fig = go.Figure(
-        go.Waterfall(
-            orientation="v",
-            measure=measures,
+        go.Bar(
             x=labels,
             y=values,
-            text=text,
+            marker=dict(color=colors, line=dict(color="rgba(255,255,255,0.9)", width=1)),
+            text=[short_money(abs(v)) if v < 0 else short_money(v) for v in values],
             textposition="outside",
-            connector={"line": {"color": "#CBD5E1", "width": 1}},
-            increasing={"marker": {"color": "#2563EB"}},
-            decreasing={"marker": {"color": "#F97316"}},
-            totals={"marker": {"color": "#16A34A" if float(phase_row["Profit"]) >= 0 else "#DC2626"}},
-            hovertemplate="<b>%{x}</b><br>€%{y:,.0f}<extra></extra>",
             cliponaxis=False,
+            hovertemplate="<b>%{x}</b><br>€%{y:,.0f}<extra></extra>",
         )
     )
 
+    max_pos = max([0] + [v for v in values if v >= 0])
+    min_neg = min([0] + [v for v in values if v < 0])
+    y_min = min_neg * 1.30 if min_neg < 0 else -max_pos * 0.08
+    y_max = max_pos * 1.22 if max_pos > 0 else abs(min_neg) * 0.12
     apply_plotly_layout(fig, f"{phase_row['Phase']} - {T['phase_total_breakdown']}", height=560)
     fig.update_layout(
         showlegend=False,
-        margin=dict(l=64, r=48, t=110, b=132),
-        bargap=0.34,
+        margin=dict(l=72, r=56, t=90, b=126),
+        bargap=0.32,
     )
-    fig.add_hline(y=0, line_color="#6B7280", line_width=1)
+    fig.add_hline(y=0, line_color="#111827", line_width=1.2)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", range=[y_min, y_max])
-    fig.update_xaxes(title="", tickangle=-18, automargin=True)
+    fig.update_xaxes(title="", tickangle=-16, automargin=True)
     return fig
 
 
@@ -2603,10 +2678,44 @@ if st.session_state.get("has_generated", False):
         st.subheader(T["supporting_charts"])
         support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
         with support_tabs[0]:
+            if lang == "zh":
+                render_chart_lens(
+                    "商业视角",
+                    f"这张图展示内容投入如何放大为生意结果：{overall['Total Samples']:,.0f} 个样品预计沉淀 "
+                    f"{overall['Total Videos']:,.0f} 条达人视频，带来 {overall['Total Clicks']:,.0f} 次商品点击和 "
+                    f"{overall['Total Orders']:,.0f} 个订单。",
+                )
+            else:
+                render_chart_lens(
+                    "Business lens",
+                    f"This view shows how content seeding scales into commercial demand: {overall['Total Samples']:,.0f} samples "
+                    f"are expected to create {overall['Total Videos']:,.0f} creator videos, {overall['Total Clicks']:,.0f} product clicks, "
+                    f"and {overall['Total Orders']:,.0f} orders.",
+                )
             st.plotly_chart(make_funnel_chart(df_all), use_container_width=True)
         with support_tabs[1]:
+            if lang == "zh":
+                render_chart_lens(
+                    "商业视角",
+                    "这张图看的是 GMV 归因结构：达人视频 GMV 用来验证内容和转化效率，店铺/Search GMV 则代表内容种草后的无达人佣金成交沉淀。",
+                )
+            else:
+                render_chart_lens(
+                    "Business lens",
+                    "This view separates GMV ownership: Affiliate Video GMV validates content and conversion, while Store/Search GMV captures commission-light demand created after content exposure.",
+                )
             st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True)
         with support_tabs[2]:
+            if lang == "zh":
+                render_chart_lens(
+                    "商业视角",
+                    f"这张图解释成本压力来自哪里。当前最大成本项是 {total_cost_driver}，因此优化利润时应优先判断这个成本是否合理，而不只看样品或广告预算。",
+                )
+            else:
+                render_chart_lens(
+                    "Business lens",
+                    f"This view explains where margin pressure comes from. The largest cost driver is {total_cost_driver}, so profit optimization should start there, not only with samples or ads.",
+                )
             st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True)
         st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
 
