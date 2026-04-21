@@ -1758,16 +1758,10 @@ def recommended_next_actions(overall, df_all, phase_summary, product_df, cumulat
 
 
 def render_action_list(actions):
-    items = []
-    for idx, action in enumerate(actions, start=1):
-        items.append(
-            f"""
-            <div class="action-item">
-                <span class="action-index">{idx}</span>
-                <span>{escape(str(action))}</span>
-            </div>
-            """
-        )
+    items = [
+        f'<div class="action-item"><span class="action-index">{idx}</span><span>{escape(str(action))}</span></div>'
+        for idx, action in enumerate(actions, start=1)
+    ]
     st.markdown(f'<div class="action-list">{"".join(items)}</div>', unsafe_allow_html=True)
 
 
