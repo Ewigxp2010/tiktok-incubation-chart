@@ -983,15 +983,14 @@ st.markdown(
         border-radius: 8px;
         padding: 24px 22px 20px 22px;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
-        min-height: 560px;
-        display: flex;
-        align-items: stretch;
+        height: auto !important;
         overflow: visible !important;
     }
 
     div[data-testid="stPlotlyChart"] > div {
         width: 100% !important;
-        min-height: 520px;
+        height: auto !important;
+        min-height: 0 !important;
         overflow: visible !important;
     }
 
@@ -2430,11 +2429,11 @@ def reset_defaults():
     st.rerun()
 
 
-def apply_plotly_layout(fig, title, height=420):
+def apply_plotly_layout(fig, title, height=500):
     fig.update_layout(
-        title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.94, "yanchor": "top"},
+        title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.96, "yanchor": "top"},
         height=height,
-        margin=dict(l=32, r=32, t=104, b=54),
+        margin=dict(l=42, r=34, t=92, b=76),
         paper_bgcolor="white",
         plot_bgcolor="#FAFBFC",
         font=dict(color="#111827", family="Arial, sans-serif"),
