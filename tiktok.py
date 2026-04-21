@@ -122,9 +122,20 @@ TEXT = {
         "expected_listing_skus": "Expected listing SKUs",
         "continue_setup": "Continue to plan setup",
         "setup_ready": "Listing scope confirmed. You can adjust assumptions in the sidebar and SKU details below.",
+        "plan_preview": "Plan preview",
+        "plan_preview_text": "This simulation will model {skus} SKUs across {weeks} weeks. Samples per SKU/week: {samples}; paid growth budget: {take_rates}; content sales window: {organic_window} weeks; Ads ROAS: {ads_roas}.",
+        "assumption_quality": "Assumption quality",
+        "assumption_quality_text": "Current status: {status}. Planning inputs are useful for scenario discussion; AM-aligned or merchant-confirmed inputs should be used before treating the result as a business target.",
         "cost_assumptions": "Cost Assumptions",
         "growth_levers": "Growth Levers",
+        "target_setup": "Target Setup",
+        "target_gmv": "Target GMV (€)",
+        "target_profit": "Target Profit (€)",
+        "target_gmv_help": "Optional. Leave as 0 if there is no GMV target for this scenario.",
+        "target_profit_help": "Optional. Leave as 0 if there is no profit target for this scenario.",
         "reset_defaults": "Reset defaults",
+        "reset_sku_assumptions": "Reset SKU assumptions",
+        "reset_sku_assumptions_help": "Restore AOV, funnel assumptions, gross margin, and commission defaults for selected SKU categories without changing phase controls.",
         "reset_confirm": "Confirm reset",
         "reset_pending": "This will reset all inputs to the default planning setup. Click Confirm reset to continue.",
         "meeting_mode": "Focus view",
@@ -135,14 +146,14 @@ TEXT = {
         "promo": "New seller: apply first-60-day 5% platform fee",
         "promo_yes": "Apply first-60-day 5% platform fee",
         "promo_no": "No, use default category commission",
-        "fulfillment": "Logistics cost €/unit or order",
+        "fulfillment": "Fulfillment / shipping cost €/unit",
         "fbt": "Use FBT free shipping",
         "fbt_yes": "Yes, set logistics cost to €0",
         "fbt_no": "No, use manual logistics cost",
         "fbt_help": "Planning assumption: when selected, SKUs with AOV above €20 use €0 logistics cost; lower-AOV SKUs keep the manual logistics cost.",
         "creator_commission": "Organic creator commission",
         "paid_creator_commission": "Paid-traffic creator commission",
-        "organic_click_window": "Content traffic tail period (weeks)",
+        "organic_click_window": "Content sales window (weeks)",
         "ads_roas": "Ads ROAS assumption",
         "weeks_phase": "Weeks / phase",
         "phase_controls": "Phase Controls",
@@ -152,7 +163,8 @@ TEXT = {
         "phase1_objective": "Talking point: validate creator content, seed the first product videos, and build early conversion signals before scaling budget.",
         "phase2_objective": "Talking point: reduce sample intensity and start paid amplification, turning validated content into more scalable GMV.",
         "phase3_objective": "Talking point: scale winning content with higher paid acceleration while Store/Search and content-tail sales continue compounding.",
-        "take_rate": "Paid acceleration budget (% of GMV)",
+        "take_rate": "Paid growth budget (% of GMV)",
+        "take_rate_help": "Internal take-rate planning view: the share of GMV reinvested as paid growth budget in this phase.",
         "samples_sku_week": "Samples / SKU / week",
         "sku_setup": "SKU Setup",
         "sku_caption": "Category selection auto-loads AOV and funnel assumptions. Electronics uses 7% platform commission; all other categories use 9%.",
@@ -168,7 +180,7 @@ TEXT = {
         "videos_sample": "Videos / sample",
         "clicks_video": "Clicks / video",
         "click_order": "Click-to-order (%)",
-        "shoptab_share": "Store/Search GMV share (%)",
+        "shoptab_share": "Store/Search order share after content exposure (%)",
         "organic_commission_sku": "Organic creator commission (%)",
         "paid_commission_sku": "Paid-traffic creator commission (%)",
         "aov_help": "Average selling price per order for this subcategory. Current default is a planning input; we recommend aligning with your AM and using TikTok Shop data from similar categories or merchants.",
@@ -225,7 +237,7 @@ TEXT = {
         "narrative_next": "What to do next: Focus the next discussion on {driver}, the largest cost driver, and align funnel inputs with your AM using TikTok Shop data from similar categories or merchants.",
         "health_check": "Planning Notes",
         "health_ok": "No major assumption risk detected under the current setup.",
-        "health_take_rate": "Paid acceleration budget x ROAS is high in at least one phase. Check whether the implied paid GMV lift is realistic.",
+        "health_take_rate": "Paid growth budget x ROAS is high in at least one phase. Check whether the implied paid GMV lift is realistic.",
         "health_sample_roi": "Sample ROI is low. Review sample quantity, AOV, conversion rate, or sample cost.",
         "health_profit_negative": "Total profit is negative. The largest cost driver is {driver}.",
         "health_shoptab": "At least one SKU has a high Store/Search GMV share. Align this with your AM using similar-category TikTok Shop data before presenting as a firm forecast.",
@@ -247,20 +259,33 @@ TEXT = {
         "model_version": "Model version",
         "meeting_header": "Brand Growth Simulation",
         "brand_name": "Brand name",
+        "scenario_name": "Scenario name",
+        "scenario_name_help": "Optional. Useful when comparing several versions, such as Standard Launch or Scale Plan.",
         "meeting_date": "Meeting date",
         "am_name": "AM name",
         "key_recommendation": "Key recommendation",
-        "key_recommendation_default": "Align funnel assumptions with the AM, then use this plan to agree sample volume, paid acceleration budget, and next milestone.",
+        "key_recommendation_default": "Align funnel assumptions with the AM, then use this plan to agree sample volume, paid growth budget, and next milestone.",
         "assumption_status": "Assumption status",
         "benchmark_input": "Planning input",
         "am_aligned_input": "AM-aligned input",
         "merchant_confirmed_input": "Merchant-confirmed input",
         "commercial_takeaways": "Commercial Takeaways",
+        "diagnosis_summary": "Diagnosis Summary",
+        "diagnosis_profitable": "This plan is commercially positive under the current assumptions. The main watch-out is {driver}, while sample efficiency is {sample_roi}x GMV per sample cost.",
+        "diagnosis_negative": "This plan is not yet profitable under the current assumptions. The main unlock is improving {driver}, increasing AOV/margin, or tightening paid growth before scaling.",
+        "diagnosis_sample_strong": "The plan is sample-efficient, but margin still depends on {driver}. Keep sample quality high and validate SKU-level conversion before increasing paid growth.",
+        "diagnosis_ads_heavy": "Paid growth contributes meaningfully to GMV. Review ROAS confidence and phase 2/3 budget readiness before using this as a target.",
+        "target_comparison": "Target Comparison",
+        "target_met": "Target reached",
+        "target_gap": "Gap to target",
+        "target_not_set": "No target set",
+        "target_gmv_gap_text": "Target GMV gap: {gap}.",
+        "target_profit_gap_text": "Target profit gap: {gap}.",
         "key_assumptions": "Key Assumptions",
         "assumption_phase_plan": "Phase plan",
-        "assumption_phase_plan_value": "{weeks} weeks per phase; samples per SKU/week: {samples}; paid acceleration budget: {take_rates}.",
+        "assumption_phase_plan_value": "{weeks} weeks per phase; samples per SKU/week: {samples}; paid growth budget: {take_rates}.",
         "assumption_operating": "Operating setup",
-        "assumption_operating_value": "{skus} SKUs; logistics cost {logistics}; content traffic tail period {organic_window} weeks.",
+        "assumption_operating_value": "{skus} SKUs; logistics cost {logistics}; content sales window {organic_window} weeks.",
         "assumption_growth": "Growth setup",
         "assumption_growth_value": "Ads ROAS {ads_roas}; new seller platform-fee benefit: {promo}; FBT free shipping: {fbt}.",
         "yes": "Yes",
@@ -268,7 +293,7 @@ TEXT = {
         "next_actions": "Recommended Next Steps",
         "action_expand_samples": "Sample ROI is strong. Consider expanding the creator sample pool while keeping SKU-level conversion assumptions aligned with AM data.",
         "action_fix_profit": "Profit is negative under the current setup. Revisit the largest cost driver, SKU gross margin, and commission structure before scaling budget.",
-        "action_scale_ads": "Paid acceleration is contributing meaningful GMV. Consider preparing Phase 2/3 ad budget scenarios around the current ROAS assumption.",
+        "action_scale_ads": "Paid growth is contributing meaningful GMV. Consider preparing Phase 2/3 ad budget scenarios around the current ROAS assumption.",
         "action_strengthen_store": "Store/Search contribution is material. Strengthen listing quality, product detail pages, and search readiness so content traffic can convert without extra creator commission.",
         "action_align_inputs": "Before using this as a target, align AOV, videos per sample, clicks per video, and click-to-order rate with your AM using similar TikTok Shop category or merchant data.",
         "action_default": "Use this simulation to agree the sample plan, paid acceleration budget, and next milestone before moving into execution.",
@@ -326,7 +351,26 @@ TEXT = {
         "benchmark_info": "Data Notes",
         "benchmark_info_text": "Current AOV, video, click, conversion, and Store/Search assumptions are planning inputs. We recommend aligning with your AM and using TikTok Shop data from similar categories or merchants in your industry.",
         "model_assumptions": "Model Logic",
-        "model_assumptions_text": "The model uses SKU-level content funnel assumptions, paid acceleration budget x ROAS to estimate paid GMV lift, Store/Search GMV with no creator commission, and FBT free shipping only for SKUs above €20 AOV when selected.",
+        "model_logic_intro": "The model follows a SKU-level content commerce funnel, then layers paid acceleration, channel mix, and cost structure on top.",
+        "model_logic_1_title": "1. Samples create creator content",
+        "model_logic_1_body": "Each phase defines samples per SKU per week. For every SKU, samples are converted into new creator videos using the selected subcategory's videos-per-sample assumption.",
+        "model_logic_1_formula": "Samples x Videos per sample = New creator videos",
+        "model_logic_2_title": "2. Videos keep contributing after the posting week",
+        "model_logic_2_body": "Creator videos are not treated as one-week assets. They remain active across the content traffic tail period, so earlier videos can keep generating clicks and orders in later weeks.",
+        "model_logic_2_formula": "Active videos = current-week videos + videos still inside the traffic-tail window",
+        "model_logic_3_title": "3. Content traffic becomes organic GMV",
+        "model_logic_3_body": "Active videos generate product clicks. Clicks convert into orders through the click-to-order rate, and orders convert into GMV through AOV.",
+        "model_logic_3_formula": "Active videos x Clicks per video x Click-to-order rate x AOV = Organic GMV",
+        "model_logic_4_title": "4. Organic GMV is split by channel",
+        "model_logic_4_body": "Affiliate Video GMV carries the organic creator commission. Store/Search GMV represents content-influenced demand that converts through store, search, mall, or ShopTab and does not carry creator commission.",
+        "model_logic_4_formula": "Organic GMV = Affiliate Video GMV + Store/Search GMV",
+        "model_logic_5_title": "5. Paid growth scales validated demand",
+        "model_logic_5_body": "Phase 2 and Phase 3 can apply paid acceleration as a percentage of GMV. The model uses Ads ROAS to estimate the paid GMV lift implied by that budget.",
+        "model_logic_5_formula": "Paid GMV lift is estimated from paid budget share x Ads ROAS",
+        "model_logic_6_title": "6. Cost and profit are calculated from the full operating model",
+        "model_logic_6_body": "Product cost is derived from AOV and gross margin. Sample investment uses product cost plus logistics. Profit subtracts product cost, platform fee, creator commission, logistics, samples, and ads from GMV.",
+        "model_logic_6_formula": "Profit = GMV - Product Cost - Platform Fee - Creator Commission - Logistics - Samples - Ads",
+        "model_assumptions_text": "SKU-level model: samples create creator videos, videos generate long-tail clicks and orders, organic GMV splits into Affiliate Video and Store/Search, paid acceleration adds incremental GMV, and profit is calculated after product cost, platform fee, creator commission, logistics, sample investment, and ads.",
         "download_customer_summary": "Download meeting summary CSV",
         "download_one_pager_pdf": "Download one-page PDF",
         "download_meeting_pdf": "Download detail PDF",
@@ -344,9 +388,20 @@ TEXT = {
         "expected_listing_skus": "预计上架 SKU 数量",
         "continue_setup": "继续设置计划",
         "setup_ready": "SKU 范围已确认。您可以在左侧调整假设，并在下方设置 SKU 明细。",
+        "plan_preview": "计划预览",
+        "plan_preview_text": "本次模拟将覆盖 {skus} 个 SKU、共 {weeks} 周。每 SKU 每周寄样：{samples}；付费增长预算占比：{take_rates}；内容出单窗口：{organic_window} 周；广告 ROAS：{ads_roas}。",
+        "assumption_quality": "假设质量",
+        "assumption_quality_text": "当前状态：{status}。Planning 输入适合做沙盘讨论；如需将结果作为业务目标，建议优先使用已和 AM 对齐或商家确认的输入。",
         "cost_assumptions": "成本假设",
         "growth_levers": "增长杠杆",
+        "target_setup": "目标设置",
+        "target_gmv": "目标 GMV (€)",
+        "target_profit": "目标利润 (€)",
+        "target_gmv_help": "可选项。如果当前方案没有 GMV 目标，保持 0 即可。",
+        "target_profit_help": "可选项。如果当前方案没有利润目标，保持 0 即可。",
         "reset_defaults": "恢复默认值",
+        "reset_sku_assumptions": "仅恢复 SKU 假设",
+        "reset_sku_assumptions_help": "只恢复当前 SKU 类目下的 AOV、漏斗假设、毛利和佣金默认值，不改变阶段计划。",
         "reset_confirm": "确认恢复默认值",
         "reset_pending": "此操作会将所有输入恢复到默认沙盘设置。如需继续，请点击确认恢复默认值。",
         "meeting_mode": "精简展示",
@@ -357,14 +412,14 @@ TEXT = {
         "promo": "是否为新商家：适用前约60天平台费 5%",
         "promo_yes": "适用前约60天平台费 5%",
         "promo_no": "否，使用默认类目佣金",
-        "fulfillment": "物流成本 €/件/单",
+        "fulfillment": "履约/寄送成本 €/件",
         "fbt": "使用 FBT 包邮",
         "fbt_yes": "是，物流成本按 €0 计算",
         "fbt_no": "否，使用手动物流成本",
         "fbt_help": "沙盘假设：勾选后，AOV 高于 €20 的 SKU 物流成本按 €0 计算；AOV 不高于 €20 的 SKU 仍使用手动物流成本。",
         "creator_commission": "自然流达人佣金",
         "paid_creator_commission": "广告流达人佣金",
-        "organic_click_window": "内容流量长尾周期（周）",
+        "organic_click_window": "内容出单窗口（周）",
         "ads_roas": "广告 ROAS 假设",
         "weeks_phase": "每阶段周数",
         "phase_controls": "阶段控制",
@@ -374,7 +429,8 @@ TEXT = {
         "phase1_objective": "讲解词：这一阶段重点不是立刻放大预算，而是验证达人内容、沉淀第一批商品视频，并建立早期转化信号。",
         "phase2_objective": "讲解词：这一阶段降低寄样强度，开始用付费加热放大已验证内容，把内容能力转化为可规模化的 GMV。",
         "phase3_objective": "讲解词：这一阶段放大优质内容和付费加热，同时让店铺/Search 与内容长尾出单继续累积。",
-        "take_rate": "付费加热预算占 GMV (%)",
+        "take_rate": "付费增长预算占 GMV (%)",
+        "take_rate_help": "内部 take rate 规划视角：该阶段将 GMV 的多少比例作为付费增长预算重新投入。",
         "samples_sku_week": "每个 SKU 每周寄样数",
         "sku_setup": "SKU 设置",
         "sku_caption": "选择 Category/Subcategory 后会自动加载 AOV 和漏斗假设。Electronics 平台佣金为 7%，其他类目为 9%。",
@@ -390,7 +446,7 @@ TEXT = {
         "videos_sample": "每个样品产出视频数",
         "clicks_video": "每条视频商品点击数",
         "click_order": "点击到下单转化率 (%)",
-        "shoptab_share": "店铺/Search GMV 占比 (%)",
+        "shoptab_share": "内容种草后的店铺/Search 出单占比 (%)",
         "organic_commission_sku": "自然流达人佣金 (%)",
         "paid_commission_sku": "广告流达人佣金 (%)",
         "aov_help": "该 subcategory 的平均成交客单价。当前默认值是 planning 输入，建议和您的 AM 对齐，参考 TikTok Shop 上类似行业或类似商家的数据进行输入。",
@@ -447,7 +503,7 @@ TEXT = {
         "narrative_next": "下一步：建议重点讨论 {driver} 这个最大成本项，并和您的 AM 对齐，参考 TikTok Shop 上类似行业或类似商家的数据进行输入。",
         "health_check": "计划提示",
         "health_ok": "当前设置下没有发现明显假设风险。",
-        "health_take_rate": "至少一个阶段的付费加热预算占比 x ROAS 偏高，建议确认广告带来的 GMV 增量是否合理。",
+        "health_take_rate": "至少一个阶段的付费增长预算占比 x ROAS 偏高，建议确认广告带来的 GMV 增量是否合理。",
         "health_sample_roi": "样品 ROI 偏低，建议检查寄样数量、AOV、转化率或样品成本。",
         "health_profit_negative": "总利润为负，当前最大的成本项是 {driver}。",
         "health_shoptab": "至少一个 SKU 的店铺/Search GMV 占比较高，建议和您的 AM 对齐，参考类似行业或类似商家的数据后再作为正式预测。",
@@ -469,20 +525,33 @@ TEXT = {
         "model_version": "模型版本",
         "meeting_header": "品牌增长模拟",
         "brand_name": "品牌名称",
+        "scenario_name": "方案名称",
+        "scenario_name_help": "可选项。适合区分多个版本，例如标准启动方案、放量方案或保守方案。",
         "meeting_date": "会议日期",
         "am_name": "AM 名称",
         "key_recommendation": "关键建议",
-        "key_recommendation_default": "建议先和 AM 对齐漏斗假设，再用该计划确认寄样数量、付费加热预算和下一阶段里程碑。",
+        "key_recommendation_default": "建议先和 AM 对齐漏斗假设，再用该计划确认寄样数量、付费增长预算和下一阶段里程碑。",
         "assumption_status": "假设状态",
         "benchmark_input": "Planning 输入",
         "am_aligned_input": "已和 AM 对齐",
         "merchant_confirmed_input": "商家已确认",
         "commercial_takeaways": "商业结论",
+        "diagnosis_summary": "自动诊断摘要",
+        "diagnosis_profitable": "按当前假设，该方案具备正向商业回报。主要关注点是 {driver}，当前样品效率为样品成本的 {sample_roi}x GMV。",
+        "diagnosis_negative": "按当前假设，该方案尚未盈利。主要优化方向是改善 {driver}，提升 AOV/毛利，或在放大前收紧付费增长预算。",
+        "diagnosis_sample_strong": "该方案样品效率较高，但利润仍受 {driver} 影响。建议保持样品质量，并在放大付费增长前验证 SKU level 转化。",
+        "diagnosis_ads_heavy": "付费增长对 GMV 贡献明显。建议在把结果作为目标前，确认 ROAS 可信度和 Phase 2/3 的预算准备。",
+        "target_comparison": "目标对比",
+        "target_met": "已达到目标",
+        "target_gap": "距离目标",
+        "target_not_set": "未设置目标",
+        "target_gmv_gap_text": "距离目标 GMV：{gap}。",
+        "target_profit_gap_text": "距离目标利润：{gap}。",
         "key_assumptions": "关键假设摘要",
         "assumption_phase_plan": "阶段计划",
-        "assumption_phase_plan_value": "每阶段 {weeks} 周；每 SKU 每周寄样：{samples}；付费加热预算占比：{take_rates}。",
+        "assumption_phase_plan_value": "每阶段 {weeks} 周；每 SKU 每周寄样：{samples}；付费增长预算占比：{take_rates}。",
         "assumption_operating": "运营设置",
-        "assumption_operating_value": "{skus} 个 SKU；物流成本 {logistics}；内容流量长尾周期 {organic_window} 周。",
+        "assumption_operating_value": "{skus} 个 SKU；履约/寄送成本 {logistics}；内容出单窗口 {organic_window} 周。",
         "assumption_growth": "增长设置",
         "assumption_growth_value": "广告 ROAS {ads_roas}；新商家平台费优惠：{promo}；FBT 包邮：{fbt}。",
         "yes": "是",
@@ -490,10 +559,10 @@ TEXT = {
         "next_actions": "建议下一步行动",
         "action_expand_samples": "样品 ROI 表现较强。可以考虑扩大达人寄样池，同时继续用 AM/类似行业数据校准 SKU level 的转化假设。",
         "action_fix_profit": "当前设置下利润为负。建议在扩大预算前，优先复核最大成本项、SKU 毛利率和达人佣金结构。",
-        "action_scale_ads": "付费加热对 GMV 有明显贡献。建议围绕当前 ROAS 假设，提前准备 Phase 2/3 的广告预算场景。",
+        "action_scale_ads": "付费增长对 GMV 有明显贡献。建议围绕当前 ROAS 假设，提前准备 Phase 2/3 的广告预算场景。",
         "action_strengthen_store": "店铺/Search 贡献较明显。建议强化 listing、商品详情页和搜索承接，让内容种草后的流量尽量以无达人佣金方式成交。",
         "action_align_inputs": "在把结果作为业务目标前，建议和您的 AM 对齐 AOV、每样品视频数、每视频点击数和点击到下单转化率，并参考 TikTok Shop 类似行业或类似商家数据。",
-        "action_default": "建议用该模拟结果确认寄样计划、付费加热预算和下一阶段里程碑，再进入执行。",
+        "action_default": "建议用该模拟结果确认寄样计划、付费增长预算和下一阶段里程碑，再进入执行。",
         "forecast_range": "结果可信区间",
         "forecast_range_prompt": "! 可查看结果可信区间",
         "conservative_case": "保守",
@@ -548,7 +617,26 @@ TEXT = {
         "benchmark_info": "数据说明",
         "benchmark_info_text": "当前 AOV、视频、点击、转化率和店铺/Search 占比是 planning 输入。建议和您的 AM 对齐，参考 TikTok Shop 上类似行业或类似商家的数据进行输入。",
         "model_assumptions": "模型逻辑",
-        "model_assumptions_text": "模型基于 SKU level 内容漏斗假设，用付费加热预算占比 x ROAS 估算广告带来的 GMV 增量；店铺/Search GMV 不计达人佣金；勾选 FBT 时，仅 AOV 高于 €20 的 SKU 物流成本按 €0 计算。",
+        "model_logic_intro": "模型以 SKU level 的内容电商漏斗为基础，再叠加付费加热、渠道拆分和完整成本结构。",
+        "model_logic_1_title": "1. 样品产生达人内容",
+        "model_logic_1_body": "每个阶段会定义每个 SKU 每周寄出多少样品。每个 SKU 会根据所选 subcategory 的每样品视频数假设，计算新增达人视频。",
+        "model_logic_1_formula": "样品数 x 每样品视频数 = 新增达人视频",
+        "model_logic_2_title": "2. 视频不是只在当周出单",
+        "model_logic_2_body": "达人视频不会被视为一次性流量。视频会在内容流量长尾周期内持续贡献点击和订单，因此前几周的视频会继续影响后续周的成交。",
+        "model_logic_2_formula": "活跃视频 = 当周新增视频 + 仍在长尾周期内的视频",
+        "model_logic_3_title": "3. 内容流量转化为自然 GMV",
+        "model_logic_3_body": "活跃视频带来商品点击，点击通过点击到下单转化率形成订单，订单再通过 AOV 转化为 GMV。",
+        "model_logic_3_formula": "活跃视频 x 每视频点击数 x 点击到下单转化率 x AOV = 自然 GMV",
+        "model_logic_4_title": "4. 自然 GMV 拆成达人视频和店铺/Search",
+        "model_logic_4_body": "达人视频 GMV 需要支付自然流达人佣金。店铺/Search GMV 代表被内容种草后，通过店铺、搜索、商城或 ShopTab 成交的需求，这部分不计算达人佣金。",
+        "model_logic_4_formula": "自然 GMV = 达人视频 GMV + 店铺/Search GMV",
+        "model_logic_5_title": "5. 付费加热放大已验证需求",
+        "model_logic_5_body": "第二、第三阶段可以设置付费增长预算占 GMV 的比例。模型会结合广告 ROAS，估算该预算带来的增量 GMV。",
+        "model_logic_5_formula": "付费 GMV 增量由付费预算占比 x 广告 ROAS 推算",
+        "model_logic_6_title": "6. 成本和利润来自完整经营模型",
+        "model_logic_6_body": "商品成本由 AOV 和毛利率反推；样品投入由商品成本加物流成本构成；利润会扣除商品成本、平台费、达人佣金、物流、样品投入和广告投入。",
+        "model_logic_6_formula": "利润 = GMV - 商品成本 - 平台费 - 达人佣金 - 物流 - 样品投入 - 广告投入",
+        "model_assumptions_text": "SKU level 模型：样品产生达人视频，视频在长尾周期内持续带来点击和订单，自然 GMV 拆分为达人视频与店铺/Search，付费加热带来增量 GMV，最终利润扣除商品成本、平台费、达人佣金、物流、样品投入和广告投入。",
         "download_customer_summary": "下载会议总结 CSV",
         "download_one_pager_pdf": "下载一页版 PDF",
         "download_meeting_pdf": "下载详细版 PDF",
@@ -1581,7 +1669,7 @@ def build_weekly_model(
 
             take_rate = float(phase["take_rate"])
             if take_rate * ads_roas >= 0.90:
-                raise ValueError("Paid acceleration budget x Ads ROAS must be below 90%.")
+                raise ValueError("Paid growth budget x Ads ROAS must be below 90%.")
 
             total_gmv_p = organic_gmv_p / (1 - take_rate * ads_roas)
             paid_gmv_p = total_gmv_p - organic_gmv_p
@@ -1771,6 +1859,7 @@ def cost_driver(row):
 def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_be_label, meeting_notes, assumption_status, cost_explanation_text, forecast_range, assumption_summary=None, next_actions=None):
     rows = [
         (T["brand_name"], meeting_notes.get("brand_name") or "-"),
+        (T["scenario_name"], meeting_notes.get("scenario_name") or "-"),
         (T["meeting_date"], str(meeting_notes.get("meeting_date") or "-")),
         (T["am_name"], meeting_notes.get("am_name") or "-"),
         (T["model_version"], MODEL_VERSION),
@@ -1818,14 +1907,16 @@ def render_kpi_grid(items, compact=False):
 
 def render_meeting_header(meeting_notes, generated_at, assumption_status):
     brand = str(meeting_notes.get("brand_name") or "").strip()
+    scenario = str(meeting_notes.get("scenario_name") or "").strip()
     title = brand if brand else T["meeting_header"]
+    subtitle = scenario if scenario else T["meeting_header"]
     date_text = str(meeting_notes.get("meeting_date") or generated_at.split(" ")[0])
     am_text = str(meeting_notes.get("am_name") or "-")
     st.markdown(
         f"""
         <div class="meeting-header">
             <div>
-                <div class="meeting-header-kicker">{escape(T["meeting_header"])}</div>
+                <div class="meeting-header-kicker">{escape(subtitle)}</div>
                 <div class="meeting-header-title">{escape(title)}</div>
             </div>
             <div class="meeting-header-meta">
@@ -1913,6 +2004,35 @@ def commercial_takeaways(overall, df_all, cumulative_be_label, driver):
         (T["main_upside_lever"], main_gmv_channel(df_all)),
         (T["main_risk"], T["main_risk_text"].format(driver=driver)),
     ]
+
+
+def diagnosis_summary(overall, df_all, driver):
+    sample_roi = float(overall["GMV / Sample Cost"])
+    total_profit = float(overall["Total Profit"])
+    total_gmv = float(overall["Total GMV"])
+    paid_gmv = float(df_all["Paid GMV Lift"].sum()) if "Paid GMV Lift" in df_all.columns else 0.0
+    if total_profit < 0:
+        return T["diagnosis_negative"].format(driver=driver)
+    if total_gmv > 0 and paid_gmv / total_gmv >= 0.30:
+        return T["diagnosis_ads_heavy"]
+    if sample_roi >= 8.0:
+        return T["diagnosis_sample_strong"].format(driver=driver)
+    return T["diagnosis_profitable"].format(driver=driver, sample_roi=f"{sample_roi:.1f}")
+
+
+def target_comparison_items(overall, target_gmv, target_profit):
+    items = []
+    target_gmv = float(target_gmv or 0)
+    target_profit = float(target_profit or 0)
+    if target_gmv > 0:
+        gap = float(overall["Total GMV"]) - target_gmv
+        label = T["target_met"] if gap >= 0 else T["target_gap"]
+        items.append((T["target_gmv"], label if gap >= 0 else money(abs(gap), 0), "#2563EB" if gap >= 0 else "#F97316"))
+    if target_profit > 0:
+        gap = float(overall["Total Profit"]) - target_profit
+        label = T["target_met"] if gap >= 0 else T["target_gap"]
+        items.append((T["target_profit"], label if gap >= 0 else money(abs(gap), 0), "#16A34A" if gap >= 0 else "#DC2626"))
+    return items
 
 
 def forecast_range(overall, assumption_status):
@@ -2021,6 +2141,34 @@ def render_chart_lens(title, body):
         </div>
         """,
         unsafe_allow_html=True,
+    )
+
+
+def render_model_logic():
+    st.write(T["model_logic_intro"])
+    for idx in range(1, 7):
+        st.markdown(
+            f"""
+            <div class="chart-lens">
+                <div class="chart-lens-title">{escape(T[f"model_logic_{idx}_title"])}</div>
+                <div class="chart-lens-body">{escape(T[f"model_logic_{idx}_body"])}</div>
+                <div style="margin-top:8px;color:#1D4ED8;font-weight:720;">{escape(T[f"model_logic_{idx}_formula"])}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+
+def plan_preview_text(n_skus, phase_inputs, weeks_per_phase, organic_click_window_weeks, ads_roas):
+    samples = " / ".join(str(int(phase["samples_per_sku"])) for phase in phase_inputs)
+    take_rates = " / ".join(pct(float(phase["take_rate"]), 0) for phase in phase_inputs)
+    return T["plan_preview_text"].format(
+        skus=int(n_skus),
+        weeks=int(weeks_per_phase) * len(PHASES),
+        samples=samples,
+        take_rates=take_rates,
+        organic_window=int(organic_click_window_weeks),
+        ads_roas=f"{float(ads_roas):.1f}",
     )
 
 
@@ -2145,7 +2293,7 @@ def make_investment_split_chart(df_all):
     return fig
 
 
-def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values, assumption_summary, next_actions):
+def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, diagnosis_text, forecast_range_values, assumption_summary, next_actions):
     narrative_html = "".join(f"<li>{line}</li>" for line in narrative)
     health_html = "".join(f'<li class="{level}">{text}</li>' for level, text in health_checks)
     takeaways_html = "".join(f"<li><strong>{label}:</strong> {value}</li>" for label, value in takeaways)
@@ -2163,6 +2311,7 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
         f"<li><strong>{label}:</strong> {value or '-'}</li>"
         for label, value in [
             (T["brand_name"], meeting_notes.get("brand_name")),
+            (T["scenario_name"], meeting_notes.get("scenario_name")),
             (T["meeting_date"], meeting_notes.get("meeting_date")),
             (T["am_name"], meeting_notes.get("am_name")),
             (T["assumption_status"], assumption_status),
@@ -2205,7 +2354,7 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
       <span>{T["model_version"]}: {MODEL_VERSION}</span>
     </div>
     <div class="hero">
-      <h1>{(meeting_notes.get("brand_name") or T["hero_title"].format(weeks=weeks, skus=skus))}</h1>
+      <h1>{(meeting_notes.get("brand_name") or T["hero_title"].format(weeks=weeks, skus=skus))}{(" · " + meeting_notes.get("scenario_name")) if meeting_notes.get("scenario_name") else ""}</h1>
       <p>{T["hero_subtitle"].format(gmv=money(overall["Total GMV"], 0), growth_investment=money(overall["Growth Investment"], 0), break_even=path_text)}</p>
     </div>
     <div class="grid">
@@ -2220,6 +2369,10 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
     <div class="section">
       <h2>{T["commercial_takeaways"]}</h2>
       <ul>{takeaways_html}</ul>
+    </div>
+    <div class="section">
+      <h2>{T["diagnosis_summary"]}</h2>
+      <p>{diagnosis_text}</p>
     </div>
     <div class="section">
       <h2>{T["key_assumptions"]}</h2>
@@ -2275,7 +2428,7 @@ def wrap_pdf_text(text, max_width, font_name, font_size):
     return words
 
 
-def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values, assumption_summary, next_actions, df_all, detail_pack=True):
+def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, diagnosis_text, forecast_range_values, assumption_summary, next_actions, df_all, detail_pack=True):
     from reportlab.lib.pagesizes import A4
     from reportlab.lib import colors
     from reportlab.pdfgen import canvas
@@ -2293,6 +2446,8 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         return str(value).replace("€", "EUR ")
 
     brand_title = meeting_notes.get("brand_name") or T["hero_title"].format(weeks=weeks, skus=skus)
+    if meeting_notes.get("scenario_name"):
+        brand_title = f"{brand_title} - {meeting_notes.get('scenario_name')}"
     page_no = 1
 
     def draw_logo(x, y):
@@ -2536,6 +2691,7 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
     for chip in [
         f"{T['plan_length']}: {weeks} {T['week']}",
         f"{T['sku_count_meta']}: {skus}",
+        f"{T['scenario_name']}: {meeting_notes.get('scenario_name') or '-'}",
         f"{T['meeting_date']}: {meeting_notes.get('meeting_date') or '-'}",
         f"{T['am_name']}: {meeting_notes.get('am_name') or '-'}",
         f"{T['assumption_status']}: {assumption_status}",
@@ -2556,6 +2712,8 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         ],
         y,
     )
+
+    y = draw_section(T["diagnosis_summary"], [clean(diagnosis_text)], y, accent="#14B8A6", compact=True)
 
     y = draw_trend_chart(df_all, y)
 
@@ -2603,6 +2761,7 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         (T["health_check"], [clean(text) for _level, text in health_checks], "#F97316"),
         (T["path_to_be"], [clean(path_text)], "#14B8A6"),
         (T["cost_explanation"], [clean(cost_explanation_text)], "#2563EB"),
+        (T["diagnosis_summary"], [clean(diagnosis_text)], "#14B8A6"),
         (T["next_actions"], [clean(action) for action in next_actions], "#14B8A6"),
     ]
     for item in sections:
@@ -2632,13 +2791,25 @@ def reset_defaults():
         "weeks_per_phase_input", "ads_roas_input", "organic_window_input",
         "reset_confirm_pending", "brand_name_input", "meeting_date_input",
         "am_name_input", "key_recommendation_input", "assumption_status_input",
-        "sku_count_confirmed",
+        "sku_count_confirmed", "scenario_name_input", "target_gmv_input", "target_profit_input",
         "_model_brand_name", "_model_meeting_date", "_model_am_name",
-        "_model_key_recommendation", "_model_assumption_status",
+        "_model_key_recommendation", "_model_assumption_status", "_model_scenario_name",
+        "_model_target_gmv", "_model_target_profit",
     }
     for key in list(st.session_state.keys()):
         if key in exact_keys or any(key.startswith(prefix) for prefix in prefixes):
             del st.session_state[key]
+    st.rerun()
+
+
+def reset_sku_assumptions(n_skus):
+    for i in range(int(n_skus)):
+        initialize_sku(i)
+        apply_category_defaults(i)
+        default_profile = DEFAULT_SKU_PROFILES[i % len(DEFAULT_SKU_PROFILES)]
+        st.session_state[f"gross_margin_pct_{i}"] = default_profile["gross_margin_pct"]
+        st.session_state[f"organic_commission_pct_{i}"] = default_profile["organic_commission_pct"]
+        st.session_state[f"paid_commission_pct_{i}"] = default_profile["paid_commission_pct"]
     st.rerun()
 
 
@@ -2975,6 +3146,8 @@ with st.sidebar:
         st.warning(T["reset_pending"])
         if st.button(T["reset_confirm"], key="reset_confirm_btn"):
             reset_defaults()
+    if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"]):
+        reset_sku_assumptions(n_skus)
 
     meeting_mode = st.checkbox(
         T["meeting_mode"],
@@ -2997,6 +3170,8 @@ with st.sidebar:
         logistics_cost = float(st.session_state.get("_model_logistics_cost", st.session_state.get("logistics_cost_manual", 5.0)))
         ads_roas = float(st.session_state.get("_model_ads_roas", st.session_state.get("ads_roas_input", 6.0)))
         organic_click_window_weeks = int(st.session_state.get("_model_organic_click_window_weeks", st.session_state.get("organic_window_input", 4)))
+        target_gmv = float(st.session_state.get("_model_target_gmv", st.session_state.get("target_gmv_input", 0.0)))
+        target_profit = float(st.session_state.get("_model_target_profit", st.session_state.get("target_profit_input", 0.0)))
         phase_inputs = []
         for idx, phase in enumerate(PHASES):
             take_rate_pct = float(st.session_state.get(f"_model_take_rate_pct_{idx}", st.session_state.get(f"take_rate_{idx}", phase["take_rate"] * 100)))
@@ -3029,6 +3204,9 @@ with st.sidebar:
         st.header(T["growth_levers"])
         ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
         organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1, key="organic_window_input")
+        st.header(T["target_setup"])
+        target_gmv = st.number_input(T["target_gmv"], min_value=0.0, value=0.0, step=1000.0, key="target_gmv_input", help=T["target_gmv_help"])
+        target_profit = st.number_input(T["target_profit"], min_value=0.0, value=0.0, step=1000.0, key="target_profit_input", help=T["target_profit_help"])
         st.header(T["phase_controls"])
         phase_inputs = []
         for idx, phase in enumerate(PHASES):
@@ -3040,6 +3218,7 @@ with st.sidebar:
                 value=float(phase["take_rate"] * 100),
                 step=1.0,
                 key=f"take_rate_{idx}",
+                help=T.get("take_rate_help"),
             ) / 100
             samples_per_sku = st.number_input(
                 f"{T['samples_sku_week']} - {phase_label(phase)}",
@@ -3056,6 +3235,8 @@ with st.sidebar:
         st.session_state["_model_logistics_cost"] = float(logistics_cost)
         st.session_state["_model_ads_roas"] = float(ads_roas)
         st.session_state["_model_organic_click_window_weeks"] = int(organic_click_window_weeks)
+        st.session_state["_model_target_gmv"] = float(target_gmv)
+        st.session_state["_model_target_profit"] = float(target_profit)
         for idx, phase in enumerate(phase_inputs):
             st.session_state[f"_model_take_rate_pct_{idx}"] = float(phase["take_rate"] * 100)
             st.session_state[f"_model_samples_per_sku_{idx}"] = int(phase["samples_per_sku"])
@@ -3068,16 +3249,18 @@ if show_setup:
     with st.expander(T["benchmark_info"], expanded=False):
         st.write(T["benchmark_info_text"])
     with st.expander(T["model_assumptions"], expanded=False):
-        st.write(T["model_assumptions_text"])
+        render_model_logic()
         st.caption(T["planning_disclaimer"])
 
     with st.expander(T["meeting_notes"], expanded=False):
-        n1, n2, n3 = st.columns(3)
+        n1, n2, n3, n4 = st.columns(4)
         with n1:
             brand_name = st.text_input(T["brand_name"], key="brand_name_input", help=T["brand_name_help"])
         with n2:
-            meeting_date = st.date_input(T["meeting_date"], value=datetime.now().date(), key="meeting_date_input")
+            scenario_name = st.text_input(T["scenario_name"], key="scenario_name_input", help=T["scenario_name_help"])
         with n3:
+            meeting_date = st.date_input(T["meeting_date"], value=datetime.now().date(), key="meeting_date_input")
+        with n4:
             am_name = st.text_input(T["am_name"], key="am_name_input")
         assumption_status = st.selectbox(
             T["assumption_status"],
@@ -3092,11 +3275,13 @@ if show_setup:
         )
     meeting_notes = {
         "brand_name": brand_name,
+        "scenario_name": scenario_name,
         "meeting_date": str(meeting_date),
         "am_name": am_name,
         "key_recommendation": key_recommendation,
     }
     st.session_state["_model_brand_name"] = brand_name
+    st.session_state["_model_scenario_name"] = scenario_name
     st.session_state["_model_meeting_date"] = str(meeting_date)
     st.session_state["_model_am_name"] = am_name
     st.session_state["_model_key_recommendation"] = key_recommendation
@@ -3177,6 +3362,7 @@ if show_setup:
 else:
     meeting_notes = {
         "brand_name": st.session_state.get("_model_brand_name", st.session_state.get("brand_name_input", "")),
+        "scenario_name": st.session_state.get("_model_scenario_name", st.session_state.get("scenario_name_input", "")),
         "meeting_date": st.session_state.get("_model_meeting_date", st.session_state.get("meeting_date_input", "")),
         "am_name": st.session_state.get("_model_am_name", st.session_state.get("am_name_input", "")),
         "key_recommendation": st.session_state.get("_model_key_recommendation", st.session_state.get("key_recommendation_input", T["key_recommendation_default"])),
@@ -3184,6 +3370,9 @@ else:
     assumption_status = st.session_state.get("_model_assumption_status", st.session_state.get("assumption_status_input", T["benchmark_input"]))
     for i in range(int(n_skus)):
         initialize_sku(i)
+
+st.info(f"**{T['plan_preview']}**: {plan_preview_text(n_skus, phase_inputs, weeks_per_phase, organic_click_window_weeks, ads_roas)}")
+st.caption(T["assumption_quality_text"].format(status=assumption_status))
 
 if st.button(T["generate"], type="primary"):
     st.session_state["has_generated"] = True
@@ -3205,7 +3394,7 @@ if st.session_state.get("has_generated", False):
         overall_summary = build_overall_summary(df_all)
         weekly_be = first_positive_profit_week(df_all)
         cumulative_be = first_cumulative_break_even_week(df_all)
- 
+
         overall = overall_summary.iloc[0]
         weekly_be_label = f"Week {weekly_be}" if weekly_be else T["not_reached"]
         cumulative_be_label = f"Week {cumulative_be}" if cumulative_be else T["not_reached"]
@@ -3228,6 +3417,7 @@ if st.session_state.get("has_generated", False):
         )
         path_text = path_to_break_even(df_all, cumulative_be, total_cost_driver)
         total_cost_explanation = cost_explanation(total_cost_row)
+        diagnosis_text = diagnosis_summary(overall, df_all, total_cost_driver)
         takeaways = commercial_takeaways(overall, df_all, cumulative_be_label, total_cost_driver)
         forecast_range_values = forecast_range(overall, assumption_status)
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -3291,6 +3481,12 @@ if st.session_state.get("has_generated", False):
             unsafe_allow_html=True,
         )
         st.caption(T["planning_disclaimer"])
+        st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
+        st.info(f"**{T['diagnosis_summary']}**: {diagnosis_text}")
+        target_items = target_comparison_items(overall, target_gmv, target_profit)
+        if target_items:
+            st.subheader(T["target_comparison"])
+            render_kpi_grid(target_items)
 
         st.subheader(T["commercial_takeaways"])
         render_kpi_grid([
@@ -3515,6 +3711,7 @@ if st.session_state.get("has_generated", False):
             assumption_status=assumption_status,
             takeaways=takeaways,
             cost_explanation_text=total_cost_explanation,
+            diagnosis_text=diagnosis_text,
             forecast_range_values=forecast_range_values,
             assumption_summary=assumption_summary,
             next_actions=next_actions,
@@ -3531,6 +3728,7 @@ if st.session_state.get("has_generated", False):
             assumption_status=assumption_status,
             takeaways=takeaways,
             cost_explanation_text=total_cost_explanation,
+            diagnosis_text=diagnosis_text,
             forecast_range_values=forecast_range_values,
             assumption_summary=assumption_summary,
             next_actions=next_actions,
@@ -3549,6 +3747,7 @@ if st.session_state.get("has_generated", False):
             assumption_status=assumption_status,
             takeaways=takeaways,
             cost_explanation_text=total_cost_explanation,
+            diagnosis_text=diagnosis_text,
             forecast_range_values=forecast_range_values,
             assumption_summary=assumption_summary,
             next_actions=next_actions,
@@ -3556,7 +3755,11 @@ if st.session_state.get("has_generated", False):
             detail_pack=True,
         )
         export_date = datetime.now().strftime("%Y-%m-%d")
-        export_prefix = f"{safe_filename_part(meeting_notes.get('brand_name'), 'Brand')}_TikTokShop_GrowthPlan_{export_date}"
+        export_prefix = (
+            f"{safe_filename_part(meeting_notes.get('brand_name'), 'Brand')}_"
+            f"{safe_filename_part(meeting_notes.get('scenario_name'), 'Scenario')}_"
+            f"TikTokShop_GrowthPlan_{export_date}"
+        )
         dl_summary, dl_html, dl_one_pager, dl_pdf = st.columns(4)
         with dl_summary:
             st.download_button(
