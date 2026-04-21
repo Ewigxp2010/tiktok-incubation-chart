@@ -234,7 +234,7 @@ TEXT = {
         "key_recommendation": "Key recommendation",
         "key_recommendation_default": "Align funnel assumptions with the AM, then use this plan to agree sample volume, paid acceleration budget, and next milestone.",
         "assumption_status": "Assumption status",
-        "benchmark_input": "Benchmark input",
+        "benchmark_input": "Planning input",
         "am_aligned_input": "AM-aligned input",
         "merchant_confirmed_input": "Merchant-confirmed input",
         "commercial_takeaways": "Commercial Takeaways",
@@ -259,7 +259,7 @@ TEXT = {
         "conservative_case": "Conservative",
         "base_case": "Base",
         "upside_case": "Upside",
-        "forecast_range_note": "Range is a planning sensitivity around the current funnel assumptions. Benchmark inputs use a wider range; AM-aligned or merchant-confirmed inputs use a narrower range.",
+        "forecast_range_note": "Range is a planning sensitivity around the current funnel assumptions. Planning inputs use a wider range; AM-aligned or merchant-confirmed inputs use a narrower range.",
         "investment_required": "Investment required",
         "expected_gmv": "Expected GMV",
         "payback_timing": "Payback timing",
@@ -298,9 +298,9 @@ TEXT = {
         "sample_roi_text": "Commercial read: every sample is expected to generate {gmv_per_sample} GMV and {orders_per_sample} orders across the full simulation period.",
         "cost_breakdown": "Cost Breakdown",
         "cost_breakdown_text": "Largest cost driver in this view is {driver}: {amount}, equal to {share} of total cost.",
-        "cost_cogs": "Product cost / COGS",
+        "cost_cogs": "Product Cost",
         "cost_platform_fee": "Platform fee",
-        "cost_creator_commission": "Creator commission",
+        "cost_creator_commission": "Creator Sales Commission",
         "cost_fulfillment": "Logistics",
         "cost_samples": "Sample investment",
         "cost_ads": "Ads investment",
@@ -447,7 +447,7 @@ TEXT = {
         "key_recommendation": "关键建议",
         "key_recommendation_default": "建议先和 AM 对齐漏斗假设，再用该计划确认寄样数量、付费加热预算和下一阶段里程碑。",
         "assumption_status": "假设状态",
-        "benchmark_input": "Benchmark 输入",
+        "benchmark_input": "Planning 输入",
         "am_aligned_input": "已和 AM 对齐",
         "merchant_confirmed_input": "商家已确认",
         "commercial_takeaways": "商业结论",
@@ -472,7 +472,7 @@ TEXT = {
         "conservative_case": "保守",
         "base_case": "基准",
         "upside_case": "乐观",
-        "forecast_range_note": "该区间是基于当前漏斗假设的敏感性测算。Benchmark 输入使用更宽区间；已和 AM 对齐或商家确认的输入使用更窄区间。",
+        "forecast_range_note": "该区间是基于当前漏斗假设的敏感性测算。Planning 输入使用更宽区间；已和 AM 对齐或商家确认的输入使用更窄区间。",
         "investment_required": "所需投入",
         "expected_gmv": "预计 GMV",
         "payback_timing": "回本时间",
@@ -511,9 +511,9 @@ TEXT = {
         "sample_roi_text": "商业解读：在完整模拟周期内，平均每个样品预计带来 {gmv_per_sample} GMV 和 {orders_per_sample} 个订单。",
         "cost_breakdown": "成本拆解",
         "cost_breakdown_text": "当前视图中最大的成本项是 {driver}：{amount}，占总成本 {share}。",
-        "cost_cogs": "商品成本 / COGS",
+        "cost_cogs": "商品成本",
         "cost_platform_fee": "平台费",
-        "cost_creator_commission": "达人佣金",
+        "cost_creator_commission": "达人销售佣金",
         "cost_fulfillment": "物流成本",
         "cost_samples": "样品投入",
         "cost_ads": "广告投入",
@@ -1032,6 +1032,20 @@ st.markdown(
         font-weight: 650;
         text-align: right;
         line-height: 1.45;
+    }
+
+    .meeting-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 7px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: #F1F5F9;
+        border: 1px solid #DDE3EA;
+        color: #334155;
+        font-size: 0.78rem;
+        font-weight: 760;
     }
 
     .action-list {
@@ -1613,7 +1627,7 @@ def render_kpi_grid(items):
                 )
 
 
-def render_meeting_header(meeting_notes, generated_at):
+def render_meeting_header(meeting_notes, generated_at, assumption_status):
     brand = str(meeting_notes.get("brand_name") or "").strip()
     title = brand if brand else T["meeting_header"]
     date_text = str(meeting_notes.get("meeting_date") or generated_at.split(" ")[0])
@@ -1627,7 +1641,8 @@ def render_meeting_header(meeting_notes, generated_at):
             </div>
             <div class="meeting-header-meta">
                 {escape(T["meeting_date"])}: {escape(date_text)}<br>
-                {escape(T["am_name"])}: {escape(am_text)}
+                {escape(T["am_name"])}: {escape(am_text)}<br>
+                <span class="meeting-badge">{escape(str(assumption_status))}</span>
             </div>
         </div>
         """,
@@ -2047,7 +2062,7 @@ def wrap_pdf_text(text, max_width, font_name, font_size):
     return words
 
 
-def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values, assumption_summary, next_actions):
+def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values, assumption_summary, next_actions, df_all):
     from reportlab.lib.pagesizes import A4
     from reportlab.lib import colors
     from reportlab.pdfgen import canvas
@@ -2202,6 +2217,83 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
             cursor_y -= 44
         return y - box_h - 12
 
+    def draw_trend_chart(df, y):
+        y = new_page_if_needed(y, 170)
+        box_h = 158
+        x0 = margin
+        y0 = y - box_h
+        box_w = width - margin * 2
+        pdf.setFillColor(colors.white)
+        pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
+        pdf.roundRect(x0, y0, box_w, box_h, 8, stroke=1, fill=1)
+        pdf.setFillColor(colors.HexColor("#2563EB"))
+        pdf.roundRect(x0, y - 4, box_w, 4, 2, stroke=0, fill=1)
+        pdf.setFillColor(colors.HexColor("#111827"))
+        pdf.setFont(font_name, 13)
+        pdf.drawString(x0 + 14, y - 24, clean(T["overall_weekly"]))
+
+        plot_x = x0 + 38
+        plot_y = y0 + 28
+        plot_w = box_w - 68
+        plot_h = box_h - 70
+        temp = df.sort_values("Global Week").copy()
+        series = [
+            (T["forecast_gmv"], "GMV", "#2563EB"),
+            (T["total_cost_label"], "Total Cost", "#F97316"),
+            (T["profit_label"], "Profit", "#16A34A"),
+        ]
+        values = []
+        for _label, col, _color in series:
+            if col in temp:
+                values.extend(temp[col].astype(float).tolist())
+        if not values:
+            return y0 - 12
+        min_v = min(0, min(values))
+        max_v = max(values)
+        if max_v == min_v:
+            max_v = min_v + 1
+
+        pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
+        pdf.setLineWidth(0.7)
+        for tick in range(4):
+            yy = plot_y + tick * plot_h / 3
+            pdf.line(plot_x, yy, plot_x + plot_w, yy)
+        if min_v < 0 < max_v:
+            zero_y = plot_y + (0 - min_v) / (max_v - min_v) * plot_h
+            pdf.setStrokeColor(colors.HexColor("#94A3B8"))
+            pdf.line(plot_x, zero_y, plot_x + plot_w, zero_y)
+
+        weeks_list = temp["Global Week"].astype(float).tolist()
+        min_week = min(weeks_list)
+        max_week = max(weeks_list)
+        week_span = max(max_week - min_week, 1)
+        for label, col, color in series:
+            if col not in temp:
+                continue
+            points = []
+            for _, row in temp.iterrows():
+                px = plot_x + (float(row["Global Week"]) - min_week) / week_span * plot_w
+                py = plot_y + (float(row[col]) - min_v) / (max_v - min_v) * plot_h
+                points.append((px, py))
+            pdf.setStrokeColor(colors.HexColor(color))
+            pdf.setLineWidth(1.7)
+            for idx in range(len(points) - 1):
+                pdf.line(points[idx][0], points[idx][1], points[idx + 1][0], points[idx + 1][1])
+            pdf.setFillColor(colors.HexColor(color))
+            for px, py in points:
+                pdf.circle(px, py, 1.8, stroke=0, fill=1)
+
+        legend_x = plot_x
+        legend_y = y0 + 13
+        for label, _col, color in series:
+            pdf.setFillColor(colors.HexColor(color))
+            pdf.circle(legend_x, legend_y + 3, 3, stroke=0, fill=1)
+            pdf.setFillColor(colors.HexColor("#475569"))
+            pdf.setFont(font_name, 8)
+            pdf.drawString(legend_x + 8, legend_y, clean(label))
+            legend_x += 112
+        return y0 - 12
+
     draw_page_header()
     y = height - 78
 
@@ -2250,6 +2342,8 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         ],
         y,
     )
+
+    y = draw_trend_chart(df_all, y)
 
     y = draw_section(
         T["commercial_takeaways"],
@@ -2920,7 +3014,7 @@ if st.session_state.get("has_generated", False):
             driver=total_cost_driver,
         )
 
-        render_meeting_header(meeting_notes, generated_at)
+        render_meeting_header(meeting_notes, generated_at, assumption_status)
         render_hero(
             overall=overall,
             weeks=int(weeks_per_phase) * len(PHASES),
@@ -2961,7 +3055,6 @@ if st.session_state.get("has_generated", False):
             unsafe_allow_html=True,
         )
         st.caption(T["planning_disclaimer"])
-        st.info(f"**{T['assumption_status']}**: {assumption_status}")
 
         st.subheader(T["commercial_takeaways"])
         render_kpi_grid([
@@ -3193,6 +3286,7 @@ if st.session_state.get("has_generated", False):
             forecast_range_values=forecast_range_values,
             assumption_summary=assumption_summary,
             next_actions=next_actions,
+            df_all=df_all,
         )
         dl_summary, dl_html, dl_pdf = st.columns(3)
         with dl_summary:
