@@ -89,6 +89,7 @@ PHASES = [
 
 PROMO_WEEKS = 9
 FBT_FREE_SHIPPING_AOV_THRESHOLD = 20.0
+MODEL_VERSION = "DE planning benchmark v1.0 | Updated Apr 2026"
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 CHART_COLORS = {
     "gmv": "#2563EB",
@@ -115,6 +116,7 @@ TEXT = {
         "meeting_mode": "Meeting mode",
         "meeting_mode_help": "Hide detailed setup and data tables after generation, keeping the page focused on the client-facing summary and charts.",
         "meeting_mode_sidebar_note": "Meeting mode is on. Detailed controls are hidden after generation; turn it off to edit assumptions.",
+        "back_to_client_view": "Back to client view",
         "sku_count": "Number of SKUs",
         "promo": "New seller: apply first-60-day 5% platform fee",
         "promo_yes": "Apply first-60-day 5% platform fee",
@@ -227,6 +229,8 @@ TEXT = {
         "plan_length": "Plan length",
         "sku_count_meta": "SKU count",
         "meeting_notes": "Meeting Notes",
+        "brand_name_help": "Recommended: add the brand name so exported PDF/CSV files look customized for the client.",
+        "model_version": "Model version",
         "meeting_header": "Brand Growth Simulation",
         "brand_name": "Brand name",
         "meeting_date": "Meeting date",
@@ -328,6 +332,7 @@ TEXT = {
         "meeting_mode": "会议展示模式",
         "meeting_mode_help": "生成结果后隐藏详细设置和数据表，让页面聚焦总结和图表。",
         "meeting_mode_sidebar_note": "会议展示模式已开启。生成结果后详细参数会收起；如需修改假设，请关闭该模式。",
+        "back_to_client_view": "回到客户展示视角",
         "sku_count": "SKU 数量",
         "promo": "是否为新商家：适用前约60天平台费 5%",
         "promo_yes": "适用前约60天平台费 5%",
@@ -440,6 +445,8 @@ TEXT = {
         "plan_length": "计划周期",
         "sku_count_meta": "SKU 数量",
         "meeting_notes": "会议信息",
+        "brand_name_help": "建议填写品牌名称，这样导出的 PDF/CSV 文件会更像为客户定制的材料。",
+        "model_version": "模型版本",
         "meeting_header": "品牌增长模拟",
         "brand_name": "品牌名称",
         "meeting_date": "会议日期",
@@ -736,6 +743,13 @@ def short_money(value):
 
 def pct(value, digits=1):
     return f"{float(value):.{digits}%}"
+
+
+def safe_filename_part(value, fallback="Brand"):
+    text = str(value or "").strip() or fallback
+    cleaned = "".join(ch if ch.isalnum() else "_" for ch in text)
+    cleaned = "_".join(part for part in cleaned.split("_") if part)
+    return cleaned[:60] or fallback
 
 
 with st.sidebar:
@@ -1582,6 +1596,7 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
         (T["brand_name"], meeting_notes.get("brand_name") or "-"),
         (T["meeting_date"], str(meeting_notes.get("meeting_date") or "-")),
         (T["am_name"], meeting_notes.get("am_name") or "-"),
+        (T["model_version"], MODEL_VERSION),
         (T["assumption_status"], assumption_status),
         (T["key_recommendation"], meeting_notes.get("key_recommendation") or "-"),
         (f"{T['forecast_range']} - {T['conservative_case']}", money(forecast_range["conservative_gmv"], 0)),
@@ -1990,6 +2005,7 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
       <span>{T["generated_on"]}: {generated_at}</span>
       <span>{T["plan_length"]}: {weeks} {T["week"]}</span>
       <span>{T["sku_count_meta"]}: {skus}</span>
+      <span>{T["model_version"]}: {MODEL_VERSION}</span>
     </div>
     <div class="hero">
       <h1>{(meeting_notes.get("brand_name") or T["hero_title"].format(weeks=weeks, skus=skus))}</h1>
@@ -2108,7 +2124,8 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         pdf.line(margin, 34, width - margin, 34)
         pdf.setFillColor(colors.HexColor("#94A3B8"))
         pdf.setFont(font_name, 7.5)
-        pdf.drawString(margin, 22, clean(T["planning_disclaimer"]))
+        pdf.drawString(margin, 22, clean(f"{T['model_version']}: {MODEL_VERSION}"))
+        pdf.drawCentredString(width / 2, 22, clean(T["planning_disclaimer"])[:90])
         pdf.drawRightString(width - margin, 22, f"{page_no}")
 
     def draw_page_header():
@@ -2738,6 +2755,7 @@ st.caption(T["caption"])
 with st.sidebar:
     st.header(T["plan_setup"])
     n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
+    st.caption(f"{T['model_version']}: {MODEL_VERSION}")
     if st.button(T["reset_defaults"], key="reset_request_btn"):
         st.session_state["reset_confirm_pending"] = True
     if st.session_state.get("reset_confirm_pending", False):
@@ -2755,6 +2773,11 @@ with st.sidebar:
     sidebar_meeting_compact = meeting_mode and st.session_state.get("has_generated", False)
     if sidebar_meeting_compact:
         st.info(T["meeting_mode_sidebar_note"])
+        if st.button(T["back_to_client_view"], key="back_to_client_view_btn"):
+            st.session_state["selected_phase_view"] = PHASES[0]["key"]
+            for phase in PHASES:
+                st.session_state[f"phase_chart_mode_{phase['key']}"] = T["phase_chart_cumulative"]
+            st.rerun()
         promo_60d = bool(st.session_state.get("_model_promo_60d", st.session_state.get("promo_60d_input", True)))
         use_fbt = bool(st.session_state.get("_model_use_fbt", st.session_state.get("use_fbt_input", False)))
         weeks_per_phase = int(st.session_state.get("_model_weeks_per_phase", st.session_state.get("weeks_per_phase_input", 4)))
@@ -2838,7 +2861,7 @@ if show_setup:
     with st.expander(T["meeting_notes"], expanded=False):
         n1, n2, n3 = st.columns(3)
         with n1:
-            brand_name = st.text_input(T["brand_name"], key="brand_name_input")
+            brand_name = st.text_input(T["brand_name"], key="brand_name_input", help=T["brand_name_help"])
         with n2:
             meeting_date = st.date_input(T["meeting_date"], value=datetime.now().date(), key="meeting_date_input")
         with n3:
@@ -3083,20 +3106,30 @@ if st.session_state.get("has_generated", False):
         for line in narrative:
             st.write(f"- {line}")
 
-        st.subheader(T["health_check"])
-        for level, check in health_checks:
-            if level == "ok":
-                st.success(check)
-            elif level == "info":
-                st.info(check)
-            else:
-                st.warning(check)
-
-        st.subheader(T["path_to_be"])
-        if cumulative_be:
-            st.success(path_text)
+        if meeting_mode:
+            health_container = st.expander(T["health_check"], expanded=False)
         else:
-            st.warning(path_text)
+            st.subheader(T["health_check"])
+            health_container = st.container()
+        with health_container:
+            for level, check in health_checks:
+                if level == "ok":
+                    st.success(check)
+                elif level == "info":
+                    st.info(check)
+                else:
+                    st.warning(check)
+
+        if meeting_mode:
+            path_container = st.expander(T["path_to_be"], expanded=False)
+        else:
+            st.subheader(T["path_to_be"])
+            path_container = st.container()
+        with path_container:
+            if cumulative_be:
+                st.success(path_text)
+            else:
+                st.warning(path_text)
 
         st.subheader(T["sample_roi_title"])
         r1, r2, r3, r4 = st.columns(4)
@@ -3288,26 +3321,28 @@ if st.session_state.get("has_generated", False):
             next_actions=next_actions,
             df_all=df_all,
         )
+        export_date = datetime.now().strftime("%Y-%m-%d")
+        export_prefix = f"{safe_filename_part(meeting_notes.get('brand_name'), 'Brand')}_TikTokShop_GrowthPlan_{export_date}"
         dl_summary, dl_html, dl_pdf = st.columns(3)
         with dl_summary:
             st.download_button(
                 T["download_customer_summary"],
                 data=csv_bytes(customer_summary),
-                file_name="meeting_summary.csv",
+                file_name=f"{export_prefix}_summary.csv",
                 mime="text/csv",
             )
         with dl_html:
             st.download_button(
                 T["download_meeting_html"],
                 data=meeting_html.encode("utf-8"),
-                file_name="meeting_summary.html",
+                file_name=f"{export_prefix}_summary.html",
                 mime="text/html",
             )
         with dl_pdf:
             st.download_button(
                 T["download_meeting_pdf"],
                 data=meeting_pdf,
-                file_name="meeting_summary.pdf",
+                file_name=f"{export_prefix}.pdf",
                 mime="application/pdf",
             )
         if not meeting_mode:
@@ -3360,8 +3395,8 @@ if st.session_state.get("has_generated", False):
                 st.dataframe(weekly_display, use_container_width=True)
 
                 d1, d2 = st.columns(2)
-                d1.download_button(T["download_weekly"], data=csv_bytes(df_all), file_name="weekly_details.csv", mime="text/csv")
-                d2.download_button(T["download_phase"], data=csv_bytes(phase_summary), file_name="phase_summary.csv", mime="text/csv")
+                d1.download_button(T["download_weekly"], data=csv_bytes(df_all), file_name=f"{export_prefix}_weekly_details.csv", mime="text/csv")
+                d2.download_button(T["download_phase"], data=csv_bytes(phase_summary), file_name=f"{export_prefix}_phase_summary.csv", mime="text/csv")
 
     except Exception as e:
         st.error(f"{T['input_error']}: {e}")
