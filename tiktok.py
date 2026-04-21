@@ -2295,12 +2295,10 @@ def render_business_readout(items):
     cards = []
     for title, body, accent in items:
         cards.append(
-            f"""
-            <div class="readout-card" style="border-top-color:{escape(str(accent))};">
-                <div class="readout-title">{escape(str(title))}</div>
-                <div class="readout-body">{escape(str(body))}</div>
-            </div>
-            """
+            f'<div class="readout-card" style="border-top-color:{escape(str(accent))};">'
+            f'<div class="readout-title">{escape(str(title))}</div>'
+            f'<div class="readout-body">{escape(str(body))}</div>'
+            "</div>"
         )
     st.markdown(f'<div class="readout-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
 
