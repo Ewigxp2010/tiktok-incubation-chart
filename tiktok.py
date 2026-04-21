@@ -267,6 +267,8 @@ TEXT = {
         "narrative_why": "Why it happens: The largest GMV source is {channel}, supported by {samples} samples and {videos} creator videos.",
         "narrative_next": "What to do next: Focus the next discussion on {driver}, the largest cost driver, and align funnel inputs with your AM using TikTok Shop data from similar categories or merchants.",
         "health_check": "Planning Notes",
+        "risk_review": "Planning Notes & Risk Checks",
+        "risk_review_intro": "These checks are hidden by default for a cleaner customer view. Use them to pressure-test assumptions before treating the result as a target.",
         "health_ok": "No major assumption risk detected under the current setup.",
         "health_take_rate": "Paid growth budget x ROAS is high in at least one phase. Check whether the implied paid GMV lift is realistic.",
         "health_sample_roi": "Sample ROI is low. Review sample quantity, AOV, conversion rate, or sample cost.",
@@ -301,6 +303,14 @@ TEXT = {
         "am_aligned_input": "AM-aligned input",
         "merchant_confirmed_input": "Merchant-confirmed input",
         "commercial_takeaways": "Commercial Takeaways",
+        "business_readout": "Business Readout",
+        "business_readout_profit": "Profit story",
+        "business_readout_growth": "Growth engine",
+        "business_readout_payback": "Payback path",
+        "business_readout_profit_positive": "The plan is profitable under the current assumptions; the largest margin lever is {driver}.",
+        "business_readout_profit_negative": "The plan is not yet profitable under the current assumptions; focus first on {driver}, AOV, margin, and commission structure.",
+        "business_readout_growth_text": "{channel} is the main GMV engine, supported by {samples} samples and {videos} creator videos.",
+        "business_readout_payback_text": "Cumulative break-even: {break_even}. Sample efficiency: {sample_roi}x GMV per sample cost.",
         "diagnosis_summary": "Diagnosis Summary",
         "diagnosis_profitable": "This plan is commercially positive under the current assumptions. The main watch-out is {driver}, while sample efficiency is {sample_roi}x GMV per sample cost.",
         "diagnosis_negative": "This plan is not yet profitable under the current assumptions. The main unlock is improving {driver}, increasing AOV/margin, or tightening paid growth before scaling.",
@@ -379,6 +389,8 @@ TEXT = {
         "cost_samples": "Sample investment",
         "cost_ads": "Ads investment",
         "phase_objective": "Phase talking point",
+        "phase_strategy": "Phase Strategy",
+        "phase_strategy_text": "The plan starts with creator content validation, then shifts into paid amplification, and finally scales winning content while Store/Search demand continues to compound.",
         "benchmark_info": "Data Notes",
         "benchmark_info_text": "Current AOV, video, click, conversion, and Store/Search assumptions are planning inputs. We recommend aligning with your AM and using TikTok Shop data from similar categories or merchants in your industry.",
         "model_assumptions": "Model Logic",
@@ -558,6 +570,8 @@ TEXT = {
         "narrative_why": "原因：最大的 GMV 来源是 {channel}，同时由 {samples} 个样品和 {videos} 条达人视频支撑。",
         "narrative_next": "下一步：建议重点讨论 {driver} 这个最大成本项，并和您的 AM 对齐，参考 TikTok Shop 上类似行业或类似商家的数据进行输入。",
         "health_check": "计划提示",
+        "risk_review": "计划提示与风险检查",
+        "risk_review_intro": "这些检查默认收起，以保持客户展示页面简洁。建议在把结果作为目标前，用它们复核关键假设。",
         "health_ok": "当前设置下没有发现明显假设风险。",
         "health_take_rate": "至少一个阶段的付费增长预算占比 x ROAS 偏高，建议确认广告带来的 GMV 增量是否合理。",
         "health_sample_roi": "样品 ROI 偏低，建议检查寄样数量、AOV、转化率或样品成本。",
@@ -592,6 +606,14 @@ TEXT = {
         "am_aligned_input": "已和 AM 对齐",
         "merchant_confirmed_input": "商家已确认",
         "commercial_takeaways": "商业结论",
+        "business_readout": "商业解读",
+        "business_readout_profit": "利润逻辑",
+        "business_readout_growth": "增长来源",
+        "business_readout_payback": "回本路径",
+        "business_readout_profit_positive": "按当前假设，该方案可以盈利；最大的利润杠杆是 {driver}。",
+        "business_readout_profit_negative": "按当前假设，该方案尚未盈利；建议优先复核 {driver}、AOV、毛利和佣金结构。",
+        "business_readout_growth_text": "{channel} 是主要 GMV 来源，由 {samples} 个样品和 {videos} 条达人视频支撑。",
+        "business_readout_payback_text": "累计 Break-even：{break_even}。样品效率：样品成本的 {sample_roi}x GMV。",
         "diagnosis_summary": "自动诊断摘要",
         "diagnosis_profitable": "按当前假设，该方案具备正向商业回报。主要关注点是 {driver}，当前样品效率为样品成本的 {sample_roi}x GMV。",
         "diagnosis_negative": "按当前假设，该方案尚未盈利。主要优化方向是改善 {driver}，提升 AOV/毛利，或在放大前收紧付费增长预算。",
@@ -670,6 +692,8 @@ TEXT = {
         "cost_samples": "样品投入",
         "cost_ads": "广告投入",
         "phase_objective": "阶段讲解词",
+        "phase_strategy": "阶段策略",
+        "phase_strategy_text": "计划先验证达人内容，再进入付费加热，最后放大已验证内容；同时店铺/Search 的承接会随着内容沉淀持续复利。",
         "benchmark_info": "数据说明",
         "benchmark_info_text": "当前 AOV、视频、点击、转化率和店铺/Search 占比是 planning 输入。建议和您的 AM 对齐，参考 TikTok Shop 上类似行业或类似商家的数据进行输入。",
         "model_assumptions": "模型逻辑",
@@ -1296,6 +1320,37 @@ st.markdown(
         font-size: 0.82rem;
     }
 
+    .readout-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin: 10px 0 18px 0;
+    }
+
+    .readout-card {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-top: 4px solid #CBD5E1;
+        border-radius: 8px;
+        padding: 16px 18px;
+        min-height: 132px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+    }
+
+    .readout-title {
+        color: #111827;
+        font-size: 0.88rem;
+        font-weight: 780;
+        margin-bottom: 8px;
+    }
+
+    .readout-body {
+        color: #374151;
+        font-size: 0.94rem;
+        line-height: 1.52;
+        overflow-wrap: anywhere;
+    }
+
     .chart-lens {
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
@@ -1539,6 +1594,7 @@ st.markdown(
     @media (max-width: 900px) {
         .hero-band,
         .kpi-grid,
+        .readout-grid,
         .phase-overview-grid {
             grid-template-columns: 1fr;
         }
@@ -2084,6 +2140,34 @@ def commercial_takeaways(overall, df_all, cumulative_be_label, driver):
     ]
 
 
+def business_readout_items(overall, df_all, cumulative_be_label, driver):
+    profit_key = "business_readout_profit_positive" if float(overall["Total Profit"]) >= 0 else "business_readout_profit_negative"
+    return [
+        (
+            T["business_readout_profit"],
+            T[profit_key].format(driver=driver),
+            "#16A34A" if float(overall["Total Profit"]) >= 0 else "#DC2626",
+        ),
+        (
+            T["business_readout_growth"],
+            T["business_readout_growth_text"].format(
+                channel=main_gmv_channel(df_all),
+                samples=f"{overall['Total Samples']:,.0f}",
+                videos=f"{overall['Total Videos']:,.0f}",
+            ),
+            "#2563EB",
+        ),
+        (
+            T["business_readout_payback"],
+            T["business_readout_payback_text"].format(
+                break_even=cumulative_be_label,
+                sample_roi=f"{overall['GMV / Sample Cost']:.1f}",
+            ),
+            "#7C3AED",
+        ),
+    ]
+
+
 def diagnosis_summary(overall, df_all, driver):
     sample_roi = float(overall["GMV / Sample Cost"])
     total_profit = float(overall["Total Profit"])
@@ -2205,6 +2289,20 @@ def render_action_list(actions):
         for idx, action in enumerate(actions, start=1)
     ]
     st.markdown(f'<div class="action-list">{"".join(items)}</div>', unsafe_allow_html=True)
+
+
+def render_business_readout(items):
+    cards = []
+    for title, body, accent in items:
+        cards.append(
+            f"""
+            <div class="readout-card" style="border-top-color:{escape(str(accent))};">
+                <div class="readout-title">{escape(str(title))}</div>
+                <div class="readout-body">{escape(str(body))}</div>
+            </div>
+            """
+        )
+    st.markdown(f'<div class="readout-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
 
 
 def render_phase_overview(phase_summary):
@@ -2831,6 +2929,8 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         y,
     )
 
+    y = draw_section(T["phase_strategy"], [T["phase_strategy_text"]], y, accent="#7C3AED", compact=True)
+
     y = draw_section(T["diagnosis_summary"], [clean(diagnosis_text)], y, accent="#14B8A6", compact=True)
 
     y = draw_trend_chart(df_all, y)
@@ -3291,7 +3391,7 @@ with st.sidebar:
 
     meeting_mode = st.checkbox(
         T["meeting_mode"],
-        value=False,
+        value=True,
         help=T["meeting_mode_help"],
         key="meeting_mode_input",
     )
@@ -3598,6 +3698,7 @@ if st.session_state.get("has_generated", False):
         total_cost_explanation = cost_explanation(total_cost_row)
         diagnosis_text = diagnosis_summary(overall, df_all, total_cost_driver)
         takeaways = commercial_takeaways(overall, df_all, cumulative_be_label, total_cost_driver)
+        business_readout = business_readout_items(overall, df_all, cumulative_be_label, total_cost_driver)
         forecast_range_values = forecast_range(overall, assumption_status)
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
         assumption_summary = build_assumption_summary(
@@ -3674,6 +3775,8 @@ if st.session_state.get("has_generated", False):
         st.caption(T["planning_disclaimer"])
         st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
         st.info(f"**{T['diagnosis_summary']}**: {diagnosis_text}")
+        st.subheader(T["business_readout"])
+        render_business_readout(business_readout)
         target_items = target_comparison_items(overall, target_gmv, target_profit)
         if target_items:
             st.subheader(T["target_comparison"])
@@ -3693,6 +3796,22 @@ if st.session_state.get("has_generated", False):
                 use_container_width=True,
                 hide_index=True,
             )
+
+        with st.expander(T["risk_review"], expanded=False):
+            st.caption(T["risk_review_intro"])
+            for level, check in health_checks:
+                if level == "ok":
+                    st.success(check)
+                elif level == "info":
+                    st.info(check)
+                else:
+                    st.warning(check)
+            st.caption(T["forecast_range_note"])
+            render_kpi_grid([
+                (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
+                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#2563EB"),
+                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#16A34A"),
+            ], compact=True)
 
         st.subheader(T["commercial_takeaways"])
         render_kpi_grid([
@@ -3718,19 +3837,17 @@ if st.session_state.get("has_generated", False):
         for line in narrative:
             st.write(f"- {line}")
 
-        if meeting_mode:
-            health_container = st.expander(T["health_check"], expanded=False)
-        else:
+        if not meeting_mode:
             st.subheader(T["health_check"])
             health_container = st.container()
-        with health_container:
-            for level, check in health_checks:
-                if level == "ok":
-                    st.success(check)
-                elif level == "info":
-                    st.info(check)
-                else:
-                    st.warning(check)
+            with health_container:
+                for level, check in health_checks:
+                    if level == "ok":
+                        st.success(check)
+                    elif level == "info":
+                        st.info(check)
+                    else:
+                        st.warning(check)
 
         if meeting_mode:
             path_container = st.expander(T["path_to_be"], expanded=False)
@@ -3742,6 +3859,52 @@ if st.session_state.get("has_generated", False):
                 st.success(path_text)
             else:
                 st.warning(path_text)
+
+        st.subheader(T["phase_trend"])
+        render_chart_lens(T["phase_strategy"], T["phase_strategy_text"])
+        render_phase_overview(phase_summary)
+        selected_phase_key = st.radio(
+            "",
+            options=[p["key"] for p in phase_inputs],
+            format_func=lambda key: phase_label(next(p for p in phase_inputs if p["key"] == key)),
+            horizontal=True,
+            label_visibility="collapsed",
+            key="selected_phase_view",
+        )
+        selected_phase = next(p for p in phase_inputs if p["key"] == selected_phase_key)
+        phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
+        phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
+        objective = phase_objective(selected_phase["key"])
+        if objective:
+            st.info(f"**{T['phase_objective']}**: {objective}")
+        phase_kpis = [
+            (T["total_gmv"], money(phase_row["GMV"], 0), "#2563EB"),
+            (T["total_profit"], money(phase_row["Profit"], 0), "#16A34A" if phase_row["Profit"] >= 0 else "#DC2626"),
+            (T["sample_investment"], money(phase_row["Samples Cost"], 0), "#8B5CF6"),
+            (T["ads_investment"], money(phase_row["Ads Cost"], 0), "#06B6D4"),
+        ]
+        if not meeting_mode:
+            phase_kpis.extend([
+                (T["total_cost"], money(phase_row["Total Cost"], 0), "#F97316"),
+                (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#10B981"),
+            ])
+        render_kpi_grid(phase_kpis, compact=True)
+
+        chart_mode = st.radio(
+            T["phase_chart_mode"],
+            options=[T["phase_chart_cumulative"], T["phase_chart_total"]],
+            horizontal=True,
+            key=f"phase_chart_mode_{selected_phase['key']}",
+        )
+        if chart_mode == T["phase_chart_cumulative"]:
+            st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True)
+        else:
+            st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
+        render_insight(phase_chart_insight(phase_row))
+
+        driver, amount, share = cost_driver(phase_row)
+        with st.expander(T["cost_breakdown"], expanded=False):
+            st.info(T["cost_breakdown_text"].format(driver=driver, amount=money(amount, 0), share=pct(share, 0)))
 
         st.subheader(T["sample_roi_title"])
         render_kpi_grid([
@@ -3782,96 +3945,54 @@ if st.session_state.get("has_generated", False):
         st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True)
         render_chart_lens(T["chart_read"], T["read_cumulative_chart"])
         render_insight(overall_chart_insight(df_all))
-        st.subheader(T["supporting_charts"])
-        support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
-        with support_tabs[0]:
-            if lang == "zh":
-                render_chart_lens(
-                    "商业视角",
-                    f"这张图展示内容投入如何放大为生意结果：{overall['Total Samples']:,.0f} 个样品预计沉淀 "
-                    f"{overall['Total Videos']:,.0f} 条达人视频，带来 {overall['Total Clicks']:,.0f} 次商品点击和 "
-                    f"{overall['Total Orders']:,.0f} 个订单。",
-                )
-            else:
-                render_chart_lens(
-                    "Business lens",
-                    f"This view shows how content seeding scales into commercial demand: {overall['Total Samples']:,.0f} samples "
-                    f"are expected to create {overall['Total Videos']:,.0f} creator videos, {overall['Total Clicks']:,.0f} product clicks, "
-                    f"and {overall['Total Orders']:,.0f} orders.",
-                )
-            render_funnel_summary(df_all)
-        with support_tabs[1]:
-            if lang == "zh":
-                render_chart_lens(
-                    "商业视角",
-                    "这张图看的是 GMV 归因结构：达人视频 GMV 用来验证内容和转化效率，店铺/Search GMV 则代表内容种草后的无达人佣金成交沉淀。",
-                )
-            else:
-                render_chart_lens(
-                    "Business lens",
-                    "This view separates GMV ownership: Affiliate Video GMV validates content and conversion, while Store/Search GMV captures commission-light demand created after content exposure.",
-                )
-            st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True)
-        with support_tabs[2]:
-            if lang == "zh":
-                render_chart_lens(
-                    "商业视角",
-                    f"这张图解释成本压力来自哪里。当前最大成本项是 {total_cost_driver}，因此优化利润时应优先判断这个成本是否合理，而不只看样品或广告预算。",
-                )
-            else:
-                render_chart_lens(
-                    "Business lens",
-                    f"This view explains where margin pressure comes from. The largest cost driver is {total_cost_driver}, so profit optimization should start there, not only with samples or ads.",
-                )
-            st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True)
-        st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
-
-        st.subheader(T["phase_trend"])
-        render_phase_overview(phase_summary)
-        selected_phase_key = st.radio(
-            "",
-            options=[p["key"] for p in phase_inputs],
-            format_func=lambda key: phase_label(next(p for p in phase_inputs if p["key"] == key)),
-            horizontal=True,
-            label_visibility="collapsed",
-            key="selected_phase_view",
-        )
-        selected_phase = next(p for p in phase_inputs if p["key"] == selected_phase_key)
-        phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
-        phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
-        objective = phase_objective(selected_phase["key"])
-        if objective:
-            st.info(f"**{T['phase_objective']}**: {objective}")
-        phase_kpis = [
-            (T["total_gmv"], money(phase_row["GMV"], 0), "#2563EB"),
-            (T["total_profit"], money(phase_row["Profit"], 0), "#16A34A" if phase_row["Profit"] >= 0 else "#DC2626"),
-            (T["sample_investment"], money(phase_row["Samples Cost"], 0), "#8B5CF6"),
-            (T["ads_investment"], money(phase_row["Ads Cost"], 0), "#06B6D4"),
-        ]
-        if not meeting_mode:
-            phase_kpis = [
-                (T["total_cost"], money(phase_row["Total Cost"], 0), "#F97316"),
-                (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#10B981"),
-            ]
-        render_kpi_grid(phase_kpis)
-
-        chart_mode = st.radio(
-            T["phase_chart_mode"],
-            options=[T["phase_chart_cumulative"], T["phase_chart_total"]],
-            horizontal=True,
-            key=f"phase_chart_mode_{selected_phase['key']}",
-        )
-        if chart_mode == T["phase_chart_cumulative"]:
-            st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True)
+        if meeting_mode:
+            support_container = st.expander(T["supporting_charts"], expanded=False)
         else:
-            st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
-        render_insight(phase_chart_insight(phase_row))
-
-        driver, amount, share = cost_driver(phase_row)
-        st.info(
-            f"**{T['cost_breakdown']}**: "
-            + T["cost_breakdown_text"].format(driver=driver, amount=money(amount, 0), share=pct(share, 0))
-        )
+            st.subheader(T["supporting_charts"])
+            support_container = st.container()
+        with support_container:
+            support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
+            with support_tabs[0]:
+                if lang == "zh":
+                    render_chart_lens(
+                        "商业视角",
+                        f"这张图展示内容投入如何放大为生意结果：{overall['Total Samples']:,.0f} 个样品预计沉淀 "
+                        f"{overall['Total Videos']:,.0f} 条达人视频，带来 {overall['Total Clicks']:,.0f} 次商品点击和 "
+                        f"{overall['Total Orders']:,.0f} 个订单。",
+                    )
+                else:
+                    render_chart_lens(
+                        "Business lens",
+                        f"This view shows how content seeding scales into commercial demand: {overall['Total Samples']:,.0f} samples "
+                        f"are expected to create {overall['Total Videos']:,.0f} creator videos, {overall['Total Clicks']:,.0f} product clicks, "
+                        f"and {overall['Total Orders']:,.0f} orders.",
+                    )
+                render_funnel_summary(df_all)
+            with support_tabs[1]:
+                if lang == "zh":
+                    render_chart_lens(
+                        "商业视角",
+                        "这张图看的是 GMV 归因结构：达人视频 GMV 用来验证内容和转化效率，店铺/Search GMV 则代表内容种草后的无达人佣金成交沉淀。",
+                    )
+                else:
+                    render_chart_lens(
+                        "Business lens",
+                        "This view separates GMV ownership: Affiliate Video GMV validates content and conversion, while Store/Search GMV captures commission-light demand created after content exposure.",
+                    )
+                st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True)
+            with support_tabs[2]:
+                if lang == "zh":
+                    render_chart_lens(
+                        "商业视角",
+                        f"这张图解释成本压力来自哪里。当前最大成本项是 {total_cost_driver}，因此优化利润时应优先判断这个成本是否合理，而不只看样品或广告预算。",
+                    )
+                else:
+                    render_chart_lens(
+                        "Business lens",
+                        f"This view explains where margin pressure comes from. The largest cost driver is {total_cost_driver}, so profit optimization should start there, not only with samples or ads.",
+                    )
+                st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True)
+            st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
 
         st.subheader(T["next_actions"])
         render_action_list(next_actions)
