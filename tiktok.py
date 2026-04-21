@@ -414,9 +414,10 @@ TEXT = {
         "model_logic_6_body": "Product cost is derived from AOV and gross margin. Sample investment uses product cost plus logistics. Profit subtracts product cost, platform fee, creator commission, logistics, samples, and ads from GMV.",
         "model_logic_6_formula": "Profit = GMV - Product Cost - Platform Fee - Creator Commission - Logistics - Samples - Ads",
         "model_assumptions_text": "SKU-level model: samples create creator videos, videos generate long-tail clicks and orders, organic GMV splits into Affiliate Video and Store/Search, paid acceleration adds incremental GMV, and profit is calculated after product cost, platform fee, creator commission, logistics, sample investment, and ads.",
-        "download_customer_summary": "Download meeting summary CSV",
-        "download_one_pager_pdf": "Download one-page PDF",
-        "download_meeting_pdf": "Download detail PDF",
+        "download_customer_summary": "Summary CSV",
+        "download_meeting_html": "Meeting HTML",
+        "download_one_pager_pdf": "One-page PDF",
+        "download_meeting_pdf": "Detail PDF",
         "view_details": "View detailed tables",
         "channel_mix": "GMV Channel Mix",
     },
@@ -717,9 +718,10 @@ TEXT = {
         "model_logic_6_body": "商品成本由 AOV 和毛利率反推；样品投入由商品成本加物流成本构成；利润会扣除商品成本、平台费、达人佣金、物流、样品投入和广告投入。",
         "model_logic_6_formula": "利润 = GMV - 商品成本 - 平台费 - 达人佣金 - 物流 - 样品投入 - 广告投入",
         "model_assumptions_text": "SKU level 模型：样品产生达人视频，视频在长尾周期内持续带来点击和订单，自然 GMV 拆分为达人视频与店铺/Search，付费加热带来增量 GMV，最终利润扣除商品成本、平台费、达人佣金、物流、样品投入和广告投入。",
-        "download_customer_summary": "下载会议总结 CSV",
-        "download_one_pager_pdf": "下载一页版 PDF",
-        "download_meeting_pdf": "下载详细版 PDF",
+        "download_customer_summary": "总结 CSV",
+        "download_meeting_html": "会议 HTML",
+        "download_one_pager_pdf": "一页 PDF",
+        "download_meeting_pdf": "详细 PDF",
         "view_details": "查看详细表格",
         "channel_mix": "GMV 渠道拆分",
     },
@@ -1589,6 +1591,18 @@ st.markdown(
         margin: 10px 0 18px 0;
         box-shadow: 0 6px 16px rgba(15, 23, 42, 0.028);
         line-height: 1.45;
+    }
+
+    div[data-testid="stDownloadButton"] button {
+        width: 100%;
+        min-height: 46px;
+        border-radius: 8px;
+        white-space: normal;
+        line-height: 1.25;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 
     @media (max-width: 900px) {
@@ -4096,6 +4110,7 @@ if st.session_state.get("has_generated", False):
                 data=csv_bytes(customer_summary),
                 file_name=f"{export_prefix}_summary.csv",
                 mime="text/csv",
+                use_container_width=True,
             )
         with dl_html:
             st.download_button(
@@ -4103,6 +4118,7 @@ if st.session_state.get("has_generated", False):
                 data=meeting_html.encode("utf-8"),
                 file_name=f"{export_prefix}_summary.html",
                 mime="text/html",
+                use_container_width=True,
             )
         with dl_one_pager:
             st.download_button(
@@ -4110,6 +4126,7 @@ if st.session_state.get("has_generated", False):
                 data=one_pager_pdf,
                 file_name=f"{export_prefix}_one_pager.pdf",
                 mime="application/pdf",
+                use_container_width=True,
             )
         with dl_pdf:
             st.download_button(
@@ -4117,6 +4134,7 @@ if st.session_state.get("has_generated", False):
                 data=meeting_pdf,
                 file_name=f"{export_prefix}_detail.pdf",
                 mime="application/pdf",
+                use_container_width=True,
             )
         if not meeting_mode:
             st.subheader(T["summary"])
