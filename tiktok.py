@@ -1160,6 +1160,52 @@ st.markdown(
         overflow-wrap: anywhere;
     }
 
+    .phase-overview-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin: 12px 0 18px 0;
+    }
+
+    .phase-overview-card {
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-top: 4px solid #CBD5E1;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
+    }
+
+    .phase-overview-title {
+        color: #111827;
+        font-size: 0.98rem;
+        font-weight: 780;
+        margin-bottom: 12px;
+        line-height: 1.25;
+    }
+
+    .phase-overview-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px 12px;
+    }
+
+    .phase-overview-label {
+        color: #64748B;
+        font-size: 0.72rem;
+        font-weight: 720;
+        line-height: 1.25;
+    }
+
+    .phase-overview-value {
+        color: #111827;
+        font-size: clamp(0.92rem, 1.4vw, 1.1rem);
+        font-weight: 800;
+        line-height: 1.2;
+        margin-top: 3px;
+        overflow-wrap: anywhere;
+    }
+
     .hero-band {
         background:
             linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98)),
@@ -1267,7 +1313,8 @@ st.markdown(
 
     @media (max-width: 900px) {
         .hero-band,
-        .kpi-grid {
+        .kpi-grid,
+        .phase-overview-grid {
             grid-template-columns: 1fr;
         }
 
@@ -1836,6 +1883,31 @@ def render_action_list(actions):
         for idx, action in enumerate(actions, start=1)
     ]
     st.markdown(f'<div class="action-list">{"".join(items)}</div>', unsafe_allow_html=True)
+
+
+def render_phase_overview(phase_summary):
+    color_map = {phase["key"]: {"phase1": "#2563EB", "phase2": "#14B8A6", "phase3": "#F97316"}.get(phase["key"], "#64748B") for phase in PHASES}
+    cards = []
+    for _, row in phase_summary.iterrows():
+        metrics = [
+            (T["total_gmv"], money(row["GMV"], 0)),
+            (T["total_profit"], money(row["Profit"], 0)),
+            (T["sample_investment"], money(row["Samples Cost"], 0)),
+            (T["ads_investment"], money(row["Ads Cost"], 0)),
+        ]
+        metric_html = "".join(
+            f'<div><div class="phase-overview-label">{escape(label)}</div><div class="phase-overview-value">{escape(value)}</div></div>'
+            for label, value in metrics
+        )
+        cards.append(
+            f"""
+            <div class="phase-overview-card" style="border-top-color:{escape(color_map.get(row["Phase Key"], "#64748B"))};">
+                <div class="phase-overview-title">{escape(str(row["Phase"]))}</div>
+                <div class="phase-overview-metrics">{metric_html}</div>
+            </div>
+            """
+        )
+    st.markdown(f'<div class="phase-overview-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
 
 
 def cost_explanation(row):
@@ -3222,6 +3294,7 @@ if st.session_state.get("has_generated", False):
         st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
 
         st.subheader(T["phase_trend"])
+        render_phase_overview(phase_summary)
         selected_phase_key = st.radio(
             "",
             options=[p["key"] for p in phase_inputs],
@@ -3243,8 +3316,10 @@ if st.session_state.get("has_generated", False):
             (T["ads_investment"], money(phase_row["Ads Cost"], 0), "#06B6D4"),
         ]
         if not meeting_mode:
-            phase_kpis.insert(1, (T["total_cost"], money(phase_row["Total Cost"], 0), "#F97316"))
-            phase_kpis.insert(2, (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#10B981"))
+            phase_kpis = [
+                (T["total_cost"], money(phase_row["Total Cost"], 0), "#F97316"),
+                (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#10B981"),
+            ]
         render_kpi_grid(phase_kpis)
 
         chart_mode = st.radio(
