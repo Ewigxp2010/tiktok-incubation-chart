@@ -117,14 +117,19 @@ TEXT = {
         "caption": "Client-ready planning simulator for SKU samples, creator videos, clicks, GMV, costs, and profit",
         "global_inputs": "Global Inputs",
         "plan_setup": "Plan Setup",
+        "step1_title": "Step 1 · Confirm listing scope",
+        "step1_body": "Start with the expected number of SKUs to be listed. The simulator will then prepare the phase plan, SKU setup, and forecast workspace around that portfolio size.",
+        "expected_listing_skus": "Expected listing SKUs",
+        "continue_setup": "Continue to plan setup",
+        "setup_ready": "Listing scope confirmed. You can adjust assumptions in the sidebar and SKU details below.",
         "cost_assumptions": "Cost Assumptions",
         "growth_levers": "Growth Levers",
         "reset_defaults": "Reset defaults",
         "reset_confirm": "Confirm reset",
         "reset_pending": "This will reset all inputs to the default planning setup. Click Confirm reset to continue.",
-        "meeting_mode": "Meeting mode",
-        "meeting_mode_help": "Hide detailed setup and data tables after generation, keeping the page focused on the client-facing summary and charts.",
-        "meeting_mode_sidebar_note": "Meeting mode is on. Detailed controls are hidden after generation; turn it off to edit assumptions.",
+        "meeting_mode": "Focus view",
+        "meeting_mode_help": "After generation, keep the page focused on the concise meeting storyline, headline metrics, and key charts.",
+        "meeting_mode_sidebar_note": "Focus view is on. Detailed inputs are tucked away; turn it off to adjust assumptions.",
         "back_to_client_view": "Back to client view",
         "sku_count": "Number of SKUs",
         "promo": "New seller: apply first-60-day 5% platform fee",
@@ -144,9 +149,9 @@ TEXT = {
         "phase1": "Phase 1 - Cold Start",
         "phase2": "Phase 2 - Growth",
         "phase3": "Phase 3 - Scale",
-        "phase1_objective": "Objective: validate creator content, seed first product videos, and build initial conversion signals.",
-        "phase2_objective": "Objective: reduce sample intensity, start paid amplification, and convert validated content into scalable GMV.",
-        "phase3_objective": "Objective: scale winning content with a higher paid acceleration budget while Store/Search and content-tail sales continue compounding.",
+        "phase1_objective": "Talking point: validate creator content, seed the first product videos, and build early conversion signals before scaling budget.",
+        "phase2_objective": "Talking point: reduce sample intensity and start paid amplification, turning validated content into more scalable GMV.",
+        "phase3_objective": "Talking point: scale winning content with higher paid acceleration while Store/Search and content-tail sales continue compounding.",
         "take_rate": "Paid acceleration budget (% of GMV)",
         "samples_sku_week": "Samples / SKU / week",
         "sku_setup": "SKU Setup",
@@ -187,10 +192,10 @@ TEXT = {
         "videos_generated": "Videos Generated",
         "product_clicks": "Product Clicks",
         "orders": "Orders",
-        "charts": "Charts",
-        "overall_weekly": "Overall Weekly Trend",
-        "cumulative_profit_trend": "Cumulative Profit Trend",
-        "funnel_summary": "Funnel Summary",
+        "charts": "Growth Story",
+        "overall_weekly": "How GMV and profit build over time",
+        "cumulative_profit_trend": "When the plan pays back",
+        "funnel_summary": "Content-to-order journey",
         "forecast_gmv": "Forecast GMV",
         "total_cost_label": "Total Cost",
         "profit_label": "Profit",
@@ -202,9 +207,9 @@ TEXT = {
         "orders_label": "Orders",
         "affiliate_video_gmv": "Affiliate Video GMV",
         "shoptab_gmv": "Store/Search GMV",
-        "phase_total_breakdown": "Profit Bridge",
-        "supporting_charts": "Supporting Charts",
-        "investment_split": "Investment Split",
+        "phase_total_breakdown": "What drives phase profit",
+        "supporting_charts": "Business Drivers",
+        "investment_split": "Where the investment goes",
         "product_profile": "Product Profile",
         "hero_title": "{weeks}-week incubation plan for {skus} SKUs",
         "hero_subtitle": "Projected {gmv} GMV with {growth_investment} growth investment. Break-even: {break_even}.",
@@ -317,13 +322,14 @@ TEXT = {
         "cost_fulfillment": "Logistics",
         "cost_samples": "Sample investment",
         "cost_ads": "Ads investment",
-        "phase_objective": "Phase Objective",
+        "phase_objective": "Phase talking point",
         "benchmark_info": "Data Notes",
         "benchmark_info_text": "Current AOV, video, click, conversion, and Store/Search assumptions are planning inputs. We recommend aligning with your AM and using TikTok Shop data from similar categories or merchants in your industry.",
         "model_assumptions": "Model Logic",
         "model_assumptions_text": "The model uses SKU-level content funnel assumptions, paid acceleration budget x ROAS to estimate paid GMV lift, Store/Search GMV with no creator commission, and FBT free shipping only for SKUs above €20 AOV when selected.",
         "download_customer_summary": "Download meeting summary CSV",
-        "download_meeting_pdf": "Download meeting summary PDF",
+        "download_one_pager_pdf": "Download one-page PDF",
+        "download_meeting_pdf": "Download detail PDF",
         "view_details": "View detailed tables",
         "channel_mix": "GMV Channel Mix",
     },
@@ -333,14 +339,19 @@ TEXT = {
         "caption": "面向客户会议的 SKU 寄样、达人视频、点击、GMV、成本和利润规划模拟器",
         "global_inputs": "全局输入",
         "plan_setup": "计划设置",
+        "step1_title": "第一步 · 确认上架 SKU 范围",
+        "step1_body": "请先填写预计上架的 SKU 数量。确认后，系统会围绕这个产品组合展开阶段计划、SKU 设置和预测看板。",
+        "expected_listing_skus": "预计上架 SKU 数量",
+        "continue_setup": "继续设置计划",
+        "setup_ready": "SKU 范围已确认。您可以在左侧调整假设，并在下方设置 SKU 明细。",
         "cost_assumptions": "成本假设",
         "growth_levers": "增长杠杆",
         "reset_defaults": "恢复默认值",
         "reset_confirm": "确认恢复默认值",
         "reset_pending": "此操作会将所有输入恢复到默认沙盘设置。如需继续，请点击确认恢复默认值。",
-        "meeting_mode": "会议展示模式",
-        "meeting_mode_help": "生成结果后隐藏详细设置和数据表，让页面聚焦总结和图表。",
-        "meeting_mode_sidebar_note": "会议展示模式已开启。生成结果后详细参数会收起；如需修改假设，请关闭该模式。",
+        "meeting_mode": "精简展示",
+        "meeting_mode_help": "生成结果后，页面会聚焦会议讲述路径、核心指标和关键图表。",
+        "meeting_mode_sidebar_note": "精简展示已开启。详细输入已收起；如需调整假设，请关闭该模式。",
         "back_to_client_view": "回到客户展示视角",
         "sku_count": "SKU 数量",
         "promo": "是否为新商家：适用前约60天平台费 5%",
@@ -360,9 +371,9 @@ TEXT = {
         "phase1": "阶段 1 - 冷启动",
         "phase2": "阶段 2 - 增长",
         "phase3": "阶段 3 - 放量",
-        "phase1_objective": "目标：验证达人内容，沉淀第一批商品视频，并建立早期转化信号。",
-        "phase2_objective": "目标：降低寄样强度，开始广告加热，把已验证内容转化为可放大的 GMV。",
-        "phase3_objective": "目标：用更高付费加热预算放大优质内容，同时让店铺/Search 和内容长尾成交继续累积。",
+        "phase1_objective": "讲解词：这一阶段重点不是立刻放大预算，而是验证达人内容、沉淀第一批商品视频，并建立早期转化信号。",
+        "phase2_objective": "讲解词：这一阶段降低寄样强度，开始用付费加热放大已验证内容，把内容能力转化为可规模化的 GMV。",
+        "phase3_objective": "讲解词：这一阶段放大优质内容和付费加热，同时让店铺/Search 与内容长尾出单继续累积。",
         "take_rate": "付费加热预算占 GMV (%)",
         "samples_sku_week": "每个 SKU 每周寄样数",
         "sku_setup": "SKU 设置",
@@ -403,10 +414,10 @@ TEXT = {
         "videos_generated": "产出视频数",
         "product_clicks": "商品点击数",
         "orders": "订单数",
-        "charts": "图表",
-        "overall_weekly": "整体周趋势",
-        "cumulative_profit_trend": "累计利润趋势",
-        "funnel_summary": "漏斗汇总",
+        "charts": "增长故事",
+        "overall_weekly": "GMV 和利润如何逐周增长",
+        "cumulative_profit_trend": "计划何时回本",
+        "funnel_summary": "内容到订单路径",
         "forecast_gmv": "预测 GMV",
         "total_cost_label": "总成本",
         "profit_label": "利润",
@@ -418,9 +429,9 @@ TEXT = {
         "orders_label": "订单",
         "affiliate_video_gmv": "达人视频 GMV",
         "shoptab_gmv": "店铺/Search GMV",
-        "phase_total_breakdown": "利润桥",
-        "supporting_charts": "辅助图表",
-        "investment_split": "投入拆分",
+        "phase_total_breakdown": "阶段利润由什么驱动",
+        "supporting_charts": "业务驱动因素",
+        "investment_split": "投入花在哪里",
         "product_profile": "产品组合",
         "hero_title": "{weeks} 周、{skus} 个 SKU 的孵化计划",
         "hero_subtitle": "预计产生 {gmv} GMV，需要 {growth_investment} 增长投入。Break-even：{break_even}。",
@@ -533,13 +544,14 @@ TEXT = {
         "cost_fulfillment": "物流成本",
         "cost_samples": "样品投入",
         "cost_ads": "广告投入",
-        "phase_objective": "阶段目标",
+        "phase_objective": "阶段讲解词",
         "benchmark_info": "数据说明",
         "benchmark_info_text": "当前 AOV、视频、点击、转化率和店铺/Search 占比是 planning 输入。建议和您的 AM 对齐，参考 TikTok Shop 上类似行业或类似商家的数据进行输入。",
         "model_assumptions": "模型逻辑",
         "model_assumptions_text": "模型基于 SKU level 内容漏斗假设，用付费加热预算占比 x ROAS 估算广告带来的 GMV 增量；店铺/Search GMV 不计达人佣金；勾选 FBT 时，仅 AOV 高于 €20 的 SKU 物流成本按 €0 计算。",
         "download_customer_summary": "下载会议总结 CSV",
-        "download_meeting_pdf": "下载会议总结 PDF",
+        "download_one_pager_pdf": "下载一页版 PDF",
+        "download_meeting_pdf": "下载详细版 PDF",
         "view_details": "查看详细表格",
         "channel_mix": "GMV 渠道拆分",
     },
@@ -1009,6 +1021,48 @@ st.markdown(
         color: #1F2937;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
         line-height: 1.55;
+    }
+
+    .setup-gate {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 26px 28px;
+        margin: 26px 0 18px 0;
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.055);
+    }
+
+    .setup-gate-kicker {
+        color: #2563EB;
+        font-size: 0.82rem;
+        font-weight: 780;
+        margin-bottom: 8px;
+    }
+
+    .setup-gate-title {
+        color: #111827;
+        font-size: 1.55rem;
+        font-weight: 800;
+        line-height: 1.18;
+        margin-bottom: 10px;
+    }
+
+    .setup-gate-body {
+        color: #4B5563;
+        font-size: 1rem;
+        line-height: 1.58;
+        max-width: 760px;
+    }
+
+    .setup-ready {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-left: 4px solid #2563EB;
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin: 12px 0 18px 0;
+        color: #374151;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
     }
 
     .meeting-header {
@@ -2221,7 +2275,7 @@ def wrap_pdf_text(text, max_width, font_name, font_size):
     return words
 
 
-def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values, assumption_summary, next_actions, df_all):
+def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, forecast_range_values, assumption_summary, next_actions, df_all, detail_pack=True):
     from reportlab.lib.pagesizes import A4
     from reportlab.lib import colors
     from reportlab.pdfgen import canvas
@@ -2512,6 +2566,22 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         accent="#2563EB",
         compact=True,
     )
+
+    if not detail_pack:
+        if y > margin + 122:
+            y = draw_section(
+                T["next_actions"],
+                [clean(action) for action in next_actions[:3]],
+                y,
+                accent="#14B8A6",
+                ordered=True,
+                compact=True,
+            )
+        draw_footer()
+        pdf.save()
+        buffer.seek(0)
+        return buffer.getvalue()
+
     y = draw_two_column_section(T["key_assumptions"], assumption_summary, y, accent="#7C3AED")
 
     y = new_page()
@@ -2562,6 +2632,7 @@ def reset_defaults():
         "weeks_per_phase_input", "ads_roas_input", "organic_window_input",
         "reset_confirm_pending", "brand_name_input", "meeting_date_input",
         "am_name_input", "key_recommendation_input", "assumption_status_input",
+        "sku_count_confirmed",
         "_model_brand_name", "_model_meeting_date", "_model_am_name",
         "_model_key_recommendation", "_model_assumption_status",
     }
@@ -2864,9 +2935,39 @@ def format_table(df, money_cols=None, pct_cols=None, number_cols=None, decimal_c
 st.title(T["title"])
 st.caption(T["caption"])
 
+if not st.session_state.get("sku_count_confirmed", False) and not st.session_state.get("has_generated", False):
+    st.markdown(
+        f"""
+        <div class="setup-gate">
+            <div class="setup-gate-kicker">{escape(T["plan_setup"])}</div>
+            <div class="setup-gate-title">{escape(T["step1_title"])}</div>
+            <div class="setup-gate-body">{escape(T["step1_body"])}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    sku_col, action_col = st.columns([1.2, 1])
+    with sku_col:
+        st.number_input(
+            T["expected_listing_skus"],
+            min_value=1,
+            max_value=26,
+            value=5,
+            step=1,
+            key="n_skus_input",
+        )
+    with action_col:
+        st.write("")
+        st.write("")
+        if st.button(T["continue_setup"], type="primary", use_container_width=True):
+            st.session_state["sku_count_confirmed"] = True
+            st.rerun()
+    st.stop()
+
 with st.sidebar:
     st.header(T["plan_setup"])
-    n_skus = st.number_input(T["sku_count"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
+    n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
+    st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
     st.caption(f"{T['model_version']}: {MODEL_VERSION}")
     if st.button(T["reset_defaults"], key="reset_request_btn"):
         st.session_state["reset_confirm_pending"] = True
@@ -3418,6 +3519,24 @@ if st.session_state.get("has_generated", False):
             assumption_summary=assumption_summary,
             next_actions=next_actions,
         )
+        one_pager_pdf = meeting_summary_pdf(
+            overall=overall,
+            narrative=narrative,
+            health_checks=health_checks,
+            path_text=path_text,
+            weeks=int(weeks_per_phase) * len(PHASES),
+            skus=int(n_skus),
+            generated_at=generated_at,
+            meeting_notes=meeting_notes,
+            assumption_status=assumption_status,
+            takeaways=takeaways,
+            cost_explanation_text=total_cost_explanation,
+            forecast_range_values=forecast_range_values,
+            assumption_summary=assumption_summary,
+            next_actions=next_actions,
+            df_all=df_all,
+            detail_pack=False,
+        )
         meeting_pdf = meeting_summary_pdf(
             overall=overall,
             narrative=narrative,
@@ -3434,10 +3553,11 @@ if st.session_state.get("has_generated", False):
             assumption_summary=assumption_summary,
             next_actions=next_actions,
             df_all=df_all,
+            detail_pack=True,
         )
         export_date = datetime.now().strftime("%Y-%m-%d")
         export_prefix = f"{safe_filename_part(meeting_notes.get('brand_name'), 'Brand')}_TikTokShop_GrowthPlan_{export_date}"
-        dl_summary, dl_html, dl_pdf = st.columns(3)
+        dl_summary, dl_html, dl_one_pager, dl_pdf = st.columns(4)
         with dl_summary:
             st.download_button(
                 T["download_customer_summary"],
@@ -3452,11 +3572,18 @@ if st.session_state.get("has_generated", False):
                 file_name=f"{export_prefix}_summary.html",
                 mime="text/html",
             )
+        with dl_one_pager:
+            st.download_button(
+                T["download_one_pager_pdf"],
+                data=one_pager_pdf,
+                file_name=f"{export_prefix}_one_pager.pdf",
+                mime="application/pdf",
+            )
         with dl_pdf:
             st.download_button(
                 T["download_meeting_pdf"],
                 data=meeting_pdf,
-                file_name=f"{export_prefix}.pdf",
+                file_name=f"{export_prefix}_detail.pdf",
                 mime="application/pdf",
             )
         if not meeting_mode:
