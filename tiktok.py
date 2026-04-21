@@ -981,13 +981,14 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid var(--tts-line);
         border-radius: 8px;
-        padding: 24px 22px 20px 22px;
+        padding: 24px 22px 30px 22px;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
-        overflow: hidden;
+        overflow: visible;
     }
 
     div[data-testid="stPlotlyChart"] > div {
         width: 100% !important;
+        overflow: visible;
     }
 
     .dashboard-note {
@@ -2563,7 +2564,7 @@ def apply_plotly_layout(fig, title, height=460):
     fig.update_layout(
         title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.96, "yanchor": "top"},
         height=height,
-        margin=dict(l=64, r=32, t=86, b=64),
+        margin=dict(l=64, r=32, t=86, b=88),
         paper_bgcolor="white",
         plot_bgcolor="#FAFBFC",
         font=dict(color="#111827", family="Arial, sans-serif"),
@@ -3476,7 +3477,7 @@ if st.session_state.get("has_generated", False):
         with b2:
             if cumulative_be:
                 st.success(f"{T['cumulative_be']}: Week {cumulative_be}")
-            else: 
+            else:
                 st.warning(f"{T['cumulative_be']}: {T['not_reached']}")
 
         if not meeting_mode:
