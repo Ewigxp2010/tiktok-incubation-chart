@@ -3205,7 +3205,7 @@ if st.session_state.get("has_generated", False):
         overall_summary = build_overall_summary(df_all)
         weekly_be = first_positive_profit_week(df_all)
         cumulative_be = first_cumulative_break_even_week(df_all)
-
+ 
         overall = overall_summary.iloc[0]
         weekly_be_label = f"Week {weekly_be}" if weekly_be else T["not_reached"]
         cumulative_be_label = f"Week {cumulative_be}" if cumulative_be else T["not_reached"]
