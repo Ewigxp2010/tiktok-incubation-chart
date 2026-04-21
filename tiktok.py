@@ -99,7 +99,13 @@ PHASES = [
 PROMO_WEEKS = 9
 FBT_FREE_SHIPPING_AOV_THRESHOLD = 20.0
 MODEL_VERSION = "DE planning model v1.0 | Updated Apr 2026"
+MODEL_LAST_REVIEWED = "AM/data review placeholder - update after internal calibration"
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+SCENARIO_ADJUSTMENTS = {
+    "conservative": {"clicks": 0.85, "conversion": 0.85, "roas": 0.90},
+    "base": {"clicks": 1.00, "conversion": 1.00, "roas": 1.00},
+    "upside": {"clicks": 1.15, "conversion": 1.15, "roas": 1.10},
+}
 CHART_COLORS = {
     "gmv": "#2563EB",
     "cost": "#F97316",
@@ -133,6 +139,20 @@ TEXT = {
         "target_profit": "Target Profit (€)",
         "target_gmv_help": "Optional. Leave as 0 if there is no GMV target for this scenario.",
         "target_profit_help": "Optional. Leave as 0 if there is no profit target for this scenario.",
+        "scenario_case": "Scenario sensitivity",
+        "scenario_conservative": "Conservative",
+        "scenario_base": "Base",
+        "scenario_upside": "Upside",
+        "scenario_case_help": "Optional lens for fast meeting discussion. It adjusts clicks, click-to-order rate, and ROAS for the simulation only; it does not overwrite SKU inputs.",
+        "lock_plan": "Lock current plan",
+        "unlock_plan": "Unlock plan",
+        "plan_locked": "Current plan is locked. Unlock to refresh results from changed inputs.",
+        "scenario_snapshot": "Scenario Snapshot",
+        "model_last_reviewed": "Model last reviewed",
+        "chart_read": "How to read",
+        "read_weekly_chart": "Read this as whether GMV growth is outpacing total cost, and whether profit stays above zero after the fee step-up.",
+        "read_cumulative_chart": "Read this as the payback path: the curve shows whether earlier content and paid growth recover the upfront investment.",
+        "assumption_appendix": "Assumption Appendix",
         "reset_defaults": "Reset defaults",
         "reset_sku_assumptions": "Reset SKU assumptions",
         "reset_sku_assumptions_help": "Restore AOV, funnel assumptions, gross margin, and commission defaults for selected SKU categories without changing phase controls.",
@@ -296,7 +316,7 @@ TEXT = {
         "action_scale_ads": "Paid growth is contributing meaningful GMV. Consider preparing Phase 2/3 ad budget scenarios around the current ROAS assumption.",
         "action_strengthen_store": "Store/Search contribution is material. Strengthen listing quality, product detail pages, and search readiness so content traffic can convert without extra creator commission.",
         "action_align_inputs": "Before using this as a target, align AOV, videos per sample, clicks per video, and click-to-order rate with your AM using similar TikTok Shop category or merchant data.",
-        "action_default": "Use this simulation to agree the sample plan, paid acceleration budget, and next milestone before moving into execution.",
+        "action_default": "Use this simulation to agree the sample plan, paid growth budget, and next milestone before moving into execution.",
         "forecast_range": "Forecast Range",
         "forecast_range_prompt": "! Forecast range available",
         "conservative_case": "Conservative",
@@ -399,6 +419,20 @@ TEXT = {
         "target_profit": "目标利润 (€)",
         "target_gmv_help": "可选项。如果当前方案没有 GMV 目标，保持 0 即可。",
         "target_profit_help": "可选项。如果当前方案没有利润目标，保持 0 即可。",
+        "scenario_case": "场景敏感度",
+        "scenario_conservative": "保守",
+        "scenario_base": "基准",
+        "scenario_upside": "乐观",
+        "scenario_case_help": "会议中快速讨论不同结果区间用。仅在模拟中调整点击、点击到下单转化率和 ROAS，不覆盖 SKU 输入。",
+        "lock_plan": "锁定当前方案",
+        "unlock_plan": "解锁方案",
+        "plan_locked": "当前方案已锁定。如需根据新输入刷新结果，请先解锁。",
+        "scenario_snapshot": "方案快照",
+        "model_last_reviewed": "模型最近校准",
+        "chart_read": "怎么看",
+        "read_weekly_chart": "看 GMV 增长是否持续跑赢总成本，以及平台费阶梯变化后利润是否仍保持在 0 以上。",
+        "read_cumulative_chart": "看回本路径：曲线反映前期内容沉淀和付费增长是否能覆盖前期投入。",
+        "assumption_appendix": "假设附录",
         "reset_defaults": "恢复默认值",
         "reset_sku_assumptions": "仅恢复 SKU 假设",
         "reset_sku_assumptions_help": "只恢复当前 SKU 类目下的 AOV、漏斗假设、毛利和佣金默认值，不改变阶段计划。",
@@ -1507,6 +1541,28 @@ st.markdown(
         font-size: 0.88rem;
         margin-bottom: 0.8rem;
     }
+
+    .premium-kpi,
+    .hero-band,
+    .meeting-header,
+    .setup-gate,
+    .chart-lens,
+    .insight-strip,
+    div[data-testid="stPlotlyChart"],
+    div[data-testid="stVerticalBlockBorderWrapper"],
+    div[data-testid="stDataFrame"],
+    div[data-testid="stAlert"] {
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.026) !important;
+    }
+
+    .premium-kpi,
+    .hero-band,
+    .meeting-header,
+    .setup-gate,
+    .chart-lens,
+    .insight-strip {
+        border-color: #E2E8F0;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -2035,6 +2091,20 @@ def target_comparison_items(overall, target_gmv, target_profit):
     return items
 
 
+def apply_scenario_adjustment(product_df, ads_roas, scenario_key):
+    adjusted = product_df.copy()
+    factors = SCENARIO_ADJUSTMENTS.get(scenario_key, SCENARIO_ADJUSTMENTS["base"])
+    adjusted["Clicks / Video"] = adjusted["Clicks / Video"] * factors["clicks"]
+    adjusted["Click-to-order Rate"] = (adjusted["Click-to-order Rate"] * factors["conversion"]).clip(upper=1.0)
+    return adjusted, float(ads_roas) * factors["roas"]
+
+
+def scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label):
+    samples = " / ".join(str(int(phase["samples_per_sku"])) for phase in phase_inputs)
+    take_rates = " / ".join(pct(float(phase["take_rate"]), 0) for phase in phase_inputs)
+    return f"{int(n_skus)} SKUs · {int(weeks_per_phase) * len(PHASES)} weeks · {samples} samples/SKU/week · {take_rates} paid growth · ROAS {float(ads_roas):.1f} · {scenario_label}"
+
+
 def forecast_range(overall, assumption_status):
     if assumption_status == T["merchant_confirmed_input"]:
         spread = 0.08
@@ -2428,7 +2498,7 @@ def wrap_pdf_text(text, max_width, font_name, font_size):
     return words
 
 
-def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, diagnosis_text, forecast_range_values, assumption_summary, next_actions, df_all, detail_pack=True):
+def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, diagnosis_text, forecast_range_values, assumption_summary, next_actions, df_all, product_df=None, detail_pack=True):
     from reportlab.lib.pagesizes import A4
     from reportlab.lib import colors
     from reportlab.pdfgen import canvas
@@ -2772,6 +2842,24 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
             title, lines, accent = item
         y = draw_section(title, lines, y, accent=accent, ordered=(title in (T["client_narrative"], T["next_actions"])), compact=True)
 
+    if product_df is not None:
+        y = new_page()
+        pdf.setFillColor(colors.HexColor("#111827"))
+        pdf.setFont(font_name, 18)
+        pdf.drawString(margin, y, clean(T["assumption_appendix"]))
+        y -= 24
+        appendix_lines = []
+        for _, sku in product_df.iterrows():
+            appendix_lines.append(
+                f"{sku['SKU']} | {sku['Category']} / {sku['Subcategory']} | "
+                f"AOV {money(sku['AOV'], 2)} | Margin {pct(sku['Gross Margin'], 0)} | "
+                f"Videos/sample {float(sku['Videos / Sample']):.2f} | "
+                f"Clicks/video {float(sku['Clicks / Video']):,.0f} | "
+                f"CVR {pct(sku['Click-to-order Rate'], 1)} | "
+                f"Store/Search {pct(sku['ShopTab GMV Share'], 0)}"
+            )
+        y = draw_section(T["assumption_appendix"], appendix_lines, y, accent="#64748B", compact=True)
+
     draw_footer()
     pdf.save()
     buffer.seek(0)
@@ -2792,9 +2880,12 @@ def reset_defaults():
         "reset_confirm_pending", "brand_name_input", "meeting_date_input",
         "am_name_input", "key_recommendation_input", "assumption_status_input",
         "sku_count_confirmed", "scenario_name_input", "target_gmv_input", "target_profit_input",
+        "scenario_case_input", "plan_locked",
         "_model_brand_name", "_model_meeting_date", "_model_am_name",
         "_model_key_recommendation", "_model_assumption_status", "_model_scenario_name",
-        "_model_target_gmv", "_model_target_profit",
+        "_model_target_gmv", "_model_target_profit", "_model_scenario_case",
+        "_locked_df_all", "_locked_product_df", "_locked_phase_inputs",
+        "_locked_weeks_per_phase", "_locked_ads_roas", "_locked_scenario_label",
     }
     for key in list(st.session_state.keys()):
         if key in exact_keys or any(key.startswith(prefix) for prefix in prefixes):
@@ -3172,6 +3263,7 @@ with st.sidebar:
         organic_click_window_weeks = int(st.session_state.get("_model_organic_click_window_weeks", st.session_state.get("organic_window_input", 4)))
         target_gmv = float(st.session_state.get("_model_target_gmv", st.session_state.get("target_gmv_input", 0.0)))
         target_profit = float(st.session_state.get("_model_target_profit", st.session_state.get("target_profit_input", 0.0)))
+        scenario_case = st.session_state.get("_model_scenario_case", st.session_state.get("scenario_case_input", "base"))
         phase_inputs = []
         for idx, phase in enumerate(PHASES):
             take_rate_pct = float(st.session_state.get(f"_model_take_rate_pct_{idx}", st.session_state.get(f"take_rate_{idx}", phase["take_rate"] * 100)))
@@ -3204,6 +3296,18 @@ with st.sidebar:
         st.header(T["growth_levers"])
         ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
         organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1, key="organic_window_input")
+        scenario_case = st.selectbox(
+            T["scenario_case"],
+            options=["conservative", "base", "upside"],
+            format_func=lambda key: {
+                "conservative": T["scenario_conservative"],
+                "base": T["scenario_base"],
+                "upside": T["scenario_upside"],
+            }[key],
+            index=1,
+            key="scenario_case_input",
+            help=T["scenario_case_help"],
+        )
         st.header(T["target_setup"])
         target_gmv = st.number_input(T["target_gmv"], min_value=0.0, value=0.0, step=1000.0, key="target_gmv_input", help=T["target_gmv_help"])
         target_profit = st.number_input(T["target_profit"], min_value=0.0, value=0.0, step=1000.0, key="target_profit_input", help=T["target_profit_help"])
@@ -3237,6 +3341,7 @@ with st.sidebar:
         st.session_state["_model_organic_click_window_weeks"] = int(organic_click_window_weeks)
         st.session_state["_model_target_gmv"] = float(target_gmv)
         st.session_state["_model_target_profit"] = float(target_profit)
+        st.session_state["_model_scenario_case"] = scenario_case
         for idx, phase in enumerate(phase_inputs):
             st.session_state[f"_model_take_rate_pct_{idx}"] = float(phase["take_rate"] * 100)
             st.session_state[f"_model_samples_per_sku_{idx}"] = int(phase["samples_per_sku"])
@@ -3373,23 +3478,46 @@ else:
 
 st.info(f"**{T['plan_preview']}**: {plan_preview_text(n_skus, phase_inputs, weeks_per_phase, organic_click_window_weeks, ads_roas)}")
 st.caption(T["assumption_quality_text"].format(status=assumption_status))
+scenario_label = {
+    "conservative": T["scenario_conservative"],
+    "base": T["scenario_base"],
+    "upside": T["scenario_upside"],
+}.get(scenario_case, T["scenario_base"])
+st.info(f"**{T['scenario_snapshot']}**: {scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label)}")
+st.caption(f"{T['model_last_reviewed']}: {MODEL_LAST_REVIEWED}")
+
+if st.session_state.get("plan_locked", False):
+    st.warning(T["plan_locked"])
+    if st.button(T["unlock_plan"], key="unlock_plan_btn"):
+        st.session_state["plan_locked"] = False
+        st.rerun()
 
 if st.button(T["generate"], type="primary"):
     st.session_state["has_generated"] = True
+    st.session_state["plan_locked"] = False
 
 if st.session_state.get("has_generated", False):
     try:
-        product_df = build_product_df(int(n_skus))
-        df_all = build_weekly_model(
-            product_df=product_df,
-            phase_inputs=phase_inputs,
-            weeks_per_phase=int(weeks_per_phase),
-            promo_60d=bool(promo_60d),
-            logistics_cost=float(logistics_cost),
-            use_fbt=bool(use_fbt),
-            organic_click_window_weeks=int(organic_click_window_weeks),
-            ads_roas=float(ads_roas),
-        )
+        if st.session_state.get("plan_locked", False) and "_locked_df_all" in st.session_state:
+            product_df = st.session_state["_locked_product_df"].copy()
+            df_all = st.session_state["_locked_df_all"].copy()
+            phase_inputs = st.session_state["_locked_phase_inputs"]
+            weeks_per_phase = st.session_state["_locked_weeks_per_phase"]
+            effective_ads_roas = st.session_state["_locked_ads_roas"]
+            scenario_label = st.session_state.get("_locked_scenario_label", scenario_label)
+        else:
+            product_df = build_product_df(int(n_skus))
+            adjusted_product_df, effective_ads_roas = apply_scenario_adjustment(product_df, ads_roas, scenario_case)
+            df_all = build_weekly_model(
+                product_df=adjusted_product_df,
+                phase_inputs=phase_inputs,
+                weeks_per_phase=int(weeks_per_phase),
+                promo_60d=bool(promo_60d),
+                logistics_cost=float(logistics_cost),
+                use_fbt=bool(use_fbt),
+                organic_click_window_weeks=int(organic_click_window_weeks),
+                ads_roas=float(effective_ads_roas),
+            )
         phase_summary = build_phase_summary(df_all)
         overall_summary = build_overall_summary(df_all)
         weekly_be = first_positive_profit_week(df_all)
@@ -3410,7 +3538,7 @@ if st.session_state.get("has_generated", False):
         health_checks = assumption_health_checks(
             product_df=product_df,
             phase_inputs=phase_inputs,
-            ads_roas=float(ads_roas),
+            ads_roas=float(effective_ads_roas),
             overall=overall,
             driver=total_cost_driver,
             df_all=df_all,
@@ -3426,7 +3554,7 @@ if st.session_state.get("has_generated", False):
             weeks_per_phase=int(weeks_per_phase),
             n_skus=int(n_skus),
             logistics_cost=float(logistics_cost),
-            ads_roas=float(ads_roas),
+            ads_roas=float(effective_ads_roas),
             organic_click_window_weeks=int(organic_click_window_weeks),
             promo_60d=bool(promo_60d),
             use_fbt=bool(use_fbt),
@@ -3449,6 +3577,17 @@ if st.session_state.get("has_generated", False):
         )
 
         st.subheader(T["executive_dashboard"])
+        st.info(f"**{T['scenario_snapshot']}**: {scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label)}")
+        if not st.session_state.get("plan_locked", False):
+            if st.button(T["lock_plan"], key="lock_plan_btn"):
+                st.session_state["plan_locked"] = True
+                st.session_state["_locked_product_df"] = product_df.copy()
+                st.session_state["_locked_df_all"] = df_all.copy()
+                st.session_state["_locked_phase_inputs"] = phase_inputs
+                st.session_state["_locked_weeks_per_phase"] = int(weeks_per_phase)
+                st.session_state["_locked_ads_roas"] = float(effective_ads_roas)
+                st.session_state["_locked_scenario_label"] = scenario_label
+                st.rerun()
         render_kpi_grid([
             (T["total_gmv"], money(overall["Total GMV"], 0), "#2563EB"),
             (T["total_profit"], money(overall["Total Profit"], 0), "#16A34A" if overall["Total Profit"] >= 0 else "#DC2626"),
@@ -3572,7 +3711,9 @@ if st.session_state.get("has_generated", False):
 
         st.subheader(T["charts"])
         st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True)
+        render_chart_lens(T["chart_read"], T["read_weekly_chart"])
         st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True)
+        render_chart_lens(T["chart_read"], T["read_cumulative_chart"])
         render_insight(overall_chart_insight(df_all))
         st.subheader(T["supporting_charts"])
         support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
@@ -3733,6 +3874,7 @@ if st.session_state.get("has_generated", False):
             assumption_summary=assumption_summary,
             next_actions=next_actions,
             df_all=df_all,
+            product_df=product_df,
             detail_pack=False,
         )
         meeting_pdf = meeting_summary_pdf(
@@ -3752,6 +3894,7 @@ if st.session_state.get("has_generated", False):
             assumption_summary=assumption_summary,
             next_actions=next_actions,
             df_all=df_all,
+            product_df=product_df,
             detail_pack=True,
         )
         export_date = datetime.now().strftime("%Y-%m-%d")
