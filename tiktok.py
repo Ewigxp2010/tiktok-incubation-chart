@@ -235,9 +235,9 @@ TEXT = {
         "videos_generated": "Videos Generated",
         "product_clicks": "Product Clicks",
         "orders": "Orders",
-        "charts": "Growth Story",
-        "overall_weekly": "How GMV and profit build over time",
-        "cumulative_profit_trend": "When the plan pays back",
+        "charts": "Growth & Profit Path",
+        "overall_weekly": "GMV, Cost & Profit Path",
+        "cumulative_profit_trend": "Cumulative Payback Curve",
         "funnel_summary": "Content-to-order journey",
         "forecast_gmv": "Forecast GMV",
         "total_cost_label": "Total Cost",
@@ -284,6 +284,11 @@ TEXT = {
         "path_be_gap": "Cumulative break-even is not reached. The remaining gap is {gap}, with {driver} as the largest cost driver.",
         "download_meeting_html": "Download meeting summary HTML",
         "export_materials": "Export Meeting Materials",
+        "export_materials_note": "Use these files for meeting follow-up, internal alignment, or sharing a concise customer-ready plan.",
+        "export_summary_desc": "Raw meeting summary for internal tracking.",
+        "export_html_desc": "Readable recap for follow-up emails.",
+        "export_one_pager_desc": "Concise customer-facing one-pager.",
+        "export_detail_desc": "Full PDF with assumptions appendix.",
         "generated_on": "Generated on",
         "plan_length": "Plan length",
         "sku_count_meta": "SKU count",
@@ -332,12 +337,16 @@ TEXT = {
         "yes": "Yes",
         "no": "No",
         "next_actions": "Recommended Next Steps",
+        "action_group_validate": "Validate",
+        "action_group_optimize": "Optimize",
+        "action_group_scale": "Scale",
         "action_expand_samples": "Sample ROI is strong. Consider expanding the creator sample pool while keeping SKU-level conversion assumptions aligned with AM data.",
         "action_fix_profit": "Profit is negative under the current setup. Revisit the largest cost driver, SKU gross margin, and commission structure before scaling budget.",
         "action_scale_ads": "Paid growth is contributing meaningful GMV. Consider preparing Phase 2/3 ad budget scenarios around the current ROAS assumption.",
         "action_strengthen_store": "Store/Search contribution is material. Strengthen listing quality, product detail pages, and search readiness so content traffic can convert without extra creator commission.",
         "action_align_inputs": "Before using this as a target, align AOV, videos per sample, clicks per video, and click-to-order rate with your AM using similar TikTok Shop category or merchant data.",
         "action_default": "Use this simulation to agree the sample plan, paid growth budget, and next milestone before moving into execution.",
+        "action_no_immediate": "No priority action in this lane under the current setup.",
         "forecast_range": "Forecast Range",
         "forecast_range_prompt": "! Forecast range available",
         "conservative_case": "Conservative",
@@ -391,6 +400,7 @@ TEXT = {
         "phase_objective": "Phase talking point",
         "phase_strategy": "Phase Strategy",
         "phase_strategy_text": "The plan starts with creator content validation, then shifts into paid amplification, and finally scales winning content while Store/Search demand continues to compound.",
+        "pdf_proposal_title": "Growth Plan Proposal",
         "benchmark_info": "Data Notes",
         "benchmark_info_text": "Current AOV, video, click, conversion, and Store/Search assumptions are planning inputs. We recommend aligning with your AM and using TikTok Shop data from similar categories or merchants in your industry.",
         "model_assumptions": "Model Logic",
@@ -539,9 +549,9 @@ TEXT = {
         "videos_generated": "产出视频数",
         "product_clicks": "商品点击数",
         "orders": "订单数",
-        "charts": "增长故事",
-        "overall_weekly": "GMV 和利润如何逐周增长",
-        "cumulative_profit_trend": "计划何时回本",
+        "charts": "增长与利润路径",
+        "overall_weekly": "GMV、成本与利润路径",
+        "cumulative_profit_trend": "累计回本曲线",
         "funnel_summary": "内容到订单路径",
         "forecast_gmv": "预测 GMV",
         "total_cost_label": "总成本",
@@ -588,6 +598,11 @@ TEXT = {
         "path_be_gap": "当前计划尚未达到累计 Break-even，距离回本还差 {gap}，最大成本项是 {driver}。",
         "download_meeting_html": "下载会议总结 HTML",
         "export_materials": "导出会议材料",
+        "export_materials_note": "这些文件可用于会后跟进、内部对齐，或分享简洁的客户版计划。",
+        "export_summary_desc": "用于内部跟进的会议总结原始表。",
+        "export_html_desc": "适合会后邮件分享的总结页面。",
+        "export_one_pager_desc": "简洁的客户展示一页版。",
+        "export_detail_desc": "包含假设附录的完整 PDF。",
         "generated_on": "生成时间",
         "plan_length": "计划周期",
         "sku_count_meta": "SKU 数量",
@@ -636,12 +651,16 @@ TEXT = {
         "yes": "是",
         "no": "否",
         "next_actions": "建议下一步行动",
+        "action_group_validate": "验证",
+        "action_group_optimize": "优化",
+        "action_group_scale": "放大",
         "action_expand_samples": "样品 ROI 表现较强。可以考虑扩大达人寄样池，同时继续用 AM/类似行业数据校准 SKU level 的转化假设。",
         "action_fix_profit": "当前设置下利润为负。建议在扩大预算前，优先复核最大成本项、SKU 毛利率和达人佣金结构。",
         "action_scale_ads": "付费增长对 GMV 有明显贡献。建议围绕当前 ROAS 假设，提前准备 Phase 2/3 的广告预算场景。",
         "action_strengthen_store": "店铺/Search 贡献较明显。建议强化 listing、商品详情页和搜索承接，让内容种草后的流量尽量以无达人佣金方式成交。",
         "action_align_inputs": "在把结果作为业务目标前，建议和您的 AM 对齐 AOV、每样品视频数、每视频点击数和点击到下单转化率，并参考 TikTok Shop 类似行业或类似商家数据。",
         "action_default": "建议用该模拟结果确认寄样计划、付费增长预算和下一阶段里程碑，再进入执行。",
+        "action_no_immediate": "当前设置下，该方向暂无优先动作。",
         "forecast_range": "结果可信区间",
         "forecast_range_prompt": "! 可查看结果可信区间",
         "conservative_case": "保守",
@@ -695,6 +714,7 @@ TEXT = {
         "phase_objective": "阶段讲解词",
         "phase_strategy": "阶段策略",
         "phase_strategy_text": "计划先验证达人内容，再进入付费加热，最后放大已验证内容；同时店铺/Search 的承接会随着内容沉淀持续复利。",
+        "pdf_proposal_title": "增长方案提案",
         "benchmark_info": "数据说明",
         "benchmark_info_text": "当前 AOV、视频、点击、转化率和店铺/Search 占比是 planning 输入。建议和您的 AM 对齐，参考 TikTok Shop 上类似行业或类似商家的数据进行输入。",
         "model_assumptions": "模型逻辑",
@@ -1295,6 +1315,42 @@ st.markdown(
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
     }
 
+    .action-group-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin: 10px 0 18px 0;
+    }
+
+    .action-group {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-top: 4px solid #CBD5E1;
+        border-radius: 8px;
+        padding: 14px 16px;
+        min-height: 146px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+    }
+
+    .action-group-title {
+        color: #111827;
+        font-size: 0.86rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .action-group-item {
+        color: #374151;
+        font-size: 0.9rem;
+        line-height: 1.45;
+        padding: 8px 0;
+        border-top: 1px solid #EEF2F7;
+    }
+
+    .action-group-item:first-of-type {
+        border-top: 0;
+    }
+
     .action-item {
         display: flex;
         gap: 10px;
@@ -1605,10 +1661,34 @@ st.markdown(
         text-align: center;
     }
 
+    .export-card-title {
+        color: #111827;
+        font-size: 0.9rem;
+        font-weight: 780;
+        margin-bottom: 4px;
+        line-height: 1.25;
+    }
+
+    .export-card-desc {
+        color: #64748B;
+        font-size: 0.8rem;
+        line-height: 1.35;
+        min-height: 42px;
+        margin-bottom: 10px;
+    }
+
+    .export-card-shell [data-testid="stVerticalBlockBorderWrapper"] {
+        min-height: 148px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
     @media (max-width: 900px) {
         .hero-band,
         .kpi-grid,
         .readout-grid,
+        .action-group-grid,
         .phase-overview-grid {
             grid-template-columns: 1fr;
         }
@@ -2305,6 +2385,43 @@ def render_action_list(actions):
     st.markdown(f'<div class="action-list">{"".join(items)}</div>', unsafe_allow_html=True)
 
 
+def group_next_actions(actions):
+    grouped = {
+        T["action_group_validate"]: [],
+        T["action_group_optimize"]: [],
+        T["action_group_scale"]: [],
+    }
+    for action in actions:
+        if action == T["action_align_inputs"]:
+            grouped[T["action_group_validate"]].append(action)
+        elif action in (T["action_fix_profit"], T["action_strengthen_store"]):
+            grouped[T["action_group_optimize"]].append(action)
+        elif action in (T["action_expand_samples"], T["action_scale_ads"]):
+            grouped[T["action_group_scale"]].append(action)
+        else:
+            grouped[T["action_group_validate"]].append(action)
+    return grouped
+
+
+def render_grouped_actions(actions):
+    palette = {
+        T["action_group_validate"]: "#2563EB",
+        T["action_group_optimize"]: "#14B8A6",
+        T["action_group_scale"]: "#F97316",
+    }
+    cards = []
+    for title, items in group_next_actions(actions).items():
+        body = "".join(
+            f'<div class="action-group-item">{escape(str(item))}</div>'
+            for item in (items or [T["action_no_immediate"]])
+        )
+        cards.append(
+            f'<div class="action-group" style="border-top-color:{palette.get(title, "#CBD5E1")};">'
+            f'<div class="action-group-title">{escape(str(title))}</div>{body}</div>'
+        )
+    st.markdown(f'<div class="action-group-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
+
+
 def render_business_readout(items):
     cards = []
     for title, body, accent in items:
@@ -2894,10 +3011,20 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
     draw_page_header()
     y = height - 78
 
+    pdf.setFillColor(colors.HexColor("#F8FAFC"))
+    pdf.setStrokeColor(colors.HexColor("#E2E8F0"))
+    pdf.roundRect(margin, y - 86, width - margin * 2, 86, 10, stroke=1, fill=1)
+    pdf.setFillColor(colors.HexColor("#25F4EE"))
+    pdf.roundRect(margin, y - 86, 5, 86, 3, stroke=0, fill=1)
+    pdf.setFillColor(colors.HexColor("#FE2C55"))
+    pdf.roundRect(margin + 6, y - 86, 5, 86, 3, stroke=0, fill=1)
+    pdf.setFillColor(colors.HexColor("#64748B"))
+    pdf.setFont(font_name, 8.5)
+    pdf.drawString(margin + 18, y - 18, clean(T["pdf_proposal_title"]))
     pdf.setFillColor(colors.HexColor("#111827"))
-    pdf.setFont(font_name, 24)
-    pdf.drawString(margin, y, clean(brand_title))
-    y -= 26
+    pdf.setFont(font_name, 21)
+    pdf.drawString(margin + 18, y - 42, clean(brand_title))
+    y -= 62
 
     pdf.setFillColor(colors.HexColor("#475569"))
     y = draw_wrapped(
@@ -2906,13 +3033,13 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
             growth_investment=money(overall["Growth Investment"], 0),
             break_even=path_text,
         ),
-        margin,
+        margin + 18,
         y,
-        width - margin * 2,
+        width - margin * 2 - 36,
         font_size=9.5,
         leading=13,
     )
-    y -= 10
+    y -= 16
 
     chip_x = margin
     chip_y = y
@@ -3789,6 +3916,11 @@ if st.session_state.get("has_generated", False):
         st.info(f"**{T['diagnosis_summary']}**: {diagnosis_text}")
         st.subheader(T["business_readout"])
         render_business_readout(business_readout)
+        st.subheader(T["break_even"])
+        render_kpi_grid([
+            (T["weekly_profit"], f"Week {weekly_be}" if weekly_be else T["not_reached"], "#16A34A" if weekly_be else "#F97316"),
+            (T["cumulative_be"], f"Week {cumulative_be}" if cumulative_be else T["not_reached"], "#16A34A" if cumulative_be else "#F97316"),
+        ], compact=True)
         target_items = target_comparison_items(overall, target_gmv, target_profit)
         if target_items:
             st.subheader(T["target_comparison"])
@@ -4007,7 +4139,7 @@ if st.session_state.get("has_generated", False):
             st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
 
         st.subheader(T["next_actions"])
-        render_action_list(next_actions)
+        render_grouped_actions(next_actions)
 
         money_cols = [
             "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
@@ -4027,7 +4159,6 @@ if st.session_state.get("has_generated", False):
             "Videos / Sample", "Orders / Sample", "GMV / Sample Cost",
         ]
 
-        st.subheader(T["export_materials"])
         customer_summary = build_customer_summary(
             overall,
             phase_summary,
@@ -4103,39 +4234,66 @@ if st.session_state.get("has_generated", False):
             f"{safe_filename_part(meeting_notes.get('scenario_name'), 'Scenario')}_"
             f"TikTokShop_GrowthPlan_{export_date}"
         )
-        dl_summary, dl_html, dl_one_pager, dl_pdf = st.columns(4)
-        with dl_summary:
-            st.download_button(
-                T["download_customer_summary"],
-                data=csv_bytes(customer_summary),
-                file_name=f"{export_prefix}_summary.csv",
-                mime="text/csv",
-                use_container_width=True,
-            )
-        with dl_html:
-            st.download_button(
-                T["download_meeting_html"],
-                data=meeting_html.encode("utf-8"),
-                file_name=f"{export_prefix}_summary.html",
-                mime="text/html",
-                use_container_width=True,
-            )
-        with dl_one_pager:
-            st.download_button(
-                T["download_one_pager_pdf"],
-                data=one_pager_pdf,
-                file_name=f"{export_prefix}_one_pager.pdf",
-                mime="application/pdf",
-                use_container_width=True,
-            )
-        with dl_pdf:
-            st.download_button(
-                T["download_meeting_pdf"],
-                data=meeting_pdf,
-                file_name=f"{export_prefix}_detail.pdf",
-                mime="application/pdf",
-                use_container_width=True,
-            )
+        st.subheader(T["export_materials"])
+        with st.container(border=True):
+            st.caption(T["export_materials_note"])
+            dl_summary, dl_html, dl_one_pager, dl_pdf = st.columns(4)
+            with dl_summary:
+                with st.container(border=True):
+                    st.markdown(
+                        f'<div class="export-card-title">{T["download_customer_summary"]}</div>'
+                        f'<div class="export-card-desc">{T["export_summary_desc"]}</div>',
+                        unsafe_allow_html=True,
+                    )
+                    st.download_button(
+                        T["download_customer_summary"],
+                        data=csv_bytes(customer_summary),
+                        file_name=f"{export_prefix}_summary.csv",
+                        mime="text/csv",
+                        use_container_width=True,
+                    )
+            with dl_html:
+                with st.container(border=True):
+                    st.markdown(
+                        f'<div class="export-card-title">{T["download_meeting_html"]}</div>'
+                        f'<div class="export-card-desc">{T["export_html_desc"]}</div>',
+                        unsafe_allow_html=True,
+                    )
+                    st.download_button(
+                        T["download_meeting_html"],
+                        data=meeting_html.encode("utf-8"),
+                        file_name=f"{export_prefix}_summary.html",
+                        mime="text/html",
+                        use_container_width=True,
+                    )
+            with dl_one_pager:
+                with st.container(border=True):
+                    st.markdown(
+                        f'<div class="export-card-title">{T["download_one_pager_pdf"]}</div>'
+                        f'<div class="export-card-desc">{T["export_one_pager_desc"]}</div>',
+                        unsafe_allow_html=True,
+                    )
+                    st.download_button(
+                        T["download_one_pager_pdf"],
+                        data=one_pager_pdf,
+                        file_name=f"{export_prefix}_one_pager.pdf",
+                        mime="application/pdf",
+                        use_container_width=True,
+                    )
+            with dl_pdf:
+                with st.container(border=True):
+                    st.markdown(
+                        f'<div class="export-card-title">{T["download_meeting_pdf"]}</div>'
+                        f'<div class="export-card-desc">{T["export_detail_desc"]}</div>',
+                        unsafe_allow_html=True,
+                    )
+                    st.download_button(
+                        T["download_meeting_pdf"],
+                        data=meeting_pdf,
+                        file_name=f"{export_prefix}_detail.pdf",
+                        mime="application/pdf",
+                        use_container_width=True,
+                    )
         if not meeting_mode:
             st.subheader(T["summary"])
             with st.expander(T["phase_summary"], expanded=False):
@@ -4154,19 +4312,6 @@ if st.session_state.get("has_generated", False):
                     phase_summary_display,
                     use_container_width=True,
                 )
-
-        st.subheader(T["break_even"])
-        b1, b2 = st.columns(2)
-        with b1:
-            if weekly_be:
-                st.success(f"{T['weekly_profit']}: Week {weekly_be}")
-            else:
-                st.warning(f"{T['weekly_profit']}: {T['not_reached']}")
-        with b2:
-            if cumulative_be:
-                st.success(f"{T['cumulative_be']}: Week {cumulative_be}")
-            else:
-                st.warning(f"{T['cumulative_be']}: {T['not_reached']}")
 
         if not meeting_mode:
             with st.expander(T["view_details"], expanded=False):
