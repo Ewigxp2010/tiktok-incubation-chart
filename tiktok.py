@@ -1192,13 +1192,15 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid var(--tts-line);
         border-radius: 8px;
-        padding: 24px 22px 30px 22px;
+        padding: 18px 18px 18px 18px;
+        margin: 8px 0 18px 0;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
         overflow: visible;
     }
 
     div[data-testid="stPlotlyChart"] > div {
         width: 100% !important;
+        min-height: 500px;
         overflow: visible;
     }
 
@@ -3194,13 +3196,20 @@ def reset_sku_assumptions(n_skus):
 
 def apply_plotly_layout(fig, title, height=460):
     fig.update_layout(
-        title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.96, "yanchor": "top"},
+        title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.95, "yanchor": "top"},
         height=height,
-        margin=dict(l=64, r=32, t=86, b=88),
+        margin=dict(l=70, r=42, t=78, b=70),
         paper_bgcolor="white",
         plot_bgcolor="#FAFBFC",
         font=dict(color="#111827", family="Arial, sans-serif"),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.01,
+            xanchor="left",
+            x=0,
+            bgcolor="rgba(255,255,255,0)",
+        ),
         hovermode="x unified",
     )
     fig.update_xaxes(showgrid=True, gridcolor="#E5E7EB", zeroline=False)
@@ -3248,7 +3257,7 @@ def make_weekly_chart(df, title, break_even_week=None):
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
-    apply_plotly_layout(fig, title)
+    apply_plotly_layout(fig, title, height=500)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"])
     return fig
@@ -3274,7 +3283,7 @@ def make_cumulative_profit_chart(df, break_even_week=None):
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
-    apply_plotly_layout(fig, T["cumulative_profit_trend"])
+    apply_plotly_layout(fig, T["cumulative_profit_trend"], height=500)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"])
     return fig
@@ -4041,9 +4050,9 @@ if st.session_state.get("has_generated", False):
             key=f"phase_chart_mode_{selected_phase['key']}",
         )
         if chart_mode == T["phase_chart_cumulative"]:
-            st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True)
+            st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True, config={"displayModeBar": False, "responsive": True})
         else:
-            st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True)
+            st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True, config={"displayModeBar": False, "responsive": True})
         render_insight(phase_chart_insight(phase_row))
 
         driver, amount, share = cost_driver(phase_row)
@@ -4084,9 +4093,9 @@ if st.session_state.get("has_generated", False):
                 st.dataframe(product_display, use_container_width=True)
 
         st.subheader(T["charts"])
-        st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True)
+        st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
         render_chart_lens(T["chart_read"], T["read_weekly_chart"])
-        st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True)
+        st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
         render_chart_lens(T["chart_read"], T["read_cumulative_chart"])
         render_insight(overall_chart_insight(df_all))
         if meeting_mode:
@@ -4123,7 +4132,7 @@ if st.session_state.get("has_generated", False):
                         "Business lens",
                         "This view separates GMV ownership: Affiliate Video GMV validates content and conversion, while Store/Search GMV captures commission-light demand created after content exposure.",
                     )
-                st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True)
+                st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             with support_tabs[2]:
                 if lang == "zh":
                     render_chart_lens(
@@ -4135,7 +4144,7 @@ if st.session_state.get("has_generated", False):
                         "Business lens",
                         f"This view explains where margin pressure comes from. The largest cost driver is {total_cost_driver}, so profit optimization should start there, not only with samples or ads.",
                     )
-                st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True)
+                st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
 
         st.subheader(T["next_actions"])
