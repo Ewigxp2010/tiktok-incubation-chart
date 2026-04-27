@@ -1639,6 +1639,15 @@ st.markdown(
         margin-bottom: 14px;
     }
 
+    .support-panel {
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-radius: 8px;
+        padding: 14px 16px 16px 16px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
+        margin-bottom: 14px;
+    }
+
     .funnel-card-title {
         color: #111827;
         font-size: 1rem;
@@ -3920,6 +3929,7 @@ def make_channel_mix_chart(phase_summary):
         marker_color="#2563EB",
         text=[pct(v, 0) for v in temp["Store/Search Share"]],
         textposition="inside",
+        marker_line=dict(color="rgba(255,255,255,0.9)", width=1),
         customdata=temp["ShopTab GMV"],
         hovertemplate=f"{T['shoptab_gmv']}: €%{{customdata:,.0f}}<br>Share: %{{y:.0%}}<extra></extra>",
     ))
@@ -3930,11 +3940,12 @@ def make_channel_mix_chart(phase_summary):
         marker_color="#F97316",
         text=[pct(v, 0) for v in temp["Affiliate Share"]],
         textposition="inside",
+        marker_line=dict(color="rgba(255,255,255,0.9)", width=1),
         customdata=temp["Affiliate Video GMV"],
         hovertemplate=f"{T['affiliate_video_gmv']}: €%{{customdata:,.0f}}<br>Share: %{{y:.0%}}<extra></extra>",
     ))
     apply_plotly_layout(fig, T["channel_mix"], height=560)
-    fig.update_layout(barmode="stack", margin=dict(l=70, r=48, t=112, b=86), bargap=0.42)
+    fig.update_layout(barmode="stack", margin=dict(l=70, r=48, t=112, b=86), bargap=0.32)
     fig.update_yaxes(tickformat=".0%", range=[0, 1], title="")
     fig.update_xaxes(title="", automargin=True)
     return fig
@@ -3975,7 +3986,7 @@ def make_phase_total_chart(phase_row):
         go.Bar(
             x=labels,
             y=values,
-            marker=dict(color=colors, line=dict(color="rgba(255,255,255,0.9)", width=1)),
+            marker=dict(color=colors, line=dict(color="rgba(255,255,255,0.92)", width=1.1)),
             text=[short_money(abs(v)) if v < 0 else short_money(v) for v in values],
             textposition="outside",
             cliponaxis=False,
@@ -3991,7 +4002,7 @@ def make_phase_total_chart(phase_row):
     fig.update_layout(
         showlegend=False,
         margin=dict(l=72, r=56, t=90, b=126),
-        bargap=0.32,
+        bargap=0.24,
     )
     fig.add_hline(y=0, line_color="#111827", line_width=1.2)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", range=[y_min, y_max])
@@ -4738,7 +4749,7 @@ if st.session_state.get("has_generated", False):
             render_section_header(T["supporting_charts"], T["section_secondary"])
             support_container = st.container()
         with support_container:
-            st.markdown('<div class="tabs-shell">', unsafe_allow_html=True)
+            st.markdown('<div class="support-panel"><div class="tabs-shell">', unsafe_allow_html=True)
             support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
             with support_tabs[0]:
                 if lang == "zh":
@@ -4781,7 +4792,7 @@ if st.session_state.get("has_generated", False):
                     )
                 st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             render_status_panel(T["cost_explanation"], total_cost_explanation, tone="info", compact=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div></div>', unsafe_allow_html=True)
 
         render_section_header(T["next_actions"])
         render_grouped_actions(next_actions)
