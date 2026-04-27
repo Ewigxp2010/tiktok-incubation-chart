@@ -1227,30 +1227,30 @@ st.markdown(
     }
 
     .dashboard-note {
-        background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-left: 4px solid var(--tts-red);
+        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
+        border: 1px solid #E5EAF1;
+        border-left: 3px solid #CBD5E1;
         border-radius: 8px;
-        padding: 14px 16px;
-        color: #1F2937;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
-        line-height: 1.55;
+        padding: 12px 14px;
+        color: #334155;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.022);
+        line-height: 1.48;
     }
 
     .dashboard-intro {
         display: grid;
         grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
         gap: 12px;
-        margin: 10px 0 16px 0;
+        margin: 8px 0 12px 0;
         align-items: stretch;
     }
 
     .dashboard-intro-card {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
+        border: 1px solid #E5EAF1;
         border-radius: 8px;
-        padding: 14px 16px;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+        padding: 12px 14px;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.024);
     }
 
     .dashboard-intro-kicker {
@@ -1545,6 +1545,19 @@ st.markdown(
         color: #334155;
         font-size: 0.9rem;
         line-height: 1.45;
+    }
+
+    .subtle-note {
+        color: #475569;
+        font-size: 0.88rem;
+        line-height: 1.45;
+        padding: 4px 2px 10px 2px;
+        margin: 0 0 8px 0;
+    }
+
+    .subtle-note strong {
+        color: #334155;
+        font-weight: 760;
     }
 
     .funnel-card-wrap {
@@ -2751,6 +2764,14 @@ def render_chart_lens(title, body, compact=False):
             <div class="chart-lens-body">{escape(str(body))}</div>
         </div>
         """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_subtle_note(body, label=None):
+    prefix = f"<strong>{escape(str(label))}:</strong> " if label else ""
+    st.markdown(
+        f'<div class="subtle-note">{prefix}{escape(str(body))}</div>',
         unsafe_allow_html=True,
     )
 
@@ -4455,9 +4476,9 @@ if st.session_state.get("has_generated", False):
 
         render_section_header(T["charts"], T["section_primary"])
         st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        render_chart_lens(T["chart_read"], T["read_weekly_chart"], compact=True)
+        render_subtle_note(T["read_weekly_chart"], T["chart_read"])
         st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        render_chart_lens(T["chart_read"], T["read_cumulative_chart"], compact=True)
+        render_subtle_note(T["read_cumulative_chart"], T["chart_read"])
         render_insight(overall_chart_insight(df_all), compact=True)
         if meeting_mode:
             support_container = st.expander(T["supporting_charts"], expanded=False)
@@ -4469,48 +4490,42 @@ if st.session_state.get("has_generated", False):
             support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
             with support_tabs[0]:
                 if lang == "zh":
-                    render_chart_lens(
-                        "商业视角",
+                    render_subtle_note(
                         f"这张图展示内容投入如何放大为生意结果：{overall['Total Samples']:,.0f} 个样品预计沉淀 "
                         f"{overall['Total Videos']:,.0f} 条达人视频，带来 {overall['Total Clicks']:,.0f} 次商品点击和 "
                         f"{overall['Total Orders']:,.0f} 个订单。",
-                        compact=True,
+                        "商业视角",
                     )
                 else:
-                    render_chart_lens(
-                        "Business lens",
+                    render_subtle_note(
                         f"This view shows how content seeding scales into commercial demand: {overall['Total Samples']:,.0f} samples "
                         f"are expected to create {overall['Total Videos']:,.0f} creator videos, {overall['Total Clicks']:,.0f} product clicks, "
                         f"and {overall['Total Orders']:,.0f} orders.",
-                        compact=True,
+                        "Business lens",
                     )
                 render_funnel_summary(df_all)
             with support_tabs[1]:
                 if lang == "zh":
-                    render_chart_lens(
-                        "商业视角",
+                    render_subtle_note(
                         "这张图看的是 GMV 归因结构：达人视频 GMV 用来验证内容和转化效率，店铺/Search GMV 则代表内容种草后的无达人佣金成交沉淀。",
-                        compact=True,
+                        "商业视角",
                     )
                 else:
-                    render_chart_lens(
-                        "Business lens",
+                    render_subtle_note(
                         "This view separates GMV ownership: Affiliate Video GMV validates content and conversion, while Store/Search GMV captures commission-light demand created after content exposure.",
-                        compact=True,
+                        "Business lens",
                     )
                 st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             with support_tabs[2]:
                 if lang == "zh":
-                    render_chart_lens(
-                        "商业视角",
+                    render_subtle_note(
                         f"这张图解释成本压力来自哪里。当前最大成本项是 {total_cost_driver}，因此优化利润时应优先判断这个成本是否合理，而不只看样品或广告预算。",
-                        compact=True,
+                        "商业视角",
                     )
                 else:
-                    render_chart_lens(
-                        "Business lens",
+                    render_subtle_note(
                         f"This view explains where margin pressure comes from. The largest cost driver is {total_cost_driver}, so profit optimization should start there, not only with samples or ads.",
-                        compact=True,
+                        "Business lens",
                     )
                 st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             render_status_panel(T["cost_explanation"], total_cost_explanation, tone="info", compact=True)
