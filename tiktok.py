@@ -1451,6 +1451,12 @@ st.markdown(
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.028);
     }
 
+    .chart-lens.compact {
+        padding: 10px 14px;
+        margin: 6px 0 10px 0;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.022);
+    }
+
     .chart-lens-title {
         color: #111827;
         font-size: 0.92rem;
@@ -1458,10 +1464,24 @@ st.markdown(
         margin-bottom: 6px;
     }
 
+    .chart-lens.compact .chart-lens-title {
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
     .chart-lens-body {
         color: #4B5563;
         font-size: 0.94rem;
         line-height: 1.55;
+    }
+
+    .chart-lens.compact .chart-lens-body {
+        color: #334155;
+        font-size: 0.9rem;
+        line-height: 1.45;
     }
 
     .funnel-card-wrap {
@@ -1688,6 +1708,14 @@ st.markdown(
         margin: 8px 0 18px 0;
         box-shadow: 0 6px 16px rgba(15, 23, 42, 0.028);
         line-height: 1.45;
+    }
+
+    .insight-strip.compact {
+        padding: 10px 12px;
+        margin: 6px 0 14px 0;
+        font-size: 0.9rem;
+        color: #334155;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.02);
     }
 
     .export-shell {
@@ -2549,17 +2577,19 @@ def cost_explanation(row):
     )
 
 
-def render_insight(text):
+def render_insight(text, compact=False):
+    class_name = "insight-strip compact" if compact else "insight-strip"
     st.markdown(
-        f'<div class="insight-strip"><strong>{T["chart_insight"]}:</strong> {text}</div>',
+        f'<div class="{class_name}"><strong>{T["chart_insight"]}:</strong> {text}</div>',
         unsafe_allow_html=True,
     )
 
 
-def render_chart_lens(title, body):
+def render_chart_lens(title, body, compact=False):
+    class_name = "chart-lens compact" if compact else "chart-lens"
     st.markdown(
         f"""
-        <div class="chart-lens">
+        <div class="{class_name}">
             <div class="chart-lens-title">{escape(str(title))}</div>
             <div class="chart-lens-body">{escape(str(body))}</div>
         </div>
@@ -4091,7 +4121,7 @@ if st.session_state.get("has_generated", False):
                 st.warning(path_text)
 
         render_section_header(T["phase_trend"])
-        render_chart_lens(T["phase_strategy"], T["phase_strategy_text"])
+        render_chart_lens(T["phase_strategy"], T["phase_strategy_text"], compact=True)
         render_phase_overview(phase_summary)
         selected_phase_key = st.radio(
             "",
@@ -4106,7 +4136,7 @@ if st.session_state.get("has_generated", False):
         phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
         objective = phase_objective(selected_phase["key"])
         if objective:
-            st.info(f"**{T['phase_objective']}**: {objective}")
+            render_chart_lens(T["phase_objective"], objective, compact=True)
         phase_kpis = [
             (T["total_gmv"], money(phase_row["GMV"], 0), "#2563EB"),
             (T["total_profit"], money(phase_row["Profit"], 0), "#16A34A" if phase_row["Profit"] >= 0 else "#DC2626"),
@@ -4130,7 +4160,7 @@ if st.session_state.get("has_generated", False):
             st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True, config={"displayModeBar": False, "responsive": True})
         else:
             st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        render_insight(phase_chart_insight(phase_row))
+        render_insight(phase_chart_insight(phase_row), compact=True)
 
         driver, amount, share = cost_driver(phase_row)
         with st.expander(T["cost_breakdown"], expanded=False):
@@ -4171,10 +4201,10 @@ if st.session_state.get("has_generated", False):
 
         render_section_header(T["charts"], T["section_primary"])
         st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        render_chart_lens(T["chart_read"], T["read_weekly_chart"])
+        render_chart_lens(T["chart_read"], T["read_weekly_chart"], compact=True)
         st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        render_chart_lens(T["chart_read"], T["read_cumulative_chart"])
-        render_insight(overall_chart_insight(df_all))
+        render_chart_lens(T["chart_read"], T["read_cumulative_chart"], compact=True)
+        render_insight(overall_chart_insight(df_all), compact=True)
         if meeting_mode:
             support_container = st.expander(T["supporting_charts"], expanded=False)
         else:
@@ -4189,6 +4219,7 @@ if st.session_state.get("has_generated", False):
                         f"这张图展示内容投入如何放大为生意结果：{overall['Total Samples']:,.0f} 个样品预计沉淀 "
                         f"{overall['Total Videos']:,.0f} 条达人视频，带来 {overall['Total Clicks']:,.0f} 次商品点击和 "
                         f"{overall['Total Orders']:,.0f} 个订单。",
+                        compact=True,
                     )
                 else:
                     render_chart_lens(
@@ -4196,6 +4227,7 @@ if st.session_state.get("has_generated", False):
                         f"This view shows how content seeding scales into commercial demand: {overall['Total Samples']:,.0f} samples "
                         f"are expected to create {overall['Total Videos']:,.0f} creator videos, {overall['Total Clicks']:,.0f} product clicks, "
                         f"and {overall['Total Orders']:,.0f} orders.",
+                        compact=True,
                     )
                 render_funnel_summary(df_all)
             with support_tabs[1]:
@@ -4203,11 +4235,13 @@ if st.session_state.get("has_generated", False):
                     render_chart_lens(
                         "商业视角",
                         "这张图看的是 GMV 归因结构：达人视频 GMV 用来验证内容和转化效率，店铺/Search GMV 则代表内容种草后的无达人佣金成交沉淀。",
+                        compact=True,
                     )
                 else:
                     render_chart_lens(
                         "Business lens",
                         "This view separates GMV ownership: Affiliate Video GMV validates content and conversion, while Store/Search GMV captures commission-light demand created after content exposure.",
+                        compact=True,
                     )
                 st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             with support_tabs[2]:
@@ -4215,11 +4249,13 @@ if st.session_state.get("has_generated", False):
                     render_chart_lens(
                         "商业视角",
                         f"这张图解释成本压力来自哪里。当前最大成本项是 {total_cost_driver}，因此优化利润时应优先判断这个成本是否合理，而不只看样品或广告预算。",
+                        compact=True,
                     )
                 else:
                     render_chart_lens(
                         "Business lens",
                         f"This view explains where margin pressure comes from. The largest cost driver is {total_cost_driver}, so profit optimization should start there, not only with samples or ads.",
+                        compact=True,
                     )
                 st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
