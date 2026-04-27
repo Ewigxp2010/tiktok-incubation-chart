@@ -173,6 +173,8 @@ TEXT = {
         "scenario_snapshot": "Scenario Snapshot",
         "model_last_reviewed": "Model last reviewed",
         "calibration_note": "Default SKU assumptions now use DE hit-product calibration where source coverage was sufficient. We still recommend aligning key inputs with your AM before using the plan as a business target.",
+        "internal_logic_checklist": "Internal Logic Checklist",
+        "internal_logic_intro": "Use this default-collapsed view for AM or data-team alignment. It explains how the model builds GMV, allocates channels, applies costs, and arrives at profit.",
         "chart_read": "How to read",
         "read_weekly_chart": "Read this as whether GMV growth is outpacing total cost, and whether profit stays above zero after the fee step-up.",
         "read_cumulative_chart": "Read this as the payback path: the curve shows whether earlier content and paid growth recover the upfront investment.",
@@ -671,6 +673,8 @@ TEXT = {
         "diagnosis_negative": "按当前假设，该方案尚未盈利。主要优化方向是改善 {driver}，提升 AOV/毛利，或在放大前收紧付费增长预算。",
         "diagnosis_sample_strong": "该方案样品效率较高，但利润仍受 {driver} 影响。建议保持样品质量，并在放大付费增长前验证 SKU level 转化。",
         "diagnosis_ads_heavy": "付费增长对 GMV 贡献明显。建议在把结果作为目标前，确认 ROAS 可信度和 Phase 2/3 的预算准备。",
+        "internal_logic_checklist": "内部逻辑清单",
+        "internal_logic_intro": "该模块默认收起，适合和 AM 或数据团队对齐口径时使用。它会说明模型如何生成 GMV、拆分渠道、计入成本，并最终得出利润。",
         "target_comparison": "目标对比",
         "target_met": "已达到目标",
         "target_gap": "距离目标",
@@ -4410,6 +4414,11 @@ if st.session_state.get("has_generated", False):
                 use_container_width=True,
                 hide_index=True,
             )
+
+        with st.expander(T["internal_logic_checklist"], expanded=False):
+            st.caption(T["internal_logic_intro"])
+            render_model_logic()
+            st.caption(T["planning_disclaimer"])
 
         with st.expander(T["risk_review"], expanded=False):
             st.caption(T["risk_review_intro"])
