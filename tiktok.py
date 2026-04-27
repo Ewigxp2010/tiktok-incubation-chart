@@ -294,7 +294,7 @@ TEXT = {
         "risk_review": "Planning Notes & Risk Checks",
         "risk_review_intro": "These checks are hidden by default for a cleaner customer view. Use them to pressure-test assumptions before treating the result as a target.",
         "health_ok": "No major assumption risk detected under the current setup.",
-        "health_take_rate": "Paid growth budget x ROAS is high in at least one phase. Check whether the implied paid GMV lift is realistic.",
+        "health_take_rate": "Paid growth budget x ROAS is high in at least one phase. Check whether the implied incremental GMV from paid growth is realistic.",
         "health_sample_roi": "Sample ROI is low. Review sample quantity, AOV, conversion rate, or sample cost.",
         "health_profit_negative": "Total profit is negative. The largest cost driver is {driver}.",
         "health_shoptab": "At least one SKU has a high Store/Search GMV share. Align this with your AM using similar-category TikTok Shop data before presenting as a firm forecast.",
