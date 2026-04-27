@@ -1247,6 +1247,19 @@ st.markdown(
         border: 1px solid #D1D5DB;
     }
 
+    .stButton > button[kind="primary"] {
+        border-color: var(--tts-red);
+        background: var(--tts-red);
+        color: #FFFFFF;
+        box-shadow: 0 8px 18px rgba(254, 44, 85, 0.16);
+    }
+
+    .stButton > button[kind="primary"]:hover {
+        background: #E9274E;
+        color: #FFFFFF;
+        border-color: #E9274E;
+    }
+
     div[data-testid="stDataFrame"] {
         border: 1px solid var(--tts-line);
         border-radius: 8px;
@@ -1263,7 +1276,8 @@ st.markdown(
     div[data-testid="stAlert"] {
         border-radius: 8px;
         border: 1px solid #DDE3EA;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        background: #FFFFFF;
     }
 
     div[data-testid="stPlotlyChart"] {
@@ -1296,8 +1310,8 @@ st.markdown(
     .dashboard-intro {
         display: grid;
         grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
-        gap: 12px;
-        margin: 8px 0 12px 0;
+        gap: 10px;
+        margin: 6px 0 10px 0;
         align-items: stretch;
     }
 
@@ -1305,7 +1319,7 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid #E5EAF1;
         border-radius: 8px;
-        padding: 12px 14px;
+        padding: 11px 13px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
@@ -1328,8 +1342,8 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
         border-radius: 8px;
-        padding: 26px 28px;
-        margin: 26px 0 18px 0;
+        padding: 22px 24px;
+        margin: 22px 0 14px 0;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
     }
 
@@ -1342,10 +1356,10 @@ st.markdown(
 
     .setup-gate-title {
         color: #111827;
-        font-size: 1.55rem;
+        font-size: 1.42rem;
         font-weight: 800;
         line-height: 1.18;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     .setup-gate-body {
@@ -1384,13 +1398,13 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
         border-radius: 8px;
-        padding: 18px 20px;
-        margin-bottom: 14px;
+        padding: 16px 18px;
+        margin-bottom: 12px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
-        gap: 16px;
+        gap: 12px;
         flex-wrap: wrap;
     }
 
@@ -1405,7 +1419,7 @@ st.markdown(
 
     .meeting-header-title {
         color: #111827;
-        font-size: 1.45rem;
+        font-size: 1.34rem;
         font-weight: 780;
         line-height: 1.15;
     }
@@ -1433,7 +1447,7 @@ st.markdown(
     }
 
     .section-shell {
-        margin: 22px 0 8px 0;
+        margin: 18px 0 6px 0;
     }
 
     .section-eyebrow {
@@ -1716,32 +1730,32 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
         border-radius: 8px;
-        padding: 22px 24px;
-        margin: 18px 0 18px 0;
+        padding: 18px 20px;
+        margin: 14px 0 14px 0;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
         display: grid;
         grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(150px, 0.55fr));
-        gap: 16px;
+        gap: 14px;
         align-items: center;
     }
 
     .hero-title {
         color: #111827;
-        font-size: 1.32rem;
+        font-size: 1.22rem;
         font-weight: 790;
         line-height: 1.18;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     .hero-subtitle {
         color: #4B5563;
-        font-size: 0.98rem;
+        font-size: 0.94rem;
         line-height: 1.45;
     }
 
     .hero-kpi {
         border-left: 1px solid #E5E7EB;
-        padding-left: 16px;
+        padding-left: 14px;
         min-width: 0;
     }
 
@@ -1834,8 +1848,8 @@ st.markdown(
         border-left: 2px solid #D1D5DB;
         border-radius: 8px;
         color: #374151;
-        padding: 12px 14px;
-        margin: 8px 0 18px 0;
+        padding: 10px 12px;
+        margin: 6px 0 14px 0;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
         line-height: 1.45;
     }
@@ -1920,9 +1934,9 @@ st.markdown(
 
     .export-shell-caption {
         color: #64748B;
-        font-size: 0.82rem;
+        font-size: 0.79rem;
         line-height: 1.45;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     div[data-testid="stDownloadButton"] button {
@@ -1935,6 +1949,16 @@ st.markdown(
         align-items: center;
         justify-content: center;
         text-align: center;
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        color: #111827;
+        box-shadow: none;
+    }
+
+    div[data-testid="stDownloadButton"] button:hover {
+        background: #F9FAFB;
+        border-color: #D1D5DB;
+        color: #111827;
     }
 
     .export-card-title {
