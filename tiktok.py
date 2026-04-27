@@ -1001,8 +1001,12 @@ st.markdown(
     }
 
     [data-testid="stSidebar"] {
-        background: #F1F3F7;
+        background: linear-gradient(180deg, #F5F7FB 0%, #F1F4F8 100%);
         border-right: 1px solid #E1E5EC;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {
+        gap: 0.55rem;
     }
 
     [data-testid="stSidebar"] h2,
@@ -1015,6 +1019,11 @@ st.markdown(
         max-width: 1360px;
         padding-top: 2.2rem;
         padding-bottom: 4rem;
+    }
+
+    [data-testid="stAppViewContainer"] > .main .block-container {
+        padding-left: 2.2rem;
+        padding-right: 2.2rem;
     }
 
     h1 {
@@ -1299,6 +1308,20 @@ st.markdown(
         margin: 12px 0 18px 0;
         color: #374151;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+    }
+
+    .sidebar-meta {
+        color: #94A3B8;
+        font-size: 0.76rem;
+        line-height: 1.45;
+        margin: 4px 0 8px 0;
+    }
+
+    .sidebar-divider {
+        height: 1px;
+        background: #E5EAF1;
+        margin: 2px 0 10px 0;
+        border-radius: 999px;
     }
 
     .meeting-header {
@@ -1899,6 +1922,11 @@ st.markdown(
             padding-left: 0;
             padding-top: 12px;
         }
+
+        [data-testid="stAppViewContainer"] > .main .block-container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
     }
 
     .sku-title {
@@ -2359,6 +2387,14 @@ def render_dashboard_intro(snapshot_text, diagnosis_text):
         """,
         unsafe_allow_html=True,
     )
+
+
+def render_sidebar_meta(text):
+    st.markdown(f'<div class="sidebar-meta">{escape(str(text))}</div>', unsafe_allow_html=True)
+
+
+def render_sidebar_divider():
+    st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
 
 
 def render_meeting_header(meeting_notes, generated_at, assumption_status):
@@ -3165,6 +3201,18 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         draw_wrapped(body, margin + 16, y - 34, width - margin * 2 - 30, font_size=9.1, leading=12)
         return y - box_h - 14
 
+    def draw_page_title(title, subtitle, y, accent="#111827"):
+        y = new_page_if_needed(y, 72)
+        pdf.setFillColor(colors.HexColor("#111827"))
+        pdf.setFont(font_name, 18)
+        pdf.drawString(margin, y, clean(title))
+        pdf.setFillColor(colors.HexColor("#64748B"))
+        y = draw_wrapped(subtitle, margin, y - 18, width - margin * 2, font_size=8.8, leading=12)
+        pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
+        pdf.setLineWidth(0.8)
+        pdf.line(margin, y - 2, width - margin, y - 2)
+        return y - 14
+
     def draw_section(title, lines, y, accent="#2563EB", ordered=False, compact=False):
         line_height = 12 if compact else 14
         estimated = 36 + max(1, len(lines)) * line_height * 2
@@ -3402,10 +3450,11 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
     y = draw_two_column_section(T["key_assumptions"], assumption_summary, y, accent="#7C3AED")
 
     y = new_page()
-    pdf.setFillColor(colors.HexColor("#111827"))
-    pdf.setFont(font_name, 18)
-    pdf.drawString(margin, y, clean(T["meeting_header"]))
-    y -= 24
+    y = draw_page_title(
+        T["meeting_header"],
+        clean(T["export_materials_note"]),
+        y,
+    )
     sections = [
         (T["forecast_range"], [
             f"{T['conservative_case']}: {money(forecast_range_values['conservative_gmv'], 0)}",
@@ -3433,10 +3482,11 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
 
     if product_df is not None:
         y = new_page()
-        pdf.setFillColor(colors.HexColor("#111827"))
-        pdf.setFont(font_name, 18)
-        pdf.drawString(margin, y, clean(T["assumption_appendix"]))
-        y -= 24
+        y = draw_page_title(
+            T["assumption_appendix"],
+            clean(T["planning_disclaimer"]),
+            y,
+        )
         appendix_lines = []
         for _, sku in product_df.iterrows():
             appendix_lines.append(
@@ -3827,11 +3877,12 @@ with st.sidebar:
     st.header(T["plan_setup"])
     n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
     st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
-    st.caption(f"{T['model_version']}: {MODEL_VERSION}")
+    render_sidebar_meta(f"{T['model_version']}: {MODEL_VERSION}")
+    render_sidebar_divider()
     if st.button(T["reset_defaults"], key="reset_request_btn"):
         st.session_state["reset_confirm_pending"] = True
     if st.session_state.get("reset_confirm_pending", False):
-        st.warning(T["reset_pending"])
+        render_status_panel(T["reset_defaults"], T["reset_pending"], tone="warning", compact=True)
         if st.button(T["reset_confirm"], key="reset_confirm_btn"):
             reset_defaults()
     if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"]):
@@ -3846,7 +3897,7 @@ with st.sidebar:
 
     sidebar_meeting_compact = meeting_mode and st.session_state.get("has_generated", False)
     if sidebar_meeting_compact:
-        st.info(T["meeting_mode_sidebar_note"])
+        render_status_panel(T["meeting_mode"], T["meeting_mode_sidebar_note"], tone="info", compact=True)
         if st.button(T["back_to_client_view"], key="back_to_client_view_btn"):
             st.session_state["selected_phase_view"] = PHASES[0]["key"]
             for phase in PHASES:
