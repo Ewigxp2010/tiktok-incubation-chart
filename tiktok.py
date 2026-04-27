@@ -1783,6 +1783,10 @@ st.markdown(
         align-items: stretch;
     }
 
+    .kpi-grid.kpi-grid-four {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
     .kpi-grid.kpi-grid-compact {
         grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
     }
@@ -1997,6 +2001,7 @@ st.markdown(
         .hero-band,
         .dashboard-intro,
         .kpi-grid,
+        .kpi-grid.kpi-grid-four,
         .readout-grid,
         .action-group-grid,
         .phase-overview-grid {
@@ -2480,7 +2485,7 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
     return pd.DataFrame(rows, columns=["Metric", "Value"])
 
 
-def render_kpi_grid(items, compact=False):
+def render_kpi_grid(items, compact=False, fixed_cols=None):
     cards = [
         (
             f'<div class="premium-kpi" style="border-top-color:{escape(str(accent))};">'
@@ -2490,7 +2495,12 @@ def render_kpi_grid(items, compact=False):
         )
         for label, value, accent in items
     ]
-    class_name = "kpi-grid kpi-grid-compact" if compact else "kpi-grid"
+    class_names = ["kpi-grid"]
+    if compact:
+        class_names.append("kpi-grid-compact")
+    if fixed_cols == 4:
+        class_names.append("kpi-grid-four")
+    class_name = " ".join(class_names)
     st.markdown(f'<div class="{class_name}">{"".join(cards)}</div>', unsafe_allow_html=True)
 
 
@@ -3724,25 +3734,57 @@ def reset_sku_assumptions(n_skus):
 
 def apply_plotly_layout(fig, title, height=460):
     fig.update_layout(
-        title={"text": title, "x": 0.02, "xanchor": "left", "y": 0.95, "yanchor": "top"},
+        title={
+            "text": title,
+            "x": 0.02,
+            "xanchor": "left",
+            "y": 0.96,
+            "yanchor": "top",
+            "font": {"size": 20, "color": "#111827", "family": "Arial, sans-serif"},
+        },
         height=height,
-        margin=dict(l=70, r=42, t=78, b=70),
+        margin=dict(l=70, r=106, t=84, b=74),
         paper_bgcolor="white",
-        plot_bgcolor="#FAFBFC",
+        plot_bgcolor="#FCFCFD",
         font=dict(color="#111827", family="Arial, sans-serif"),
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.01,
+            y=1.02,
             xanchor="left",
             x=0,
             bgcolor="rgba(255,255,255,0)",
+            font=dict(size=12, color="#475569"),
         ),
         hovermode="x unified",
+        hoverlabel=dict(
+            bgcolor="#FFFFFF",
+            bordercolor="#D1D5DB",
+            font=dict(color="#111827", size=12),
+        ),
     )
-    fig.update_xaxes(showgrid=True, gridcolor="#E5E7EB", zeroline=False)
-    fig.update_yaxes(showgrid=True, gridcolor="#E5E7EB", zeroline=False)
+    fig.update_xaxes(showgrid=True, gridcolor="#ECEFF3", zeroline=False, linecolor="#D1D5DB", tickfont=dict(color="#6B7280"))
+    fig.update_yaxes(showgrid=True, gridcolor="#ECEFF3", zeroline=False, linecolor="#D1D5DB", tickfont=dict(color="#6B7280"))
     return fig
+
+
+def add_terminal_value_labels(fig, series):
+    for trace_name, x_value, y_value, color, prefix in series:
+        fig.add_annotation(
+            x=x_value,
+            y=y_value,
+            xshift=18,
+            showarrow=False,
+            text=f"{prefix}{y_value:,.0f}",
+            font=dict(size=11, color=color, family="Arial, sans-serif"),
+            bgcolor="rgba(255,255,255,0.96)",
+            bordercolor=color,
+            borderwidth=1,
+            borderpad=3,
+            xanchor="left",
+            yanchor="middle",
+            align="left",
+        )
 
 
 def add_phase_bands(fig, df):
@@ -3777,8 +3819,8 @@ def make_weekly_chart(df, title, break_even_week=None):
                 y=df[col],
                 mode="lines+markers",
                 name=label,
-                line=dict(color=color, width=3),
-                marker=dict(size=7),
+                line=dict(color=color, width=3.2, shape="spline", smoothing=0.55),
+                marker=dict(size=7.5, color=color, line=dict(color="#FFFFFF", width=1.4)),
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
             )
         )
@@ -3788,6 +3830,14 @@ def make_weekly_chart(df, title, break_even_week=None):
     apply_plotly_layout(fig, title, height=500)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"])
+    last_x = df["Global Week"].iloc[-1]
+    add_terminal_value_labels(
+        fig,
+        [
+            (label, last_x, float(df[col].iloc[-1]), color, "€")
+            for label, col, color in series
+        ],
+    )
     return fig
 
 
@@ -3803,8 +3853,9 @@ def make_cumulative_profit_chart(df, break_even_week=None):
             mode="lines+markers",
             fill="tozeroy",
             name=T["cumulative_profit_trend"],
-            line=dict(color=CHART_COLORS["cumulative"], width=3),
-            marker=dict(size=7),
+            line=dict(color=CHART_COLORS["cumulative"], width=3.2, shape="spline", smoothing=0.55),
+            marker=dict(size=7.5, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=1.4)),
+            fillcolor="rgba(124, 58, 237, 0.18)",
             hovertemplate=f"{T['cumulative_profit_trend']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
@@ -3814,6 +3865,18 @@ def make_cumulative_profit_chart(df, break_even_week=None):
     apply_plotly_layout(fig, T["cumulative_profit_trend"], height=500)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"])
+    add_terminal_value_labels(
+        fig,
+        [
+            (
+                T["cumulative_profit_trend"],
+                temp["Global Week"].iloc[-1],
+                float(temp["Cumulative Profit"].iloc[-1]),
+                CHART_COLORS["cumulative"],
+                "€",
+            )
+        ],
+    )
     return fig
 
 
@@ -3963,26 +4026,20 @@ def make_phase_cumulative_chart(phase_df, title):
                 y=temp[col],
                 mode="lines+markers",
                 name=label,
-                line=dict(color=color, width=width, dash=dash),
+                line=dict(color=color, width=width, dash=dash, shape="spline", smoothing=0.5),
                 marker=dict(size=marker_size, color=color, line=dict(color="white", width=1.5)),
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
             )
         )
 
-    for label, col, color, _, _, _ in series[:4]:
-        last = temp.iloc[-1]
-        fig.add_annotation(
-            x=last["Week in Phase"],
-            y=last[col],
-            text=money(last[col], 0),
-            showarrow=False,
-            xshift=34,
-            font=dict(size=12, color=color),
-            bgcolor="rgba(255,255,255,0.82)",
-            bordercolor=color,
-            borderwidth=1,
-            borderpad=3,
-        )
+    last = temp.iloc[-1]
+    add_terminal_value_labels(
+        fig,
+        [
+            (label, last["Week in Phase"], float(last[col]), color, "€")
+            for label, col, color, _, _, _ in series[:4]
+        ],
+    )
 
     fig.add_hline(y=0, line_color="#6B7280", line_width=1, opacity=0.75)
     apply_plotly_layout(fig, f"{title} - {T['phase_chart_cumulative']}", height=520)
@@ -3993,9 +4050,9 @@ def make_phase_cumulative_chart(phase_df, title):
             y=-0.18,
             xanchor="left",
             x=0,
-            bgcolor="rgba(255,255,255,0.85)",
+            bgcolor="rgba(255,255,255,0)",
         ),
-        margin=dict(l=28, r=98, t=78, b=104),
+        margin=dict(l=54, r=120, t=84, b=104),
     )
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
@@ -4449,7 +4506,7 @@ if st.session_state.get("has_generated", False):
             (T["cumulative_be"], cumulative_be_label, "#64748B"),
             (T["orders"], f"{overall['Total Orders']:,.0f}", "#14B8A6"),
             (T["channel_mix"], main_gmv_channel(df_all), "#F97316"),
-        ])
+        ], fixed_cols=4)
         st.markdown(
             f"""
             <div class="dashboard-note">
