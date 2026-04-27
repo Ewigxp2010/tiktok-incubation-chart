@@ -1758,6 +1758,68 @@ st.markdown(
         box-shadow: 0 4px 14px rgba(15, 23, 42, 0.02);
     }
 
+    .status-panel {
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-left: 4px solid #CBD5E1;
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin: 8px 0 14px 0;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.026);
+    }
+
+    .status-panel.compact {
+        padding: 10px 12px;
+        margin: 6px 0 10px 0;
+    }
+
+    .status-panel-kicker {
+        color: #64748B;
+        font-size: 0.76rem;
+        font-weight: 780;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 4px;
+    }
+
+    .status-panel-title {
+        color: #111827;
+        font-size: 0.92rem;
+        font-weight: 760;
+        margin-bottom: 5px;
+    }
+
+    .status-panel.compact .status-panel-title {
+        font-size: 0.84rem;
+        margin-bottom: 3px;
+    }
+
+    .status-panel-body {
+        color: #334155;
+        font-size: 0.92rem;
+        line-height: 1.5;
+    }
+
+    .status-panel.compact .status-panel-body {
+        font-size: 0.88rem;
+        line-height: 1.42;
+    }
+
+    .status-panel.info {
+        border-left-color: #2563EB;
+        background: linear-gradient(180deg, #FFFFFF 0%, #F8FBFF 100%);
+    }
+
+    .status-panel.success {
+        border-left-color: #16A34A;
+        background: linear-gradient(180deg, #FFFFFF 0%, #F8FFF9 100%);
+    }
+
+    .status-panel.warning {
+        border-left-color: #F59E0B;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF7 100%);
+    }
+
     .export-shell {
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
@@ -2657,6 +2719,21 @@ def render_chart_lens(title, body, compact=False):
     )
 
 
+def render_status_panel(title, body, tone="info", compact=False, kicker=None):
+    class_name = f"status-panel {tone}" + (" compact" if compact else "")
+    kicker_html = f'<div class="status-panel-kicker">{escape(str(kicker))}</div>' if kicker else ""
+    st.markdown(
+        f"""
+        <div class="{class_name}">
+            {kicker_html}
+            <div class="status-panel-title">{escape(str(title))}</div>
+            <div class="status-panel-body">{escape(str(body))}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_model_logic():
     st.write(T["model_logic_intro"])
     for idx in range(1, 7):
@@ -3050,6 +3127,44 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
             pdf.drawString(x + 12, y - 42, clean(value))
         return y - card_h - 16
 
+    def draw_dual_summary(left_title, left_body, right_title, right_body, y, left_accent="#2563EB", right_accent="#14B8A6"):
+        y = new_page_if_needed(y, 126)
+        gap = 10
+        box_w = (width - margin * 2 - gap) / 2
+        box_h = 96
+        cards = [
+            (margin, left_title, left_body, left_accent),
+            (margin + box_w + gap, right_title, right_body, right_accent),
+        ]
+        for x, title, body, accent in cards:
+            pdf.setFillColor(colors.white)
+            pdf.setStrokeColor(colors.HexColor("#E5E7EB"))
+            pdf.roundRect(x, y - box_h, box_w, box_h, 8, stroke=1, fill=1)
+            pdf.setFillColor(colors.HexColor(accent))
+            pdf.roundRect(x, y - 4, box_w, 4, 2, stroke=0, fill=1)
+            pdf.setFillColor(colors.HexColor("#64748B"))
+            pdf.setFont(font_name, 8)
+            pdf.drawString(x + 12, y - 18, clean(title))
+            pdf.setFillColor(colors.HexColor("#111827"))
+            cursor = y - 34
+            cursor = draw_wrapped(body, x + 12, cursor, box_w - 24, font_size=9.1, leading=12)
+        return y - box_h - 14
+
+    def draw_highlight_strip(title, body, y, accent="#7C3AED"):
+        y = new_page_if_needed(y, 70)
+        box_h = 54
+        pdf.setFillColor(colors.HexColor("#FBFCFE"))
+        pdf.setStrokeColor(colors.HexColor("#E2E8F0"))
+        pdf.roundRect(margin, y - box_h, width - margin * 2, box_h, 8, stroke=1, fill=1)
+        pdf.setFillColor(colors.HexColor(accent))
+        pdf.roundRect(margin, y - box_h, 5, box_h, 3, stroke=0, fill=1)
+        pdf.setFillColor(colors.HexColor("#64748B"))
+        pdf.setFont(font_name, 8)
+        pdf.drawString(margin + 16, y - 18, clean(title))
+        pdf.setFillColor(colors.HexColor("#111827"))
+        draw_wrapped(body, margin + 16, y - 34, width - margin * 2 - 30, font_size=9.1, leading=12)
+        return y - box_h - 14
+
     def draw_section(title, lines, y, accent="#2563EB", ordered=False, compact=False):
         line_height = 12 if compact else 14
         estimated = 36 + max(1, len(lines)) * line_height * 2
@@ -3236,9 +3351,28 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         y,
     )
 
-    y = draw_section(T["phase_strategy"], [T["phase_strategy_text"]], y, accent="#7C3AED", compact=True)
+    y = draw_dual_summary(
+        T["scenario_snapshot"],
+        clean(
+            T["hero_subtitle"].format(
+                gmv=money(overall["Total GMV"], 0),
+                growth_investment=money(overall["Growth Investment"], 0),
+                break_even=path_text,
+            )
+        ),
+        T["diagnosis_summary"],
+        clean(diagnosis_text),
+        y,
+    )
 
-    y = draw_section(T["diagnosis_summary"], [clean(diagnosis_text)], y, accent="#14B8A6", compact=True)
+    y = draw_highlight_strip(
+        T["key_recommendation"],
+        clean(meeting_notes.get("key_recommendation") or next_actions[0] if next_actions else T["phase_strategy_text"]),
+        y,
+        accent="#7C3AED",
+    )
+
+    y = draw_section(T["phase_strategy"], [T["phase_strategy_text"]], y, accent="#7C3AED", compact=True)
 
     y = draw_trend_chart(df_all, y)
 
@@ -4090,7 +4224,7 @@ if st.session_state.get("has_generated", False):
             unsafe_allow_html=True,
         )
         st.caption(T["planning_disclaimer"])
-        st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
+        render_status_panel(T["cost_explanation"], total_cost_explanation, tone="info", compact=True, kicker=T["section_primary"])
         render_section_header(T["business_readout"])
         render_business_readout(business_readout)
         render_section_header(T["break_even"])
@@ -4122,11 +4256,11 @@ if st.session_state.get("has_generated", False):
             st.caption(T["risk_review_intro"])
             for level, check in health_checks:
                 if level == "ok":
-                    st.success(check)
+                    render_status_panel(T["health_check"], check, tone="success", compact=True)
                 elif level == "info":
-                    st.info(check)
+                    render_status_panel(T["health_check"], check, tone="info", compact=True)
                 else:
-                    st.warning(check)
+                    render_status_panel(T["health_check"], check, tone="warning", compact=True)
             st.caption(T["forecast_range_note"])
             render_kpi_grid([
                 (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
@@ -4141,7 +4275,7 @@ if st.session_state.get("has_generated", False):
             (takeaways[2][0], takeaways[2][1], "#14B8A6"),
             (takeaways[3][0], takeaways[3][1], "#F97316"),
         ])
-        st.warning(f"**{takeaways[4][0]}**: {takeaways[4][1]}")
+        render_status_panel(takeaways[4][0], takeaways[4][1], tone="warning", compact=True)
 
         with st.expander(T["forecast_range_prompt"], expanded=False):
             st.caption(T["forecast_range_note"])
@@ -4164,11 +4298,11 @@ if st.session_state.get("has_generated", False):
             with health_container:
                 for level, check in health_checks:
                     if level == "ok":
-                        st.success(check)
+                        render_status_panel(T["health_check"], check, tone="success", compact=True)
                     elif level == "info":
-                        st.info(check)
+                        render_status_panel(T["health_check"], check, tone="info", compact=True)
                     else:
-                        st.warning(check)
+                        render_status_panel(T["health_check"], check, tone="warning", compact=True)
 
         if meeting_mode:
             path_container = st.expander(T["path_to_be"], expanded=False)
@@ -4177,9 +4311,9 @@ if st.session_state.get("has_generated", False):
             path_container = st.container()
         with path_container:
             if cumulative_be:
-                st.success(path_text)
+                render_status_panel(T["path_to_be"], path_text, tone="success", compact=True)
             else:
-                st.warning(path_text)
+                render_status_panel(T["path_to_be"], path_text, tone="warning", compact=True)
 
         render_section_header(T["phase_trend"])
         render_chart_lens(T["phase_strategy"], T["phase_strategy_text"], compact=True)
@@ -4225,7 +4359,12 @@ if st.session_state.get("has_generated", False):
 
         driver, amount, share = cost_driver(phase_row)
         with st.expander(T["cost_breakdown"], expanded=False):
-            st.info(T["cost_breakdown_text"].format(driver=driver, amount=money(amount, 0), share=pct(share, 0)))
+            render_status_panel(
+                T["cost_breakdown"],
+                T["cost_breakdown_text"].format(driver=driver, amount=money(amount, 0), share=pct(share, 0)),
+                tone="info",
+                compact=True,
+            )
 
         render_section_header(T["sample_roi_title"])
         render_kpi_grid([
@@ -4236,11 +4375,14 @@ if st.session_state.get("has_generated", False):
             (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#8B5CF6"),
             (T["ads_investment"], money(overall["Ads Investment"], 0), "#F97316"),
         ], compact=True)
-        st.info(
+        render_status_panel(
+            T["sample_roi_title"],
             T["sample_roi_text"].format(
                 gmv_per_sample=money(overall["GMV / Sample"], 0),
                 orders_per_sample=f"{overall['Orders / Sample']:.2f}",
-            )
+            ),
+            tone="info",
+            compact=True,
         )
 
         if not meeting_mode:
@@ -4320,7 +4462,7 @@ if st.session_state.get("has_generated", False):
                         compact=True,
                     )
                 st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-            st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
+            render_status_panel(T["cost_explanation"], total_cost_explanation, tone="info", compact=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
         render_section_header(T["next_actions"])
