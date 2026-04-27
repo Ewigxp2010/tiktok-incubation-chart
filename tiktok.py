@@ -252,6 +252,8 @@ TEXT = {
         "shoptab_gmv": "Store/Search GMV",
         "phase_total_breakdown": "What drives phase profit",
         "supporting_charts": "Business Drivers",
+        "section_primary": "Primary view",
+        "section_secondary": "Supporting view",
         "investment_split": "Where the investment goes",
         "product_profile": "Product Profile",
         "hero_title": "{weeks}-week incubation plan for {skus} SKUs",
@@ -566,6 +568,8 @@ TEXT = {
         "shoptab_gmv": "店铺/Search GMV",
         "phase_total_breakdown": "阶段利润由什么驱动",
         "supporting_charts": "业务驱动因素",
+        "section_primary": "主视图",
+        "section_secondary": "辅助视图",
         "investment_split": "投入花在哪里",
         "product_profile": "产品组合",
         "hero_title": "{weeks} 周、{skus} 个 SKU 的孵化计划",
@@ -1309,6 +1313,27 @@ st.markdown(
         font-weight: 760;
     }
 
+    .section-shell {
+        margin: 22px 0 8px 0;
+    }
+
+    .section-eyebrow {
+        color: #64748B;
+        font-size: 0.75rem;
+        font-weight: 780;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 6px;
+    }
+
+    .section-title {
+        color: #1F2937;
+        font-size: clamp(1.18rem, 1.7vw, 1.55rem);
+        font-weight: 790;
+        line-height: 1.18;
+        margin: 0 0 2px 0;
+    }
+
     .action-list {
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
@@ -1595,7 +1620,7 @@ st.markdown(
     }
 
     .kpi-grid.kpi-grid-compact {
-        grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
     }
 
     .premium-kpi {
@@ -1604,19 +1629,19 @@ st.markdown(
         border-top: 3px solid #CBD5E1;
         border-radius: 8px;
         padding: 14px 15px 15px 15px;
-        min-height: 106px;
+        min-height: 114px;
         height: auto;
         overflow: visible;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.035);
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 6px;
     }
 
     .kpi-grid.kpi-grid-compact .premium-kpi {
-        min-height: 92px;
-        padding: 12px 13px;
+        min-height: 100px;
+        padding: 12px 13px 13px 13px;
     }
 
     .kpi-grid.kpi-grid-compact .premium-kpi-value {
@@ -1634,6 +1659,11 @@ st.markdown(
         line-height: 1.3;
         overflow-wrap: anywhere;
         word-break: break-word;
+        min-height: 2.7em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .premium-kpi-value {
@@ -1642,7 +1672,10 @@ st.markdown(
         font-weight: 800;
         line-height: 1.18;
         overflow-wrap: anywhere;
-        word-break: normal;
+        word-break: break-word;
+        min-height: 2.4em;
+        display: flex;
+        align-items: flex-end;
     }
 
     .insight-strip {
@@ -1723,6 +1756,10 @@ st.markdown(
         .action-group-grid,
         .phase-overview-grid {
             grid-template-columns: 1fr;
+        }
+
+        .section-shell {
+            margin-top: 18px;
         }
 
         .hero-kpi {
@@ -2165,6 +2202,14 @@ def render_kpi_grid(items, compact=False):
     ]
     class_name = "kpi-grid kpi-grid-compact" if compact else "kpi-grid"
     st.markdown(f'<div class="{class_name}">{"".join(cards)}</div>', unsafe_allow_html=True)
+
+
+def render_section_header(title, eyebrow=None):
+    eyebrow_html = f'<div class="section-eyebrow">{escape(str(eyebrow))}</div>' if eyebrow else ""
+    st.markdown(
+        f'<div class="section-shell">{eyebrow_html}<div class="section-title">{escape(str(title))}</div></div>',
+        unsafe_allow_html=True,
+    )
 
 
 def render_meeting_header(meeting_notes, generated_at, assumption_status):
@@ -4045,7 +4090,7 @@ if st.session_state.get("has_generated", False):
             else:
                 st.warning(path_text)
 
-        st.subheader(T["phase_trend"])
+        render_section_header(T["phase_trend"])
         render_chart_lens(T["phase_strategy"], T["phase_strategy_text"])
         render_phase_overview(phase_summary)
         selected_phase_key = st.radio(
@@ -4091,7 +4136,7 @@ if st.session_state.get("has_generated", False):
         with st.expander(T["cost_breakdown"], expanded=False):
             st.info(T["cost_breakdown_text"].format(driver=driver, amount=money(amount, 0), share=pct(share, 0)))
 
-        st.subheader(T["sample_roi_title"])
+        render_section_header(T["sample_roi_title"])
         render_kpi_grid([
             (T["gmv_per_sample"], money(overall["GMV / Sample"], 0), "#2563EB"),
             (T["profit_per_sample"], money(overall["Profit / Sample"], 0), "#16A34A" if overall["Profit / Sample"] >= 0 else "#DC2626"),
@@ -4124,7 +4169,7 @@ if st.session_state.get("has_generated", False):
                 })
                 st.dataframe(product_display, use_container_width=True)
 
-        st.subheader(T["charts"])
+        render_section_header(T["charts"], T["section_primary"])
         st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
         render_chart_lens(T["chart_read"], T["read_weekly_chart"])
         st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
@@ -4133,7 +4178,7 @@ if st.session_state.get("has_generated", False):
         if meeting_mode:
             support_container = st.expander(T["supporting_charts"], expanded=False)
         else:
-            st.subheader(T["supporting_charts"])
+            render_section_header(T["supporting_charts"], T["section_secondary"])
             support_container = st.container()
         with support_container:
             support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
@@ -4179,7 +4224,7 @@ if st.session_state.get("has_generated", False):
                 st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
 
-        st.subheader(T["next_actions"])
+        render_section_header(T["next_actions"])
         render_grouped_actions(next_actions)
 
         money_cols = [
@@ -4275,7 +4320,7 @@ if st.session_state.get("has_generated", False):
             f"{safe_filename_part(meeting_notes.get('scenario_name'), 'Scenario')}_"
             f"TikTokShop_GrowthPlan_{export_date}"
         )
-        st.subheader(T["export_materials"])
+        render_section_header(T["export_materials"])
         st.markdown('<div class="export-shell">', unsafe_allow_html=True)
         st.markdown(f'<div class="export-shell-caption">{escape(T["export_materials_note"])}</div>', unsafe_allow_html=True)
         try:
