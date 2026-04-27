@@ -1322,6 +1322,7 @@ st.markdown(
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 12px;
         margin: 10px 0 18px 0;
+        align-items: stretch;
     }
 
     .action-group {
@@ -1330,8 +1331,10 @@ st.markdown(
         border-top: 4px solid #CBD5E1;
         border-radius: 8px;
         padding: 14px 16px;
-        min-height: 146px;
+        min-height: 158px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+        display: flex;
+        flex-direction: column;
     }
 
     .action-group-title {
@@ -1385,6 +1388,7 @@ st.markdown(
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 12px;
         margin: 10px 0 18px 0;
+        align-items: stretch;
     }
 
     .readout-card {
@@ -1393,8 +1397,10 @@ st.markdown(
         border-top: 4px solid #CBD5E1;
         border-radius: 8px;
         padding: 16px 18px;
-        min-height: 132px;
+        min-height: 144px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+        display: flex;
+        flex-direction: column;
     }
 
     .readout-title {
@@ -1415,8 +1421,8 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
         border-radius: 8px;
-        padding: 16px 18px;
-        margin: 10px 0 14px 0;
+        padding: 14px 16px;
+        margin: 8px 0 14px 0;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.028);
     }
 
@@ -1646,9 +1652,24 @@ st.markdown(
         border-radius: 8px;
         color: #374151;
         padding: 12px 14px;
-        margin: 10px 0 18px 0;
+        margin: 8px 0 18px 0;
         box-shadow: 0 6px 16px rgba(15, 23, 42, 0.028);
         line-height: 1.45;
+    }
+
+    .export-shell {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 16px 18px 18px 18px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+    }
+
+    .export-shell-caption {
+        color: #64748B;
+        font-size: 0.84rem;
+        line-height: 1.45;
+        margin-bottom: 12px;
     }
 
     div[data-testid="stDownloadButton"] button {
@@ -1680,10 +1701,19 @@ st.markdown(
     }
 
     .export-card-shell [data-testid="stVerticalBlockBorderWrapper"] {
-        min-height: 148px;
+        min-height: 164px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        background: #FBFCFE;
+    }
+
+    .export-card-shell [data-testid="stVerticalBlock"] {
+        height: 100%;
+    }
+
+    .export-card-shell [data-testid="stDownloadButton"] {
+        margin-top: auto;
     }
 
     @media (max-width: 900px) {
@@ -1720,6 +1750,7 @@ st.markdown(
     .hero-band,
     .meeting-header,
     .setup-gate,
+    .export-shell,
     .chart-lens,
     .insight-strip,
     div[data-testid="stPlotlyChart"],
@@ -1733,6 +1764,7 @@ st.markdown(
     .hero-band,
     .meeting-header,
     .setup-gate,
+    .export-shell,
     .chart-lens,
     .insight-strip {
         border-color: #E2E8F0;
@@ -4244,10 +4276,12 @@ if st.session_state.get("has_generated", False):
             f"TikTokShop_GrowthPlan_{export_date}"
         )
         st.subheader(T["export_materials"])
-        with st.container(border=True):
-            st.caption(T["export_materials_note"])
+        st.markdown('<div class="export-shell">', unsafe_allow_html=True)
+        st.markdown(f'<div class="export-shell-caption">{escape(T["export_materials_note"])}</div>', unsafe_allow_html=True)
+        try:
             dl_summary, dl_html, dl_one_pager, dl_pdf = st.columns(4)
             with dl_summary:
+                st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
                 with st.container(border=True):
                     st.markdown(
                         f'<div class="export-card-title">{T["download_customer_summary"]}</div>'
@@ -4261,7 +4295,9 @@ if st.session_state.get("has_generated", False):
                         mime="text/csv",
                         use_container_width=True,
                     )
+                st.markdown('</div>', unsafe_allow_html=True)
             with dl_html:
+                st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
                 with st.container(border=True):
                     st.markdown(
                         f'<div class="export-card-title">{T["download_meeting_html"]}</div>'
@@ -4275,7 +4311,9 @@ if st.session_state.get("has_generated", False):
                         mime="text/html",
                         use_container_width=True,
                     )
+                st.markdown('</div>', unsafe_allow_html=True)
             with dl_one_pager:
+                st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
                 with st.container(border=True):
                     st.markdown(
                         f'<div class="export-card-title">{T["download_one_pager_pdf"]}</div>'
@@ -4289,7 +4327,9 @@ if st.session_state.get("has_generated", False):
                         mime="application/pdf",
                         use_container_width=True,
                     )
+                st.markdown('</div>', unsafe_allow_html=True)
             with dl_pdf:
+                st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
                 with st.container(border=True):
                     st.markdown(
                         f'<div class="export-card-title">{T["download_meeting_pdf"]}</div>'
@@ -4303,6 +4343,9 @@ if st.session_state.get("has_generated", False):
                         mime="application/pdf",
                         use_container_width=True,
                     )
+                st.markdown('</div>', unsafe_allow_html=True)
+        finally:
+            st.markdown('</div>', unsafe_allow_html=True)
         if not meeting_mode:
             st.subheader(T["summary"])
             with st.expander(T["phase_summary"], expanded=False):
