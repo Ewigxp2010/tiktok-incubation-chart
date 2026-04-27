@@ -270,6 +270,7 @@ TEXT = {
         "clicks_label": "Clicks",
         "orders_label": "Orders",
         "affiliate_video_gmv": "Affiliate Video GMV",
+        "paid_gmv_increment": "Incremental GMV from paid growth",
         "shoptab_gmv": "Store/Search GMV",
         "phase_total_breakdown": "What drives phase profit",
         "supporting_charts": "Business Drivers",
@@ -441,8 +442,8 @@ TEXT = {
         "model_logic_4_body": "Affiliate Video GMV carries the organic creator commission. Store/Search GMV represents content-influenced demand that converts through store, search, mall, or ShopTab and does not carry creator commission.",
         "model_logic_4_formula": "Organic GMV = Affiliate Video GMV + Store/Search GMV",
         "model_logic_5_title": "5. Paid growth scales validated demand",
-        "model_logic_5_body": "Phase 2 and Phase 3 can apply paid acceleration as a percentage of GMV. The model uses Ads ROAS to estimate the paid GMV lift implied by that budget.",
-        "model_logic_5_formula": "Paid GMV lift is estimated from paid budget share x Ads ROAS",
+        "model_logic_5_body": "Phase 2 and Phase 3 can apply paid acceleration as a percentage of GMV. The model uses Ads ROAS to estimate the incremental GMV added by that budget, then allocates that increment back into Affiliate Video GMV and Store/Search GMV rather than treating it as a standalone channel.",
+        "model_logic_5_formula": "Incremental paid GMV is estimated from paid budget share x Ads ROAS",
         "model_logic_6_title": "6. Cost and profit are calculated from the full operating model",
         "model_logic_6_body": "Product cost is derived from AOV and gross margin. Sample investment uses product cost plus logistics. Profit subtracts product cost, platform fee, creator commission, logistics, samples, and ads from GMV.",
         "model_logic_6_formula": "Profit = GMV - Product Cost - Platform Fee - Creator Commission - Logistics - Samples - Ads",
@@ -595,6 +596,7 @@ TEXT = {
         "clicks_label": "点击",
         "orders_label": "订单",
         "affiliate_video_gmv": "达人视频 GMV",
+        "paid_gmv_increment": "付费加热带来的增量 GMV",
         "shoptab_gmv": "店铺/Search GMV",
         "phase_total_breakdown": "阶段利润由什么驱动",
         "supporting_charts": "业务驱动因素",
@@ -766,8 +768,8 @@ TEXT = {
         "model_logic_4_body": "达人视频 GMV 需要支付自然流达人佣金。店铺/Search GMV 代表被内容种草后，通过店铺、搜索、商城或 ShopTab 成交的需求，这部分不计算达人佣金。",
         "model_logic_4_formula": "自然 GMV = 达人视频 GMV + 店铺/Search GMV",
         "model_logic_5_title": "5. 付费加热放大已验证需求",
-        "model_logic_5_body": "第二、第三阶段可以设置付费增长预算占 GMV 的比例。模型会结合广告 ROAS，估算该预算带来的增量 GMV。",
-        "model_logic_5_formula": "付费 GMV 增量由付费预算占比 x 广告 ROAS 推算",
+        "model_logic_5_body": "第二、第三阶段可以设置付费增长预算占 GMV 的比例。模型会结合广告 ROAS，估算该预算带来的增量 GMV，再把这部分增量拆回达人视频 GMV 和店铺/Search GMV，而不是把它视为独立渠道。",
+        "model_logic_5_formula": "付费增量 GMV 由付费预算占比 x 广告 ROAS 推算",
         "model_logic_6_title": "6. 成本和利润来自完整经营模型",
         "model_logic_6_body": "商品成本由 AOV 和毛利率反推；样品投入由商品成本加物流成本构成；利润会扣除商品成本、平台费、达人佣金、物流、样品投入和广告投入。",
         "model_logic_6_formula": "利润 = GMV - 商品成本 - 平台费 - 达人佣金 - 物流 - 样品投入 - 广告投入",
@@ -4598,12 +4600,12 @@ if st.session_state.get("has_generated", False):
             with support_tabs[1]:
                 if lang == "zh":
                     render_subtle_note(
-                        "这张图看的是 GMV 归因结构：达人视频 GMV 用来验证内容和转化效率，店铺/Search GMV 则代表内容种草后的无达人佣金成交沉淀。",
+                        "这张图看的是 GMV 渠道归因结构：渠道只有达人视频 GMV 和店铺/Search GMV。付费加热带来的增量 GMV 已经拆回这两个渠道中，不作为第三个独立渠道展示。",
                         "商业视角",
                     )
                 else:
                     render_subtle_note(
-                        "This view separates GMV ownership: Affiliate Video GMV validates content and conversion, while Store/Search GMV captures commission-light demand created after content exposure.",
+                        "This view separates GMV ownership into two channels only: Affiliate Video GMV and Store/Search GMV. Incremental GMV from paid growth is allocated back into those two channels rather than shown as a third one.",
                         "Business lens",
                     )
                 st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
@@ -4799,6 +4801,7 @@ if st.session_state.get("has_generated", False):
                     number_cols=number_cols,
                     decimal_cols=decimal_cols,
                 ).rename(columns={
+                    "Paid GMV Lift": T["paid_gmv_increment"],
                     "ShopTab Organic GMV": f"{T['shoptab_gmv']} Organic",
                     "ShopTab Paid GMV": f"{T['shoptab_gmv']} Paid",
                     "ShopTab GMV": T["shoptab_gmv"],
@@ -4819,6 +4822,7 @@ if st.session_state.get("has_generated", False):
                 weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols)
                 weekly_display = weekly_display.rename(columns={
                     "Ads Take Rate": T["take_rate"],
+                    "Paid GMV Lift": T["paid_gmv_increment"],
                     "ShopTab Organic GMV": f"{T['shoptab_gmv']} Organic",
                     "ShopTab Paid GMV": f"{T['shoptab_gmv']} Paid",
                     "ShopTab GMV": T["shoptab_gmv"],
