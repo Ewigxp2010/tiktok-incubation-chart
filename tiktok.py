@@ -175,6 +175,17 @@ TEXT = {
         "calibration_note": "Default SKU assumptions now use DE hit-product calibration where source coverage was sufficient. We still recommend aligning key inputs with your AM before using the plan as a business target.",
         "internal_logic_checklist": "Internal Logic Checklist",
         "internal_logic_intro": "Use this default-collapsed view for AM or data-team alignment. It explains how the model builds GMV, allocates channels, applies costs, and arrives at profit.",
+        "internal_logic_context": "Current plan signals",
+        "internal_logic_fbt_title": "FBT rule",
+        "internal_logic_fbt_on": "FBT is on. {eligible} of {total} current SKUs use €0 logistics cost; {fallback} SKU(s) at or below €20 still use the fallback logistics cost.",
+        "internal_logic_fbt_off": "FBT is off. All current SKUs use the manual logistics cost assumption.",
+        "internal_logic_paid_title": "Paid growth rule",
+        "internal_logic_paid_text": "Paid growth budget is active in {paid_phases} of {total_phases} phases at {take_rates}, using an Ads ROAS assumption of {ads_roas}. This creates incremental GMV that is allocated back into the two existing channels.",
+        "internal_logic_channel_title": "Channel split rule",
+        "internal_logic_channel_text": "The current SKU mix averages {avg_share} Store/Search share after content exposure, with the highest SKU at {max_share}. Affiliate Video GMV and Store/Search GMV remain the only two channels in the model.",
+        "internal_logic_fee_title": "Platform fee rule",
+        "internal_logic_fee_on": "The new-seller fee benefit is on, so weeks 1-{promo_weeks} use the 5% platform fee before reverting to the category default rate.",
+        "internal_logic_fee_off": "The new-seller fee benefit is off, so the model uses the default category platform commission throughout the full plan.",
         "chart_read": "How to read",
         "read_weekly_chart": "Read this as whether GMV growth is outpacing total cost, and whether profit stays above zero after the fee step-up.",
         "read_cumulative_chart": "Read this as the payback path: the curve shows whether earlier content and paid growth recover the upfront investment.",
@@ -675,6 +686,17 @@ TEXT = {
         "diagnosis_ads_heavy": "付费增长对 GMV 贡献明显。建议在把结果作为目标前，确认 ROAS 可信度和 Phase 2/3 的预算准备。",
         "internal_logic_checklist": "内部逻辑清单",
         "internal_logic_intro": "该模块默认收起，适合和 AM 或数据团队对齐口径时使用。它会说明模型如何生成 GMV、拆分渠道、计入成本，并最终得出利润。",
+        "internal_logic_context": "当前方案信号",
+        "internal_logic_fbt_title": "FBT 规则",
+        "internal_logic_fbt_on": "当前已开启 FBT。{total} 个 SKU 中有 {eligible} 个享受 €0 物流成本；仍有 {fallback} 个 AOV 不高于 €20 的 SKU 继续使用兜底物流成本。",
+        "internal_logic_fbt_off": "当前未开启 FBT，因此所有 SKU 都使用手动填写的物流成本假设。",
+        "internal_logic_paid_title": "付费增长规则",
+        "internal_logic_paid_text": "当前 {total_phases} 个阶段中有 {paid_phases} 个启用了付费增长预算，占比分别为 {take_rates}；广告 ROAS 假设为 {ads_roas}。这部分带来的是增量 GMV，并会分配回现有两条渠道，而不是形成第三渠道。",
+        "internal_logic_channel_title": "渠道拆分规则",
+        "internal_logic_channel_text": "当前 SKU 组合的平均店铺/Search 占比为 {avg_share}，其中最高 SKU 为 {max_share}。模型里仍然只有达人视频 GMV 和店铺/Search GMV 两条渠道。",
+        "internal_logic_fee_title": "平台费规则",
+        "internal_logic_fee_on": "当前已开启新商家平台费优惠，因此第 1-{promo_weeks} 周使用 5% 平台费，之后恢复到类目默认平台费率。",
+        "internal_logic_fee_off": "当前未开启新商家平台费优惠，因此整个周期都使用默认类目平台费率。",
         "target_comparison": "目标对比",
         "target_met": "已达到目标",
         "target_gap": "距离目标",
@@ -2882,6 +2904,49 @@ def render_model_logic():
         )
 
 
+def internal_logic_signals(product_df, phase_inputs, promo_60d, use_fbt, ads_roas):
+    aov_values = product_df["AOV"].astype(float)
+    total_skus = len(product_df)
+    eligible_fbt = int((aov_values > 20).sum()) if use_fbt else 0
+    fallback_skus = total_skus - eligible_fbt if use_fbt else total_skus
+    take_rates = " / ".join(pct(float(phase["take_rate"]), 0) for phase in phase_inputs)
+    paid_phases = sum(float(phase["take_rate"]) > 0 for phase in phase_inputs)
+    avg_shop_share = float(product_df["ShopTab GMV Share"].mean()) if total_skus else 0.0
+    max_shop_share = float(product_df["ShopTab GMV Share"].max()) if total_skus else 0.0
+
+    items = [
+        (
+            T["internal_logic_fbt_title"],
+            T["internal_logic_fbt_on"].format(
+                eligible=eligible_fbt,
+                total=total_skus,
+                fallback=fallback_skus,
+            ) if use_fbt else T["internal_logic_fbt_off"],
+        ),
+        (
+            T["internal_logic_paid_title"],
+            T["internal_logic_paid_text"].format(
+                paid_phases=paid_phases,
+                total_phases=len(phase_inputs),
+                take_rates=take_rates,
+                ads_roas=f"{float(ads_roas):.1f}",
+            ),
+        ),
+        (
+            T["internal_logic_channel_title"],
+            T["internal_logic_channel_text"].format(
+                avg_share=pct(avg_shop_share, 0),
+                max_share=pct(max_shop_share, 0),
+            ),
+        ),
+        (
+            T["internal_logic_fee_title"],
+            T["internal_logic_fee_on"].format(promo_weeks=PROMO_WEEKS) if promo_60d else T["internal_logic_fee_off"],
+        ),
+    ]
+    return items
+
+
 def plan_preview_text(n_skus, phase_inputs, weeks_per_phase, organic_click_window_weeks, ads_roas):
     samples = " / ".join(str(int(phase["samples_per_sku"])) for phase in phase_inputs)
     take_rates = " / ".join(pct(float(phase["take_rate"]), 0) for phase in phase_inputs)
@@ -4417,6 +4482,14 @@ if st.session_state.get("has_generated", False):
 
         with st.expander(T["internal_logic_checklist"], expanded=False):
             st.caption(T["internal_logic_intro"])
+            for title, body in internal_logic_signals(
+                product_df=product_df,
+                phase_inputs=phase_inputs,
+                promo_60d=bool(promo_60d),
+                use_fbt=bool(use_fbt),
+                ads_roas=float(effective_ads_roas),
+            ):
+                render_status_panel(T["internal_logic_context"], body, tone="info", compact=True, kicker=title)
             render_model_logic()
             st.caption(T["planning_disclaimer"])
 
