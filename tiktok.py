@@ -43,14 +43,14 @@ CATEGORY_PRESETS = {
         "Home Improvement": {"aov": 44.15, "videos_per_sample": 1.00, "clicks_per_video": 207, "click_to_order_rate": 0.022, "shop_tab_share": 0.180, "organic_commission_pct": 12.0},
         "Toys & Hobbies": {"aov": 30.64, "videos_per_sample": 1.75, "clicks_per_video": 324, "click_to_order_rate": 0.032, "shop_tab_share": 0.258, "organic_commission_pct": 8.0},
         "Books, Magazines & Audio": {"aov": 27.47, "videos_per_sample": 1.19, "clicks_per_video": 135, "click_to_order_rate": 0.022, "shop_tab_share": 0.273, "organic_commission_pct": 13.1},
-        "Collectibles": {"aov": 39.90, "videos_per_sample": 1.35, "clicks_per_video": 600, "click_to_order_rate": 0.030, "shop_tab_share": 0.35, "organic_commission_pct": 10.0},
+        "Collectibles": {"aov": 38.40, "videos_per_sample": 1.20, "clicks_per_video": 286, "click_to_order_rate": 0.028, "shop_tab_share": 0.340, "organic_commission_pct": 10.0},
     },
     "Electronics": {
         "Phones & Electronics": {"aov": 49.54, "videos_per_sample": 1.00, "clicks_per_video": 234, "click_to_order_rate": 0.018, "shop_tab_share": 0.288, "organic_commission_pct": 10.0},
         "Computers & Office Equipment": {"aov": 18.70, "videos_per_sample": 1.00, "clicks_per_video": 402, "click_to_order_rate": 0.013, "shop_tab_share": 0.244, "organic_commission_pct": 5.0},
         "Household Appliances": {"aov": 63.11, "videos_per_sample": 1.04, "clicks_per_video": 207, "click_to_order_rate": 0.018, "shop_tab_share": 0.342, "organic_commission_pct": 7.0},
         "Automotive & Motorcycle": {"aov": 41.38, "videos_per_sample": 1.00, "clicks_per_video": 309, "click_to_order_rate": 0.015, "shop_tab_share": 0.226, "organic_commission_pct": 10.0},
-        "Smart Home Systems": {"aov": 79.00, "videos_per_sample": 1.05, "clicks_per_video": 420, "click_to_order_rate": 0.015, "shop_tab_share": 0.44, "organic_commission_pct": 8.0},
+        "Smart Home Systems": {"aov": 71.20, "videos_per_sample": 1.00, "clicks_per_video": 248, "click_to_order_rate": 0.017, "shop_tab_share": 0.327, "organic_commission_pct": 8.0},
         "Audio & Headphones": {"aov": 50.46, "videos_per_sample": 1.25, "clicks_per_video": 292, "click_to_order_rate": 0.020, "shop_tab_share": 0.307, "organic_commission_pct": 10.0},
         "Mobile Accessories": {"aov": 34.39, "videos_per_sample": 1.00, "clicks_per_video": 382, "click_to_order_rate": 0.035, "shop_tab_share": 0.319, "organic_commission_pct": 10.0},
     },
@@ -60,7 +60,7 @@ CATEGORY_PRESETS = {
         "Baby & Maternity": {"aov": 59.53, "videos_per_sample": 1.00, "clicks_per_video": 351, "click_to_order_rate": 0.040, "shop_tab_share": 0.348, "organic_commission_pct": 10.0},
         "Pet Supplies": {"aov": 53.34, "videos_per_sample": 1.00, "clicks_per_video": 405, "click_to_order_rate": 0.038, "shop_tab_share": 0.359, "organic_commission_pct": 10.0},
         "Household Consumables": {"aov": 24.11, "videos_per_sample": 1.12, "clicks_per_video": 324, "click_to_order_rate": 0.040, "shop_tab_share": 0.287, "organic_commission_pct": 7.0},
-        "Personal Care Consumables": {"aov": 19.90, "videos_per_sample": 1.90, "clicks_per_video": 1000, "click_to_order_rate": 0.050, "shop_tab_share": 0.30, "organic_commission_pct": 10.0},
+        "Personal Care Consumables": {"aov": 24.20, "videos_per_sample": 1.08, "clicks_per_video": 432, "click_to_order_rate": 0.048, "shop_tab_share": 0.303, "organic_commission_pct": 10.0},
     },
     "Beauty": {
         "Beauty & Personal Care": {"aov": 24.34, "videos_per_sample": 1.04, "clicks_per_video": 540, "click_to_order_rate": 0.055, "shop_tab_share": 0.319, "organic_commission_pct": 12.0},
@@ -172,6 +172,7 @@ TEXT = {
         "debug_target_profit_gap": "Target profit gap",
         "scenario_snapshot": "Scenario Snapshot",
         "model_last_reviewed": "Model last reviewed",
+        "calibration_note": "Default SKU assumptions now use DE hit-product calibration where source coverage was sufficient. We still recommend aligning key inputs with your AM before using the plan as a business target.",
         "chart_read": "How to read",
         "read_weekly_chart": "Read this as whether GMV growth is outpacing total cost, and whether profit stays above zero after the fee step-up.",
         "read_cumulative_chart": "Read this as the payback path: the curve shows whether earlier content and paid growth recover the upfront investment.",
@@ -488,6 +489,7 @@ TEXT = {
         "debug_target_profit_gap": "目标利润差距",
         "scenario_snapshot": "方案快照",
         "model_last_reviewed": "模型最近校准",
+        "calibration_note": "当前 SKU 默认值已优先使用 DE hit-product 校准口径；如需把结果作为业务目标，仍建议和您的 AM 对齐关键输入。",
         "chart_read": "怎么看",
         "read_weekly_chart": "看 GMV 增长是否持续跑赢总成本，以及平台费阶梯变化后利润是否仍保持在 0 以上。",
         "read_cumulative_chart": "看回本路径：曲线反映前期内容沉淀和付费增长是否能覆盖前期投入。",
@@ -3923,6 +3925,7 @@ with st.sidebar:
     n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
     st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
     render_sidebar_meta(f"{T['model_version']}: {MODEL_VERSION}")
+    st.caption(T["calibration_note"])
     render_sidebar_divider()
     if st.button(T["reset_defaults"], key="reset_request_btn"):
         st.session_state["reset_confirm_pending"] = True
@@ -4179,6 +4182,7 @@ scenario_label = {
 }.get(scenario_case, T["scenario_base"])
 st.info(f"**{T['scenario_snapshot']}**: {scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label)}")
 st.caption(f"{T['model_last_reviewed']}: {MODEL_LAST_REVIEWED}")
+st.caption(T["calibration_note"])
 
 if st.session_state.get("plan_locked", False):
     st.warning(T["plan_locked"])
