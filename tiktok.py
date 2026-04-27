@@ -191,10 +191,14 @@ TEXT = {
         "promo_yes": "Apply first-60-day 5% platform fee",
         "promo_no": "No, use default category commission",
         "fulfillment": "Fulfillment / shipping cost €/unit",
+        "fulfillment_fbt_fallback": "Fallback logistics cost €/unit for SKUs at or below €20",
         "fbt": "Use FBT free shipping",
         "fbt_yes": "Yes, set logistics cost to €0",
         "fbt_no": "No, use manual logistics cost",
         "fbt_help": "Planning assumption: when selected, SKUs with AOV above €20 use €0 logistics cost; lower-AOV SKUs keep the manual logistics cost.",
+        "fbt_active_all": "€0.00 effective under FBT",
+        "fbt_active_mixed": "Mixed under FBT ({logistics} fallback for AOV ≤ €20)",
+        "fbt_active_none": "{logistics} fallback still applies (no current SKU above €20)",
         "creator_commission": "Organic creator commission",
         "paid_creator_commission": "Paid-traffic creator commission",
         "organic_click_window": "Content sales window (weeks)",
@@ -508,10 +512,14 @@ TEXT = {
         "promo_yes": "适用前约60天平台费 5%",
         "promo_no": "否，使用默认类目佣金",
         "fulfillment": "履约/寄送成本 €/件",
+        "fulfillment_fbt_fallback": "AOV 不高于 €20 的 SKU 兜底物流成本 €/件",
         "fbt": "使用 FBT 包邮",
         "fbt_yes": "是，物流成本按 €0 计算",
         "fbt_no": "否，使用手动物流成本",
         "fbt_help": "沙盘假设：勾选后，AOV 高于 €20 的 SKU 物流成本按 €0 计算；AOV 不高于 €20 的 SKU 仍使用手动物流成本。",
+        "fbt_active_all": "当前有效物流成本为 €0.00（FBT 生效）",
+        "fbt_active_mixed": "FBT 部分生效（AOV 不高于 €20 的 SKU 仍使用 {logistics} 兜底）",
+        "fbt_active_none": "当前仍使用 {logistics} 兜底物流成本（没有 SKU 高于 €20）",
         "creator_commission": "自然流达人佣金",
         "paid_creator_commission": "广告流达人佣金",
         "organic_click_window": "内容出单窗口（周）",
@@ -2109,6 +2117,27 @@ def build_product_df(n_skus):
     return df
 
 
+def effective_logistics_cost_per_unit(aov_values, logistics_cost, use_fbt):
+    base_logistics_cost = float(logistics_cost)
+    logistics_cost_per_unit = np.full(len(aov_values), base_logistics_cost)
+    if use_fbt:
+        logistics_cost_per_unit = np.where(np.asarray(aov_values) > FBT_FREE_SHIPPING_AOV_THRESHOLD, 0.0, base_logistics_cost)
+    return logistics_cost_per_unit
+
+
+def logistics_display_text(product_df, logistics_cost, use_fbt):
+    if product_df is None or product_df.empty:
+        return money(float(logistics_cost), 2)
+    logistics_cost_per_unit = effective_logistics_cost_per_unit(product_df["AOV"].to_numpy(), logistics_cost, use_fbt)
+    if not use_fbt:
+        return money(float(logistics_cost), 2)
+    if np.allclose(logistics_cost_per_unit, 0.0):
+        return T["fbt_active_all"]
+    if np.allclose(logistics_cost_per_unit, float(logistics_cost)):
+        return T["fbt_active_none"].format(logistics=money(float(logistics_cost), 2))
+    return T["fbt_active_mixed"].format(logistics=money(float(logistics_cost), 2))
+
+
 def build_weekly_model(
     product_df,
     phase_inputs,
@@ -2123,10 +2152,7 @@ def build_weekly_model(
     gross_margin = product_df["Gross Margin"].to_numpy()
     platform_fee_rates = product_df["Platform Fee Rate"].to_numpy()
     product_cost_per_unit = aov * (1 - gross_margin)
-    base_logistics_cost = float(logistics_cost)
-    logistics_cost_per_unit = np.full(len(product_df), base_logistics_cost)
-    if use_fbt:
-        logistics_cost_per_unit = np.where(aov > FBT_FREE_SHIPPING_AOV_THRESHOLD, 0.0, base_logistics_cost)
+    logistics_cost_per_unit = effective_logistics_cost_per_unit(aov, logistics_cost, use_fbt)
     sample_all_in_cost_per_unit = product_cost_per_unit + logistics_cost_per_unit
 
     videos_per_sample = product_df["Videos / Sample"].to_numpy()
@@ -2495,7 +2521,7 @@ def render_hero(overall, weeks, skus, break_even_label):
     )
 
 
-def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_cost, ads_roas, organic_click_window_weeks, promo_60d, use_fbt):
+def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_display, ads_roas, organic_click_window_weeks, promo_60d, use_fbt):
     samples = " / ".join(str(int(phase["samples_per_sku"])) for phase in phase_inputs)
     take_rates = " / ".join(pct(float(phase["take_rate"]), 0) for phase in phase_inputs)
     yes = T["yes"]
@@ -2514,7 +2540,7 @@ def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_co
             T["assumption_operating"],
             T["assumption_operating_value"].format(
                 skus=int(n_skus),
-                logistics=money(float(logistics_cost), 2),
+                logistics=logistics_display,
                 organic_window=int(organic_click_window_weeks),
             ),
             "#14B8A6",
@@ -3981,13 +4007,16 @@ with st.sidebar:
         weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1, key="weeks_per_phase_input")
 
         st.header(T["cost_assumptions"])
+        fulfillment_label = T["fulfillment_fbt_fallback"] if use_fbt else T["fulfillment"]
         logistics_cost = st.number_input(
-            T["fulfillment"],
+            fulfillment_label,
             min_value=0.0,
             value=5.0,
             step=0.5,
             key="logistics_cost_manual",
         )
+        if use_fbt:
+            st.caption(T["fbt_help"])
 
         st.header(T["growth_levers"])
         ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
@@ -4183,6 +4212,11 @@ scenario_label = {
 st.info(f"**{T['scenario_snapshot']}**: {scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label)}")
 st.caption(f"{T['model_last_reviewed']}: {MODEL_LAST_REVIEWED}")
 st.caption(T["calibration_note"])
+for i in range(int(n_skus)):
+    initialize_sku(i)
+product_df_preview = build_product_df(int(n_skus))
+if use_fbt:
+    st.caption(logistics_display_text(product_df_preview, float(logistics_cost), True))
 
 if st.session_state.get("plan_locked", False):
     st.warning(T["plan_locked"])
@@ -4249,11 +4283,12 @@ if st.session_state.get("has_generated", False):
         business_readout = business_readout_items(overall, df_all, cumulative_be_label, total_cost_driver)
         forecast_range_values = forecast_range(overall, assumption_status)
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+        logistics_display = logistics_display_text(product_df, float(logistics_cost), bool(use_fbt))
         assumption_summary = build_assumption_summary(
             phase_inputs=phase_inputs,
             weeks_per_phase=int(weeks_per_phase),
             n_skus=int(n_skus),
-            logistics_cost=float(logistics_cost),
+            logistics_display=logistics_display,
             ads_roas=float(effective_ads_roas),
             organic_click_window_weeks=int(organic_click_window_weeks),
             promo_60d=bool(promo_60d),
