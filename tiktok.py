@@ -1045,7 +1045,7 @@ st.markdown(
         --tts-muted: #6B7280;
         --tts-line: #E5E7EB;
         --tts-panel: #FFFFFF;
-        --tts-bg: #F6F7FB;
+        --tts-bg: #F7F8FA;
     }
 
     .stApp {
@@ -1053,14 +1053,12 @@ st.markdown(
     }
 
     [data-testid="stAppViewContainer"] > .main {
-        background:
-            linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(246,247,251,1) 340px),
-            var(--tts-bg);
+        background: var(--tts-bg);
     }
 
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #F5F7FB 0%, #F1F4F8 100%);
-        border-right: 1px solid #E1E5EC;
+        background: #F5F6F8;
+        border-right: 1px solid #E6E8ED;
     }
 
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {
@@ -1074,7 +1072,7 @@ st.markdown(
     }
 
     .block-container {
-        max-width: 1360px;
+        max-width: 1320px;
         padding-top: 2.2rem;
         padding-bottom: 4rem;
     }
@@ -1106,7 +1104,7 @@ st.markdown(
         border: 1px solid var(--tts-line);
         border-radius: 8px;
         padding: 14px 15px;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.035);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
         min-height: 116px;
         height: auto !important;
         max-height: none !important;
@@ -1169,14 +1167,14 @@ st.markdown(
     div[data-testid="stVerticalBlockBorderWrapper"] {
         border-color: #DDE3EA;
         border-radius: 8px;
-        background: rgba(255, 255, 255, 0.92);
-        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
     }
 
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
         border-bottom: 0;
-        background: #EEF2F7;
+        background: #F3F4F6;
         padding: 6px;
         border-radius: 8px;
     }
@@ -1187,10 +1185,10 @@ st.markdown(
     }
 
     .stTabs [data-baseweb="tab"] {
-        height: 44px;
-        padding: 0 18px;
+        height: 42px;
+        padding: 0 16px;
         color: #4B5563;
-        font-weight: 650;
+        font-weight: 620;
         border-radius: 7px;
         background: transparent;
         border: 1px solid transparent;
@@ -1200,7 +1198,7 @@ st.markdown(
         color: #111827;
         background: #FFFFFF;
         border-color: #CBD5E1;
-        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }
 
     .tabs-shell {
@@ -1208,7 +1206,7 @@ st.markdown(
         border: 1px solid #DDE3EA;
         border-radius: 8px;
         padding: 12px 12px 8px 12px;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.028);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
         margin-top: 8px;
     }
 
@@ -1235,18 +1233,18 @@ st.markdown(
 
     .stButton > button {
         border-radius: 8px;
-        border: 0;
-        background: var(--tts-red);
-        color: white;
+        border: 1px solid #E5E7EB;
+        background: #FFFFFF;
+        color: #111827;
         font-weight: 720;
         min-height: 44px;
-        box-shadow: 0 12px 24px rgba(254, 44, 85, 0.18);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
     }
 
     .stButton > button:hover {
-        background: #E9274E;
-        color: white;
-        border: 0;
+        background: #F9FAFB;
+        color: #111827;
+        border: 1px solid #D1D5DB;
     }
 
     div[data-testid="stDataFrame"] {
@@ -1274,7 +1272,7 @@ st.markdown(
         border-radius: 8px;
         padding: 18px 18px 18px 18px;
         margin: 8px 0 18px 0;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
         overflow: visible;
     }
 
@@ -1285,13 +1283,13 @@ st.markdown(
     }
 
     .dashboard-note {
-        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
+        background: #FFFFFF;
         border: 1px solid #E5EAF1;
-        border-left: 3px solid #CBD5E1;
+        border-left: 2px solid #D1D5DB;
         border-radius: 8px;
         padding: 12px 14px;
         color: #334155;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.022);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
         line-height: 1.48;
     }
 
@@ -1308,7 +1306,7 @@ st.markdown(
         border: 1px solid #E5EAF1;
         border-radius: 8px;
         padding: 12px 14px;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.024);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
     .dashboard-intro-kicker {
@@ -1332,7 +1330,7 @@ st.markdown(
         border-radius: 8px;
         padding: 26px 28px;
         margin: 26px 0 18px 0;
-        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.055);
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
     }
 
     .setup-gate-kicker {
@@ -1360,12 +1358,12 @@ st.markdown(
     .setup-ready {
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
-        border-left: 4px solid #2563EB;
+        border-left: 3px solid #2563EB;
         border-radius: 8px;
         padding: 12px 14px;
         margin: 12px 0 18px 0;
         color: #374151;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
     .sidebar-meta {
@@ -1388,7 +1386,7 @@ st.markdown(
         border-radius: 8px;
         padding: 18px 20px;
         margin-bottom: 14px;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
@@ -1427,7 +1425,7 @@ st.markdown(
         margin-top: 7px;
         padding: 4px 10px;
         border-radius: 999px;
-        background: #F1F5F9;
+        background: #F8FAFC;
         border: 1px solid #DDE3EA;
         color: #334155;
         font-size: 0.78rem;
@@ -1460,7 +1458,7 @@ st.markdown(
         border: 1px solid #DDE3EA;
         border-radius: 8px;
         padding: 16px 18px;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
     }
 
     .action-group-grid {
@@ -1474,11 +1472,11 @@ st.markdown(
     .action-group {
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
-        border-top: 4px solid #CBD5E1;
+        border-top: 3px solid #CBD5E1;
         border-radius: 8px;
         padding: 14px 16px;
         min-height: 158px;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
         display: flex;
         flex-direction: column;
     }
@@ -1540,11 +1538,11 @@ st.markdown(
     .readout-card {
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
-        border-top: 4px solid #CBD5E1;
+        border-top: 3px solid #CBD5E1;
         border-radius: 8px;
         padding: 16px 18px;
         min-height: 144px;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
         display: flex;
         flex-direction: column;
     }
@@ -1569,13 +1567,13 @@ st.markdown(
         border-radius: 8px;
         padding: 14px 16px;
         margin: 8px 0 14px 0;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.028);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
     .chart-lens.compact {
         padding: 10px 14px;
         margin: 6px 0 10px 0;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.022);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
     }
 
     .chart-lens-title {
@@ -1623,7 +1621,7 @@ st.markdown(
         border: 1px solid #E5E7EB;
         border-radius: 8px;
         padding: 22px;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
         margin-bottom: 14px;
     }
 
@@ -1678,10 +1676,10 @@ st.markdown(
     .phase-overview-card {
         background: #FFFFFF;
         border: 1px solid #E5E7EB;
-        border-top: 4px solid #CBD5E1;
+        border-top: 3px solid #CBD5E1;
         border-radius: 8px;
         padding: 16px;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
     }
 
     .phase-overview-title {
@@ -1715,14 +1713,12 @@ st.markdown(
     }
 
     .hero-band {
-        background:
-            linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98)),
-            #FFFFFF;
+        background: #FFFFFF;
         border: 1px solid #DDE3EA;
         border-radius: 8px;
         padding: 22px 24px;
         margin: 18px 0 18px 0;
-        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.055);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
         display: grid;
         grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(150px, 0.55fr));
         gap: 16px;
@@ -1780,13 +1776,13 @@ st.markdown(
     .premium-kpi {
         background: #FFFFFF;
         border: 1px solid #E5E7EB;
-        border-top: 3px solid #CBD5E1;
+        border-top: 2px solid #CBD5E1;
         border-radius: 8px;
         padding: 14px 15px 15px 15px;
         min-height: 114px;
         height: auto;
         overflow: visible;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.035);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -1835,12 +1831,12 @@ st.markdown(
     .insight-strip {
         background: #FFFFFF;
         border: 1px solid #E5E7EB;
-        border-left: 3px solid #25F4EE;
+        border-left: 2px solid #D1D5DB;
         border-radius: 8px;
         color: #374151;
         padding: 12px 14px;
         margin: 8px 0 18px 0;
-        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.028);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
         line-height: 1.45;
     }
 
@@ -1855,11 +1851,11 @@ st.markdown(
     .status-panel {
         background: #FFFFFF;
         border: 1px solid #E5E7EB;
-        border-left: 4px solid #CBD5E1;
+        border-left: 2px solid #CBD5E1;
         border-radius: 8px;
         padding: 12px 14px;
         margin: 8px 0 14px 0;
-        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.026);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
     .status-panel.compact {
@@ -1901,17 +1897,17 @@ st.markdown(
 
     .status-panel.info {
         border-left-color: #2563EB;
-        background: linear-gradient(180deg, #FFFFFF 0%, #F8FBFF 100%);
+        background: #FFFFFF;
     }
 
     .status-panel.success {
         border-left-color: #16A34A;
-        background: linear-gradient(180deg, #FFFFFF 0%, #F8FFF9 100%);
+        background: #FFFFFF;
     }
 
     .status-panel.warning {
         border-left-color: #F59E0B;
-        background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF7 100%);
+        background: #FFFFFF;
     }
 
     .export-shell {
@@ -1919,7 +1915,7 @@ st.markdown(
         border: 1px solid #DDE3EA;
         border-radius: 8px;
         padding: 14px 16px 16px 16px;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
     }
 
     .export-shell-caption {
@@ -1962,7 +1958,7 @@ st.markdown(
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background: #FBFCFE;
+        background: #FFFFFF;
     }
 
     .export-card-shell [data-testid="stVerticalBlock"] {
@@ -2024,7 +2020,7 @@ st.markdown(
     div[data-testid="stVerticalBlockBorderWrapper"],
     div[data-testid="stDataFrame"],
     div[data-testid="stAlert"] {
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.026) !important;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025) !important;
     }
 
     .premium-kpi,
