@@ -199,6 +199,10 @@ TEXT = {
         "fbt_active_all": "€0.00 effective under FBT",
         "fbt_active_mixed": "Mixed under FBT ({logistics} fallback for AOV ≤ €20)",
         "fbt_active_none": "{logistics} fallback still applies (no current SKU above €20)",
+        "fbt_status": "FBT status",
+        "effective_logistics": "Effective logistics cost",
+        "fbt_status_eligible": "FBT active",
+        "fbt_status_fallback": "Fallback logistics applies",
         "creator_commission": "Organic creator commission",
         "paid_creator_commission": "Paid-traffic creator commission",
         "organic_click_window": "Content sales window (weeks)",
@@ -520,6 +524,10 @@ TEXT = {
         "fbt_active_all": "当前有效物流成本为 €0.00（FBT 生效）",
         "fbt_active_mixed": "FBT 部分生效（AOV 不高于 €20 的 SKU 仍使用 {logistics} 兜底）",
         "fbt_active_none": "当前仍使用 {logistics} 兜底物流成本（没有 SKU 高于 €20）",
+        "fbt_status": "FBT 状态",
+        "effective_logistics": "有效物流成本",
+        "fbt_status_eligible": "FBT 生效",
+        "fbt_status_fallback": "仍使用兜底物流",
         "creator_commission": "自然流达人佣金",
         "paid_creator_commission": "广告流达人佣金",
         "organic_click_window": "内容出单窗口（周）",
@@ -2136,6 +2144,12 @@ def logistics_display_text(product_df, logistics_cost, use_fbt):
     if np.allclose(logistics_cost_per_unit, float(logistics_cost)):
         return T["fbt_active_none"].format(logistics=money(float(logistics_cost), 2))
     return T["fbt_active_mixed"].format(logistics=money(float(logistics_cost), 2))
+
+
+def sku_fbt_status(aov, logistics_cost, use_fbt):
+    effective_cost = float(effective_logistics_cost_per_unit(np.asarray([aov]), logistics_cost, use_fbt)[0])
+    status = T["fbt_status_eligible"] if use_fbt and effective_cost == 0 else T["fbt_status_fallback"]
+    return status, effective_cost
 
 
 def build_weekly_model(
@@ -4143,6 +4157,11 @@ if show_setup:
                 st.selectbox(T["subcategory"], options=subcategories, key=f"subcategory_{i}")
 
             refresh_if_category_changed(i)
+            fbt_status, effective_logistics = sku_fbt_status(
+                aov=float(st.session_state[f"aov_{i}"]),
+                logistics_cost=float(logistics_cost),
+                use_fbt=bool(use_fbt),
+            )
 
             c4, c5, c6 = st.columns(3)
             with c4:
@@ -4179,6 +4198,9 @@ if show_setup:
                     key=f"paid_commission_pct_{i}",
                     help=T["paid_commission_help"],
                 )
+
+            if use_fbt:
+                st.caption(f"{T['fbt_status']}: {fbt_status} · {T['effective_logistics']}: {money(effective_logistics, 2)}")
 
             with st.expander(T["benchmark_expander"], expanded=False):
                 b1, b2, b3, b4 = st.columns(4)
@@ -4523,6 +4545,12 @@ if st.session_state.get("has_generated", False):
         if not meeting_mode:
             with st.expander(T["product_profile"], expanded=False):
                 product_display = product_df.copy()
+                product_display[T["fbt_status"]] = product_df["AOV"].map(
+                    lambda x: sku_fbt_status(float(x), float(logistics_cost), bool(use_fbt))[0]
+                )
+                product_display[T["effective_logistics"]] = product_df["AOV"].map(
+                    lambda x: money(sku_fbt_status(float(x), float(logistics_cost), bool(use_fbt))[1], 2)
+                )
                 product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
                 product_display["Gross Margin"] = product_display["Gross Margin"].map(lambda x: pct(x, 0))
                 product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
