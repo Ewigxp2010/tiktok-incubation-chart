@@ -1136,6 +1136,15 @@ st.markdown(
         box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
     }
 
+    .tabs-shell {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 12px 12px 8px 12px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.028);
+        margin-top: 8px;
+    }
+
     .st-key-selected_phase_view div[role="radiogroup"],
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] {
         gap: 8px;
@@ -1217,6 +1226,37 @@ st.markdown(
         color: #1F2937;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.032);
         line-height: 1.55;
+    }
+
+    .dashboard-intro {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+        gap: 12px;
+        margin: 10px 0 16px 0;
+        align-items: stretch;
+    }
+
+    .dashboard-intro-card {
+        background: #FFFFFF;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+        padding: 14px 16px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+    }
+
+    .dashboard-intro-kicker {
+        color: #64748B;
+        font-size: 0.76rem;
+        font-weight: 780;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 6px;
+    }
+
+    .dashboard-intro-text {
+        color: #334155;
+        font-size: 0.94rem;
+        line-height: 1.5;
     }
 
     .setup-gate {
@@ -1722,15 +1762,15 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid #DDE3EA;
         border-radius: 8px;
-        padding: 16px 18px 18px 18px;
+        padding: 14px 16px 16px 16px;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
     }
 
     .export-shell-caption {
         color: #64748B;
-        font-size: 0.84rem;
+        font-size: 0.82rem;
         line-height: 1.45;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
 
     div[data-testid="stDownloadButton"] button {
@@ -1747,7 +1787,7 @@ st.markdown(
 
     .export-card-title {
         color: #111827;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         font-weight: 780;
         margin-bottom: 4px;
         line-height: 1.25;
@@ -1755,10 +1795,10 @@ st.markdown(
 
     .export-card-desc {
         color: #64748B;
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         line-height: 1.35;
         min-height: 42px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     .export-card-shell [data-testid="stVerticalBlockBorderWrapper"] {
@@ -1779,6 +1819,7 @@ st.markdown(
 
     @media (max-width: 900px) {
         .hero-band,
+        .dashboard-intro,
         .kpi-grid,
         .readout-grid,
         .action-group-grid,
@@ -2236,6 +2277,24 @@ def render_section_header(title, eyebrow=None):
     eyebrow_html = f'<div class="section-eyebrow">{escape(str(eyebrow))}</div>' if eyebrow else ""
     st.markdown(
         f'<div class="section-shell">{eyebrow_html}<div class="section-title">{escape(str(title))}</div></div>',
+        unsafe_allow_html=True,
+    )
+
+
+def render_dashboard_intro(snapshot_text, diagnosis_text):
+    st.markdown(
+        f"""
+        <div class="dashboard-intro">
+            <div class="dashboard-intro-card">
+                <div class="dashboard-intro-kicker">{escape(T["scenario_snapshot"])}</div>
+                <div class="dashboard-intro-text">{escape(str(snapshot_text))}</div>
+            </div>
+            <div class="dashboard-intro-card">
+                <div class="dashboard-intro-kicker">{escape(T["diagnosis_summary"])}</div>
+                <div class="dashboard-intro-text">{escape(str(diagnosis_text))}</div>
+            </div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
@@ -3983,8 +4042,11 @@ if st.session_state.get("has_generated", False):
             break_even_label=cumulative_be_label,
         )
 
-        st.subheader(T["executive_dashboard"])
-        st.info(f"**{T['scenario_snapshot']}**: {scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label)}")
+        render_section_header(T["executive_dashboard"])
+        render_dashboard_intro(
+            snapshot_text=scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
+            diagnosis_text=diagnosis_text,
+        )
         if not st.session_state.get("plan_locked", False):
             if st.button(T["lock_plan"], key="lock_plan_btn"):
                 st.session_state["plan_locked"] = True
@@ -4029,10 +4091,9 @@ if st.session_state.get("has_generated", False):
         )
         st.caption(T["planning_disclaimer"])
         st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
-        st.info(f"**{T['diagnosis_summary']}**: {diagnosis_text}")
-        st.subheader(T["business_readout"])
+        render_section_header(T["business_readout"])
         render_business_readout(business_readout)
-        st.subheader(T["break_even"])
+        render_section_header(T["break_even"])
         render_kpi_grid([
             (T["weekly_profit"], f"Week {weekly_be}" if weekly_be else T["not_reached"], "#16A34A" if weekly_be else "#F97316"),
             (T["cumulative_be"], f"Week {cumulative_be}" if cumulative_be else T["not_reached"], "#16A34A" if cumulative_be else "#F97316"),
@@ -4073,7 +4134,7 @@ if st.session_state.get("has_generated", False):
                 (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#16A34A"),
             ], compact=True)
 
-        st.subheader(T["commercial_takeaways"])
+        render_section_header(T["commercial_takeaways"])
         render_kpi_grid([
             (takeaways[0][0], takeaways[0][1], "#7C3AED"),
             (takeaways[1][0], takeaways[1][1], "#2563EB"),
@@ -4211,6 +4272,7 @@ if st.session_state.get("has_generated", False):
             render_section_header(T["supporting_charts"], T["section_secondary"])
             support_container = st.container()
         with support_container:
+            st.markdown('<div class="tabs-shell">', unsafe_allow_html=True)
             support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
             with support_tabs[0]:
                 if lang == "zh":
@@ -4259,6 +4321,7 @@ if st.session_state.get("has_generated", False):
                     )
                 st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             st.info(f"**{T['cost_explanation']}**: {total_cost_explanation}")
+            st.markdown('</div>', unsafe_allow_html=True)
 
         render_section_header(T["next_actions"])
         render_grouped_actions(next_actions)
