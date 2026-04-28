@@ -1317,10 +1317,11 @@ st.markdown(
     }
 
     .dashboard-intro-card {
-        background: #FFFFFF;
-        border: 1px solid #E4E7EB;
-        border-radius: 8px;
-        padding: 11px 14px;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #E5E7EB;
+        border-radius: 0;
+        padding: 10px 0 0 0;
         box-shadow: none;
     }
 
@@ -1347,10 +1348,11 @@ st.markdown(
     }
 
     .executive-brief-card {
-        background: #FFFFFF;
-        border: 1px solid #E4E7EB;
-        border-radius: 8px;
-        padding: 12px 14px;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #E5E7EB;
+        border-radius: 0;
+        padding: 10px 0 0 0;
         box-shadow: none;
     }
 
@@ -1723,22 +1725,24 @@ st.markdown(
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 10px;
-        margin: 10px 0 14px 0;
+        margin: 10px 0 12px 0;
     }
 
     .phase-overview-card {
-        background: #FFFFFF;
-        border: 1px solid #E4E7EB;
-        border-radius: 8px;
-        padding: 12px 14px;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #DDE2E7;
+        border-bottom: 1px solid #EFF2F4;
+        border-radius: 0;
+        padding: 10px 0 12px 0;
         box-shadow: none;
     }
 
     .phase-overview-title {
         color: #111827;
-        font-size: 0.92rem;
-        font-weight: 760;
-        margin-bottom: 10px;
+        font-size: 0.88rem;
+        font-weight: 740;
+        margin-bottom: 9px;
         line-height: 1.25;
     }
 
@@ -1831,10 +1835,10 @@ st.markdown(
 
     .premium-kpi {
         background: #FFFFFF;
-        border: 1px solid #E4E7EB;
+        border: 1px solid #E7EAEE;
         border-radius: 8px;
-        padding: 15px 16px 16px 16px;
-        min-height: 104px;
+        padding: 14px 15px 15px 15px;
+        min-height: 100px;
         height: auto;
         overflow: visible;
         box-shadow: none;
@@ -1884,12 +1888,13 @@ st.markdown(
     }
 
     .insight-strip {
-        background: #FFFFFF;
-        border: 1px solid #E4E7EB;
-        border-radius: 8px;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #E5E7EB;
+        border-radius: 0;
         color: #374151;
-        padding: 10px 12px;
-        margin: 8px 0 12px 0;
+        padding: 9px 0 0 0;
+        margin: 8px 0 10px 0;
         box-shadow: none;
         line-height: 1.45;
     }
@@ -1904,9 +1909,9 @@ st.markdown(
 
     .status-panel {
         background: #FFFFFF;
-        border: 1px solid #E4E7EB;
+        border: 1px solid #E7EAEE;
         border-radius: 8px;
-        padding: 11px 14px;
+        padding: 10px 12px;
         margin: 8px 0 12px 0;
         box-shadow: none;
     }
@@ -4677,15 +4682,15 @@ if st.session_state.get("has_generated", False):
                 (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#178A62"),
             ])
 
-        st.subheader(T["key_assumptions"])
+        render_section_header(T["key_assumptions"])
         render_kpi_grid(assumption_summary)
 
-        st.subheader(T["client_narrative"])
+        render_section_header(T["client_narrative"])
         for line in narrative:
             st.write(f"- {line}")
 
         if not meeting_mode:
-            st.subheader(T["health_check"])
+            render_section_header(T["health_check"])
             health_container = st.container()
             with health_container:
                 for level, check in health_checks:
@@ -4699,7 +4704,7 @@ if st.session_state.get("has_generated", False):
         if meeting_mode:
             path_container = st.expander(T["path_to_be"], expanded=False)
         else:
-            st.subheader(T["path_to_be"])
+            render_section_header(T["path_to_be"])
             path_container = st.container()
         with path_container:
             if cumulative_be:
