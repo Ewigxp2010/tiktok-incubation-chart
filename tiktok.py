@@ -1517,24 +1517,12 @@ st.markdown(
     .action-group {
         background: #FFFFFF;
         border: 1px solid #E7EBF1;
-        border-radius: 12px;
-        padding: 14px 16px;
-        min-height: 158px;
+        border-radius: 8px;
+        padding: 13px 14px;
+        min-height: 144px;
         box-shadow: none;
         display: flex;
         flex-direction: column;
-        position: relative;
-    }
-
-    .action-group::before {
-        content: "";
-        position: absolute;
-        top: 14px;
-        right: 14px;
-        width: 8px;
-        height: 8px;
-        border-radius: 999px;
-        background: var(--card-accent, #CBD5E1);
     }
 
     .action-group-title {
@@ -1600,18 +1588,6 @@ st.markdown(
         box-shadow: none;
         display: flex;
         flex-direction: column;
-        position: relative;
-    }
-
-    .readout-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 16px;
-        width: 32px;
-        height: 2px;
-        border-radius: 999px;
-        background: var(--card-accent, #CBD5E1);
     }
 
     .readout-title {
@@ -1639,9 +1615,9 @@ st.markdown(
     }
 
     .chart-lens.compact {
-        padding: 10px 14px;
-        margin: 6px 0 10px 0;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
+        padding: 8px 0 0 0;
+        margin: 4px 0 8px 0;
+        box-shadow: none;
     }
 
     .chart-lens-title {
@@ -1746,55 +1722,43 @@ st.markdown(
     .phase-overview-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-        margin: 12px 0 18px 0;
+        gap: 10px;
+        margin: 10px 0 14px 0;
     }
 
     .phase-overview-card {
         background: #FFFFFF;
         border: 1px solid #E4E7EB;
         border-radius: 8px;
-        padding: 16px;
+        padding: 12px 14px;
         box-shadow: none;
-        position: relative;
-    }
-
-    .phase-overview-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 16px;
-        width: 28px;
-        height: 2px;
-        border-radius: 999px;
-        background: var(--card-accent, #CBD5E1);
     }
 
     .phase-overview-title {
         color: #111827;
-        font-size: 0.98rem;
-        font-weight: 780;
-        margin-bottom: 12px;
+        font-size: 0.92rem;
+        font-weight: 760;
+        margin-bottom: 10px;
         line-height: 1.25;
     }
 
     .phase-overview-metrics {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px 12px;
+        gap: 8px 10px;
     }
 
     .phase-overview-label {
         color: #64748B;
-        font-size: 0.72rem;
+        font-size: 0.68rem;
         font-weight: 720;
         line-height: 1.25;
     }
 
     .phase-overview-value {
         color: #111827;
-        font-size: clamp(0.92rem, 1.4vw, 1.1rem);
-        font-weight: 800;
+        font-size: clamp(0.86rem, 1.2vw, 1rem);
+        font-weight: 760;
         line-height: 1.2;
         margin-top: 3px;
         overflow-wrap: anywhere;
@@ -1870,7 +1834,7 @@ st.markdown(
         border: 1px solid #E4E7EB;
         border-radius: 8px;
         padding: 15px 16px 16px 16px;
-        min-height: 116px;
+        min-height: 104px;
         height: auto;
         overflow: visible;
         box-shadow: none;
@@ -1878,18 +1842,6 @@ st.markdown(
         flex-direction: column;
         justify-content: flex-start;
         gap: 6px;
-        position: relative;
-    }
-
-    .premium-kpi::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 16px;
-        width: 28px;
-        height: 2px;
-        border-radius: 999px;
-        background: var(--card-accent, #CBD5E1);
     }
 
     .kpi-grid.kpi-grid-compact .premium-kpi {
@@ -4756,7 +4708,7 @@ if st.session_state.get("has_generated", False):
                 render_status_panel(T["path_to_be"], path_text, tone="warning", compact=True)
 
         render_section_header(T["phase_trend"])
-        render_chart_lens(T["phase_strategy"], T["phase_strategy_text"], compact=True)
+        render_subtle_note(T["phase_strategy_text"], T["phase_strategy"])
         render_phase_overview(phase_summary)
         selected_phase_key = st.radio(
             "",
@@ -4771,7 +4723,7 @@ if st.session_state.get("has_generated", False):
         phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
         objective = phase_objective(selected_phase["key"])
         if objective:
-            render_chart_lens(T["phase_objective"], objective, compact=True)
+            render_subtle_note(objective, T["phase_objective"])
         phase_kpis = [
             (T["total_gmv"], money(phase_row["GMV"], 0), "#315EEC"),
             (T["total_profit"], money(phase_row["Profit"], 0), "#178A62" if phase_row["Profit"] >= 0 else "#B42318"),
