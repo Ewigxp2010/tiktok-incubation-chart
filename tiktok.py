@@ -1083,6 +1083,19 @@ st.markdown(
         padding-right: 2.2rem;
     }
 
+    section[data-testid="stSidebar"] {
+        background: #FBFCFD;
+        border-right: 1px solid #E3E8EE;
+    }
+
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3 {
+        color: #1F2937;
+        font-size: 0.98rem;
+        font-weight: 760;
+        margin-top: 0.6rem;
+    }
+
     h1 {
         color: var(--tts-ink);
         font-weight: 760;
@@ -1177,6 +1190,18 @@ st.markdown(
         box-shadow: none;
     }
 
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) {
+        border: 1px solid #CDD6E0;
+        border-radius: 10px;
+        background: #FFFFFF;
+        box-shadow: none;
+    }
+
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) > div {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
     div[data-testid="stNumberInput"] [data-baseweb="input"],
     div[data-testid="stTextInput"] [data-baseweb="input"],
     div[data-testid="stSelectbox"] [data-baseweb="select"] {
@@ -1210,6 +1235,13 @@ st.markdown(
         color: #4B5563 !important;
         font-weight: 620 !important;
         font-size: 0.84rem !important;
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stNumberInput"] [data-baseweb="input"],
+    section[data-testid="stSidebar"] div[data-testid="stTextInput"] [data-baseweb="input"],
+    section[data-testid="stSidebar"] div[data-testid="stSelectbox"] [data-baseweb="select"] {
+        border-color: #CDD6E0 !important;
+        background: #FFFFFF !important;
     }
 
     .stTabs [data-baseweb="tab-list"] {
@@ -2151,15 +2183,17 @@ st.markdown(
 
     .sku-title {
         font-size: 1rem;
-        font-weight: 760;
+        font-weight: 780;
         color: #111827;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.28rem;
     }
 
     .sku-subtitle {
         color: #6B7280;
-        font-size: 0.88rem;
-        margin-bottom: 0.8rem;
+        font-size: 0.84rem;
+        margin-bottom: 0.9rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #EEF2F6;
     }
 
     .premium-kpi,
