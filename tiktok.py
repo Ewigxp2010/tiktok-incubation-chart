@@ -1312,16 +1312,16 @@ st.markdown(
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
-        margin: 6px 0 8px 0;
+        margin: 8px 0 12px 0;
         align-items: stretch;
     }
 
     .dashboard-intro-card {
-        background: #FFFFFF;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
         border: 1px solid #E7EBF1;
-        border-radius: 12px;
-        padding: 12px 14px;
-        box-shadow: none;
+        border-radius: 14px;
+        padding: 13px 15px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.025);
     }
 
     .dashboard-intro-kicker {
@@ -1341,17 +1341,17 @@ st.markdown(
 
     .executive-brief-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
-        margin: 4px 0 14px 0;
+        margin: 6px 0 16px 0;
     }
 
     .executive-brief-card {
-        background: #FFFFFF;
+        background: #FCFDFE;
         border: 1px solid #E7EBF1;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 14px 16px;
-        box-shadow: none;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.02);
     }
 
     .executive-brief-kicker {
@@ -1478,7 +1478,7 @@ st.markdown(
     }
 
     .section-shell {
-        margin: 16px 0 4px 0;
+        margin: 22px 0 6px 0;
     }
 
     .section-eyebrow {
@@ -1491,10 +1491,10 @@ st.markdown(
     }
 
     .section-title {
-        color: #1F2937;
-        font-size: clamp(1.18rem, 1.7vw, 1.55rem);
-        font-weight: 790;
-        line-height: 1.18;
+        color: #111827;
+        font-size: clamp(1.16rem, 1.65vw, 1.48rem);
+        font-weight: 760;
+        line-height: 1.16;
         margin: 0 0 2px 0;
     }
 
@@ -1587,17 +1587,17 @@ st.markdown(
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 12px;
-        margin: 10px 0 18px 0;
+        margin: 10px 0 14px 0;
         align-items: stretch;
     }
 
     .readout-card {
         background: #FFFFFF;
         border: 1px solid #E7EBF1;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 16px 18px;
-        min-height: 144px;
-        box-shadow: none;
+        min-height: 136px;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.024);
         display: flex;
         flex-direction: column;
         position: relative;
@@ -1629,12 +1629,12 @@ st.markdown(
     }
 
     .chart-lens {
-        background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-radius: 12px;
-        padding: 12px 14px;
+        background: #FBFCFE;
+        border: 1px solid #E8EDF3;
+        border-radius: 14px;
+        padding: 11px 14px;
         margin: 6px 0 10px 0;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
     }
 
     .chart-lens.compact {
@@ -1672,9 +1672,9 @@ st.markdown(
 
     .subtle-note {
         color: #475569;
-        font-size: 0.88rem;
-        line-height: 1.45;
-        padding: 4px 2px 10px 2px;
+        font-size: 0.86rem;
+        line-height: 1.5;
+        padding: 8px 2px 10px 2px;
         margin: 0 0 8px 0;
     }
 
@@ -1693,11 +1693,11 @@ st.markdown(
     }
 
     .support-panel {
-        background: #FFFFFF;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
         border: 1px solid #E7EBF1;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 16px 18px 18px 18px;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.028);
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.03);
         margin-bottom: 14px;
     }
 
@@ -1800,12 +1800,12 @@ st.markdown(
     }
 
     .hero-band {
-        background: #FFFFFF;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
         border: 1px solid #E7EBF1;
-        border-radius: 12px;
+        border-radius: 16px;
         padding: 18px 20px;
-        margin: 14px 0 14px 0;
-        box-shadow: none;
+        margin: 14px 0 16px 0;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.035);
         display: grid;
         grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(150px, 0.55fr));
         gap: 14px;
@@ -1865,14 +1865,14 @@ st.markdown(
     }
 
     .premium-kpi {
-        background: #FFFFFF;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FCFDFE 100%);
         border: 1px solid #E7EBF1;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 15px 16px 16px 16px;
-        min-height: 118px;
+        min-height: 116px;
         height: auto;
         overflow: visible;
-        box-shadow: none;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.022);
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -1931,13 +1931,12 @@ st.markdown(
     }
 
     .insight-strip {
-        background: #FFFFFF;
+        background: #FCFDFE;
         border: 1px solid #E7EBF1;
-        border-left: 1px solid #E7EBF1;
-        border-radius: 12px;
+        border-radius: 14px;
         color: #374151;
         padding: 10px 12px;
-        margin: 6px 0 10px 0;
+        margin: 8px 0 12px 0;
         box-shadow: none;
         line-height: 1.45;
     }
@@ -1951,12 +1950,11 @@ st.markdown(
     }
 
     .status-panel {
-        background: #FFFFFF;
+        background: #FCFDFE;
         border: 1px solid #E7EBF1;
-        border-left: 1px solid #E7EBF1;
-        border-radius: 12px;
-        padding: 12px 14px;
-        margin: 8px 0 14px 0;
+        border-radius: 14px;
+        padding: 11px 14px;
+        margin: 8px 0 12px 0;
         box-shadow: none;
     }
 
@@ -1992,6 +1990,27 @@ st.markdown(
         line-height: 1.5;
     }
 
+    .status-panel-row {
+        display: flex;
+        gap: 10px;
+        align-items: baseline;
+        flex-wrap: wrap;
+    }
+
+    .status-panel-row-title {
+        color: #111827;
+        font-size: 0.84rem;
+        font-weight: 760;
+        white-space: nowrap;
+    }
+
+    .status-panel-row-body {
+        color: #334155;
+        font-size: 0.88rem;
+        line-height: 1.45;
+        flex: 1 1 280px;
+    }
+
     .status-panel.compact .status-panel-body {
         font-size: 0.88rem;
         line-height: 1.42;
@@ -2015,9 +2034,9 @@ st.markdown(
     .export-shell {
         background: #FFFFFF;
         border: 1px solid #E7EBF1;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 14px 16px 16px 16px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.024);
     }
 
     .export-shell-caption {
@@ -2598,21 +2617,15 @@ def render_section_header(title, eyebrow=None):
 
 
 def render_dashboard_intro(snapshot_text, diagnosis_text):
-    st.markdown(
-        f"""
-        <div class="dashboard-intro">
-            <div class="dashboard-intro-card">
-                <div class="dashboard-intro-kicker">{escape(T["scenario_snapshot"])}</div>
-                <div class="dashboard-intro-text">{escape(str(snapshot_text))}</div>
-            </div>
-            <div class="dashboard-intro-card">
-                <div class="dashboard-intro-kicker">{escape(T["diagnosis_summary"])}</div>
-                <div class="dashboard-intro-text">{escape(str(diagnosis_text))}</div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    html = (
+        '<div class="dashboard-intro">'
+        f'<div class="dashboard-intro-card"><div class="dashboard-intro-kicker">{escape(T["scenario_snapshot"])}</div>'
+        f'<div class="dashboard-intro-text">{escape(str(snapshot_text))}</div></div>'
+        f'<div class="dashboard-intro-card"><div class="dashboard-intro-kicker">{escape(T["diagnosis_summary"])}</div>'
+        f'<div class="dashboard-intro-text">{escape(str(diagnosis_text))}</div></div>'
+        "</div>"
     )
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def render_sidebar_meta(text):
@@ -2630,52 +2643,35 @@ def render_meeting_header(meeting_notes, generated_at, assumption_status):
     subtitle = scenario if scenario else T["meeting_header"]
     date_text = str(meeting_notes.get("meeting_date") or generated_at.split(" ")[0])
     am_text = str(meeting_notes.get("am_name") or "-")
-    st.markdown(
-        f"""
-        <div class="meeting-header">
-            <div>
-                <div class="meeting-header-kicker">{escape(subtitle)}</div>
-                <div class="meeting-header-title">{escape(title)}</div>
-            </div>
-            <div class="meeting-header-meta">
-                {escape(T["meeting_date"])}: {escape(date_text)}<br>
-                {escape(T["am_name"])}: {escape(am_text)}<br>
-                <span class="meeting-badge">{escape(str(assumption_status))}</span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    html = (
+        '<div class="meeting-header"><div>'
+        f'<div class="meeting-header-kicker">{escape(subtitle)}</div>'
+        f'<div class="meeting-header-title">{escape(title)}</div>'
+        '</div><div class="meeting-header-meta">'
+        f'{escape(T["meeting_date"])}: {escape(date_text)}<br>'
+        f'{escape(T["am_name"])}: {escape(am_text)}<br>'
+        f'<span class="meeting-badge">{escape(str(assumption_status))}</span>'
+        '</div></div>'
     )
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def render_hero(overall, weeks, skus, break_even_label):
-    st.markdown(
-        f"""
-        <div class="hero-band">
-            <div>
-                <div class="hero-title">{T["hero_title"].format(weeks=weeks, skus=skus)}</div>
-                <div class="hero-subtitle">{T["hero_subtitle"].format(
-                    gmv=money(overall["Total GMV"], 0),
-                    growth_investment=money(overall["Growth Investment"], 0),
-                    break_even=break_even_label,
-                )}</div>
-            </div>
-            <div class="hero-kpi">
-                <div class="hero-kpi-label">{T["hero_gmv"]}</div>
-                <div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div>
-            </div>
-            <div class="hero-kpi">
-                <div class="hero-kpi-label">{T["hero_investment"]}</div>
-                <div class="hero-kpi-value">{money(overall["Growth Investment"], 0)}</div>
-            </div>
-            <div class="hero-kpi">
-                <div class="hero-kpi-label">{T["hero_break_even"]}</div>
-                <div class="hero-kpi-value">{break_even_label}</div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    subtitle = T["hero_subtitle"].format(
+        gmv=money(overall["Total GMV"], 0),
+        growth_investment=money(overall["Growth Investment"], 0),
+        break_even=break_even_label,
     )
+    html = (
+        '<div class="hero-band"><div>'
+        f'<div class="hero-title">{T["hero_title"].format(weeks=weeks, skus=skus)}</div>'
+        f'<div class="hero-subtitle">{escape(subtitle)}</div>'
+        f'</div><div class="hero-kpi"><div class="hero-kpi-label">{escape(T["hero_gmv"])}</div><div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div></div>'
+        f'<div class="hero-kpi"><div class="hero-kpi-label">{escape(T["hero_investment"])}</div><div class="hero-kpi-value">{money(overall["Growth Investment"], 0)}</div></div>'
+        f'<div class="hero-kpi"><div class="hero-kpi-label">{escape(T["hero_break_even"])}</div><div class="hero-kpi-value">{escape(break_even_label)}</div></div>'
+        '</div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_display, ads_roas, organic_click_window_weeks, promo_60d, use_fbt):
@@ -2691,7 +2687,7 @@ def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_di
                 samples=samples,
                 take_rates=take_rates,
             ),
-            "#2563EB",
+            "#315EEC",
         ),
         (
             T["assumption_operating"],
@@ -2700,7 +2696,7 @@ def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_di
                 logistics=logistics_display,
                 organic_window=int(organic_click_window_weeks),
             ),
-            "#14B8A6",
+            "#178A62",
         ),
         (
             T["assumption_growth"],
@@ -2709,7 +2705,7 @@ def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_di
                 promo=yes if promo_60d else no,
                 fbt=yes if use_fbt else no,
             ),
-            "#7C3AED",
+            "#4F46E5",
         ),
     ]
 
@@ -2730,7 +2726,7 @@ def business_readout_items(overall, df_all, cumulative_be_label, driver):
         (
             T["business_readout_profit"],
             T[profit_key].format(driver=driver),
-            "#16A34A" if float(overall["Total Profit"]) >= 0 else "#DC2626",
+            "#178A62" if float(overall["Total Profit"]) >= 0 else "#B42318",
         ),
         (
             T["business_readout_growth"],
@@ -2739,7 +2735,7 @@ def business_readout_items(overall, df_all, cumulative_be_label, driver):
                 samples=f"{overall['Total Samples']:,.0f}",
                 videos=f"{overall['Total Videos']:,.0f}",
             ),
-            "#2563EB",
+            "#315EEC",
         ),
         (
             T["business_readout_payback"],
@@ -2747,7 +2743,7 @@ def business_readout_items(overall, df_all, cumulative_be_label, driver):
                 break_even=cumulative_be_label,
                 sample_roi=f"{overall['GMV / Sample Cost']:.1f}",
             ),
-            "#7C3AED",
+            "#4F46E5",
         ),
     ]
 
@@ -2797,11 +2793,11 @@ def target_comparison_items(overall, target_gmv, target_profit):
     if target_gmv > 0:
         gap = float(overall["Total GMV"]) - target_gmv
         label = T["target_met"] if gap >= 0 else T["target_gap"]
-        items.append((T["target_gmv"], label if gap >= 0 else money(abs(gap), 0), "#2563EB" if gap >= 0 else "#F97316"))
+        items.append((T["target_gmv"], label if gap >= 0 else money(abs(gap), 0), "#315EEC" if gap >= 0 else "#6B7280"))
     if target_profit > 0:
         gap = float(overall["Total Profit"]) - target_profit
         label = T["target_met"] if gap >= 0 else T["target_gap"]
-        items.append((T["target_profit"], label if gap >= 0 else money(abs(gap), 0), "#16A34A" if gap >= 0 else "#DC2626"))
+        items.append((T["target_profit"], label if gap >= 0 else money(abs(gap), 0), "#178A62" if gap >= 0 else "#B42318"))
     return items
 
 
@@ -3026,14 +3022,21 @@ def render_subtle_note(body, label=None):
 def render_status_panel(title, body, tone="info", compact=False, kicker=None):
     class_name = f"status-panel {tone}" + (" compact" if compact else "")
     kicker_html = f'<div class="status-panel-kicker">{escape(str(kicker))}</div>' if kicker else ""
-    st.markdown(
-        f'<div class="{class_name}">'
-        f"{kicker_html}"
-        f'<div class="status-panel-title">{escape(str(title))}</div>'
-        f'<div class="status-panel-body">{escape(str(body))}</div>'
-        "</div>",
-        unsafe_allow_html=True,
-    )
+    title_text = escape(str(title))
+    body_text = escape(str(body))
+    if compact and not kicker:
+        panel_html = (
+            f'<div class="{class_name}">'
+            f'<div class="status-panel-row"><div class="status-panel-row-title">{title_text}</div>'
+            f'<div class="status-panel-row-body">{body_text}</div></div></div>'
+        )
+    else:
+        panel_html = (
+            f'<div class="{class_name}">{kicker_html}'
+            f'<div class="status-panel-title">{title_text}</div>'
+            f'<div class="status-panel-body">{body_text}</div></div>'
+        )
+    st.markdown(panel_html, unsafe_allow_html=True)
 
 
 def render_model_logic():
@@ -3194,11 +3197,11 @@ def make_investment_split_chart(df_all):
     shares = values / total if total > 0 else values
     colors_by_label = {
         T["cost_cogs"]: "#64748B",
-        T["cost_fulfillment"]: "#14B8A6",
-        T["cost_creator_commission"]: "#EC4899",
-        T["cost_platform_fee"]: "#06B6D4",
-        T["cost_ads"]: "#F97316",
-        T["cost_samples"]: "#8B5CF6",
+        T["cost_fulfillment"]: "#7C8EA3",
+        T["cost_creator_commission"]: "#A78BFA",
+        T["cost_platform_fee"]: "#94A3B8",
+        T["cost_ads"]: "#315EEC",
+        T["cost_samples"]: "#4F46E5",
     }
     display = values.sort_values(ascending=True)
     share_display = shares.loc[display.index]
@@ -3855,42 +3858,42 @@ def apply_plotly_layout(fig, title, height=460):
             "xanchor": "left",
             "y": 0.96,
             "yanchor": "top",
-            "font": {"size": 18, "color": "#111827", "family": "Arial, sans-serif"},
+            "font": {"size": 17, "color": "#0F172A", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=64, r=98, t=76, b=66),
+        margin=dict(l=58, r=106, t=72, b=62),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#FFFFFF",
         font=dict(color="#111827", family="Arial, sans-serif"),
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.01,
+            y=1.02,
             xanchor="left",
             x=0,
             bgcolor="rgba(255,255,255,0)",
-            font=dict(size=11, color="#64748B"),
+            font=dict(size=11, color="#6B7280"),
         ),
         hovermode="x unified",
         hoverlabel=dict(
             bgcolor="#FFFFFF",
-            bordercolor="#D1D5DB",
+            bordercolor="#E5E7EB",
             font=dict(color="#111827", size=12),
         ),
     )
     fig.update_xaxes(
         showgrid=True,
-        gridcolor="#F1F5F9",
+        gridcolor="#F5F7FA",
         zeroline=False,
-        linecolor="#E2E8F0",
+        linecolor="#EEF2F6",
         tickfont=dict(color="#64748B", size=11),
         ticklen=0,
     )
     fig.update_yaxes(
         showgrid=True,
-        gridcolor="#F1F5F9",
+        gridcolor="#F5F7FA",
         zeroline=False,
-        linecolor="#E2E8F0",
+        linecolor="#EEF2F6",
         tickfont=dict(color="#64748B", size=11),
         ticklen=0,
     )
@@ -3905,9 +3908,9 @@ def add_terminal_value_labels(fig, series):
             xshift=18,
             showarrow=False,
             text=f"{prefix}{y_value:,.0f}",
-            font=dict(size=11, color=color, family="Arial, sans-serif"),
+            font=dict(size=11, color="#111827", family="Arial, sans-serif"),
             bgcolor="rgba(255,255,255,0.96)",
-            bordercolor=color,
+            bordercolor="#E5E7EB",
             borderwidth=1,
             borderpad=3,
             xanchor="left",
@@ -3984,7 +3987,7 @@ def make_cumulative_profit_chart(df, break_even_week=None):
             name=T["cumulative_profit_trend"],
             line=dict(color=CHART_COLORS["cumulative"], width=3.2, shape="spline", smoothing=0.55),
             marker=dict(size=7.5, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=1.4)),
-            fillcolor="rgba(124, 58, 237, 0.18)",
+            fillcolor="rgba(79, 70, 229, 0.14)",
             hovertemplate=f"{T['cumulative_profit_trend']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
@@ -4011,10 +4014,10 @@ def make_cumulative_profit_chart(df, break_even_week=None):
 
 def render_funnel_summary(df):
     items = [
-        (T["samples_label"], f"{df['Samples Sent'].sum():,.0f}", "#8B5CF6"),
-        (T["videos_label"], f"{df['New Videos'].sum():,.0f}", "#06B6D4"),
-        (T["clicks_label"], f"{df['Product Clicks'].sum():,.0f}", "#2563EB"),
-        (T["orders_label"], f"{df['Orders'].sum():,.0f}", "#10B981"),
+        (T["samples_label"], f"{df['Samples Sent'].sum():,.0f}", "#4F46E5"),
+        (T["videos_label"], f"{df['New Videos'].sum():,.0f}", "#3B82F6"),
+        (T["clicks_label"], f"{df['Product Clicks'].sum():,.0f}", "#315EEC"),
+        (T["orders_label"], f"{df['Orders'].sum():,.0f}", "#178A62"),
     ]
     cards = [
         (
@@ -4046,7 +4049,7 @@ def make_channel_mix_chart(phase_summary):
         x=temp["Phase"],
         y=temp["Store/Search Share"],
         name=T["shoptab_gmv"],
-        marker_color="#2563EB",
+        marker_color="#315EEC",
         text=[pct(v, 0) for v in temp["Store/Search Share"]],
         textposition="inside",
         marker_line=dict(color="rgba(255,255,255,0.9)", width=1),
@@ -4057,7 +4060,7 @@ def make_channel_mix_chart(phase_summary):
         x=temp["Phase"],
         y=temp["Affiliate Share"],
         name=T["affiliate_video_gmv"],
-        marker_color="#F97316",
+        marker_color="#94A3B8",
         text=[pct(v, 0) for v in temp["Affiliate Share"]],
         textposition="inside",
         marker_line=dict(color="rgba(255,255,255,0.9)", width=1),
@@ -4093,14 +4096,14 @@ def make_phase_total_chart(phase_row):
         float(phase_row["Profit"]),
     ]
     colors = [
-        "#2563EB",
+        "#315EEC",
         "#64748B",
-        "#06B6D4",
-        "#EC4899",
-        "#14B8A6",
-        "#8B5CF6",
-        "#F97316",
-        "#16A34A" if float(phase_row["Profit"]) >= 0 else "#DC2626",
+        "#94A3B8",
+        "#A3AEBE",
+        "#7C8EA3",
+        "#4F46E5",
+        "#6B7280",
+        "#178A62" if float(phase_row["Profit"]) >= 0 else "#B42318",
     ]
     fig = go.Figure(
         go.Bar(
@@ -4144,12 +4147,12 @@ def make_phase_cumulative_chart(phase_df, title):
     series = [
         (T["total_gmv"], "Cumulative GMV", CHART_COLORS["gmv"], "solid", 4, 9),
         (T["total_cost_label"], "Cumulative Total Cost", CHART_COLORS["cost"], "solid", 4, 9),
-        (T["sales_contribution"], "Cumulative Sales Contribution", "#10B981", "solid", 4, 9),
+        (T["sales_contribution"], "Cumulative Sales Contribution", "#178A62", "solid", 4, 9),
         (T["profit_label"], "Cumulative Profit", CHART_COLORS["profit"], "solid", 4, 9),
-        (T["growth_investment"], "Cumulative Growth Investment", "#8B5CF6", "dash", 3, 8),
+        (T["growth_investment"], "Cumulative Growth Investment", "#4F46E5", "dash", 3, 8),
     ]
     if float(temp["Cumulative Ads Investment"].abs().sum()) > 0:
-        series.append((T["ads_investment"], "Cumulative Ads Investment", "#06B6D4", "dot", 2, 7))
+        series.append((T["ads_investment"], "Cumulative Ads Investment", "#94A3B8", "dot", 2, 7))
     for label, col, color, dash, width, marker_size in series:
         fig.add_trace(
             go.Scatter(
@@ -4629,14 +4632,14 @@ if st.session_state.get("has_generated", False):
                 st.session_state["_locked_scenario_case"] = scenario_case
                 st.rerun()
         render_kpi_grid([
-            (T["total_gmv"], money(overall["Total GMV"], 0), "#2563EB"),
-            (T["total_profit"], money(overall["Total Profit"], 0), "#16A34A" if overall["Total Profit"] >= 0 else "#DC2626"),
-            (T["growth_investment"], money(overall["Growth Investment"], 0), "#7C3AED"),
-            (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#0EA5E9"),
+            (T["total_gmv"], money(overall["Total GMV"], 0), "#315EEC"),
+            (T["total_profit"], money(overall["Total Profit"], 0), "#178A62" if overall["Total Profit"] >= 0 else "#B42318"),
+            (T["growth_investment"], money(overall["Growth Investment"], 0), "#4F46E5"),
+            (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#64748B"),
             (T["weekly_profit"], weekly_be_label, "#64748B"),
             (T["cumulative_be"], cumulative_be_label, "#64748B"),
-            (T["orders"], f"{overall['Total Orders']:,.0f}", "#14B8A6"),
-            (T["channel_mix"], main_gmv_channel(df_all), "#F97316"),
+            (T["orders"], f"{overall['Total Orders']:,.0f}", "#178A62"),
+            (T["channel_mix"], main_gmv_channel(df_all), "#94A3B8"),
         ], fixed_cols=4)
         render_executive_brief(
             executive_brief_items(
@@ -4652,8 +4655,8 @@ if st.session_state.get("has_generated", False):
         render_business_readout(business_readout)
         render_section_header(T["break_even"])
         render_kpi_grid([
-            (T["weekly_profit"], f"Week {weekly_be}" if weekly_be else T["not_reached"], "#16A34A" if weekly_be else "#F97316"),
-            (T["cumulative_be"], f"Week {cumulative_be}" if cumulative_be else T["not_reached"], "#16A34A" if cumulative_be else "#F97316"),
+            (T["weekly_profit"], f"Week {weekly_be}" if weekly_be else T["not_reached"], "#178A62" if weekly_be else "#98A2B3"),
+            (T["cumulative_be"], f"Week {cumulative_be}" if cumulative_be else T["not_reached"], "#178A62" if cumulative_be else "#98A2B3"),
         ], compact=True)
         target_items = target_comparison_items(overall, target_gmv, target_profit)
         if target_items:
@@ -4700,25 +4703,25 @@ if st.session_state.get("has_generated", False):
             st.caption(T["forecast_range_note"])
             render_kpi_grid([
                 (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
-                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#2563EB"),
-                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#16A34A"),
+                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#315EEC"),
+                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#178A62"),
             ], compact=True)
 
         render_section_header(T["commercial_takeaways"])
         render_kpi_grid([
-            (takeaways[0][0], takeaways[0][1], "#7C3AED"),
-            (takeaways[1][0], takeaways[1][1], "#2563EB"),
-            (takeaways[2][0], takeaways[2][1], "#14B8A6"),
-            (takeaways[3][0], takeaways[3][1], "#F97316"),
+            (takeaways[0][0], takeaways[0][1], "#4F46E5"),
+            (takeaways[1][0], takeaways[1][1], "#315EEC"),
+            (takeaways[2][0], takeaways[2][1], "#178A62"),
+            (takeaways[3][0], takeaways[3][1], "#94A3B8"),
         ])
-        render_status_panel(takeaways[4][0], takeaways[4][1], tone="warning", compact=True)
+        render_subtle_note(takeaways[4][1], takeaways[4][0])
 
         with st.expander(T["forecast_range_prompt"], expanded=False):
             st.caption(T["forecast_range_note"])
             render_kpi_grid([
                 (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
-                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#2563EB"),
-                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#16A34A"),
+                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#315EEC"),
+                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#178A62"),
             ])
 
         st.subheader(T["key_assumptions"])
@@ -4769,15 +4772,15 @@ if st.session_state.get("has_generated", False):
         if objective:
             render_chart_lens(T["phase_objective"], objective, compact=True)
         phase_kpis = [
-            (T["total_gmv"], money(phase_row["GMV"], 0), "#2563EB"),
-            (T["total_profit"], money(phase_row["Profit"], 0), "#16A34A" if phase_row["Profit"] >= 0 else "#DC2626"),
-            (T["sample_investment"], money(phase_row["Samples Cost"], 0), "#8B5CF6"),
-            (T["ads_investment"], money(phase_row["Ads Cost"], 0), "#06B6D4"),
+            (T["total_gmv"], money(phase_row["GMV"], 0), "#315EEC"),
+            (T["total_profit"], money(phase_row["Profit"], 0), "#178A62" if phase_row["Profit"] >= 0 else "#B42318"),
+            (T["sample_investment"], money(phase_row["Samples Cost"], 0), "#4F46E5"),
+            (T["ads_investment"], money(phase_row["Ads Cost"], 0), "#94A3B8"),
         ]
         if not meeting_mode:
             phase_kpis.extend([
-                (T["total_cost"], money(phase_row["Total Cost"], 0), "#F97316"),
-                (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#10B981"),
+                (T["total_cost"], money(phase_row["Total Cost"], 0), "#6B7280"),
+                (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#178A62"),
             ])
         render_kpi_grid(phase_kpis, compact=True)
 
@@ -4804,12 +4807,12 @@ if st.session_state.get("has_generated", False):
 
         render_section_header(T["sample_roi_title"])
         render_kpi_grid([
-            (T["gmv_per_sample"], money(overall["GMV / Sample"], 0), "#2563EB"),
-            (T["profit_per_sample"], money(overall["Profit / Sample"], 0), "#16A34A" if overall["Profit / Sample"] >= 0 else "#DC2626"),
-            (T["videos_per_sample_kpi"], f"{overall['Videos / Sample']:.2f}", "#06B6D4"),
-            (T["orders_per_sample"], f"{overall['Orders / Sample']:.2f}", "#14B8A6"),
-            (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#8B5CF6"),
-            (T["ads_investment"], money(overall["Ads Investment"], 0), "#F97316"),
+            (T["gmv_per_sample"], money(overall["GMV / Sample"], 0), "#315EEC"),
+            (T["profit_per_sample"], money(overall["Profit / Sample"], 0), "#178A62" if overall["Profit / Sample"] >= 0 else "#B42318"),
+            (T["videos_per_sample_kpi"], f"{overall['Videos / Sample']:.2f}", "#94A3B8"),
+            (T["orders_per_sample"], f"{overall['Orders / Sample']:.2f}", "#178A62"),
+            (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#4F46E5"),
+            (T["ads_investment"], money(overall["Ads Investment"], 0), "#6B7280"),
         ], compact=True)
         render_status_panel(
             T["sample_roi_title"],
