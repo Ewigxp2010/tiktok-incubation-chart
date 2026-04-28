@@ -1144,32 +1144,72 @@ st.markdown(
     }
 
     .readonly-rate {
-        background: transparent;
-        border: 0;
-        border-radius: 0;
-        padding: 0.35rem 0 0 0;
-        min-height: 0;
+        background: #FAFBFC;
+        border: 1px solid #D9E0E8;
+        border-radius: 8px;
+        padding: 0.8rem 0.95rem;
+        min-height: 76px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .readonly-rate-label {
         color: #6B7280;
-        font-size: 0.86rem;
-        font-weight: 650;
-        margin-bottom: 3px;
+        font-size: 0.8rem;
+        font-weight: 680;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
     }
 
     .readonly-rate-value {
         color: #111827;
-        font-size: 1rem;
-        font-weight: 500;
+        font-size: 1.12rem;
+        font-weight: 760;
         line-height: 1.2;
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
-        border-color: #E4E7EB;
+        border-color: #D6DCE5;
         border-radius: 8px;
-        background: rgba(255, 255, 255, 0.985);
+        background: #FFFFFF;
         box-shadow: none;
+    }
+
+    div[data-testid="stNumberInput"] [data-baseweb="input"],
+    div[data-testid="stTextInput"] [data-baseweb="input"],
+    div[data-testid="stSelectbox"] [data-baseweb="select"] {
+        border: 1px solid #D7DEE7 !important;
+        border-radius: 8px !important;
+        background: #FFFFFF !important;
+        box-shadow: none !important;
+    }
+
+    div[data-testid="stNumberInput"] [data-baseweb="input"]:focus-within,
+    div[data-testid="stTextInput"] [data-baseweb="input"]:focus-within,
+    div[data-testid="stSelectbox"] [data-baseweb="select"]:focus-within {
+        border-color: #AAB5C2 !important;
+        box-shadow: 0 0 0 1px #AAB5C2 inset !important;
+    }
+
+    div[data-testid="stNumberInput"] input,
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stSelectbox"] input {
+        color: #111827 !important;
+        font-weight: 520;
+    }
+
+    div[data-testid="stNumberInput"] button {
+        color: #6B7280 !important;
+    }
+
+    div[data-testid="stNumberInput"] label p,
+    div[data-testid="stTextInput"] label p,
+    div[data-testid="stSelectbox"] label p {
+        color: #4B5563 !important;
+        font-weight: 620 !important;
+        font-size: 0.84rem !important;
     }
 
     .stTabs [data-baseweb="tab-list"] {
@@ -1271,7 +1311,7 @@ st.markdown(
     }
 
     div[data-testid="stExpander"] {
-        border: 1px solid #E7ECF2;
+        border: 1px solid #DCE3EB;
         border-radius: 8px;
         background: #FFFFFF;
     }
