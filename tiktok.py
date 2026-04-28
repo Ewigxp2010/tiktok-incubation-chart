@@ -1173,11 +1173,11 @@ st.markdown(
     }
 
     .stTabs [data-baseweb="tab-list"] {
-        gap: 6px;
+        gap: 12px;
         border-bottom: 0;
-        background: #F6F7F8;
-        padding: 4px;
-        border-radius: 8px;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
     }
 
     .stTabs [data-baseweb="tab-highlight"],
@@ -1186,29 +1186,31 @@ st.markdown(
     }
 
     .stTabs [data-baseweb="tab"] {
-        height: 38px;
-        padding: 0 14px;
-        color: #667085;
-        font-weight: 620;
-        border-radius: 6px;
+        height: 34px;
+        padding: 0 2px 0 2px;
+        color: #6B7280;
+        font-weight: 650;
+        border-radius: 0;
         background: transparent;
-        border: 1px solid transparent;
+        border: 0;
+        border-bottom: 1px solid transparent;
     }
 
     .stTabs [aria-selected="true"] {
         color: #111827;
-        background: #FFFFFF;
-        border-color: #E3E8EF;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        background: transparent;
+        border-color: #CBD5E1;
+        box-shadow: none;
     }
 
     .tabs-shell {
-        background: #FFFFFF;
-        border: 1px solid #E7ECF2;
-        border-radius: 12px;
-        padding: 12px 12px 8px 12px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
-        margin-top: 8px;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #E5E7EB;
+        border-radius: 0;
+        padding: 10px 0 0 0;
+        box-shadow: none;
+        margin-top: 6px;
     }
 
     .st-key-selected_phase_view div[role="radiogroup"],
@@ -1282,11 +1284,12 @@ st.markdown(
     }
 
     div[data-testid="stPlotlyChart"] {
-        background: #FFFFFF;
-        border: 1px solid #E3E7EC;
-        border-radius: 8px;
-        padding: 16px 16px 14px 16px;
-        margin: 6px 0 14px 0;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #E5E7EB;
+        border-radius: 0;
+        padding: 12px 0 6px 0;
+        margin: 8px 0 8px 0;
         box-shadow: none;
         overflow: visible;
     }
@@ -1650,41 +1653,47 @@ st.markdown(
     }
 
     .subtle-note {
-        color: #475569;
-        font-size: 0.86rem;
+        color: #6B7280;
+        font-size: 0.8rem;
         line-height: 1.5;
-        padding: 8px 2px 10px 2px;
-        margin: 0 0 8px 0;
+        padding: 4px 0 10px 0;
+        margin: 0 0 10px 0;
     }
 
     .subtle-note strong {
-        color: #334155;
+        color: #475569;
         font-weight: 760;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-size: 0.74rem;
     }
 
     .funnel-card-wrap {
-        background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-radius: 12px;
-        padding: 22px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
-        margin-bottom: 14px;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #E5E7EB;
+        border-radius: 0;
+        padding: 12px 0 0 0;
+        box-shadow: none;
+        margin-bottom: 10px;
     }
 
     .support-panel {
-        background: #FFFFFF;
-        border: 1px solid #E4E7EB;
-        border-radius: 8px;
-        padding: 16px 18px 18px 18px;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
         box-shadow: none;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
     }
 
     .funnel-card-title {
-        color: #111827;
-        font-size: 1rem;
+        color: #6B7280;
+        font-size: 0.73rem;
         font-weight: 780;
-        margin-bottom: 16px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
     }
 
     .funnel-card-grid {
@@ -1694,11 +1703,10 @@ st.markdown(
     }
 
     .funnel-card {
-        border: 1px solid #E5E7EB;
-        border-left: 3px solid #CBD5E1;
-        border-radius: 12px;
-        padding: 18px 16px;
-        min-height: 112px;
+        border: 1px solid #E9EDF2;
+        border-radius: 4px;
+        padding: 14px 14px;
+        min-height: 98px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -1724,26 +1732,39 @@ st.markdown(
     .phase-overview-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
-        margin: 10px 0 12px 0;
+        gap: 0;
+        margin: 10px 0 14px 0;
+        border-top: 1px solid #E5E7EB;
+        border-bottom: 1px solid #E5E7EB;
     }
 
     .phase-overview-card {
         background: transparent;
         border: 0;
-        border-top: 1px solid #DDE2E7;
-        border-bottom: 1px solid #EFF2F4;
+        border-right: 1px solid #EEF2F6;
         border-radius: 0;
-        padding: 10px 0 12px 0;
+        padding: 14px 16px 14px 0;
         box-shadow: none;
+    }
+
+    .phase-overview-card:last-child {
+        border-right: 0;
+        padding-right: 0;
+        padding-left: 16px;
+    }
+
+    .phase-overview-card:not(:first-child):not(:last-child) {
+        padding-left: 16px;
     }
 
     .phase-overview-title {
         color: #111827;
-        font-size: 0.88rem;
-        font-weight: 740;
-        margin-bottom: 9px;
+        font-size: 0.84rem;
+        font-weight: 760;
+        margin-bottom: 10px;
         line-height: 1.25;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
     }
 
     .phase-overview-metrics {
@@ -1835,10 +1856,10 @@ st.markdown(
 
     .premium-kpi {
         background: #FFFFFF;
-        border: 1px solid #E7EAEE;
-        border-radius: 8px;
-        padding: 14px 15px 15px 15px;
-        min-height: 100px;
+        border: 1px solid #E9EDF2;
+        border-radius: 4px;
+        padding: 13px 14px 14px 14px;
+        min-height: 94px;
         height: auto;
         overflow: visible;
         box-shadow: none;
@@ -1863,7 +1884,7 @@ st.markdown(
 
     .premium-kpi-label {
         color: #6B7280;
-        font-size: 0.76rem;
+        font-size: 0.72rem;
         font-weight: 720;
         line-height: 1.3;
         overflow-wrap: anywhere;
@@ -1877,7 +1898,7 @@ st.markdown(
 
     .premium-kpi-value {
         color: #111827;
-        font-size: clamp(1.02rem, 1.75vw, 1.34rem);
+        font-size: clamp(1rem, 1.58vw, 1.28rem);
         font-weight: 800;
         line-height: 1.18;
         overflow-wrap: anywhere;
@@ -1892,11 +1913,12 @@ st.markdown(
         border: 0;
         border-top: 1px solid #E5E7EB;
         border-radius: 0;
-        color: #374151;
-        padding: 9px 0 0 0;
-        margin: 8px 0 10px 0;
+        color: #4B5563;
+        padding: 8px 0 0 0;
+        margin: 6px 0 8px 0;
         box-shadow: none;
         line-height: 1.45;
+        font-size: 0.86rem;
     }
 
     .insight-strip.compact {
@@ -1908,9 +1930,9 @@ st.markdown(
     }
 
     .status-panel {
-        background: #FFFFFF;
-        border: 1px solid #E7EAEE;
-        border-radius: 8px;
+        background: #FAFBFC;
+        border: 1px solid #EDF1F5;
+        border-radius: 4px;
         padding: 10px 12px;
         margin: 8px 0 12px 0;
         box-shadow: none;
@@ -2550,7 +2572,7 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
 def render_kpi_grid(items, compact=False, fixed_cols=None):
     cards = [
         (
-            f'<div class="premium-kpi" style="--card-accent:{escape(str(accent))};">'
+            f'<div class="premium-kpi">'
             f'<div class="premium-kpi-label">{escape(str(label))}</div>'
             f'<div class="premium-kpi-value">{escape(str(value))}</div>'
             "</div>"
@@ -2872,11 +2894,6 @@ def group_next_actions(actions):
 
 
 def render_grouped_actions(actions):
-    palette = {
-        T["action_group_validate"]: "#315EEC",
-        T["action_group_optimize"]: "#178A62",
-        T["action_group_scale"]: "#6B7280",
-    }
     cards = []
     for title, items in group_next_actions(actions).items():
         body = "".join(
@@ -2884,7 +2901,7 @@ def render_grouped_actions(actions):
             for item in (items or [T["action_no_immediate"]])
         )
         cards.append(
-            f'<div class="action-group" style="--card-accent:{palette.get(title, "#CBD5E1")};">'
+            f'<div class="action-group">'
             f'<div class="action-group-title">{escape(str(title))}</div>{body}</div>'
         )
     st.markdown(f'<div class="action-group-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
@@ -2892,9 +2909,9 @@ def render_grouped_actions(actions):
 
 def render_business_readout(items):
     cards = []
-    for title, body, accent in items:
+    for title, body, _accent in items:
         cards.append(
-            f'<div class="readout-card" style="--card-accent:{escape(str(accent))};">'
+            f'<div class="readout-card">'
             f'<div class="readout-title">{escape(str(title))}</div>'
             f'<div class="readout-body">{escape(str(body))}</div>'
             "</div>"
@@ -2915,7 +2932,6 @@ def render_executive_brief(items):
 
 
 def render_phase_overview(phase_summary):
-    color_map = {phase["key"]: {"phase1": "#315EEC", "phase2": "#178A62", "phase3": "#6B7280"}.get(phase["key"], "#64748B") for phase in PHASES}
     cards = []
     for _, row in phase_summary.iterrows():
         metrics = [
@@ -2929,7 +2945,7 @@ def render_phase_overview(phase_summary):
             for label, value in metrics
         )
         cards.append(
-            f'<div class="phase-overview-card" style="--card-accent:{escape(color_map.get(row["Phase Key"], "#64748B"))};">'
+            f'<div class="phase-overview-card">'
             f'<div class="phase-overview-title">{escape(str(row["Phase"]))}</div>'
             f'<div class="phase-overview-metrics">{metric_html}</div>'
             "</div>"
@@ -3812,25 +3828,25 @@ def apply_plotly_layout(fig, title, height=460):
     fig.update_layout(
         title={
             "text": title,
-            "x": 0.02,
+            "x": 0.0,
             "xanchor": "left",
-            "y": 0.96,
+            "y": 0.98,
             "yanchor": "top",
-            "font": {"size": 15, "color": "#111827", "family": "Arial, sans-serif"},
+            "font": {"size": 13, "color": "#111827", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=54, r=96, t=64, b=58),
+        margin=dict(l=54, r=78, t=52, b=50),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#FFFFFF",
         font=dict(color="#111827", family="Arial, sans-serif"),
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.02,
+            y=1.01,
             xanchor="left",
             x=0,
             bgcolor="rgba(255,255,255,0)",
-            font=dict(size=10, color="#6B7280"),
+            font=dict(size=9, color="#6B7280"),
         ),
         hovermode="x unified",
         hoverlabel=dict(
@@ -3863,14 +3879,13 @@ def add_terminal_value_labels(fig, series):
         fig.add_annotation(
             x=x_value,
             y=y_value,
-            xshift=18,
+            xshift=14,
             showarrow=False,
             text=f"{prefix}{y_value:,.0f}",
-            font=dict(size=11, color="#111827", family="Arial, sans-serif"),
-            bgcolor="rgba(255,255,255,0.96)",
-            bordercolor="#E5E7EB",
-            borderwidth=1,
-            borderpad=3,
+            font=dict(size=10, color="#374151", family="Arial, sans-serif"),
+            bgcolor="rgba(255,255,255,0)",
+            borderwidth=0,
+            borderpad=0,
             xanchor="left",
             yanchor="middle",
             align="left",
@@ -3979,12 +3994,12 @@ def render_funnel_summary(df):
     ]
     cards = [
         (
-            f'<div class="funnel-card" style="border-left-color:{escape(color)};">'
+            f'<div class="funnel-card">'
             f'<div class="funnel-card-label">{escape(label)}</div>'
             f'<div class="funnel-card-value">{escape(value)}</div>'
             "</div>"
         )
-        for label, value, color in items
+        for label, value, _color in items
     ]
     st.markdown(
         f"""
