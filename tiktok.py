@@ -103,9 +103,9 @@ DEFAULT_SKU_PROFILES = [
 
 
 PHASES = [
-    {"key": "phase1", "name": "Phase 1 - Cold Start", "samples_per_sku": 30, "take_rate": 0.00, "color": "#EAF4FF"},
-    {"key": "phase2", "name": "Phase 2 - Growth", "samples_per_sku": 25, "take_rate": 0.05, "color": "#EEFBEF"},
-    {"key": "phase3", "name": "Phase 3 - Scale", "samples_per_sku": 20, "take_rate": 0.10, "color": "#FFF4E8"},
+    {"key": "phase1", "name": "Phase 1 - Cold Start", "samples_per_sku": 30, "take_rate": 0.00, "color": "#F6F8FB"},
+    {"key": "phase2", "name": "Phase 2 - Growth", "samples_per_sku": 25, "take_rate": 0.05, "color": "#F5FAF8"},
+    {"key": "phase3", "name": "Phase 3 - Scale", "samples_per_sku": 20, "take_rate": 0.10, "color": "#FAF8F4"},
 ]
 
 PROMO_WEEKS = 9
@@ -119,11 +119,11 @@ SCENARIO_ADJUSTMENTS = {
     "upside": {"clicks": 1.15, "conversion": 1.15, "roas": 1.10},
 }
 CHART_COLORS = {
-    "gmv": "#2563EB",
-    "cost": "#F97316",
-    "profit": "#16A34A",
-    "cumulative": "#7C3AED",
-    "grid": "#E5E7EB",
+    "gmv": "#315EEC",
+    "cost": "#6B7280",
+    "profit": "#178A62",
+    "cumulative": "#4F46E5",
+    "grid": "#E7ECF2",
     "text": "#111827",
 }
 
@@ -1039,13 +1039,14 @@ st.markdown(
     """
     <style>
     :root {
-        --tts-red: #FE2C55;
-        --tts-cyan: #25F4EE;
+        --tts-accent: #111827;
+        --tts-accent-soft: #F3F5F7;
+        --tts-green: #10A37F;
         --tts-ink: #111827;
-        --tts-muted: #6B7280;
-        --tts-line: #E5E7EB;
+        --tts-muted: #667085;
+        --tts-line: #E7ECF2;
         --tts-panel: #FFFFFF;
-        --tts-bg: #F7F8FA;
+        --tts-bg: #F6F7F8;
     }
 
     .stApp {
@@ -1057,8 +1058,8 @@ st.markdown(
     }
 
     [data-testid="stSidebar"] {
-        background: #FCFCFD;
-        border-right: 1px solid #E8ECF2;
+        background: #FFFFFF;
+        border-right: 1px solid #ECEFF3;
     }
 
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {
@@ -1165,18 +1166,18 @@ st.markdown(
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
-        border-color: #DDE3EA;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.96);
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
+        border-color: #E7ECF2;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
     }
 
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+        gap: 6px;
         border-bottom: 0;
-        background: #F3F4F6;
-        padding: 6px;
-        border-radius: 8px;
+        background: #F8FAFC;
+        padding: 4px;
+        border-radius: 10px;
     }
 
     .stTabs [data-baseweb="tab-highlight"],
@@ -1185,11 +1186,11 @@ st.markdown(
     }
 
     .stTabs [data-baseweb="tab"] {
-        height: 42px;
-        padding: 0 16px;
-        color: #4B5563;
+        height: 40px;
+        padding: 0 14px;
+        color: #667085;
         font-weight: 620;
-        border-radius: 7px;
+        border-radius: 8px;
         background: transparent;
         border: 1px solid transparent;
     }
@@ -1197,16 +1198,16 @@ st.markdown(
     .stTabs [aria-selected="true"] {
         color: #111827;
         background: #FFFFFF;
-        border-color: #CBD5E1;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        border-color: #E3E8EF;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
     .tabs-shell {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
+        border: 1px solid #E7ECF2;
+        border-radius: 12px;
         padding: 12px 12px 8px 12px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
         margin-top: 8px;
     }
 
@@ -1217,9 +1218,9 @@ st.markdown(
 
     .st-key-selected_phase_view div[role="radiogroup"] label,
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
-        background: #EEF2F7;
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
+        background: #F8FAFC;
+        border: 1px solid #E7ECF2;
+        border-radius: 10px;
         padding: 7px 14px;
         min-height: 38px;
     }
@@ -1227,56 +1228,56 @@ st.markdown(
     .st-key-selected_phase_view div[role="radiogroup"] label:has(input:checked),
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label:has(input:checked) {
         background: #FFFFFF;
-        border-color: #CBD5E1;
-        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+        border-color: #DDE4EC;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
     .stButton > button {
-        border-radius: 8px;
-        border: 1px solid #E5E7EB;
+        border-radius: 10px;
+        border: 1px solid #E4E7EC;
         background: #FFFFFF;
         color: #111827;
         font-weight: 720;
         min-height: 44px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+        box-shadow: none;
     }
 
     .stButton > button:hover {
-        background: #F9FAFB;
+        background: #F8FAFC;
         color: #111827;
-        border: 1px solid #D1D5DB;
+        border: 1px solid #D9DEE5;
     }
 
     .stButton > button[kind="primary"] {
-        border-color: var(--tts-red);
-        background: var(--tts-red);
+        border-color: #111827;
+        background: #111827;
         color: #FFFFFF;
-        box-shadow: 0 8px 18px rgba(254, 44, 85, 0.16);
+        box-shadow: none;
     }
 
     .stButton > button[kind="primary"]:hover {
-        background: #E9274E;
+        background: #0F172A;
         color: #FFFFFF;
-        border-color: #E9274E;
+        border-color: #0F172A;
     }
 
     div[data-testid="stDataFrame"] {
         border: 1px solid var(--tts-line);
-        border-radius: 8px;
+        border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
     }
 
     div[data-testid="stExpander"] {
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
+        border: 1px solid #E7ECF2;
+        border-radius: 12px;
         background: #FFFFFF;
     }
 
     div[data-testid="stAlert"] {
-        border-radius: 8px;
-        border: 1px solid #DDE3EA;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        border-radius: 12px;
+        border: 1px solid #E7ECF2;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
         background: #FFFFFF;
     }
 
@@ -1286,7 +1287,7 @@ st.markdown(
         border-radius: 12px;
         padding: 20px 20px 18px 20px;
         margin: 6px 0 14px 0;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.03);
         overflow: visible;
     }
 
@@ -1320,7 +1321,7 @@ st.markdown(
         border: 1px solid #E7EBF1;
         border-radius: 12px;
         padding: 12px 14px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
     }
 
     .dashboard-intro-kicker {
@@ -1350,7 +1351,7 @@ st.markdown(
         border: 1px solid #E7EBF1;
         border-radius: 12px;
         padding: 14px 16px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
     }
 
     .executive-brief-kicker {
@@ -1370,15 +1371,15 @@ st.markdown(
 
     .setup-gate {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
+        border: 1px solid #E7ECF2;
+        border-radius: 12px;
         padding: 22px 24px;
         margin: 22px 0 14px 0;
-        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
     }
 
     .setup-gate-kicker {
-        color: #2563EB;
+        color: #667085;
         font-size: 0.82rem;
         font-weight: 780;
         margin-bottom: 8px;
@@ -1401,13 +1402,13 @@ st.markdown(
 
     .setup-ready {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-left: 3px solid #2563EB;
-        border-radius: 8px;
+        border: 1px solid #E7ECF2;
+        border-left: 2px solid #CBD5E1;
+        border-radius: 12px;
         padding: 12px 14px;
         margin: 12px 0 18px 0;
         color: #374151;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
     }
 
     .sidebar-meta {
@@ -1470,7 +1471,7 @@ st.markdown(
         padding: 4px 10px;
         border-radius: 999px;
         background: #F8FAFC;
-        border: 1px solid #DDE3EA;
+        border: 1px solid #E7ECF2;
         color: #334155;
         font-size: 0.78rem;
         font-weight: 760;
@@ -1516,13 +1517,24 @@ st.markdown(
     .action-group {
         background: #FFFFFF;
         border: 1px solid #E7EBF1;
-        border-top: 2px solid #CBD5E1;
         border-radius: 12px;
         padding: 14px 16px;
         min-height: 158px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
+        box-shadow: none;
         display: flex;
         flex-direction: column;
+        position: relative;
+    }
+
+    .action-group::before {
+        content: "";
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--card-accent, #CBD5E1);
     }
 
     .action-group-title {
@@ -1582,13 +1594,24 @@ st.markdown(
     .readout-card {
         background: #FFFFFF;
         border: 1px solid #E7EBF1;
-        border-top: 2px solid #CBD5E1;
         border-radius: 12px;
         padding: 16px 18px;
         min-height: 144px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
+        box-shadow: none;
         display: flex;
         flex-direction: column;
+        position: relative;
+    }
+
+    .readout-card::before {
+        content: "";
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--card-accent, #CBD5E1);
     }
 
     .readout-title {
@@ -1674,7 +1697,7 @@ st.markdown(
         border: 1px solid #E7EBF1;
         border-radius: 12px;
         padding: 16px 18px 18px 18px;
-        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.035);
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.028);
         margin-bottom: 14px;
     }
 
@@ -1693,8 +1716,8 @@ st.markdown(
 
     .funnel-card {
         border: 1px solid #E5E7EB;
-        border-left: 5px solid #CBD5E1;
-        border-radius: 8px;
+        border-left: 3px solid #CBD5E1;
+        border-radius: 12px;
         padding: 18px 16px;
         min-height: 112px;
         display: flex;
@@ -1729,10 +1752,21 @@ st.markdown(
     .phase-overview-card {
         background: #FFFFFF;
         border: 1px solid #E7EBF1;
-        border-top: 2px solid #CBD5E1;
         border-radius: 12px;
         padding: 16px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
+        box-shadow: none;
+        position: relative;
+    }
+
+    .phase-overview-card::before {
+        content: "";
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--card-accent, #CBD5E1);
     }
 
     .phase-overview-title {
@@ -1771,7 +1805,7 @@ st.markdown(
         border-radius: 12px;
         padding: 18px 20px;
         margin: 14px 0 14px 0;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
         display: grid;
         grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(150px, 0.55fr));
         gap: 14px;
@@ -1833,17 +1867,28 @@ st.markdown(
     .premium-kpi {
         background: #FFFFFF;
         border: 1px solid #E7EBF1;
-        border-top: 2px solid #CBD5E1;
         border-radius: 12px;
         padding: 15px 16px 16px 16px;
         min-height: 118px;
         height: auto;
         overflow: visible;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
+        box-shadow: none;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         gap: 6px;
+        position: relative;
+    }
+
+    .premium-kpi::before {
+        content: "";
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--card-accent, #CBD5E1);
     }
 
     .kpi-grid.kpi-grid-compact .premium-kpi {
@@ -1888,12 +1933,12 @@ st.markdown(
     .insight-strip {
         background: #FFFFFF;
         border: 1px solid #E7EBF1;
-        border-left: 2px solid #CBD5E1;
+        border-left: 1px solid #E7EBF1;
         border-radius: 12px;
         color: #374151;
         padding: 10px 12px;
         margin: 6px 0 10px 0;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
         line-height: 1.45;
     }
 
@@ -1902,17 +1947,17 @@ st.markdown(
         margin: 6px 0 14px 0;
         font-size: 0.9rem;
         color: #334155;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
     }
 
     .status-panel {
         background: #FFFFFF;
         border: 1px solid #E7EBF1;
-        border-left: 2px solid #CBD5E1;
+        border-left: 1px solid #E7EBF1;
         border-radius: 12px;
         padding: 12px 14px;
         margin: 8px 0 14px 0;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
     }
 
     .status-panel.compact {
@@ -1953,17 +1998,17 @@ st.markdown(
     }
 
     .status-panel.info {
-        border-left-color: #2563EB;
+        border-left-color: #E7EBF1;
         background: #FFFFFF;
     }
 
     .status-panel.success {
-        border-left-color: #16A34A;
+        border-left-color: #E7EBF1;
         background: #FFFFFF;
     }
 
     .status-panel.warning {
-        border-left-color: #F59E0B;
+        border-left-color: #E7EBF1;
         background: #FFFFFF;
     }
 
@@ -2089,7 +2134,7 @@ st.markdown(
     div[data-testid="stVerticalBlockBorderWrapper"],
     div[data-testid="stDataFrame"],
     div[data-testid="stAlert"] {
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025) !important;
+        box-shadow: none !important;
     }
 
     .premium-kpi,
@@ -2528,7 +2573,7 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
 def render_kpi_grid(items, compact=False, fixed_cols=None):
     cards = [
         (
-            f'<div class="premium-kpi" style="border-top-color:{escape(str(accent))};">'
+            f'<div class="premium-kpi" style="--card-accent:{escape(str(accent))};">'
             f'<div class="premium-kpi-label">{escape(str(label))}</div>'
             f'<div class="premium-kpi-value">{escape(str(value))}</div>'
             "</div>"
@@ -2874,9 +2919,9 @@ def group_next_actions(actions):
 
 def render_grouped_actions(actions):
     palette = {
-        T["action_group_validate"]: "#2563EB",
-        T["action_group_optimize"]: "#14B8A6",
-        T["action_group_scale"]: "#F97316",
+        T["action_group_validate"]: "#315EEC",
+        T["action_group_optimize"]: "#178A62",
+        T["action_group_scale"]: "#6B7280",
     }
     cards = []
     for title, items in group_next_actions(actions).items():
@@ -2885,7 +2930,7 @@ def render_grouped_actions(actions):
             for item in (items or [T["action_no_immediate"]])
         )
         cards.append(
-            f'<div class="action-group" style="border-top-color:{palette.get(title, "#CBD5E1")};">'
+            f'<div class="action-group" style="--card-accent:{palette.get(title, "#CBD5E1")};">'
             f'<div class="action-group-title">{escape(str(title))}</div>{body}</div>'
         )
     st.markdown(f'<div class="action-group-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
@@ -2895,7 +2940,7 @@ def render_business_readout(items):
     cards = []
     for title, body, accent in items:
         cards.append(
-            f'<div class="readout-card" style="border-top-color:{escape(str(accent))};">'
+            f'<div class="readout-card" style="--card-accent:{escape(str(accent))};">'
             f'<div class="readout-title">{escape(str(title))}</div>'
             f'<div class="readout-body">{escape(str(body))}</div>'
             "</div>"
@@ -2916,7 +2961,7 @@ def render_executive_brief(items):
 
 
 def render_phase_overview(phase_summary):
-    color_map = {phase["key"]: {"phase1": "#2563EB", "phase2": "#14B8A6", "phase3": "#F97316"}.get(phase["key"], "#64748B") for phase in PHASES}
+    color_map = {phase["key"]: {"phase1": "#315EEC", "phase2": "#178A62", "phase3": "#6B7280"}.get(phase["key"], "#64748B") for phase in PHASES}
     cards = []
     for _, row in phase_summary.iterrows():
         metrics = [
@@ -2930,7 +2975,7 @@ def render_phase_overview(phase_summary):
             for label, value in metrics
         )
         cards.append(
-            f'<div class="phase-overview-card" style="border-top-color:{escape(color_map.get(row["Phase Key"], "#64748B"))};">'
+            f'<div class="phase-overview-card" style="--card-accent:{escape(color_map.get(row["Phase Key"], "#64748B"))};">'
             f'<div class="phase-overview-title">{escape(str(row["Phase"]))}</div>'
             f'<div class="phase-overview-metrics">{metric_html}</div>'
             "</div>"
