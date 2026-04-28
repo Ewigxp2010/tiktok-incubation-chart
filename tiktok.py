@@ -1040,13 +1040,13 @@ st.markdown(
     <style>
     :root {
         --tts-accent: #111827;
-        --tts-accent-soft: #F3F5F7;
-        --tts-green: #10A37F;
+        --tts-accent-soft: #F5F6F7;
+        --tts-green: #127A5B;
         --tts-ink: #111827;
-        --tts-muted: #667085;
-        --tts-line: #E7ECF2;
+        --tts-muted: #6B7280;
+        --tts-line: #DFE3E8;
         --tts-panel: #FFFFFF;
-        --tts-bg: #F6F7F8;
+        --tts-bg: #F4F5F6;
     }
 
     .stApp {
@@ -1073,7 +1073,7 @@ st.markdown(
     }
 
     .block-container {
-        max-width: 1280px;
+        max-width: 1240px;
         padding-top: 2.2rem;
         padding-bottom: 4rem;
     }
@@ -1166,18 +1166,18 @@ st.markdown(
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
-        border-color: #E7ECF2;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.98);
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
+        border-color: #E4E7EB;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.985);
+        box-shadow: none;
     }
 
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
         border-bottom: 0;
-        background: #F8FAFC;
+        background: #F6F7F8;
         padding: 4px;
-        border-radius: 10px;
+        border-radius: 8px;
     }
 
     .stTabs [data-baseweb="tab-highlight"],
@@ -1186,11 +1186,11 @@ st.markdown(
     }
 
     .stTabs [data-baseweb="tab"] {
-        height: 40px;
+        height: 38px;
         padding: 0 14px;
         color: #667085;
         font-weight: 620;
-        border-radius: 8px;
+        border-radius: 6px;
         background: transparent;
         border: 1px solid transparent;
     }
@@ -1263,14 +1263,14 @@ st.markdown(
 
     div[data-testid="stDataFrame"] {
         border: 1px solid var(--tts-line);
-        border-radius: 12px;
+        border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
+        box-shadow: none;
     }
 
     div[data-testid="stExpander"] {
         border: 1px solid #E7ECF2;
-        border-radius: 12px;
+        border-radius: 8px;
         background: #FFFFFF;
     }
 
@@ -1283,11 +1283,11 @@ st.markdown(
 
     div[data-testid="stPlotlyChart"] {
         background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-radius: 12px;
-        padding: 20px 20px 18px 20px;
+        border: 1px solid #E3E7EC;
+        border-radius: 8px;
+        padding: 16px 16px 14px 16px;
         margin: 6px 0 14px 0;
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.03);
+        box-shadow: none;
         overflow: visible;
     }
 
@@ -1310,18 +1310,18 @@ st.markdown(
 
     .dashboard-intro {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        grid-template-columns: 1fr;
+        gap: 8px;
         margin: 8px 0 12px 0;
         align-items: stretch;
     }
 
     .dashboard-intro-card {
-        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
-        border: 1px solid #E7EBF1;
-        border-radius: 14px;
-        padding: 13px 15px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.025);
+        background: #FFFFFF;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
+        padding: 11px 14px;
+        box-shadow: none;
     }
 
     .dashboard-intro-kicker {
@@ -1341,17 +1341,17 @@ st.markdown(
 
     .executive-brief-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-        margin: 6px 0 16px 0;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin: 6px 0 14px 0;
     }
 
     .executive-brief-card {
-        background: #FCFDFE;
-        border: 1px solid #E7EBF1;
-        border-radius: 14px;
-        padding: 14px 16px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.02);
+        background: #FFFFFF;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
+        padding: 12px 14px;
+        box-shadow: none;
     }
 
     .executive-brief-kicker {
@@ -1427,11 +1427,11 @@ st.markdown(
 
     .meeting-header {
         background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-radius: 12px;
-        padding: 16px 18px;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
+        padding: 14px 16px;
         margin-bottom: 12px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
@@ -1478,7 +1478,7 @@ st.markdown(
     }
 
     .section-shell {
-        margin: 22px 0 6px 0;
+        margin: 24px 0 6px 0;
     }
 
     .section-eyebrow {
@@ -1492,8 +1492,8 @@ st.markdown(
 
     .section-title {
         color: #111827;
-        font-size: clamp(1.16rem, 1.65vw, 1.48rem);
-        font-weight: 760;
+        font-size: clamp(1.08rem, 1.45vw, 1.28rem);
+        font-weight: 740;
         line-height: 1.16;
         margin: 0 0 2px 0;
     }
@@ -1593,11 +1593,11 @@ st.markdown(
 
     .readout-card {
         background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-radius: 14px;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
         padding: 16px 18px;
         min-height: 136px;
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.024);
+        box-shadow: none;
         display: flex;
         flex-direction: column;
         position: relative;
@@ -1606,10 +1606,10 @@ st.markdown(
     .readout-card::before {
         content: "";
         position: absolute;
-        top: 16px;
-        right: 16px;
-        width: 8px;
-        height: 8px;
+        top: 0;
+        left: 16px;
+        width: 32px;
+        height: 2px;
         border-radius: 999px;
         background: var(--card-accent, #CBD5E1);
     }
@@ -1629,10 +1629,11 @@ st.markdown(
     }
 
     .chart-lens {
-        background: #FBFCFE;
-        border: 1px solid #E8EDF3;
-        border-radius: 14px;
-        padding: 11px 14px;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #E5E7EB;
+        border-radius: 0;
+        padding: 10px 0 0 0;
         margin: 6px 0 10px 0;
         box-shadow: none;
     }
@@ -1693,11 +1694,11 @@ st.markdown(
     }
 
     .support-panel {
-        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
-        border: 1px solid #E7EBF1;
-        border-radius: 14px;
+        background: #FFFFFF;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
         padding: 16px 18px 18px 18px;
-        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.03);
+        box-shadow: none;
         margin-bottom: 14px;
     }
 
@@ -1751,8 +1752,8 @@ st.markdown(
 
     .phase-overview-card {
         background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-radius: 12px;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
         padding: 16px;
         box-shadow: none;
         position: relative;
@@ -1761,10 +1762,10 @@ st.markdown(
     .phase-overview-card::before {
         content: "";
         position: absolute;
-        top: 16px;
-        right: 16px;
-        width: 8px;
-        height: 8px;
+        top: 0;
+        left: 16px;
+        width: 28px;
+        height: 2px;
         border-radius: 999px;
         background: var(--card-accent, #CBD5E1);
     }
@@ -1800,12 +1801,12 @@ st.markdown(
     }
 
     .hero-band {
-        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
-        border: 1px solid #E7EBF1;
-        border-radius: 16px;
-        padding: 18px 20px;
+        background: #FFFFFF;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
+        padding: 16px 18px;
         margin: 14px 0 16px 0;
-        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.035);
+        box-shadow: none;
         display: grid;
         grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(150px, 0.55fr));
         gap: 14px;
@@ -1865,14 +1866,14 @@ st.markdown(
     }
 
     .premium-kpi {
-        background: linear-gradient(180deg, #FFFFFF 0%, #FCFDFE 100%);
-        border: 1px solid #E7EBF1;
-        border-radius: 14px;
+        background: #FFFFFF;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
         padding: 15px 16px 16px 16px;
         min-height: 116px;
         height: auto;
         overflow: visible;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.022);
+        box-shadow: none;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -1883,10 +1884,10 @@ st.markdown(
     .premium-kpi::before {
         content: "";
         position: absolute;
-        top: 14px;
-        right: 14px;
-        width: 8px;
-        height: 8px;
+        top: 0;
+        left: 16px;
+        width: 28px;
+        height: 2px;
         border-radius: 999px;
         background: var(--card-accent, #CBD5E1);
     }
@@ -1931,9 +1932,9 @@ st.markdown(
     }
 
     .insight-strip {
-        background: #FCFDFE;
-        border: 1px solid #E7EBF1;
-        border-radius: 14px;
+        background: #FFFFFF;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
         color: #374151;
         padding: 10px 12px;
         margin: 8px 0 12px 0;
@@ -1950,9 +1951,9 @@ st.markdown(
     }
 
     .status-panel {
-        background: #FCFDFE;
-        border: 1px solid #E7EBF1;
-        border-radius: 14px;
+        background: #FFFFFF;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
         padding: 11px 14px;
         margin: 8px 0 12px 0;
         box-shadow: none;
@@ -2033,10 +2034,10 @@ st.markdown(
 
     .export-shell {
         background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-radius: 14px;
+        border: 1px solid #E4E7EB;
+        border-radius: 8px;
         padding: 14px 16px 16px 16px;
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.024);
+        box-shadow: none;
     }
 
     .export-shell-caption {
@@ -3858,10 +3859,10 @@ def apply_plotly_layout(fig, title, height=460):
             "xanchor": "left",
             "y": 0.96,
             "yanchor": "top",
-            "font": {"size": 17, "color": "#0F172A", "family": "Arial, sans-serif"},
+            "font": {"size": 15, "color": "#111827", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=58, r=106, t=72, b=62),
+        margin=dict(l=54, r=96, t=64, b=58),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#FFFFFF",
         font=dict(color="#111827", family="Arial, sans-serif"),
@@ -3872,7 +3873,7 @@ def apply_plotly_layout(fig, title, height=460):
             xanchor="left",
             x=0,
             bgcolor="rgba(255,255,255,0)",
-            font=dict(size=11, color="#6B7280"),
+            font=dict(size=10, color="#6B7280"),
         ),
         hovermode="x unified",
         hoverlabel=dict(
@@ -3883,17 +3884,17 @@ def apply_plotly_layout(fig, title, height=460):
     )
     fig.update_xaxes(
         showgrid=True,
-        gridcolor="#F5F7FA",
+        gridcolor="#F3F4F6",
         zeroline=False,
-        linecolor="#EEF2F6",
+        linecolor="#F1F3F5",
         tickfont=dict(color="#64748B", size=11),
         ticklen=0,
     )
     fig.update_yaxes(
         showgrid=True,
-        gridcolor="#F5F7FA",
+        gridcolor="#F3F4F6",
         zeroline=False,
-        linecolor="#EEF2F6",
+        linecolor="#F1F3F5",
         tickfont=dict(color="#64748B", size=11),
         ticklen=0,
     )
