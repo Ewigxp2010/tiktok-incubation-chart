@@ -1184,7 +1184,7 @@ st.markdown(
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
-        border-color: #D6DCE5;
+        border-color: #CDD6E0;
         border-radius: 8px;
         background: #FFFFFF;
         box-shadow: none;
@@ -1751,12 +1751,20 @@ st.markdown(
     }
 
     .support-panel {
-        background: transparent;
-        border: 0;
-        border-radius: 0;
-        padding: 0;
+        background: #FFFFFF;
+        border: 1px solid #D6DCE5;
+        border-radius: 8px;
+        padding: 14px 14px 10px;
         box-shadow: none;
         margin-bottom: 12px;
+    }
+
+    .report-appendix {
+        background: #FFFFFF;
+        border: 1px solid #D6DCE5;
+        border-radius: 8px;
+        padding: 0.1rem 0.2rem;
+        margin-top: 1rem;
     }
 
     .funnel-card-title {
@@ -4698,112 +4706,10 @@ if st.session_state.get("has_generated", False):
             )
         )
         st.caption(T["planning_disclaimer"])
-        render_section_header(T["business_readout"])
-        render_business_readout(business_readout)
-        render_section_header(T["break_even"])
-        render_kpi_grid([
-            (T["weekly_profit"], f"Week {weekly_be}" if weekly_be else T["not_reached"], "#178A62" if weekly_be else "#98A2B3"),
-            (T["cumulative_be"], f"Week {cumulative_be}" if cumulative_be else T["not_reached"], "#178A62" if cumulative_be else "#98A2B3"),
-        ], compact=True)
         target_items = target_comparison_items(overall, target_gmv, target_profit)
-        if target_items:
-            st.subheader(T["target_comparison"])
-            render_kpi_grid(target_items)
-
-        with st.expander(T["debug_details"], expanded=False):
-            st.dataframe(
-                debug_details_table(
-                    overall=overall,
-                    scenario_key=scenario_case,
-                    effective_ads_roas=effective_ads_roas,
-                    target_gmv=target_gmv,
-                    target_profit=target_profit,
-                    n_skus=n_skus,
-                    locked=st.session_state.get("plan_locked", False),
-                ),
-                use_container_width=True,
-                hide_index=True,
-            )
-
-        with st.expander(T["internal_logic_checklist"], expanded=False):
-            st.caption(T["internal_logic_intro"])
-            for title, body in internal_logic_signals(
-                product_df=product_df,
-                phase_inputs=phase_inputs,
-                promo_60d=bool(promo_60d),
-                use_fbt=bool(use_fbt),
-                ads_roas=float(effective_ads_roas),
-            ):
-                render_status_panel(T["internal_logic_context"], body, tone="info", compact=True, kicker=title)
-            render_model_logic()
-            st.caption(T["planning_disclaimer"])
-
-        with st.expander(T["risk_review"], expanded=False):
-            st.caption(T["risk_review_intro"])
-            for level, check in health_checks:
-                if level == "ok":
-                    render_status_panel(T["health_check"], check, tone="success", compact=True)
-                elif level == "info":
-                    render_status_panel(T["health_check"], check, tone="info", compact=True)
-                else:
-                    render_status_panel(T["health_check"], check, tone="warning", compact=True)
-            st.caption(T["forecast_range_note"])
-            render_kpi_grid([
-                (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
-                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#315EEC"),
-                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#178A62"),
-            ], compact=True)
-
-        render_section_header(T["commercial_takeaways"])
-        render_kpi_grid([
-            (takeaways[0][0], takeaways[0][1], "#4F46E5"),
-            (takeaways[1][0], takeaways[1][1], "#315EEC"),
-            (takeaways[2][0], takeaways[2][1], "#178A62"),
-            (takeaways[3][0], takeaways[3][1], "#94A3B8"),
-        ])
-        render_subtle_note(takeaways[4][1], takeaways[4][0])
-
-        with st.expander(T["forecast_range_prompt"], expanded=False):
-            st.caption(T["forecast_range_note"])
-            render_kpi_grid([
-                (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
-                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#315EEC"),
-                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#178A62"),
-            ])
-
-        render_section_header(T["key_assumptions"])
-        render_kpi_grid(assumption_summary)
-
-        render_section_header(T["client_narrative"])
-        for line in narrative:
-            st.write(f"- {line}")
-
-        if not meeting_mode:
-            render_section_header(T["health_check"])
-            health_container = st.container()
-            with health_container:
-                for level, check in health_checks:
-                    if level == "ok":
-                        render_status_panel(T["health_check"], check, tone="success", compact=True)
-                    elif level == "info":
-                        render_status_panel(T["health_check"], check, tone="info", compact=True)
-                    else:
-                        render_status_panel(T["health_check"], check, tone="warning", compact=True)
-
-        if meeting_mode:
-            path_container = st.expander(T["path_to_be"], expanded=False)
-        else:
-            render_section_header(T["path_to_be"])
-            path_container = st.container()
-        with path_container:
-            if cumulative_be:
-                render_status_panel(T["path_to_be"], path_text, tone="success", compact=True)
-            else:
-                render_status_panel(T["path_to_be"], path_text, tone="warning", compact=True)
 
         render_section_header(T["phase_trend"])
         render_subtle_note(T["phase_strategy_text"], T["phase_strategy"])
-        render_phase_overview(phase_summary)
         selected_phase_key = st.radio(
             "",
             options=[p["key"] for p in phase_inputs],
@@ -4817,7 +4723,7 @@ if st.session_state.get("has_generated", False):
         phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
         objective = phase_objective(selected_phase["key"])
         if objective:
-            render_subtle_note(objective, T["phase_objective"])
+            st.caption(objective)
         phase_kpis = [
             (T["total_gmv"], money(phase_row["GMV"], 0), "#315EEC"),
             (T["total_profit"], money(phase_row["Profit"], 0), "#178A62" if phase_row["Profit"] >= 0 else "#B42318"),
@@ -4842,57 +4748,6 @@ if st.session_state.get("has_generated", False):
         else:
             st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True, config={"displayModeBar": False, "responsive": True})
         render_insight(phase_chart_insight(phase_row), compact=True)
-
-        driver, amount, share = cost_driver(phase_row)
-        with st.expander(T["cost_breakdown"], expanded=False):
-            render_status_panel(
-                T["cost_breakdown"],
-                T["cost_breakdown_text"].format(driver=driver, amount=money(amount, 0), share=pct(share, 0)),
-                tone="info",
-                compact=True,
-            )
-
-        render_section_header(T["sample_roi_title"])
-        render_kpi_grid([
-            (T["gmv_per_sample"], money(overall["GMV / Sample"], 0), "#315EEC"),
-            (T["profit_per_sample"], money(overall["Profit / Sample"], 0), "#178A62" if overall["Profit / Sample"] >= 0 else "#B42318"),
-            (T["videos_per_sample_kpi"], f"{overall['Videos / Sample']:.2f}", "#94A3B8"),
-            (T["orders_per_sample"], f"{overall['Orders / Sample']:.2f}", "#178A62"),
-            (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#4F46E5"),
-            (T["ads_investment"], money(overall["Ads Investment"], 0), "#6B7280"),
-        ], compact=True)
-        render_status_panel(
-            T["sample_roi_title"],
-            T["sample_roi_text"].format(
-                gmv_per_sample=money(overall["GMV / Sample"], 0),
-                orders_per_sample=f"{overall['Orders / Sample']:.2f}",
-            ),
-            tone="info",
-            compact=True,
-        )
-
-        if not meeting_mode:
-            with st.expander(T["product_profile"], expanded=False):
-                product_display = product_df.copy()
-                product_display[T["fbt_status"]] = product_df["AOV"].map(
-                    lambda x: sku_fbt_status(float(x), float(logistics_cost), bool(use_fbt))[0]
-                )
-                product_display[T["effective_logistics"]] = product_df["AOV"].map(
-                    lambda x: money(sku_fbt_status(float(x), float(logistics_cost), bool(use_fbt))[1], 2)
-                )
-                product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
-                product_display["Gross Margin"] = product_display["Gross Margin"].map(lambda x: pct(x, 0))
-                product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
-                product_display["Click-to-order Rate"] = product_display["Click-to-order Rate"].map(lambda x: pct(x, 1))
-                product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
-                product_display["Organic Creator Commission Rate"] = product_display["Organic Creator Commission Rate"].map(lambda x: pct(x, 1))
-                product_display["Paid Creator Commission Rate"] = product_display["Paid Creator Commission Rate"].map(lambda x: pct(x, 1))
-                product_display = product_display.rename(columns={
-                    "ShopTab GMV Share": T["shoptab_share"],
-                    "Organic Creator Commission Rate": T["organic_commission_sku"],
-                    "Paid Creator Commission Rate": T["paid_commission_sku"],
-                })
-                st.dataframe(product_display, use_container_width=True)
 
         render_section_header(T["charts"], T["section_primary"])
         st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
@@ -4953,6 +4808,132 @@ if st.session_state.get("has_generated", False):
 
         render_section_header(T["next_actions"])
         render_grouped_actions(next_actions)
+
+        detailed_analysis_label = {
+            "en": "Detailed Analysis",
+            "zh": "详细分析",
+            "de": "Detailanalyse",
+            "nl": "Detailanalyse",
+        }[lang]
+
+        with st.expander(detailed_analysis_label, expanded=False):
+            st.markdown('<div class="report-appendix">', unsafe_allow_html=True)
+
+            if target_items:
+                st.subheader(T["target_comparison"])
+                render_kpi_grid(target_items)
+
+            st.subheader(T["commercial_takeaways"])
+            render_business_readout(business_readout)
+            render_kpi_grid([
+                (T["weekly_profit"], f"Week {weekly_be}" if weekly_be else T["not_reached"], "#178A62" if weekly_be else "#98A2B3"),
+                (T["cumulative_be"], f"Week {cumulative_be}" if cumulative_be else T["not_reached"], "#178A62" if cumulative_be else "#98A2B3"),
+            ], compact=True)
+            render_kpi_grid([
+                (takeaways[0][0], takeaways[0][1], "#4F46E5"),
+                (takeaways[1][0], takeaways[1][1], "#315EEC"),
+                (takeaways[2][0], takeaways[2][1], "#178A62"),
+                (takeaways[3][0], takeaways[3][1], "#94A3B8"),
+            ])
+            render_subtle_note(takeaways[4][1], takeaways[4][0])
+
+            st.subheader(T["key_assumptions"])
+            render_kpi_grid(assumption_summary)
+
+            st.subheader(T["sample_roi_title"])
+            render_kpi_grid([
+                (T["gmv_per_sample"], money(overall["GMV / Sample"], 0), "#315EEC"),
+                (T["profit_per_sample"], money(overall["Profit / Sample"], 0), "#178A62" if overall["Profit / Sample"] >= 0 else "#B42318"),
+                (T["videos_per_sample_kpi"], f"{overall['Videos / Sample']:.2f}", "#94A3B8"),
+                (T["orders_per_sample"], f"{overall['Orders / Sample']:.2f}", "#178A62"),
+                (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#4F46E5"),
+                (T["ads_investment"], money(overall["Ads Investment"], 0), "#6B7280"),
+            ], compact=True)
+            render_status_panel(
+                T["sample_roi_title"],
+                T["sample_roi_text"].format(
+                    gmv_per_sample=money(overall["GMV / Sample"], 0),
+                    orders_per_sample=f"{overall['Orders / Sample']:.2f}",
+                ),
+                tone="info",
+                compact=True,
+            )
+
+            st.subheader(T["health_check"])
+            for line in narrative:
+                st.write(f"- {line}")
+            for level, check in health_checks:
+                if level == "ok":
+                    render_status_panel(T["health_check"], check, tone="success", compact=True)
+                elif level == "info":
+                    render_status_panel(T["health_check"], check, tone="info", compact=True)
+                else:
+                    render_status_panel(T["health_check"], check, tone="warning", compact=True)
+            st.caption(T["forecast_range_note"])
+            render_kpi_grid([
+                (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
+                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#315EEC"),
+                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#178A62"),
+            ], compact=True)
+
+            with st.expander(T["path_to_be"], expanded=False):
+                if cumulative_be:
+                    render_status_panel(T["path_to_be"], path_text, tone="success", compact=True)
+                else:
+                    render_status_panel(T["path_to_be"], path_text, tone="warning", compact=True)
+
+            with st.expander(T["internal_logic_checklist"], expanded=False):
+                st.caption(T["internal_logic_intro"])
+                for title, body in internal_logic_signals(
+                    product_df=product_df,
+                    phase_inputs=phase_inputs,
+                    promo_60d=bool(promo_60d),
+                    use_fbt=bool(use_fbt),
+                    ads_roas=float(effective_ads_roas),
+                ):
+                    render_status_panel(T["internal_logic_context"], body, tone="info", compact=True, kicker=title)
+                render_model_logic()
+                st.caption(T["planning_disclaimer"])
+
+            with st.expander(T["debug_details"], expanded=False):
+                st.dataframe(
+                    debug_details_table(
+                        overall=overall,
+                        scenario_key=scenario_case,
+                        effective_ads_roas=effective_ads_roas,
+                        target_gmv=target_gmv,
+                        target_profit=target_profit,
+                        n_skus=n_skus,
+                        locked=st.session_state.get("plan_locked", False),
+                    ),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+            if not meeting_mode:
+                with st.expander(T["product_profile"], expanded=False):
+                    product_display = product_df.copy()
+                    product_display[T["fbt_status"]] = product_df["AOV"].map(
+                        lambda x: sku_fbt_status(float(x), float(logistics_cost), bool(use_fbt))[0]
+                    )
+                    product_display[T["effective_logistics"]] = product_df["AOV"].map(
+                        lambda x: money(sku_fbt_status(float(x), float(logistics_cost), bool(use_fbt))[1], 2)
+                    )
+                    product_display["AOV"] = product_display["AOV"].map(lambda x: money(x, 2))
+                    product_display["Gross Margin"] = product_display["Gross Margin"].map(lambda x: pct(x, 0))
+                    product_display["Platform Fee Rate"] = product_display["Platform Fee Rate"].map(lambda x: pct(x, 0))
+                    product_display["Click-to-order Rate"] = product_display["Click-to-order Rate"].map(lambda x: pct(x, 1))
+                    product_display["ShopTab GMV Share"] = product_display["ShopTab GMV Share"].map(lambda x: pct(x, 0))
+                    product_display["Organic Creator Commission Rate"] = product_display["Organic Creator Commission Rate"].map(lambda x: pct(x, 1))
+                    product_display["Paid Creator Commission Rate"] = product_display["Paid Creator Commission Rate"].map(lambda x: pct(x, 1))
+                    product_display = product_display.rename(columns={
+                        "ShopTab GMV Share": T["shoptab_share"],
+                        "Organic Creator Commission Rate": T["organic_commission_sku"],
+                        "Paid Creator Commission Rate": T["paid_commission_sku"],
+                    })
+                    st.dataframe(product_display, use_container_width=True)
+
+            st.markdown('</div>', unsafe_allow_html=True)
 
         money_cols = [
             "Organic Funnel GMV", "Affiliate Organic GMV", "ShopTab Organic GMV",
