@@ -2962,12 +2962,10 @@ def render_insight(text, compact=False):
 def render_chart_lens(title, body, compact=False):
     class_name = "chart-lens compact" if compact else "chart-lens"
     st.markdown(
-        f"""
-        <div class="{class_name}">
-            <div class="chart-lens-title">{escape(str(title))}</div>
-            <div class="chart-lens-body">{escape(str(body))}</div>
-        </div>
-        """,
+        f'<div class="{class_name}">'
+        f'<div class="chart-lens-title">{escape(str(title))}</div>'
+        f'<div class="chart-lens-body">{escape(str(body))}</div>'
+        "</div>",
         unsafe_allow_html=True,
     )
 
@@ -2984,13 +2982,11 @@ def render_status_panel(title, body, tone="info", compact=False, kicker=None):
     class_name = f"status-panel {tone}" + (" compact" if compact else "")
     kicker_html = f'<div class="status-panel-kicker">{escape(str(kicker))}</div>' if kicker else ""
     st.markdown(
-        f"""
-        <div class="{class_name}">
-            {kicker_html}
-            <div class="status-panel-title">{escape(str(title))}</div>
-            <div class="status-panel-body">{escape(str(body))}</div>
-        </div>
-        """,
+        f'<div class="{class_name}">'
+        f"{kicker_html}"
+        f'<div class="status-panel-title">{escape(str(title))}</div>'
+        f'<div class="status-panel-body">{escape(str(body))}</div>'
+        "</div>",
         unsafe_allow_html=True,
     )
 
@@ -2999,13 +2995,11 @@ def render_model_logic():
     st.write(T["model_logic_intro"])
     for idx in range(1, 7):
         st.markdown(
-            f"""
-            <div class="chart-lens">
-                <div class="chart-lens-title">{escape(T[f"model_logic_{idx}_title"])}</div>
-                <div class="chart-lens-body">{escape(T[f"model_logic_{idx}_body"])}</div>
-                <div style="margin-top:8px;color:#1D4ED8;font-weight:720;">{escape(T[f"model_logic_{idx}_formula"])}</div>
-            </div>
-            """,
+            f'<div class="chart-lens">'
+            f'<div class="chart-lens-title">{escape(T[f"model_logic_{idx}_title"])}</div>'
+            f'<div class="chart-lens-body">{escape(T[f"model_logic_{idx}_body"])}</div>'
+            f'<div style="margin-top:8px;color:#1D4ED8;font-weight:720;">{escape(T[f"model_logic_{idx}_formula"])}</div>'
+            "</div>",
             unsafe_allow_html=True,
         )
 
