@@ -1057,8 +1057,8 @@ st.markdown(
     }
 
     [data-testid="stSidebar"] {
-        background: #F5F6F8;
-        border-right: 1px solid #E6E8ED;
+        background: #FCFCFD;
+        border-right: 1px solid #E8ECF2;
     }
 
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {
@@ -1072,7 +1072,7 @@ st.markdown(
     }
 
     .block-container {
-        max-width: 1320px;
+        max-width: 1280px;
         padding-top: 2.2rem;
         padding-bottom: 4rem;
     }
@@ -1282,25 +1282,25 @@ st.markdown(
 
     div[data-testid="stPlotlyChart"] {
         background: #FFFFFF;
-        border: 1px solid var(--tts-line);
-        border-radius: 8px;
-        padding: 18px 18px 18px 18px;
-        margin: 8px 0 18px 0;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
+        padding: 20px 20px 18px 20px;
+        margin: 6px 0 14px 0;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
         overflow: visible;
     }
 
     div[data-testid="stPlotlyChart"] > div {
         width: 100% !important;
-        min-height: 500px;
+        min-height: 520px;
         overflow: visible;
     }
 
     .dashboard-note {
         background: #FFFFFF;
-        border: 1px solid #E5EAF1;
-        border-left: 2px solid #D1D5DB;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-left: 2px solid #CBD5E1;
+        border-radius: 12px;
         padding: 12px 14px;
         color: #334155;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
@@ -1309,17 +1309,17 @@ st.markdown(
 
     .dashboard-intro {
         display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
-        margin: 6px 0 10px 0;
+        margin: 6px 0 8px 0;
         align-items: stretch;
     }
 
     .dashboard-intro-card {
         background: #FFFFFF;
-        border: 1px solid #E5EAF1;
-        border-radius: 8px;
-        padding: 11px 13px;
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
+        padding: 12px 14px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
@@ -1334,7 +1334,37 @@ st.markdown(
 
     .dashboard-intro-text {
         color: #334155;
-        font-size: 0.94rem;
+        font-size: 0.92rem;
+        line-height: 1.46;
+    }
+
+    .executive-brief-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin: 4px 0 14px 0;
+    }
+
+    .executive-brief-card {
+        background: #FFFFFF;
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
+        padding: 14px 16px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+    }
+
+    .executive-brief-kicker {
+        color: #64748B;
+        font-size: 0.74rem;
+        font-weight: 780;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 8px;
+    }
+
+    .executive-brief-body {
+        color: #334155;
+        font-size: 0.9rem;
         line-height: 1.5;
     }
 
@@ -1396,11 +1426,11 @@ st.markdown(
 
     .meeting-header {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
         padding: 16px 18px;
         margin-bottom: 12px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
@@ -1447,7 +1477,7 @@ st.markdown(
     }
 
     .section-shell {
-        margin: 18px 0 6px 0;
+        margin: 16px 0 4px 0;
     }
 
     .section-eyebrow {
@@ -1469,8 +1499,8 @@ st.markdown(
 
     .action-list {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
         padding: 16px 18px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
     }
@@ -1485,9 +1515,9 @@ st.markdown(
 
     .action-group {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-top: 3px solid #CBD5E1;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-top: 2px solid #CBD5E1;
+        border-radius: 12px;
         padding: 14px 16px;
         min-height: 158px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
@@ -1551,9 +1581,9 @@ st.markdown(
 
     .readout-card {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-top: 3px solid #CBD5E1;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-top: 2px solid #CBD5E1;
+        border-radius: 12px;
         padding: 16px 18px;
         min-height: 144px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
@@ -1577,10 +1607,10 @@ st.markdown(
 
     .chart-lens {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
-        padding: 14px 16px;
-        margin: 8px 0 14px 0;
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin: 6px 0 10px 0;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
@@ -1632,8 +1662,8 @@ st.markdown(
 
     .funnel-card-wrap {
         background: #FFFFFF;
-        border: 1px solid #E5E7EB;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
         padding: 22px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
         margin-bottom: 14px;
@@ -1641,10 +1671,10 @@ st.markdown(
 
     .support-panel {
         background: #FFFFFF;
-        border: 1px solid #E5E7EB;
-        border-radius: 8px;
-        padding: 14px 16px 16px 16px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
+        padding: 16px 18px 18px 18px;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.035);
         margin-bottom: 14px;
     }
 
@@ -1698,9 +1728,9 @@ st.markdown(
 
     .phase-overview-card {
         background: #FFFFFF;
-        border: 1px solid #E5E7EB;
-        border-top: 3px solid #CBD5E1;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-top: 2px solid #CBD5E1;
+        border-radius: 12px;
         padding: 16px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
     }
@@ -1737,11 +1767,11 @@ st.markdown(
 
     .hero-band {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
         padding: 18px 20px;
         margin: 14px 0 14px 0;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
         display: grid;
         grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(150px, 0.55fr));
         gap: 14px;
@@ -1802,11 +1832,11 @@ st.markdown(
 
     .premium-kpi {
         background: #FFFFFF;
-        border: 1px solid #E5E7EB;
+        border: 1px solid #E7EBF1;
         border-top: 2px solid #CBD5E1;
-        border-radius: 8px;
-        padding: 14px 15px 15px 15px;
-        min-height: 114px;
+        border-radius: 12px;
+        padding: 15px 16px 16px 16px;
+        min-height: 118px;
         height: auto;
         overflow: visible;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
@@ -1857,12 +1887,12 @@ st.markdown(
 
     .insight-strip {
         background: #FFFFFF;
-        border: 1px solid #E5E7EB;
-        border-left: 2px solid #D1D5DB;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-left: 2px solid #CBD5E1;
+        border-radius: 12px;
         color: #374151;
         padding: 10px 12px;
-        margin: 6px 0 14px 0;
+        margin: 6px 0 10px 0;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
         line-height: 1.45;
     }
@@ -1877,9 +1907,9 @@ st.markdown(
 
     .status-panel {
         background: #FFFFFF;
-        border: 1px solid #E5E7EB;
+        border: 1px solid #E7EBF1;
         border-left: 2px solid #CBD5E1;
-        border-radius: 8px;
+        border-radius: 12px;
         padding: 12px 14px;
         margin: 8px 0 14px 0;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
@@ -1939,8 +1969,8 @@ st.markdown(
 
     .export-shell {
         background: #FFFFFF;
-        border: 1px solid #DDE3EA;
-        border-radius: 8px;
+        border: 1px solid #E7EBF1;
+        border-radius: 12px;
         padding: 14px 16px 16px 16px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
     }
@@ -2009,6 +2039,7 @@ st.markdown(
     @media (max-width: 900px) {
         .hero-band,
         .dashboard-intro,
+        .executive-brief-grid,
         .kpi-grid,
         .kpi-grid.kpi-grid-four,
         .readout-grid,
@@ -2676,6 +2707,30 @@ def business_readout_items(overall, df_all, cumulative_be_label, driver):
     ]
 
 
+def executive_brief_items(overall, df_all, weekly_be_label, cumulative_be_label, driver):
+    main_channel = main_gmv_channel(df_all)
+    return [
+        (
+            T["growth_investment"],
+            f"{money(overall['Growth Investment'], 0)} total, including {money(overall['Sample Investment'], 0)} for samples and {money(overall['Ads Investment'], 0)} for ads."
+            if lang != "zh"
+            else f"总增长投入 {money(overall['Growth Investment'], 0)}，其中样品 {money(overall['Sample Investment'], 0)}，广告 {money(overall['Ads Investment'], 0)}。"
+        ),
+        (
+            T["sample_roi_title"],
+            f"Each sample contributes about {money(overall['GMV / Sample'], 0)} GMV and {money(overall['Profit / Sample'], 0)} profit."
+            if lang != "zh"
+            else f"单个样品平均带来 {money(overall['GMV / Sample'], 0)} GMV 和 {money(overall['Profit / Sample'], 0)} 利润。"
+        ),
+        (
+            T["diagnosis_summary"],
+            f"The largest GMV driver is {main_channel}. Weekly break-even: {weekly_be_label}. Cumulative break-even: {cumulative_be_label}. Main cost driver: {driver}."
+            if lang != "zh"
+            else f"当前最大 GMV 驱动来自 {main_channel}。单周回本：{weekly_be_label}；累计回本：{cumulative_be_label}。主要成本压力来自 {driver}。"
+        ),
+    ]
+
+
 def diagnosis_summary(overall, df_all, driver):
     sample_roi = float(overall["GMV / Sample Cost"])
     total_profit = float(overall["Total Profit"])
@@ -2846,6 +2901,18 @@ def render_business_readout(items):
             "</div>"
         )
     st.markdown(f'<div class="readout-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
+
+
+def render_executive_brief(items):
+    cards = []
+    for kicker, body in items:
+        cards.append(
+            f'<div class="executive-brief-card">'
+            f'<div class="executive-brief-kicker">{escape(str(kicker))}</div>'
+            f'<div class="executive-brief-body">{escape(str(body))}</div>'
+            "</div>"
+        )
+    st.markdown(f'<div class="executive-brief-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
 
 
 def render_phase_overview(phase_summary):
@@ -3749,21 +3816,21 @@ def apply_plotly_layout(fig, title, height=460):
             "xanchor": "left",
             "y": 0.96,
             "yanchor": "top",
-            "font": {"size": 20, "color": "#111827", "family": "Arial, sans-serif"},
+            "font": {"size": 18, "color": "#111827", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=70, r=106, t=84, b=74),
-        paper_bgcolor="white",
-        plot_bgcolor="#FCFCFD",
+        margin=dict(l=64, r=98, t=76, b=66),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="#FFFFFF",
         font=dict(color="#111827", family="Arial, sans-serif"),
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.02,
+            y=1.01,
             xanchor="left",
             x=0,
             bgcolor="rgba(255,255,255,0)",
-            font=dict(size=12, color="#475569"),
+            font=dict(size=11, color="#64748B"),
         ),
         hovermode="x unified",
         hoverlabel=dict(
@@ -3772,8 +3839,22 @@ def apply_plotly_layout(fig, title, height=460):
             font=dict(color="#111827", size=12),
         ),
     )
-    fig.update_xaxes(showgrid=True, gridcolor="#ECEFF3", zeroline=False, linecolor="#D1D5DB", tickfont=dict(color="#6B7280"))
-    fig.update_yaxes(showgrid=True, gridcolor="#ECEFF3", zeroline=False, linecolor="#D1D5DB", tickfont=dict(color="#6B7280"))
+    fig.update_xaxes(
+        showgrid=True,
+        gridcolor="#F1F5F9",
+        zeroline=False,
+        linecolor="#E2E8F0",
+        tickfont=dict(color="#64748B", size=11),
+        ticklen=0,
+    )
+    fig.update_yaxes(
+        showgrid=True,
+        gridcolor="#F1F5F9",
+        zeroline=False,
+        linecolor="#E2E8F0",
+        tickfont=dict(color="#64748B", size=11),
+        ticklen=0,
+    )
     return fig
 
 
@@ -4518,29 +4599,16 @@ if st.session_state.get("has_generated", False):
             (T["orders"], f"{overall['Total Orders']:,.0f}", "#14B8A6"),
             (T["channel_mix"], main_gmv_channel(df_all), "#F97316"),
         ], fixed_cols=4)
-        st.markdown(
-            f"""
-            <div class="dashboard-note">
-                {T["executive_summary_text"].format(
-                    weeks=int(weeks_per_phase) * len(PHASES),
-                    samples=f"{overall['Total Samples']:,.0f}",
-                    gmv=money(overall["Total GMV"], 0),
-                    profit=money(overall["Total Profit"], 0),
-                    growth_investment=money(overall["Growth Investment"], 0),
-                    sample_investment=money(overall["Sample Investment"], 0),
-                    ads_investment=money(overall["Ads Investment"], 0),
-                    gmv_per_sample=money(overall["GMV / Sample"], 0),
-                    profit_per_sample=money(overall["Profit / Sample"], 0),
-                    main_channel=main_gmv_channel(df_all),
-                    weekly_be=weekly_be_label,
-                    cumulative_be=cumulative_be_label,
-                )}
-            </div>
-            """,
-            unsafe_allow_html=True,
+        render_executive_brief(
+            executive_brief_items(
+                overall=overall,
+                df_all=df_all,
+                weekly_be_label=weekly_be_label,
+                cumulative_be_label=cumulative_be_label,
+                driver=total_cost_driver,
+            )
         )
         st.caption(T["planning_disclaimer"])
-        render_status_panel(T["cost_explanation"], total_cost_explanation, tone="info", compact=True, kicker=T["section_primary"])
         render_section_header(T["business_readout"])
         render_business_readout(business_readout)
         render_section_header(T["break_even"])
