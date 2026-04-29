@@ -2921,9 +2921,21 @@ st.markdown(
     }
 
     div[data-testid="stExpander"] {
-        border: 1px solid #D0D7E2;
-        border-radius: 10px;
+        border: 1px solid #D8E0EA;
+        border-radius: 14px;
         background: #FFFFFF;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.025);
+        overflow: hidden;
+    }
+
+    div[data-testid="stExpander"] details summary {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    div[data-testid="stExpander"] details summary p {
+        color: #111827;
+        font-weight: 700;
     }
 
     div[data-testid="stAlert"] {
@@ -3817,9 +3829,9 @@ st.markdown(
     div[data-testid="stPlotlyChart"] {
         background: linear-gradient(180deg, #FFFFFF 0%, #FCFDFE 100%);
         border: 1.5px solid #D9E1EB;
-        border-radius: 18px;
-        padding: 8px 10px 2px 10px;
-        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.035) !important;
+        border-radius: 20px;
+        padding: 12px 14px 8px 14px;
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.04) !important;
     }
     </style>
     """,
@@ -5533,10 +5545,10 @@ def apply_plotly_layout(fig, title, height=460):
             "xanchor": "left",
             "y": 0.985,
             "yanchor": "top",
-            "font": {"size": 13, "color": "#111827", "family": "Arial, sans-serif"},
+            "font": {"size": 13, "color": "#0F172A", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=50, r=68, t=84, b=44),
+        margin=dict(l=52, r=72, t=86, b=44),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#FFFFFF",
         font=dict(color="#111827", family="Arial, sans-serif"),
@@ -5627,8 +5639,8 @@ def make_weekly_chart(df, title, break_even_week=None):
                 y=df[col],
                 mode="lines+markers",
                 name=label,
-                line=dict(color=color, width=3.2, shape="spline", smoothing=0.55),
-                marker=dict(size=7.5, color=color, line=dict(color="#FFFFFF", width=1.4)),
+                line=dict(color=color, width=2.7, shape="spline", smoothing=0.58),
+                marker=dict(size=6.2, color=color, line=dict(color="#FFFFFF", width=1.2)),
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
             )
         )
@@ -5662,9 +5674,9 @@ def make_cumulative_profit_chart(df, break_even_week=None):
             mode="lines+markers",
             fill="tozeroy",
             name=T["cumulative_profit_trend"],
-            line=dict(color=CHART_COLORS["cumulative"], width=3.2, shape="spline", smoothing=0.55),
-            marker=dict(size=7.5, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=1.4)),
-            fillcolor="rgba(79, 70, 229, 0.14)",
+            line=dict(color=CHART_COLORS["cumulative"], width=2.8, shape="spline", smoothing=0.58),
+            marker=dict(size=6.2, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=1.2)),
+            fillcolor="rgba(79, 70, 229, 0.11)",
             hovertemplate=f"{T['cumulative_profit_trend']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
@@ -5832,8 +5844,8 @@ def make_phase_cumulative_chart(phase_df, title):
                 y=temp[col],
                 mode="lines+markers",
                 name=label,
-                line=dict(color=color, width=width, dash=dash, shape="spline", smoothing=0.5),
-                marker=dict(size=marker_size, color=color, line=dict(color="white", width=1.5)),
+                line=dict(color=color, width=max(2.4, width - 0.35), dash=dash, shape="spline", smoothing=0.55),
+                marker=dict(size=max(5.4, marker_size - 0.7), color=color, line=dict(color="white", width=1.2)),
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
             )
         )
@@ -6088,12 +6100,16 @@ if show_setup:
 
     for i in range(int(n_skus)):
         initialize_sku(i)
-        with st.container(border=True):
+        category = st.session_state[f"category_{i}"]
+        subcategory = st.session_state[f"subcategory_{i}"]
+        sku_name_preview = st.session_state[f"sku_name_{i}"] or chr(65 + i)
+        expander_label = f"SKU {i + 1} · {sku_name_preview} · {category} / {subcategory}"
+        with st.expander(expander_label, expanded=(i == 0)):
             category = st.session_state[f"category_{i}"]
             subcategory = st.session_state[f"subcategory_{i}"]
             st.markdown(
                 f"""
-                <div class="sku-title">SKU {i + 1} · {st.session_state[f"sku_name_{i}"]}</div>
+                <div class="sku-title">SKU {i + 1}</div>
                 <div class="sku-subtitle">{category} / {subcategory} · {pct(PLATFORM_COMMISSION[category], 0)} {T["platform_commission"]}</div>
                 """,
                 unsafe_allow_html=True,
