@@ -3388,12 +3388,84 @@ st.markdown(
     }
 
     .support-panel {
-        background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 14px;
-        padding: 16px 16px 12px;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
         box-shadow: none;
         margin-bottom: 14px;
+    }
+
+    .chart-card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin: 10px 0 14px 0;
+        align-items: start;
+    }
+
+    .chart-card {
+        background: #FFFFFF;
+        border: 1px solid #D5DEE9;
+        border-radius: 18px;
+        padding: 18px 18px 14px 18px;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);
+        margin: 10px 0 18px 0;
+    }
+
+    .chart-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 12px;
+    }
+
+    .chart-card-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: #EEF4FF;
+        color: #315EEC;
+        font-size: 0.7rem;
+        font-weight: 760;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .chart-card-title {
+        color: #111827;
+        font-size: 1.04rem;
+        font-weight: 770;
+        line-height: 1.24;
+        margin: 0;
+    }
+
+    .chart-card-subtitle {
+        color: #667085;
+        font-size: 0.84rem;
+        line-height: 1.52;
+        margin-top: 4px;
+    }
+
+    .chart-card-body {
+        margin-top: 2px;
+    }
+
+    .chart-card-footer {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #EEF2F6;
+        color: #667085;
+        font-size: 0.81rem;
+        line-height: 1.55;
+    }
+
+    .chart-card-footer strong {
+        color: #111827;
+        font-weight: 760;
     }
 
     .report-appendix {
@@ -3627,20 +3699,18 @@ st.markdown(
     .insight-strip {
         background: transparent;
         border: 0;
-        border-top: 1px solid #E7ECF2;
-        border-radius: 0;
         color: #667085;
-        padding: 12px 2px 0 2px;
-        margin: 2px 0 16px 0;
+        padding: 0;
+        margin: 0;
         box-shadow: none;
         line-height: 1.5;
         font-size: 0.82rem;
     }
 
     .insight-strip.compact {
-        padding: 10px 2px 0 2px;
-        margin: 2px 0 18px 0;
-        font-size: 0.84rem;
+        padding: 0;
+        margin: 0;
+        font-size: 0.82rem;
         color: #667085;
         box-shadow: none;
     }
@@ -3797,6 +3867,7 @@ st.markdown(
     }
 
     @media (max-width: 900px) {
+        .chart-card-grid,
         .cover-cta-row,
         .cover-summary-grid,
         .hero-band,
@@ -3875,11 +3946,11 @@ st.markdown(
     }
 
     div[data-testid="stPlotlyChart"] {
-        background: linear-gradient(180deg, #FFFFFF 0%, #FCFDFE 100%);
-        border: 1.5px solid #D9E1EB;
-        border-radius: 20px;
-        padding: 12px 14px 8px 14px;
-        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.04) !important;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none !important;
     }
     </style>
     """,
@@ -4744,6 +4815,22 @@ def render_chart_lens(title, body, compact=False):
         "</div>",
         unsafe_allow_html=True,
     )
+
+
+def render_chart_card_start(title, subtitle=None, kicker=None):
+    kicker_html = f'<div class="chart-card-kicker">{escape(str(kicker))}</div>' if kicker else ""
+    subtitle_html = f'<div class="chart-card-subtitle">{escape(str(subtitle))}</div>' if subtitle else ""
+    st.markdown(
+        f'<div class="chart-card"><div class="chart-card-header"><div>'
+        f'{kicker_html}<div class="chart-card-title">{escape(str(title))}</div>{subtitle_html}'
+        f'</div></div><div class="chart-card-body">',
+        unsafe_allow_html=True,
+    )
+
+
+def render_chart_card_end(caption=None):
+    caption_html = f'<div class="chart-card-footer">{caption}</div>' if caption else ""
+    st.markdown(f'</div>{caption_html}</div>', unsafe_allow_html=True)
 
 
 def render_subtle_note(body, label=None):
@@ -5718,6 +5805,8 @@ def make_weekly_chart(df, title, break_even_week=None):
                 mode="lines",
                 name=label,
                 line=dict(color=color, width=width, shape="spline", smoothing=0.52),
+                fill="tozeroy" if col == "GMV" else None,
+                fillcolor="rgba(49, 94, 236, 0.06)" if col == "GMV" else None,
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
             ),
             row=1,
@@ -5748,8 +5837,8 @@ def make_weekly_chart(df, title, break_even_week=None):
     fig.add_hline(y=0, line_color="#98A2B3", line_width=1, row=2, col=1)
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#98A2B3", row="all", col=1)
-    apply_plotly_layout(fig, "", height=560)
-    fig.update_layout(showlegend=False, margin=dict(l=52, r=76, t=58, b=52), barmode="overlay", bargap=0.45)
+    apply_plotly_layout(fig, "", height=540)
+    fig.update_layout(showlegend=False, margin=dict(l=52, r=76, t=24, b=46), barmode="group", bargap=0.42)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", row=1, col=1)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", row=2, col=1)
     fig.update_xaxes(title=T["week"], row=2, col=1, dtick=1, tickmode="linear")
@@ -5784,7 +5873,7 @@ def make_cumulative_profit_chart(df, break_even_week=None):
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
     apply_plotly_layout(fig, "", height=500)
-    fig.update_layout(showlegend=False, margin=dict(l=52, r=72, t=58, b=52))
+    fig.update_layout(showlegend=False, margin=dict(l=52, r=72, t=24, b=46))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"])
     add_end_label(
@@ -5896,10 +5985,10 @@ def make_phase_total_chart(phase_row):
             hovertemplate="<b>%{x}</b><br>€%{y:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, "", height=560)
+    apply_plotly_layout(fig, "", height=520)
     fig.update_layout(
         showlegend=False,
-        margin=dict(l=72, r=38, t=58, b=106),
+        margin=dict(l=72, r=38, t=24, b=106),
         waterfallgap=0.26,
     )
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
@@ -5933,6 +6022,8 @@ def make_phase_cumulative_chart(phase_df, title):
                 mode="lines",
                 name=label,
                 line=dict(color=color, width=width, shape="spline", smoothing=0.52),
+                fill="tozeroy" if col == "Cumulative GMV" else None,
+                fillcolor="rgba(49, 94, 236, 0.06)" if col == "Cumulative GMV" else None,
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
             ),
             row=1,
@@ -5968,12 +6059,12 @@ def make_phase_cumulative_chart(phase_df, title):
     add_end_label(fig, last["Week in Phase"], float(last["Cumulative Growth Investment"]), money(float(last["Cumulative Growth Investment"]), 0), "#5B5BD6", row=2, col=1)
 
     fig.add_hline(y=0, line_color="#98A2B3", line_width=1, opacity=0.85, row=2, col=1)
-    apply_plotly_layout(fig, "", height=560)
+    apply_plotly_layout(fig, "", height=540)
     fig.update_layout(
         showlegend=False,
-        margin=dict(l=54, r=74, t=58, b=52),
-        barmode="overlay",
-        bargap=0.45,
+        margin=dict(l=54, r=74, t=24, b=46),
+        barmode="group",
+        bargap=0.42,
     )
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", row=1, col=1)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", row=2, col=1)
@@ -6506,64 +6597,103 @@ if st.session_state.get("has_generated", False):
             horizontal=True,
             key=f"phase_chart_mode_{selected_phase['key']}",
         )
+        phase_chart_title = phase_label(selected_phase)
+        phase_chart_subtitle = (
+            "Cumulative weekly scale and economics inside this phase."
+            if lang != "zh" else
+            "查看本阶段内累计规模与经营贡献。"
+        ) if chart_mode == T["phase_chart_cumulative"] else (
+            "Bridge from phase GMV to phase net profit."
+            if lang != "zh" else
+            "查看该阶段从 GMV 到净利润的利润桥。"
+        )
+        render_chart_card_start(phase_chart_title, phase_chart_subtitle, T["section_primary"])
         if chart_mode == T["phase_chart_cumulative"]:
             st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True, config={"displayModeBar": False, "responsive": True})
         else:
             st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        render_insight(phase_chart_insight(phase_row), compact=True)
+        render_chart_card_end(f"<strong>{escape(T['chart_insight'])}.</strong> {escape(phase_chart_insight(phase_row))}")
 
         render_section_header(T["charts"], T["section_primary"])
-        st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        render_subtle_note(T["read_weekly_chart"], T["chart_read"])
-        st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        render_subtle_note(T["read_cumulative_chart"], T["chart_read"])
-        render_insight(overall_chart_insight(df_all), compact=True)
+        chart_col1, chart_col2 = st.columns(2, gap="large")
+        with chart_col1:
+            render_chart_card_start(
+                T["overall_weekly"],
+                "Commercial scale versus operating cost, with weekly profit and paid investment beneath."
+                if lang != "zh" else
+                "上层看 GMV 与总成本，下层看单周利润与付费投入。",
+                T["section_primary"],
+            )
+            st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+            render_chart_card_end(f"<strong>{escape(T['chart_read'])}.</strong> {escape(T['read_weekly_chart'])}")
+        with chart_col2:
+            render_chart_card_start(
+                T["cumulative_profit_trend"],
+                "Use this to judge whether early investment is recovered as the program compounds."
+                if lang != "zh" else
+                "用这张图判断前期投入是否随着计划推进被逐步回收。",
+                T["section_primary"],
+            )
+            st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+            render_chart_card_end(f"<strong>{escape(T['chart_read'])}.</strong> {escape(T['read_cumulative_chart'])}")
+        render_status_panel(T["chart_insight"], overall_chart_insight(df_all), tone="info", compact=True)
         if meeting_mode:
             support_container = st.expander(T["supporting_charts"], expanded=False)
         else:
             render_section_header(T["supporting_charts"], T["section_secondary"])
             support_container = st.container()
         with support_container:
-            st.markdown('<div class="support-panel"><div class="tabs-shell">', unsafe_allow_html=True)
-            support_tabs = st.tabs([T["funnel_summary"], T["channel_mix"], T["investment_split"]])
-            with support_tabs[0]:
-                if lang == "zh":
-                    render_subtle_note(
-                        f"{overall['Total Samples']:,.0f} 个样品预计带来 {overall['Total Videos']:,.0f} 条视频、"
-                        f"{overall['Total Clicks']:,.0f} 次点击和 {overall['Total Orders']:,.0f} 个订单。",
-                        "商业视角",
-                    )
-                else:
-                    render_subtle_note(
-                        f"{overall['Total Samples']:,.0f} samples scale into {overall['Total Videos']:,.0f} videos, "
-                        f"{overall['Total Clicks']:,.0f} clicks, and {overall['Total Orders']:,.0f} orders.",
-                        "Business lens",
-                    )
+            st.markdown('<div class="support-panel"><div class="chart-card-grid">', unsafe_allow_html=True)
+            support_col1, support_col2 = st.columns(2, gap="large")
+            with support_col1:
+                render_chart_card_start(
+                    T["funnel_summary"],
+                    "How samples convert into content, clicks, and orders."
+                    if lang != "zh" else
+                    "查看样品如何转化为内容、点击和订单。",
+                    T["section_secondary"],
+                )
                 render_funnel_summary(df_all)
-            with support_tabs[1]:
-                if lang == "zh":
-                    render_subtle_note(
-                        "这里只看两条渠道：达人视频 GMV 和店铺/Search GMV。付费增量已拆回这两条渠道。",
-                        "商业视角",
+                render_chart_card_end(
+                    (
+                        f"<strong>Business lens.</strong> {overall['Total Samples']:,.0f} samples scale into "
+                        f"{overall['Total Videos']:,.0f} videos, {overall['Total Clicks']:,.0f} clicks, and "
+                        f"{overall['Total Orders']:,.0f} orders."
+                    ) if lang != "zh" else (
+                        f"<strong>商业视角。</strong>{overall['Total Samples']:,.0f} 个样品预计带来 "
+                        f"{overall['Total Videos']:,.0f} 条视频、{overall['Total Clicks']:,.0f} 次点击和 "
+                        f"{overall['Total Orders']:,.0f} 个订单。"
                     )
-                else:
-                    render_subtle_note(
-                        "This view shows only two channels: Affiliate Video GMV and Store/Search GMV. Paid uplift is allocated back into those two lines.",
-                        "Business lens",
-                    )
+                )
+            with support_col2:
+                render_chart_card_start(
+                    T["channel_mix"],
+                    "Channel composition after paid uplift is allocated back into affiliate and store/search."
+                    if lang != "zh" else
+                    "付费增量回流到达人视频和店铺/Search 后的渠道结构。",
+                    T["section_secondary"],
+                )
                 st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-            with support_tabs[2]:
-                if lang == "zh":
-                    render_subtle_note(
-                        f"当前最大成本项是 {total_cost_driver}，利润优化应先看这一项。",
-                        "商业视角",
-                    )
-                else:
-                    render_subtle_note(
-                        f"The largest cost driver is {total_cost_driver}; margin work should start there.",
-                        "Business lens",
-                    )
-                st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                render_chart_card_end(
+                    "<strong>Business lens.</strong> This view keeps only two channels: Affiliate Video GMV and Store/Search GMV."
+                    if lang != "zh" else
+                    "<strong>商业视角。</strong>这里只看两条渠道：达人视频 GMV 和店铺/Search GMV。"
+                )
+            render_chart_card_start(
+                T["investment_split"],
+                "Cost composition across product cost, commissions, logistics, samples, and paid growth."
+                if lang != "zh" else
+                "查看商品成本、佣金、物流、样品和付费加热的投入结构。",
+                T["section_secondary"],
+            )
+            st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+            render_chart_card_end(
+                (
+                    f"<strong>Business lens.</strong> The largest cost driver is {escape(total_cost_driver)}; margin work should start there."
+                ) if lang != "zh" else (
+                    f"<strong>商业视角。</strong>当前最大成本项是 {escape(total_cost_driver)}，利润优化应先看这一项。"
+                )
+            )
             render_status_panel(T["cost_explanation"], total_cost_explanation, tone="info", compact=True)
             st.markdown('</div></div>', unsafe_allow_html=True)
 
