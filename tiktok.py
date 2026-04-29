@@ -3562,22 +3562,23 @@ st.markdown(
     }
 
     .insight-strip {
-        background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 10px;
-        color: #4B5563;
-        padding: 10px 12px;
-        margin: 8px 0 10px 0;
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #E6EAF0;
+        border-radius: 0;
+        color: #667085;
+        padding: 10px 2px 0 2px;
+        margin: 2px 0 16px 0;
         box-shadow: none;
-        line-height: 1.45;
-        font-size: 0.86rem;
+        line-height: 1.55;
+        font-size: 0.84rem;
     }
 
     .insight-strip.compact {
-        padding: 10px 12px;
-        margin: 6px 0 14px 0;
-        font-size: 0.9rem;
-        color: #334155;
+        padding: 10px 2px 0 2px;
+        margin: 2px 0 18px 0;
+        font-size: 0.84rem;
+        color: #667085;
         box-shadow: none;
     }
 
@@ -4658,7 +4659,7 @@ def cost_explanation(row):
 def render_insight(text, compact=False):
     class_name = "insight-strip compact" if compact else "insight-strip"
     st.markdown(
-        f'<div class="{class_name}"><strong>{T["chart_insight"]}:</strong> {text}</div>',
+        f'<div class="{class_name}"><strong style="color:#111827;font-weight:760;">{T["chart_insight"]}.</strong> {text}</div>',
         unsafe_allow_html=True,
     )
 
