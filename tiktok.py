@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
@@ -6229,6 +6230,7 @@ if st.session_state.get("plan_locked", False):
 if st.button(T["generate"], type="primary"):
     st.session_state["has_generated"] = True
     st.session_state["plan_locked"] = False
+    st.session_state["_scroll_to_results"] = True
 
 if st.session_state.get("has_generated", False):
     try:
@@ -6304,6 +6306,21 @@ if st.session_state.get("has_generated", False):
             cumulative_be=cumulative_be,
             driver=total_cost_driver,
         )
+
+        st.markdown('<div id="results-start"></div>', unsafe_allow_html=True)
+        if st.session_state.get("_scroll_to_results", False):
+            components.html(
+                """
+                <script>
+                const anchor = window.parent.document.getElementById("results-start");
+                if (anchor) {
+                    anchor.scrollIntoView({behavior: "smooth", block: "start"});
+                }
+                </script>
+                """,
+                height=0,
+            )
+            st.session_state["_scroll_to_results"] = False
 
         render_meeting_header(meeting_notes, generated_at, assumption_status)
         render_hero(
