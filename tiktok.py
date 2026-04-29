@@ -5802,21 +5802,15 @@ def make_phase_cumulative_chart(phase_df, title):
     temp["Cumulative GMV"] = temp["GMV"].cumsum()
     temp["Cumulative Total Cost"] = temp["Total Cost"].cumsum()
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
-    temp["Cumulative Sales Contribution"] = temp["Sales Contribution"].cumsum()
-    temp["Cumulative Sample Investment"] = temp["Samples Cost"].cumsum()
-    temp["Cumulative Ads Investment"] = temp["Ads Cost"].cumsum()
     temp["Cumulative Growth Investment"] = temp["Growth Investment"].cumsum()
 
     fig = go.Figure()
     series = [
-        (T["total_gmv"], "Cumulative GMV", CHART_COLORS["gmv"], "solid", 4, 9),
-        (T["total_cost_label"], "Cumulative Total Cost", CHART_COLORS["cost"], "solid", 4, 9),
-        (T["sales_contribution"], "Cumulative Sales Contribution", "#178A62", "solid", 4, 9),
-        (T["profit_label"], "Cumulative Profit", CHART_COLORS["profit"], "solid", 4, 9),
-        (T["growth_investment"], "Cumulative Growth Investment", "#4F46E5", "dash", 3, 8),
+        (T["total_gmv"], "Cumulative GMV", CHART_COLORS["gmv"], "solid", 3.2, 7.5),
+        (T["total_cost_label"], "Cumulative Total Cost", CHART_COLORS["cost"], "solid", 3.0, 7.0),
+        (T["profit_label"], "Cumulative Profit", CHART_COLORS["profit"], "solid", 3.0, 7.0),
+        (T["growth_investment"], "Cumulative Growth Investment", "#4F46E5", "dash", 2.8, 6.5),
     ]
-    if float(temp["Cumulative Ads Investment"].abs().sum()) > 0:
-        series.append((T["ads_investment"], "Cumulative Ads Investment", "#94A3B8", "dot", 2, 7))
     for label, col, color, dash, width, marker_size in series:
         fig.add_trace(
             go.Scatter(
@@ -5835,22 +5829,15 @@ def make_phase_cumulative_chart(phase_df, title):
         fig,
         [
             (label, last["Week in Phase"], float(last[col]), color, "€")
-            for label, col, color, _, _, _ in series[:4]
+            for label, col, color, _, _, _ in series
         ],
     )
 
     fig.add_hline(y=0, line_color="#6B7280", line_width=1, opacity=0.75)
-    apply_plotly_layout(fig, f"{title} - {T['phase_chart_cumulative']}", height=520)
+    apply_plotly_layout(fig, title, height=520)
     fig.update_layout(
-        legend=dict(
-            orientation="h",
-            yanchor="top",
-            y=-0.18,
-            xanchor="left",
-            x=0,
-            bgcolor="rgba(255,255,255,0)",
-        ),
-        margin=dict(l=54, r=120, t=84, b=104),
+        showlegend=False,
+        margin=dict(l=54, r=120, t=64, b=58),
     )
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
