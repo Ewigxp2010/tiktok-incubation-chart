@@ -2557,77 +2557,78 @@ st.markdown(
     .cover-shell {
         background: #FFFFFF;
         border: 1px solid #D0D7E2;
-        border-radius: 18px;
-        padding: 42px 42px 34px 42px;
-        margin: 12px 0 18px 0;
+        border-radius: 22px;
+        padding: 52px 56px 42px 56px;
+        margin: 18px 0 22px 0;
         box-shadow: none;
     }
 
     .cover-logo-row {
         display: flex;
-        align-items: center;
-        gap: 18px;
-        margin-bottom: 26px;
+        align-items: flex-start;
+        gap: 22px;
+        margin-bottom: 22px;
     }
 
     .cover-logo-mark {
-        width: 76px;
-        height: 76px;
-        border-radius: 22px;
+        width: 92px;
+        height: 92px;
+        border-radius: 26px;
         background: #111827;
         color: #FFFFFF;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.85rem;
-        font-weight: 820;
+        font-size: 2.15rem;
+        font-weight: 840;
         letter-spacing: 0.01em;
+        flex: 0 0 92px;
     }
 
     .cover-logo-meta {
         min-width: 0;
+        max-width: 860px;
     }
 
     .cover-logo-kicker {
         color: #667085;
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        margin-bottom: 7px;
+        letter-spacing: 0.12em;
+        margin-bottom: 10px;
     }
 
     .cover-logo-title {
         color: #111827;
-        font-size: clamp(2.3rem, 4vw, 3.5rem);
-        font-weight: 820;
-        line-height: 0.96;
-        letter-spacing: -0.03em;
+        font-size: clamp(2.7rem, 4.8vw, 4.7rem);
+        font-weight: 840;
+        line-height: 0.92;
+        letter-spacing: -0.05em;
     }
 
     .cover-logo-subtitle {
         color: #475467;
         font-size: 1.02rem;
-        line-height: 1.5;
-        margin-top: 12px;
+        line-height: 1.55;
+        margin-top: 16px;
         max-width: 760px;
     }
 
-    .cover-cta-row {
+    .cover-bottom-row {
         display: grid;
         grid-template-columns: minmax(240px, 300px) minmax(220px, 280px) 1fr;
-        gap: 16px;
-        align-items: end;
-        margin-top: 26px;
-        margin-bottom: 18px;
+        gap: 18px;
+        align-items: start;
+        margin-top: 34px;
     }
 
     .cover-field {
         background: #FFFFFF;
         border: 1px solid #D0D7E2;
-        border-radius: 14px;
-        padding: 14px 16px;
-        min-height: 88px;
+        border-radius: 16px;
+        padding: 14px 16px 8px 16px;
+        min-height: 92px;
     }
 
     .cover-field-kicker {
@@ -2635,47 +2636,22 @@ st.markdown(
         font-size: 0.74rem;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        margin-bottom: 10px;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+    }
+
+    .cover-button-wrap {
+        display: flex;
+        align-items: stretch;
+        min-height: 92px;
     }
 
     .cover-note {
         color: #667085;
         font-size: 0.9rem;
-        line-height: 1.45;
-        align-self: center;
-        padding-left: 8px;
+        line-height: 1.55;
         max-width: 420px;
-    }
-
-    .cover-summary-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 14px;
-    }
-
-    .cover-summary-card {
-        background: #FBFCFD;
-        border: 1px solid #E3E8EE;
-        border-radius: 12px;
-        padding: 14px 16px;
-    }
-
-    .cover-summary-kicker {
-        color: #667085;
-        font-size: 0.72rem;
-        font-weight: 760;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        margin-bottom: 8px;
-    }
-
-    .cover-summary-body {
-        color: #111827;
-        font-size: 0.94rem;
-        line-height: 1.5;
-        font-weight: 620;
+        padding-top: 8px;
     }
 
     div[data-testid="stMetric"] {
@@ -4315,16 +4291,6 @@ def render_cover_page(default_skus):
         "de": "DE Planungsmodell",
         "nl": "DE planningsmodel",
     }.get(lang, "DE planning model")
-    summary_cards = [
-        (T["plan_setup"], T["step1_body"]),
-        (T["model_last_reviewed"], MODEL_LAST_REVIEWED),
-        (T["sku_count"], f"{int(default_skus)} {T['expected_listing_skus']}"),
-    ]
-    summary_html = "".join(
-        f'<div class="cover-summary-card"><div class="cover-summary-kicker">{escape(str(title))}</div>'
-        f'<div class="cover-summary-body">{escape(str(body))}</div></div>'
-        for title, body in summary_cards
-    )
     st.markdown(
         f"""
         <div class="cover-shell">
@@ -4336,7 +4302,6 @@ def render_cover_page(default_skus):
                     <div class="cover-logo-subtitle">{escape(T["caption"])}</div>
                 </div>
             </div>
-            <div class="cover-summary-grid">{summary_html}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -5874,17 +5839,21 @@ def format_table(df, money_cols=None, pct_cols=None, number_cols=None, decimal_c
 
 if not st.session_state.get("sku_count_confirmed", False) and not st.session_state.get("has_generated", False):
     render_cover_page(5)
-    sku_col, action_col, note_col = st.columns([1.2, 1, 1.35])
-    with sku_col:
+    st.markdown('<div class="cover-bottom-row">', unsafe_allow_html=True)
+    cover_col1, cover_col2, cover_col3 = st.columns([1.05, 0.9, 1.2])
+    with cover_col1:
         st.markdown(f'<div class="cover-field"><div class="cover-field-kicker">{escape(T["expected_listing_skus"])}</div>', unsafe_allow_html=True)
         st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
-    with action_col:
+    with cover_col2:
+        st.markdown('<div class="cover-button-wrap">', unsafe_allow_html=True)
         if st.button(T["continue_setup"], type="primary", use_container_width=True):
             st.session_state["sku_count_confirmed"] = True
             st.rerun()
-    with note_col:
+        st.markdown('</div>', unsafe_allow_html=True)
+    with cover_col3:
         st.markdown(f'<div class="cover-note">{escape(T["calibration_note"])}</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
     st.stop()
 
 with st.sidebar:
