@@ -1385,19 +1385,19 @@ st.markdown(
 
     .dashboard-intro {
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 8px;
-        margin: 8px 0 12px 0;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 10px 0 14px 0;
         align-items: stretch;
     }
 
     .dashboard-intro-card {
-        background: transparent;
-        border: 0;
-        border-top: 1px solid #E5E7EB;
-        border-radius: 0;
-        padding: 10px 0 0 0;
+        background: #FFFFFF;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 14px 16px;
         box-shadow: none;
+        min-height: 96px;
     }
 
     .dashboard-intro-kicker {
@@ -1418,17 +1418,17 @@ st.markdown(
     .executive-brief-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
-        margin: 6px 0 14px 0;
+        gap: 12px;
+        margin: 10px 0 16px 0;
     }
 
     .executive-brief-card {
-        background: transparent;
-        border: 0;
-        border-top: 1px solid #E5E7EB;
-        border-radius: 0;
-        padding: 10px 0 0 0;
+        background: #FFFFFF;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 14px 16px;
         box-shadow: none;
+        min-height: 118px;
     }
 
     .executive-brief-kicker {
@@ -1504,10 +1504,10 @@ st.markdown(
 
     .meeting-header {
         background: #FFFFFF;
-        border: 1px solid #E4E7EB;
-        border-radius: 8px;
-        padding: 14px 16px;
-        margin-bottom: 12px;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 18px 18px;
+        margin-bottom: 14px;
         box-shadow: none;
         display: flex;
         align-items: flex-end;
@@ -1555,7 +1555,9 @@ st.markdown(
     }
 
     .section-shell {
-        margin: 24px 0 6px 0;
+        margin: 28px 0 10px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #E5E7EB;
     }
 
     .section-eyebrow {
@@ -1569,18 +1571,18 @@ st.markdown(
 
     .section-title {
         color: #111827;
-        font-size: clamp(1.08rem, 1.45vw, 1.28rem);
-        font-weight: 740;
+        font-size: clamp(1.08rem, 1.36vw, 1.22rem);
+        font-weight: 760;
         line-height: 1.16;
         margin: 0 0 2px 0;
     }
 
     .action-list {
         background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-radius: 12px;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
         padding: 16px 18px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.025);
+        box-shadow: none;
     }
 
     .action-group-grid {
@@ -1593,9 +1595,9 @@ st.markdown(
 
     .action-group {
         background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-radius: 8px;
-        padding: 13px 14px;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 14px 15px;
         min-height: 144px;
         box-shadow: none;
         display: flex;
@@ -1658,10 +1660,10 @@ st.markdown(
 
     .readout-card {
         background: #FFFFFF;
-        border: 1px solid #E4E7EB;
-        border-radius: 8px;
-        padding: 16px 18px;
-        min-height: 136px;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 17px 18px;
+        min-height: 138px;
         box-shadow: none;
         display: flex;
         flex-direction: column;
@@ -1682,18 +1684,17 @@ st.markdown(
     }
 
     .chart-lens {
-        background: transparent;
-        border: 0;
-        border-top: 1px solid #E5E7EB;
-        border-radius: 0;
-        padding: 10px 0 0 0;
-        margin: 6px 0 10px 0;
+        background: #FBFCFD;
+        border: 1px solid #DDE4EC;
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin: 8px 0 12px 0;
         box-shadow: none;
     }
 
     .chart-lens.compact {
-        padding: 8px 0 0 0;
-        margin: 4px 0 8px 0;
+        padding: 10px 12px;
+        margin: 6px 0 10px 0;
         box-shadow: none;
     }
 
@@ -1725,10 +1726,10 @@ st.markdown(
     }
 
     .subtle-note {
-        color: #6B7280;
-        font-size: 0.8rem;
-        line-height: 1.5;
-        padding: 4px 0 10px 0;
+        color: #667085;
+        font-size: 0.82rem;
+        line-height: 1.55;
+        padding: 2px 0 10px 0;
         margin: 0 0 10px 0;
     }
 
@@ -1752,18 +1753,18 @@ st.markdown(
 
     .support-panel {
         background: #FFFFFF;
-        border: 1px solid #D6DCE5;
-        border-radius: 8px;
-        padding: 14px 14px 10px;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 18px 18px 12px;
         box-shadow: none;
         margin-bottom: 12px;
     }
 
     .report-appendix {
         background: #FFFFFF;
-        border: 1px solid #D6DCE5;
-        border-radius: 8px;
-        padding: 0.1rem 0.2rem;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 0.75rem 0.85rem;
         margin-top: 1rem;
     }
 
@@ -1812,28 +1813,20 @@ st.markdown(
     .phase-overview-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0;
-        margin: 10px 0 14px 0;
-        border-top: 1px solid #E5E7EB;
-        border-bottom: 1px solid #E5E7EB;
+        gap: 12px;
+        margin: 12px 0 16px 0;
     }
 
     .phase-overview-card {
-        background: transparent;
-        border: 0;
-        border-right: 1px solid #EEF2F6;
-        border-radius: 0;
-        padding: 14px 16px 14px 0;
+        background: #FFFFFF;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 16px 16px;
         box-shadow: none;
     }
 
     .phase-overview-card:last-child {
-        border-right: 0;
-        padding-right: 0;
-        padding-left: 16px;
-    }
-
-    .phase-overview-card:not(:first-child):not(:last-child) {
+        padding-right: 16px;
         padding-left: 16px;
     }
 
@@ -1871,10 +1864,10 @@ st.markdown(
 
     .hero-band {
         background: #FFFFFF;
-        border: 1px solid #E4E7EB;
-        border-radius: 8px;
-        padding: 16px 18px;
-        margin: 14px 0 16px 0;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 18px 18px;
+        margin: 16px 0 18px 0;
         box-shadow: none;
         display: grid;
         grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(150px, 0.55fr));
@@ -1936,9 +1929,9 @@ st.markdown(
 
     .premium-kpi {
         background: #FFFFFF;
-        border: 1px solid #E9EDF2;
-        border-radius: 4px;
-        padding: 13px 14px 14px 14px;
+        border: 1px solid #D9E0E8;
+        border-radius: 10px;
+        padding: 16px 16px;
         min-height: 94px;
         height: auto;
         overflow: visible;
@@ -1951,7 +1944,7 @@ st.markdown(
 
     .kpi-grid.kpi-grid-compact .premium-kpi {
         min-height: 100px;
-        padding: 12px 13px 13px 13px;
+        padding: 14px 14px 14px 14px;
     }
 
     .kpi-grid.kpi-grid-compact .premium-kpi-value {
@@ -1989,13 +1982,12 @@ st.markdown(
     }
 
     .insight-strip {
-        background: transparent;
-        border: 0;
-        border-top: 1px solid #E5E7EB;
-        border-radius: 0;
+        background: #FBFCFD;
+        border: 1px solid #DDE4EC;
+        border-radius: 8px;
         color: #4B5563;
-        padding: 8px 0 0 0;
-        margin: 6px 0 8px 0;
+        padding: 10px 12px;
+        margin: 8px 0 10px 0;
         box-shadow: none;
         line-height: 1.45;
         font-size: 0.86rem;
@@ -2011,8 +2003,8 @@ st.markdown(
 
     .status-panel {
         background: #FAFBFC;
-        border: 1px solid #EDF1F5;
-        border-radius: 4px;
+        border: 1px solid #DDE4EC;
+        border-radius: 8px;
         padding: 10px 12px;
         margin: 8px 0 12px 0;
         box-shadow: none;
@@ -3912,45 +3904,45 @@ def apply_plotly_layout(fig, title, height=460):
             "text": title,
             "x": 0.0,
             "xanchor": "left",
-            "y": 0.98,
+            "y": 0.97,
             "yanchor": "top",
-            "font": {"size": 13, "color": "#111827", "family": "Arial, sans-serif"},
+            "font": {"size": 12, "color": "#111827", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=54, r=78, t=52, b=50),
+        margin=dict(l=52, r=72, t=48, b=46),
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="#FFFFFF",
+        plot_bgcolor="#FCFCFD",
         font=dict(color="#111827", family="Arial, sans-serif"),
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.01,
+            y=1.02,
             xanchor="left",
             x=0,
             bgcolor="rgba(255,255,255,0)",
-            font=dict(size=9, color="#6B7280"),
+            font=dict(size=9, color="#667085"),
         ),
         hovermode="x unified",
         hoverlabel=dict(
             bgcolor="#FFFFFF",
-            bordercolor="#E5E7EB",
-            font=dict(color="#111827", size=12),
+            bordercolor="#DDE4EC",
+            font=dict(color="#111827", size=11),
         ),
     )
     fig.update_xaxes(
         showgrid=True,
-        gridcolor="#F3F4F6",
+        gridcolor="#F5F7FA",
         zeroline=False,
-        linecolor="#F1F3F5",
-        tickfont=dict(color="#64748B", size=11),
+        linecolor="#EEF2F6",
+        tickfont=dict(color="#667085", size=10),
         ticklen=0,
     )
     fig.update_yaxes(
         showgrid=True,
-        gridcolor="#F3F4F6",
+        gridcolor="#F5F7FA",
         zeroline=False,
-        linecolor="#F1F3F5",
-        tickfont=dict(color="#64748B", size=11),
+        linecolor="#EEF2F6",
+        tickfont=dict(color="#667085", size=10),
         ticklen=0,
     )
     return fig
@@ -3964,7 +3956,7 @@ def add_terminal_value_labels(fig, series):
             xshift=14,
             showarrow=False,
             text=f"{prefix}{y_value:,.0f}",
-            font=dict(size=10, color="#374151", family="Arial, sans-serif"),
+            font=dict(size=9, color="#475467", family="Arial, sans-serif"),
             bgcolor="rgba(255,255,255,0)",
             borderwidth=0,
             borderpad=0,
