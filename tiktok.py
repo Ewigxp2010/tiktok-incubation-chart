@@ -5519,21 +5519,21 @@ def apply_plotly_layout(fig, title, height=460):
             "text": title,
             "x": 0.0,
             "xanchor": "left",
-            "y": 0.97,
+            "y": 0.99,
             "yanchor": "top",
             "font": {"size": 12, "color": "#111827", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=52, r=72, t=48, b=46),
+        margin=dict(l=52, r=72, t=78, b=46),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#FCFCFD",
         font=dict(color="#111827", family="Arial, sans-serif"),
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.02,
+            y=1.06,
             xanchor="left",
-            x=0,
+            x=0.06,
             bgcolor="rgba(255,255,255,0)",
             font=dict(size=9, color="#667085"),
         ),
@@ -5551,6 +5551,7 @@ def apply_plotly_layout(fig, title, height=460):
         linecolor="#EEF2F6",
         tickfont=dict(color="#667085", size=10),
         ticklen=0,
+        automargin=True,
     )
     fig.update_yaxes(
         showgrid=True,
@@ -5559,6 +5560,7 @@ def apply_plotly_layout(fig, title, height=460):
         linecolor="#EEF2F6",
         tickfont=dict(color="#667085", size=10),
         ticklen=0,
+        automargin=True,
     )
     return fig
 
