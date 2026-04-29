@@ -2554,6 +2554,130 @@ st.markdown(
         font-size: 1rem;
     }
 
+    .cover-shell {
+        background: #FFFFFF;
+        border: 1px solid #D0D7E2;
+        border-radius: 18px;
+        padding: 42px 42px 34px 42px;
+        margin: 12px 0 18px 0;
+        box-shadow: none;
+    }
+
+    .cover-logo-row {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 26px;
+    }
+
+    .cover-logo-mark {
+        width: 76px;
+        height: 76px;
+        border-radius: 22px;
+        background: #111827;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.85rem;
+        font-weight: 820;
+        letter-spacing: 0.01em;
+    }
+
+    .cover-logo-meta {
+        min-width: 0;
+    }
+
+    .cover-logo-kicker {
+        color: #667085;
+        font-size: 0.82rem;
+        font-weight: 760;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 7px;
+    }
+
+    .cover-logo-title {
+        color: #111827;
+        font-size: clamp(2.3rem, 4vw, 3.5rem);
+        font-weight: 820;
+        line-height: 0.96;
+        letter-spacing: -0.03em;
+    }
+
+    .cover-logo-subtitle {
+        color: #475467;
+        font-size: 1.02rem;
+        line-height: 1.5;
+        margin-top: 12px;
+        max-width: 760px;
+    }
+
+    .cover-cta-row {
+        display: grid;
+        grid-template-columns: minmax(240px, 300px) minmax(220px, 280px) 1fr;
+        gap: 16px;
+        align-items: end;
+        margin-top: 26px;
+        margin-bottom: 18px;
+    }
+
+    .cover-field {
+        background: #FFFFFF;
+        border: 1px solid #D0D7E2;
+        border-radius: 14px;
+        padding: 14px 16px;
+        min-height: 88px;
+    }
+
+    .cover-field-kicker {
+        color: #667085;
+        font-size: 0.74rem;
+        font-weight: 760;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 10px;
+    }
+
+    .cover-note {
+        color: #667085;
+        font-size: 0.9rem;
+        line-height: 1.45;
+        align-self: center;
+        padding-left: 8px;
+        max-width: 420px;
+    }
+
+    .cover-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 14px;
+    }
+
+    .cover-summary-card {
+        background: #FBFCFD;
+        border: 1px solid #E3E8EE;
+        border-radius: 12px;
+        padding: 14px 16px;
+    }
+
+    .cover-summary-kicker {
+        color: #667085;
+        font-size: 0.72rem;
+        font-weight: 760;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 8px;
+    }
+
+    .cover-summary-body {
+        color: #111827;
+        font-size: 0.94rem;
+        line-height: 1.5;
+        font-weight: 620;
+    }
+
     div[data-testid="stMetric"] {
         background: var(--tts-panel);
         border: 1px solid var(--tts-line);
@@ -2942,14 +3066,14 @@ st.markdown(
     .meeting-header {
         background: #FFFFFF;
         border: 1px solid #D0D7E2;
-        border-radius: 12px;
-        padding: 18px 18px;
-        margin-bottom: 14px;
+        border-radius: 16px;
+        padding: 24px 24px;
+        margin-bottom: 16px;
         box-shadow: none;
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
-        gap: 12px;
+        gap: 16px;
         flex-wrap: wrap;
     }
 
@@ -2964,9 +3088,10 @@ st.markdown(
 
     .meeting-header-title {
         color: #111827;
-        font-size: 1.56rem;
-        font-weight: 790;
-        line-height: 1.12;
+        font-size: clamp(2rem, 3.2vw, 3rem);
+        font-weight: 810;
+        line-height: 0.98;
+        letter-spacing: -0.03em;
     }
 
     .meeting-header-meta {
@@ -3301,22 +3426,23 @@ st.markdown(
     .hero-band {
         background: #FFFFFF;
         border: 1px solid #D0D7E2;
-        border-radius: 12px;
-        padding: 18px 18px;
-        margin: 16px 0 18px 0;
+        border-radius: 16px;
+        padding: 24px 24px;
+        margin: 18px 0 20px 0;
         box-shadow: none;
         display: grid;
-        grid-template-columns: minmax(280px, 1.4fr) repeat(3, minmax(150px, 0.55fr));
-        gap: 14px;
+        grid-template-columns: minmax(320px, 1.6fr) repeat(3, minmax(150px, 0.52fr));
+        gap: 18px;
         align-items: center;
     }
 
     .hero-title {
         color: #111827;
-        font-size: 1.42rem;
-        font-weight: 790;
-        line-height: 1.14;
-        margin-bottom: 8px;
+        font-size: clamp(1.8rem, 2.8vw, 2.7rem);
+        font-weight: 810;
+        line-height: 0.98;
+        letter-spacing: -0.03em;
+        margin-bottom: 10px;
     }
 
     .hero-subtitle {
@@ -3327,20 +3453,22 @@ st.markdown(
 
     .hero-kpi {
         border-left: 1px solid #E5E7EB;
-        padding-left: 14px;
+        padding-left: 16px;
         min-width: 0;
     }
 
     .hero-kpi-label {
         color: #6B7280;
-        font-size: 0.78rem;
-        font-weight: 700;
-        margin-bottom: 6px;
+        font-size: 0.74rem;
+        font-weight: 760;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
     }
 
     .hero-kpi-value {
         color: #111827;
-        font-size: clamp(1.12rem, 1.52vw, 1.34rem);
+        font-size: clamp(1.2rem, 1.7vw, 1.55rem);
         font-weight: 800;
         line-height: 1.2;
         overflow-wrap: anywhere;
@@ -3593,6 +3721,8 @@ st.markdown(
     }
 
     @media (max-width: 900px) {
+        .cover-cta-row,
+        .cover-summary-grid,
         .hero-band,
         .dashboard-intro,
         .executive-brief-grid,
@@ -4176,6 +4306,41 @@ def render_hero(overall, weeks, skus, break_even_label):
         '</div>'
     )
     st.markdown(html, unsafe_allow_html=True)
+
+
+def render_cover_page(default_skus):
+    lang_tag = {
+        "en": "DE planning model",
+        "zh": "DE planning model",
+        "de": "DE Planungsmodell",
+        "nl": "DE planningsmodel",
+    }.get(lang, "DE planning model")
+    summary_cards = [
+        (T["plan_setup"], T["step1_body"]),
+        (T["model_last_reviewed"], MODEL_LAST_REVIEWED),
+        (T["sku_count"], f"{int(default_skus)} {T['expected_listing_skus']}"),
+    ]
+    summary_html = "".join(
+        f'<div class="cover-summary-card"><div class="cover-summary-kicker">{escape(str(title))}</div>'
+        f'<div class="cover-summary-body">{escape(str(body))}</div></div>'
+        for title, body in summary_cards
+    )
+    st.markdown(
+        f"""
+        <div class="cover-shell">
+            <div class="cover-logo-row">
+                <div class="cover-logo-mark">TS</div>
+                <div class="cover-logo-meta">
+                    <div class="cover-logo-kicker">{escape(lang_tag)}</div>
+                    <div class="cover-logo-title">{escape(T["meeting_header"])}</div>
+                    <div class="cover-logo-subtitle">{escape(T["caption"])}</div>
+                </div>
+            </div>
+            <div class="cover-summary-grid">{summary_html}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_display, ads_roas, organic_click_window_weeks, promo_60d, use_fbt):
@@ -5707,36 +5872,19 @@ def format_table(df, money_cols=None, pct_cols=None, number_cols=None, decimal_c
     return out
 
 
-st.title(T["title"])
-st.caption(T["caption"])
-
 if not st.session_state.get("sku_count_confirmed", False) and not st.session_state.get("has_generated", False):
-    st.markdown(
-        f"""
-        <div class="setup-gate">
-            <div class="setup-gate-kicker">{escape(T["plan_setup"])}</div>
-            <div class="setup-gate-title">{escape(T["step1_title"])}</div>
-            <div class="setup-gate-body">{escape(T["step1_body"])}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    sku_col, action_col = st.columns([1.2, 1])
+    render_cover_page(5)
+    sku_col, action_col, note_col = st.columns([1.2, 1, 1.35])
     with sku_col:
-        st.number_input(
-            T["expected_listing_skus"],
-            min_value=1,
-            max_value=26,
-            value=5,
-            step=1,
-            key="n_skus_input",
-        )
+        st.markdown(f'<div class="cover-field"><div class="cover-field-kicker">{escape(T["expected_listing_skus"])}</div>', unsafe_allow_html=True)
+        st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input", label_visibility="collapsed")
+        st.markdown('</div>', unsafe_allow_html=True)
     with action_col:
-        st.write("")
-        st.write("")
         if st.button(T["continue_setup"], type="primary", use_container_width=True):
             st.session_state["sku_count_confirmed"] = True
             st.rerun()
+    with note_col:
+        st.markdown(f'<div class="cover-note">{escape(T["calibration_note"])}</div>', unsafe_allow_html=True)
     st.stop()
 
 with st.sidebar:
