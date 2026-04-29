@@ -2787,13 +2787,12 @@ st.markdown(
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.chart-card-title) {
         border: 1px solid #D8E1EC;
         border-radius: 18px;
-        background: linear-gradient(180deg, #FFFFFF 0%, #FCFDFE 100%);
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        background: #FFFFFF;
+        box-shadow: none;
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.chart-card-title) > div {
-        padding-top: 2px;
-        padding-bottom: 2px;
+        padding: 6px 8px 4px 8px;
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) {
@@ -3006,18 +3005,18 @@ st.markdown(
     }
 
     div[data-testid="stPlotlyChart"] {
-        background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 14px;
-        padding: 16px 16px 10px 16px;
-        margin: 12px 0 12px 0;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        margin: 8px 0 0 0;
         box-shadow: none;
         overflow: visible;
     }
 
     div[data-testid="stPlotlyChart"] > div {
         width: 100% !important;
-        min-height: 520px;
+        min-height: 0 !important;
         overflow: visible;
     }
 
@@ -3418,49 +3417,43 @@ st.markdown(
 
     .chart-card {
         background: #FFFFFF;
-        border: 0;
-        border-radius: 0;
-        padding: 14px 14px 10px 14px;
+        border: 1px solid #D8E1EC;
+        border-radius: 18px;
+        padding: 16px 18px 12px 18px;
         box-shadow: none;
-        margin: 6px 0 12px 0;
+        margin: 8px 0 12px 0;
     }
 
     .chart-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 14px;
-        margin-bottom: 6px;
+        display: block;
+        margin-bottom: 8px;
     }
 
     .chart-card-kicker {
-        display: inline-flex;
-        align-items: center;
-        padding: 4px 9px;
-        border-radius: 999px;
-        background: #EEF4FF;
+        display: inline-block;
         color: #315EEC;
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         font-weight: 760;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         white-space: nowrap;
+        margin-bottom: 6px;
     }
 
     .chart-card-title {
         color: #111827;
         font-size: 1.02rem;
-        font-weight: 740;
-        line-height: 1.22;
+        font-weight: 760;
+        line-height: 1.18;
         margin: 0;
     }
 
     .chart-card-subtitle {
-        color: #7A8597;
-        font-size: 0.77rem;
-        line-height: 1.42;
+        color: #667085;
+        font-size: 0.8rem;
+        line-height: 1.45;
         margin-top: 4px;
-        max-width: 44ch;
+        max-width: 52ch;
     }
 
     .chart-card-body {
@@ -3468,12 +3461,12 @@ st.markdown(
     }
 
     .chart-card-footer {
-        margin-top: 6px;
+        margin-top: 10px;
         padding-top: 0;
         border-top: 0;
-        color: #7A8597;
-        font-size: 0.74rem;
-        line-height: 1.42;
+        color: #667085;
+        font-size: 0.75rem;
+        line-height: 1.46;
     }
 
     .chart-card-footer strong {
@@ -6690,60 +6683,48 @@ if st.session_state.get("has_generated", False):
         )
         phase_chart_title = phase_label(selected_phase)
         with st.container(border=True):
-            render_chart_panel_header(phase_chart_title, None)
+            render_chart_panel_header(phase_chart_title)
             if chart_mode == T["phase_chart_cumulative"]:
                 st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             else:
                 st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-            render_chart_panel_caption(f"<strong>{escape(T['chart_insight'])}.</strong> {escape(phase_chart_insight(phase_row))}")
+            render_chart_panel_caption(escape(phase_chart_insight(phase_row)))
 
         render_section_header(T["charts"], T["section_primary"])
         with st.container(border=True):
             render_chart_panel_header(
-                T["forecast_gmv"],
-                "Weekly growth path versus operating cost."
-                if lang != "zh" else
-                "周度增长路径与经营成本对照。",
+                T["forecast_gmv"]
             )
             st.plotly_chart(make_scale_chart(df_all, T["forecast_gmv"], weekly_be, height=430), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             render_chart_panel_caption(
-                "<strong>How to read.</strong> Compare GMV with total cost to see whether scale stays ahead of operating spend."
+                "Compare GMV with total cost to see whether scale stays ahead of operating spend."
                 if lang != "zh" else
-                "<strong>怎么看。</strong> 对比 GMV 与总成本，判断增长规模是否持续跑赢经营支出。"
+                "对比 GMV 与总成本，判断增长规模是否持续跑赢经营支出。"
             )
         chart_left, chart_right = st.columns(2, gap="large")
         with chart_left:
             with st.container(border=True):
                 render_chart_panel_header(
-                    T["sales_contribution"],
-                    "Weekly profit versus growth investment."
-                    if lang != "zh" else
-                    "单周利润与增长投入对照。",
+                    T["sales_contribution"]
                 )
                 st.plotly_chart(make_profit_investment_chart(df_all, T["sales_contribution"], height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                 render_chart_panel_caption(
-                    "<strong>How to read.</strong> Read weekly profit against growth investment."
+                    "Read weekly profit against growth investment."
                     if lang != "zh" else
-                    "<strong>怎么看。</strong> 查看单周利润与增长投入。"
+                    "查看单周利润与增长投入。"
                 )
         with chart_right:
             with st.container(border=True):
                 render_chart_panel_header(
-                    T["cumulative_profit_trend"],
-                    "Whether cumulative profit fully recovers upfront investment."
-                    if lang != "zh" else
-                    "累计利润是否覆盖前期投入。",
+                    T["cumulative_profit_trend"]
                 )
                 st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be, height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                 render_chart_panel_caption(
-                    f"<strong>{escape(T['chart_read'])}.</strong> "
-                    + (
-                        "Track whether cumulative profit recovers upfront investment."
-                        if lang != "zh" else
-                        "查看累计利润是否覆盖前期投入。"
-                    )
+                    "Track whether cumulative profit recovers upfront investment."
+                    if lang != "zh" else
+                    "查看累计利润是否覆盖前期投入。"
                 )
-        render_status_panel(T["chart_insight"], overall_chart_insight(df_all), tone="info", compact=True)
+        render_subtle_note(overall_chart_insight(df_all), T["chart_insight"])
         if meeting_mode:
             support_container = st.expander(T["supporting_charts"], expanded=False)
         else:
@@ -6755,10 +6736,7 @@ if st.session_state.get("has_generated", False):
                 with st.container(border=True):
                     render_chart_panel_header(
                         T["funnel_summary"],
-                        "How samples convert into content, clicks, and orders."
-                        if lang != "zh" else
-                        "查看样品如何转化为内容、点击和订单。",
-                        T["section_secondary"],
+                        kicker=T["section_secondary"],
                     )
                     render_funnel_summary(df_all)
                     render_chart_panel_caption(
@@ -6776,10 +6754,7 @@ if st.session_state.get("has_generated", False):
                 with st.container(border=True):
                     render_chart_panel_header(
                         T["channel_mix"],
-                        "Channel composition after paid uplift is allocated back into affiliate and store/search."
-                        if lang != "zh" else
-                        "付费增量回流到达人视频和店铺/Search 后的渠道结构。",
-                        T["section_secondary"],
+                        kicker=T["section_secondary"],
                     )
                     st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                     render_chart_panel_caption(
@@ -6791,10 +6766,7 @@ if st.session_state.get("has_generated", False):
                 with st.container(border=True):
                     render_chart_panel_header(
                         T["investment_split"],
-                        "Cost composition across product cost, commissions, logistics, samples, and paid growth."
-                        if lang != "zh" else
-                        "查看商品成本、佣金、物流、样品和付费加热的投入结构。",
-                        T["section_secondary"],
+                        kicker=T["section_secondary"],
                     )
                     st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                     render_chart_panel_caption(
