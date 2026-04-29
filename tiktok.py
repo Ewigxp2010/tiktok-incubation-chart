@@ -17,11 +17,33 @@ st.set_page_config(page_title="TikTok Shop Growth Visualizer", layout="wide")
 
 
 PLATFORM_COMMISSION = {
-    "Home Living": 0.09,
-    "Electronics": 0.07,
-    "FMCG": 0.09,
-    "Beauty": 0.09,
-    "Fashion": 0.09,
+    "Automotive & Motorcycle": 0.07,
+    "Baby & Maternity": 0.09,
+    "Beauty & Personal Care": 0.09,
+    "Books, Magazines & Audio": 0.09,
+    "Collectibles": 0.09,
+    "Computers & Office Equipment": 0.07,
+    "Fashion Accessories": 0.09,
+    "Food & Beverages": 0.09,
+    "Furniture": 0.09,
+    "Health": 0.09,
+    "Home Improvement": 0.09,
+    "Home Supplies": 0.09,
+    "Household Appliances": 0.07,
+    "Jewelry Accessories & Derivatives": 0.09,
+    "Kids' Fashion": 0.09,
+    "Kitchenware": 0.09,
+    "Luggage & Bags": 0.09,
+    "Menswear & Underwear": 0.09,
+    "Modest Fashion": 0.09,
+    "Pet Supplies": 0.09,
+    "Phones & Electronics": 0.07,
+    "Shoes": 0.09,
+    "Sports & Outdoor": 0.09,
+    "Textiles & Soft Furnishings": 0.09,
+    "Tools & Hardware": 0.09,
+    "Toys & Hobbies": 0.09,
+    "Womenswear & Underwear": 0.09
 }
 
 
@@ -34,71 +56,1490 @@ PLATFORM_COMMISSION = {
 # click_to_order_rate: product click -> order conversion
 # shop_tab_share: reference share used to seed the Store/Search natural-sales assumption
 CATEGORY_PRESETS = {
-    "Home Living": {
-        "Kitchenware": {"aov": 34.48, "videos_per_sample": 1.00, "clicks_per_video": 338, "click_to_order_rate": 0.032, "shop_tab_share": 0.328, "organic_commission_pct": 8.0},
-        "Home Supplies": {"aov": 24.30, "videos_per_sample": 1.25, "clicks_per_video": 306, "click_to_order_rate": 0.035, "shop_tab_share": 0.274, "organic_commission_pct": 8.0},
-        "Textiles & Soft Furnishings": {"aov": 42.39, "videos_per_sample": 1.33, "clicks_per_video": 279, "click_to_order_rate": 0.028, "shop_tab_share": 0.392, "organic_commission_pct": 10.0},
-        "Tools & Hardware": {"aov": 44.27, "videos_per_sample": 1.00, "clicks_per_video": 194, "click_to_order_rate": 0.024, "shop_tab_share": 0.219, "organic_commission_pct": 8.0},
-        "Furniture": {"aov": 138.45, "videos_per_sample": 1.00, "clicks_per_video": 153, "click_to_order_rate": 0.010, "shop_tab_share": 0.410, "organic_commission_pct": 7.0},
-        "Home Improvement": {"aov": 44.15, "videos_per_sample": 1.00, "clicks_per_video": 207, "click_to_order_rate": 0.022, "shop_tab_share": 0.180, "organic_commission_pct": 12.0},
-        "Toys & Hobbies": {"aov": 30.64, "videos_per_sample": 1.75, "clicks_per_video": 324, "click_to_order_rate": 0.032, "shop_tab_share": 0.258, "organic_commission_pct": 8.0},
-        "Books, Magazines & Audio": {"aov": 27.47, "videos_per_sample": 1.19, "clicks_per_video": 135, "click_to_order_rate": 0.022, "shop_tab_share": 0.273, "organic_commission_pct": 13.1},
-        "Collectibles": {"aov": 38.40, "videos_per_sample": 1.20, "clicks_per_video": 286, "click_to_order_rate": 0.028, "shop_tab_share": 0.340, "organic_commission_pct": 10.0},
+    "Automotive & Motorcycle": {
+        "Car Electronics": {
+            "aov": 39.56,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 38.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.221,
+            "videos_per_sample": 1.0
+        },
+        "Car Exterior Accessories": {
+            "aov": 27.83,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 38.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.271,
+            "videos_per_sample": 1.25
+        },
+        "Car Interior Accessories": {
+            "aov": 20.16,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 228,
+            "gross_margin_pct": 38.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.201,
+            "videos_per_sample": 1.0
+        },
+        "Car Repair Tools": {
+            "aov": 34.23,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 272,
+            "gross_margin_pct": 38.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.17,
+            "videos_per_sample": 1.68
+        },
+        "Car Washing & Maintenance": {
+            "aov": 25.56,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 38.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.252,
+            "videos_per_sample": 1.0
+        }
     },
-    "Electronics": {
-        "Phones & Electronics": {"aov": 49.54, "videos_per_sample": 1.00, "clicks_per_video": 234, "click_to_order_rate": 0.018, "shop_tab_share": 0.288, "organic_commission_pct": 10.0},
-        "Computers & Office Equipment": {"aov": 18.70, "videos_per_sample": 1.00, "clicks_per_video": 402, "click_to_order_rate": 0.013, "shop_tab_share": 0.244, "organic_commission_pct": 5.0},
-        "Household Appliances": {"aov": 63.11, "videos_per_sample": 1.04, "clicks_per_video": 207, "click_to_order_rate": 0.018, "shop_tab_share": 0.342, "organic_commission_pct": 7.0},
-        "Automotive & Motorcycle": {"aov": 41.38, "videos_per_sample": 1.00, "clicks_per_video": 309, "click_to_order_rate": 0.015, "shop_tab_share": 0.226, "organic_commission_pct": 10.0},
-        "Smart Home Systems": {"aov": 71.20, "videos_per_sample": 1.00, "clicks_per_video": 248, "click_to_order_rate": 0.017, "shop_tab_share": 0.327, "organic_commission_pct": 8.0},
-        "Audio & Headphones": {"aov": 50.46, "videos_per_sample": 1.25, "clicks_per_video": 292, "click_to_order_rate": 0.020, "shop_tab_share": 0.307, "organic_commission_pct": 10.0},
-        "Mobile Accessories": {"aov": 34.39, "videos_per_sample": 1.00, "clicks_per_video": 382, "click_to_order_rate": 0.035, "shop_tab_share": 0.319, "organic_commission_pct": 10.0},
+    "Baby & Maternity": {
+        "Baby Care & Health": {
+            "aov": 39.35,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 46.0,
+            "organic_commission_pct": 7.6,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.284,
+            "videos_per_sample": 1.0
+        },
+        "Baby Clothing & Shoes": {
+            "aov": 34.9,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 46.0,
+            "organic_commission_pct": 5.6,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.229,
+            "videos_per_sample": 1.0
+        },
+        "Baby Fashion Accessories": {
+            "aov": 39.4,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 46.0,
+            "organic_commission_pct": 8.4,
+            "paid_commission_pct": 4.2,
+            "shop_tab_share": 0.298,
+            "videos_per_sample": 1.0
+        },
+        "Baby Furniture": {
+            "aov": 51.39,
+            "click_to_order_rate": 0.046,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 46.0,
+            "organic_commission_pct": 5.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.439,
+            "videos_per_sample": 1.0
+        },
+        "Baby Safety": {
+            "aov": 38.5,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 46.0,
+            "organic_commission_pct": 5.6,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.193,
+            "videos_per_sample": 1.0
+        },
+        "Baby Toys": {
+            "aov": 38.48,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 46.0,
+            "organic_commission_pct": 5.6,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.339,
+            "videos_per_sample": 1.13
+        },
+        "Baby Travel Gear": {
+            "aov": 60.94,
+            "click_to_order_rate": 0.046,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 46.0,
+            "organic_commission_pct": 6.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.383,
+            "videos_per_sample": 1.0
+        },
+        "Maternity Supplies": {
+            "aov": 37.28,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 46.0,
+            "organic_commission_pct": 7.6,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.427,
+            "videos_per_sample": 1.0
+        },
+        "Nursing & Feeding": {
+            "aov": 32.93,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 46.0,
+            "organic_commission_pct": 7.6,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.245,
+            "videos_per_sample": 1.0
+        }
     },
-    "FMCG": {
-        "Food & Beverages": {"aov": 24.94, "videos_per_sample": 1.11, "clicks_per_video": 428, "click_to_order_rate": 0.045, "shop_tab_share": 0.428, "organic_commission_pct": 10.0},
-        "Health": {"aov": 29.57, "videos_per_sample": 1.00, "clicks_per_video": 324, "click_to_order_rate": 0.035, "shop_tab_share": 0.296, "organic_commission_pct": 15.0},
-        "Baby & Maternity": {"aov": 59.53, "videos_per_sample": 1.00, "clicks_per_video": 351, "click_to_order_rate": 0.040, "shop_tab_share": 0.348, "organic_commission_pct": 10.0},
-        "Pet Supplies": {"aov": 53.34, "videos_per_sample": 1.00, "clicks_per_video": 405, "click_to_order_rate": 0.038, "shop_tab_share": 0.359, "organic_commission_pct": 10.0},
-        "Household Consumables": {"aov": 24.11, "videos_per_sample": 1.12, "clicks_per_video": 324, "click_to_order_rate": 0.040, "shop_tab_share": 0.287, "organic_commission_pct": 7.0},
-        "Personal Care Consumables": {"aov": 24.20, "videos_per_sample": 1.08, "clicks_per_video": 432, "click_to_order_rate": 0.048, "shop_tab_share": 0.303, "organic_commission_pct": 10.0},
+    "Beauty & Personal Care": {
+        "Bath & Body Care": {
+            "aov": 21.3,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.297,
+            "videos_per_sample": 1.29
+        },
+        "Eye & Ear Care": {
+            "aov": 24.18,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 12.0,
+            "paid_commission_pct": 6.0,
+            "shop_tab_share": 0.233,
+            "videos_per_sample": 1.76
+        },
+        "Fragrance": {
+            "aov": 28.28,
+            "click_to_order_rate": 0.045,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 12.0,
+            "paid_commission_pct": 6.0,
+            "shop_tab_share": 0.336,
+            "videos_per_sample": 1.4
+        },
+        "Haircare & Styling": {
+            "aov": 25.28,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 12.0,
+            "paid_commission_pct": 6.0,
+            "shop_tab_share": 0.291,
+            "videos_per_sample": 1.2
+        },
+        "Hand & Foot Care": {
+            "aov": 23.82,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 13.2,
+            "paid_commission_pct": 6.6,
+            "shop_tab_share": 0.257,
+            "videos_per_sample": 1.8
+        },
+        "Makeup": {
+            "aov": 24.33,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.37,
+            "videos_per_sample": 2.0
+        },
+        "Men's Care": {
+            "aov": 23.93,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 10.2,
+            "paid_commission_pct": 5.1,
+            "shop_tab_share": 0.286,
+            "videos_per_sample": 1.67
+        },
+        "Nail Care": {
+            "aov": 24.26,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.127,
+            "videos_per_sample": 1.19
+        },
+        "Nasal & Oral Care": {
+            "aov": 18.66,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.236,
+            "videos_per_sample": 1.69
+        },
+        "Personal Care Appliances": {
+            "aov": 32.89,
+            "click_to_order_rate": 0.045,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.272,
+            "videos_per_sample": 1.98
+        },
+        "Skincare": {
+            "aov": 23.54,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 12.0,
+            "paid_commission_pct": 6.0,
+            "shop_tab_share": 0.351,
+            "videos_per_sample": 1.5
+        },
+        "Special Personal Care": {
+            "aov": 24.91,
+            "click_to_order_rate": 0.049,
+            "clicks_per_video": 260,
+            "gross_margin_pct": 55.0,
+            "organic_commission_pct": 12.2,
+            "paid_commission_pct": 6.1,
+            "shop_tab_share": 0.282,
+            "videos_per_sample": 1.67
+        }
     },
-    "Beauty": {
-        "Beauty & Personal Care": {"aov": 24.34, "videos_per_sample": 1.04, "clicks_per_video": 540, "click_to_order_rate": 0.055, "shop_tab_share": 0.319, "organic_commission_pct": 12.0},
-        "Skincare": {"aov": 24.55, "videos_per_sample": 1.06, "clicks_per_video": 630, "click_to_order_rate": 0.060, "shop_tab_share": 0.331, "organic_commission_pct": 10.0},
-        "Makeup": {"aov": 25.19, "videos_per_sample": 1.00, "clicks_per_video": 675, "click_to_order_rate": 0.065, "shop_tab_share": 0.404, "organic_commission_pct": 10.0},
-        "Hair Care & Styling": {"aov": 23.88, "videos_per_sample": 1.00, "clicks_per_video": 495, "click_to_order_rate": 0.045, "shop_tab_share": 0.277, "organic_commission_pct": 12.5},
-        "Fragrance": {"aov": 23.43, "videos_per_sample": 1.21, "clicks_per_video": 292, "click_to_order_rate": 0.025, "shop_tab_share": 0.309, "organic_commission_pct": 12.5},
-        "Beauty Devices": {"aov": 34.99, "videos_per_sample": 1.25, "clicks_per_video": 338, "click_to_order_rate": 0.030, "shop_tab_share": 0.283, "organic_commission_pct": 8.0},
-        "Men's Grooming": {"aov": 24.34, "videos_per_sample": 1.04, "clicks_per_video": 324, "click_to_order_rate": 0.035, "shop_tab_share": 0.319, "organic_commission_pct": 12.0},
+    "Books, Magazines & Audio": {
+        "Children's & Infants' Books": {
+            "aov": 36.47,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 38.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.227,
+            "videos_per_sample": 1.0
+        },
+        "Education & Schooling": {
+            "aov": 17.94,
+            "click_to_order_rate": 0.038,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 38.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.25,
+            "videos_per_sample": 1.0
+        },
+        "Humanities & Social Sciences": {
+            "aov": 20.73,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 38.0,
+            "organic_commission_pct": 5.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.227,
+            "videos_per_sample": 1.0
+        }
     },
-    "Fashion": {
-        "Womenswear & Underwear": {"aov": 27.17, "videos_per_sample": 1.10, "clicks_per_video": 428, "click_to_order_rate": 0.036, "shop_tab_share": 0.55, "organic_commission_pct": 10.0},
-        "Menswear & Underwear": {"aov": 56.09, "videos_per_sample": 1.00, "clicks_per_video": 351, "click_to_order_rate": 0.032, "shop_tab_share": 0.55, "organic_commission_pct": 10.0},
-        "Fashion Accessories": {"aov": 28.12, "videos_per_sample": 1.00, "clicks_per_video": 495, "click_to_order_rate": 0.045, "shop_tab_share": 0.487, "organic_commission_pct": 10.0},
-        "Shoes": {"aov": 31.63, "videos_per_sample": 1.07, "clicks_per_video": 292, "click_to_order_rate": 0.028, "shop_tab_share": 0.359, "organic_commission_pct": 12.0},
-        "Luggage & Bags": {"aov": 90.34, "videos_per_sample": 1.00, "clicks_per_video": 234, "click_to_order_rate": 0.020, "shop_tab_share": 0.342, "organic_commission_pct": 10.0},
-        "Jewelry Accessories & Derivatives": {"aov": 45.12, "videos_per_sample": 1.00, "clicks_per_video": 472, "click_to_order_rate": 0.040, "shop_tab_share": 0.499, "organic_commission_pct": 15.0},
-        "Kids' Fashion": {"aov": 27.17, "videos_per_sample": 1.10, "clicks_per_video": 315, "click_to_order_rate": 0.032, "shop_tab_share": 0.55, "organic_commission_pct": 10.0},
-        "Modest Fashion": {"aov": 27.17, "videos_per_sample": 1.10, "clicks_per_video": 306, "click_to_order_rate": 0.032, "shop_tab_share": 0.55, "organic_commission_pct": 10.0},
-        "Sports & Outdoor": {"aov": 55.33, "videos_per_sample": 1.00, "clicks_per_video": 279, "click_to_order_rate": 0.022, "shop_tab_share": 0.285, "organic_commission_pct": 10.0},
+    "Collectibles": {
+        "Entertainment": {
+            "aov": 43.78,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 2.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.256,
+            "videos_per_sample": 1.0
+        },
+        "Sports Collectibles": {
+            "aov": 39.54,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 3.2,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.311,
+            "videos_per_sample": 1.0
+        },
+        "Trading Cards & Accessories": {
+            "aov": 51.78,
+            "click_to_order_rate": 0.024,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 2.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.65,
+            "videos_per_sample": 1.0
+        }
     },
+    "Computers & Office Equipment": {
+        "Computer Accessories": {
+            "aov": 17.71,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 262,
+            "gross_margin_pct": 34.0,
+            "organic_commission_pct": 11.5,
+            "paid_commission_pct": 5.8,
+            "shop_tab_share": 0.191,
+            "videos_per_sample": 1.09
+        },
+        "Data Storage & Software": {
+            "aov": 29.28,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 702,
+            "gross_margin_pct": 34.0,
+            "organic_commission_pct": 6.5,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.1,
+            "videos_per_sample": 1.09
+        },
+        "Network Components": {
+            "aov": 20.43,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 314,
+            "gross_margin_pct": 34.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.14,
+            "videos_per_sample": 1.09
+        },
+        "Office Equipment": {
+            "aov": 19.21,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 193,
+            "gross_margin_pct": 34.0,
+            "organic_commission_pct": 5.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.197,
+            "videos_per_sample": 1.45
+        },
+        "Office Stationery & Supplies": {
+            "aov": 13.34,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 34.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.272,
+            "videos_per_sample": 1.0
+        }
+    },
+    "Fashion Accessories": {
+        "Clothes Accessories": {
+            "aov": 19.18,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 309,
+            "gross_margin_pct": 54.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.65,
+            "videos_per_sample": 1.16
+        },
+        "Costume Jewelry & Accessories": {
+            "aov": 22.06,
+            "click_to_order_rate": 0.036,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 54.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.356,
+            "videos_per_sample": 1.43
+        },
+        "Eyewear": {
+            "aov": 21.93,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 54.0,
+            "organic_commission_pct": 7.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.65,
+            "videos_per_sample": 1.38
+        },
+        "Fashion Watches & Accessories": {
+            "aov": 27.86,
+            "click_to_order_rate": 0.036,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 54.0,
+            "organic_commission_pct": 7.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.387,
+            "videos_per_sample": 1.02
+        },
+        "Hair Accessories": {
+            "aov": 27.72,
+            "click_to_order_rate": 0.036,
+            "clicks_per_video": 864,
+            "gross_margin_pct": 54.0,
+            "organic_commission_pct": 2.5,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.286,
+            "videos_per_sample": 1.38
+        },
+        "Hair Extensions & Wigs": {
+            "aov": 88.73,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 281,
+            "gross_margin_pct": 54.0,
+            "organic_commission_pct": 5.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.478,
+            "videos_per_sample": 1.46
+        }
+    },
+    "Food & Beverages": {
+        "Baking": {
+            "aov": 15.79,
+            "click_to_order_rate": 0.058,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.394,
+            "videos_per_sample": 3.0
+        },
+        "Drinks": {
+            "aov": 27.66,
+            "click_to_order_rate": 0.054,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.448,
+            "videos_per_sample": 1.83
+        },
+        "Pantry Food": {
+            "aov": 18.77,
+            "click_to_order_rate": 0.054,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 6.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.441,
+            "videos_per_sample": 1.29
+        },
+        "Snacks": {
+            "aov": 19.61,
+            "click_to_order_rate": 0.054,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 9.0,
+            "paid_commission_pct": 4.5,
+            "shop_tab_share": 0.411,
+            "videos_per_sample": 1.97
+        },
+        "Staples & Cooking Essentials": {
+            "aov": 24.64,
+            "click_to_order_rate": 0.054,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.391,
+            "videos_per_sample": 1.0
+        }
+    },
+    "Furniture": {
+        "Children's Furniture": {
+            "aov": 102.6,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 6.8,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.3,
+            "videos_per_sample": 1.0
+        },
+        "Commercial Furniture": {
+            "aov": 132.31,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.349,
+            "videos_per_sample": 1.0
+        },
+        "Indoor Furniture": {
+            "aov": 143.7,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.374,
+            "videos_per_sample": 1.0
+        },
+        "Outdoor Furniture": {
+            "aov": 75.61,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 7.5,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.19,
+            "videos_per_sample": 1.56
+        }
+    },
+    "Health": {
+        "Medical Supplies": {
+            "aov": 26.13,
+            "click_to_order_rate": 0.054,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 48.0,
+            "organic_commission_pct": 12.2,
+            "paid_commission_pct": 6.1,
+            "shop_tab_share": 0.298,
+            "videos_per_sample": 1.72
+        },
+        "Nutrition & Wellness": {
+            "aov": 29.67,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 48.0,
+            "organic_commission_pct": 15.0,
+            "paid_commission_pct": 7.5,
+            "shop_tab_share": 0.308,
+            "videos_per_sample": 1.58
+        }
+    },
+    "Home Improvement": {
+        "Bathroom Fixtures": {
+            "aov": 32.55,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 208,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.248,
+            "videos_per_sample": 1.0
+        },
+        "Building Supplies": {
+            "aov": 33.06,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.208,
+            "videos_per_sample": 1.0
+        },
+        "Electrical Equipment & Supplies": {
+            "aov": 438.01,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 228,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 9.5,
+            "paid_commission_pct": 4.8,
+            "shop_tab_share": 0.282,
+            "videos_per_sample": 1.0
+        },
+        "Garden Supplies": {
+            "aov": 21.18,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 6.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.219,
+            "videos_per_sample": 1.0
+        },
+        "Kitchen Fixtures": {
+            "aov": 61.18,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 11.0,
+            "paid_commission_pct": 5.5,
+            "shop_tab_share": 0.24,
+            "videos_per_sample": 1.0
+        },
+        "Lights & Lighting": {
+            "aov": 29.9,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 11.8,
+            "paid_commission_pct": 5.9,
+            "shop_tab_share": 0.128,
+            "videos_per_sample": 1.0
+        },
+        "Security & Safety": {
+            "aov": 37.7,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 11.0,
+            "paid_commission_pct": 5.5,
+            "shop_tab_share": 0.182,
+            "videos_per_sample": 1.0
+        },
+        "Smart Home Systems": {
+            "aov": 28.25,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.164,
+            "videos_per_sample": 1.0
+        }
+    },
+    "Home Supplies": {
+        "Bathroom Supplies": {
+            "aov": 21.97,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 10.1,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.259,
+            "videos_per_sample": 1.15
+        },
+        "Festive & Party Supplies": {
+            "aov": 36.39,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 359,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 11.2,
+            "paid_commission_pct": 5.6,
+            "shop_tab_share": 0.208,
+            "videos_per_sample": 1.18
+        },
+        "Home Care Supplies": {
+            "aov": 23.81,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 9.0,
+            "paid_commission_pct": 4.5,
+            "shop_tab_share": 0.316,
+            "videos_per_sample": 1.09
+        },
+        "Home Decor": {
+            "aov": 24.52,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 333,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.248,
+            "videos_per_sample": 1.0
+        },
+        "Home Organizers": {
+            "aov": 28.58,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.265,
+            "videos_per_sample": 2.14
+        },
+        "Laundry Tools & Accessories": {
+            "aov": 19.18,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 6.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.387,
+            "videos_per_sample": 1.23
+        },
+        "Miscellaneous Home": {
+            "aov": 29.41,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 10.4,
+            "paid_commission_pct": 5.2,
+            "shop_tab_share": 0.346,
+            "videos_per_sample": 1.1
+        }
+    },
+    "Household Appliances": {
+        "Commercial Appliances": {
+            "aov": 48.66,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.192,
+            "videos_per_sample": 2.1
+        },
+        "Home Appliances": {
+            "aov": 46.64,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.269,
+            "videos_per_sample": 1.8
+        },
+        "Kitchen Appliances": {
+            "aov": 44.48,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.332,
+            "videos_per_sample": 1.0
+        },
+        "Large Home Appliances": {
+            "aov": 29.88,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 443,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 9.1,
+            "paid_commission_pct": 4.5,
+            "shop_tab_share": 0.276,
+            "videos_per_sample": 1.33
+        }
+    },
+    "Jewelry Accessories & Derivatives": {
+        "Pearl": {
+            "aov": 22.47,
+            "click_to_order_rate": 0.036,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 58.0,
+            "organic_commission_pct": 4.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.316,
+            "videos_per_sample": 1.0
+        },
+        "Platinum, Carat Gold": {
+            "aov": 27.46,
+            "click_to_order_rate": 0.036,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 58.0,
+            "organic_commission_pct": 9.4,
+            "paid_commission_pct": 4.7,
+            "shop_tab_share": 0.361,
+            "videos_per_sample": 1.0
+        }
+    },
+    "Kids' Fashion": {
+        "Boys' Footwear": {
+            "aov": 46.74,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 50.0,
+            "organic_commission_pct": 12.9,
+            "paid_commission_pct": 6.5,
+            "shop_tab_share": 0.49,
+            "videos_per_sample": 1.94
+        },
+        "Kids' Fashion Accessories": {
+            "aov": 33.77,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 50.0,
+            "organic_commission_pct": 14.1,
+            "paid_commission_pct": 7.0,
+            "shop_tab_share": 0.428,
+            "videos_per_sample": 1.79
+        }
+    },
+    "Kitchenware": {
+        "Barbecue": {
+            "aov": 30.57,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.241,
+            "videos_per_sample": 1.0
+        },
+        "Cookware": {
+            "aov": 72.61,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.417,
+            "videos_per_sample": 1.53
+        },
+        "Cutlery & Tableware": {
+            "aov": 41.02,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.428,
+            "videos_per_sample": 1.0
+        },
+        "Drinkware": {
+            "aov": 20.83,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.23,
+            "videos_per_sample": 1.0
+        },
+        "Kitchen Utensils & Gadgets": {
+            "aov": 26.01,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 9.0,
+            "paid_commission_pct": 4.5,
+            "shop_tab_share": 0.246,
+            "videos_per_sample": 1.2
+        },
+        "Tea & Coffeeware": {
+            "aov": 24.67,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 42.0,
+            "organic_commission_pct": 9.0,
+            "paid_commission_pct": 4.5,
+            "shop_tab_share": 0.432,
+            "videos_per_sample": 1.0
+        }
+    },
+    "Luggage & Bags": {
+        "Functional Bags": {
+            "aov": 40.03,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 50.0,
+            "organic_commission_pct": 11.0,
+            "paid_commission_pct": 5.5,
+            "shop_tab_share": 0.391,
+            "videos_per_sample": 1.0
+        },
+        "Luggage & Travel Bags": {
+            "aov": 89.84,
+            "click_to_order_rate": 0.024,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 50.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.395,
+            "videos_per_sample": 1.0
+        },
+        "Men's Bags": {
+            "aov": 37.89,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 50.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.318,
+            "videos_per_sample": 1.4
+        },
+        "Women's Bags": {
+            "aov": 38.6,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 50.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.232,
+            "videos_per_sample": 1.2
+        }
+    },
+    "Menswear & Underwear": {
+        "Men's Bottoms": {
+            "aov": 40.67,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.594,
+            "videos_per_sample": 1.24
+        },
+        "Men's Tops": {
+            "aov": 30.8,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.188,
+            "videos_per_sample": 1.0
+        },
+        "Men's Underwear & Socks": {
+            "aov": 35.85,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 9.0,
+            "paid_commission_pct": 4.5,
+            "shop_tab_share": 0.367,
+            "videos_per_sample": 1.0
+        }
+    },
+    "Modest Fashion": {
+        "Hijabs": {
+            "aov": 29.45,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 12.8,
+            "paid_commission_pct": 6.4,
+            "shop_tab_share": 0.382,
+            "videos_per_sample": 1.0
+        },
+        "Prayer Attire & Equipment": {
+            "aov": 25.96,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 12.7,
+            "paid_commission_pct": 6.3,
+            "shop_tab_share": 0.493,
+            "videos_per_sample": 1.0
+        }
+    },
+    "Pet Supplies": {
+        "Bird Supplies": {
+            "aov": 29.39,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.225,
+            "videos_per_sample": 1.23
+        },
+        "Dog & Cat Accessories": {
+            "aov": 26.87,
+            "click_to_order_rate": 0.054,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 13.5,
+            "paid_commission_pct": 6.8,
+            "shop_tab_share": 0.14,
+            "videos_per_sample": 1.92
+        },
+        "Dog & Cat Food": {
+            "aov": 33.43,
+            "click_to_order_rate": 0.05,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 11.0,
+            "paid_commission_pct": 5.5,
+            "shop_tab_share": 0.286,
+            "videos_per_sample": 1.93
+        },
+        "Dog & Cat Furniture": {
+            "aov": 52.89,
+            "click_to_order_rate": 0.046,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.383,
+            "videos_per_sample": 1.93
+        },
+        "Dog & Cat Grooming": {
+            "aov": 22.26,
+            "click_to_order_rate": 0.054,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.1,
+            "videos_per_sample": 1.83
+        },
+        "Dog & Cat Litter": {
+            "aov": 127.41,
+            "click_to_order_rate": 0.042,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 12.0,
+            "paid_commission_pct": 6.0,
+            "shop_tab_share": 0.316,
+            "videos_per_sample": 1.87
+        },
+        "Farm Animal & Poultry Supplies": {
+            "aov": 91.94,
+            "click_to_order_rate": 0.042,
+            "clicks_per_video": 240,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.144,
+            "videos_per_sample": 1.93
+        }
+    },
+    "Phones & Electronics": {
+        "Audio & Video": {
+            "aov": 27.21,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.258,
+            "videos_per_sample": 1.0
+        },
+        "Cameras & Photography": {
+            "aov": 47.82,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 5.5,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.277,
+            "videos_per_sample": 1.0
+        },
+        "Gaming & Consoles": {
+            "aov": 37.77,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.22,
+            "videos_per_sample": 1.44
+        },
+        "Mobile Phone Accessories": {
+            "aov": 23.78,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.225,
+            "videos_per_sample": 1.1
+        },
+        "Phones & Tablets": {
+            "aov": 117.29,
+            "click_to_order_rate": 0.014,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 6.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.283,
+            "videos_per_sample": 2.25
+        },
+        "Smart & Wearable Devices": {
+            "aov": 33.64,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 180,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.275,
+            "videos_per_sample": 1.0
+        },
+        "Tablet & Computer Accessories": {
+            "aov": 26.63,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 637,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 10.5,
+            "paid_commission_pct": 5.2,
+            "shop_tab_share": 0.199,
+            "videos_per_sample": 1.25
+        },
+        "Universal Accessories": {
+            "aov": 28.49,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 279,
+            "gross_margin_pct": 35.0,
+            "organic_commission_pct": 10.8,
+            "paid_commission_pct": 5.4,
+            "shop_tab_share": 0.247,
+            "videos_per_sample": 1.45
+        }
+    },
+    "Shoes": {
+        "Men's Shoes": {
+            "aov": 28.06,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 50.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.346,
+            "videos_per_sample": 1.25
+        },
+        "Shoe Accessories": {
+            "aov": 29.35,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 50.0,
+            "organic_commission_pct": 12.7,
+            "paid_commission_pct": 6.3,
+            "shop_tab_share": 0.294,
+            "videos_per_sample": 1.21
+        },
+        "Women's Shoes": {
+            "aov": 36.16,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 50.0,
+            "organic_commission_pct": 12.0,
+            "paid_commission_pct": 6.0,
+            "shop_tab_share": 0.352,
+            "videos_per_sample": 1.67
+        }
+    },
+    "Sports & Outdoor": {
+        "Ball Sports": {
+            "aov": 32.84,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.209,
+            "videos_per_sample": 1.53
+        },
+        "Camping & Hiking": {
+            "aov": 35.21,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.216,
+            "videos_per_sample": 1.38
+        },
+        "Fitness": {
+            "aov": 57.28,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.417,
+            "videos_per_sample": 2.0
+        },
+        "Leisure & Outdoor Recreation Equipment": {
+            "aov": 20.25,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 250,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 12.0,
+            "paid_commission_pct": 6.0,
+            "shop_tab_share": 0.256,
+            "videos_per_sample": 1.77
+        },
+        "Sport & Outdoor Clothing": {
+            "aov": 36.62,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.5,
+            "paid_commission_pct": 5.2,
+            "shop_tab_share": 0.287,
+            "videos_per_sample": 1.18
+        },
+        "Sports & Outdoor Accessories": {
+            "aov": 30.39,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 12.0,
+            "paid_commission_pct": 6.0,
+            "shop_tab_share": 0.247,
+            "videos_per_sample": 1.19
+        },
+        "Sports Footwear": {
+            "aov": 59.47,
+            "click_to_order_rate": 0.026,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 11.0,
+            "paid_commission_pct": 5.5,
+            "shop_tab_share": 0.259,
+            "videos_per_sample": 1.78
+        },
+        "Swimwear, Surfwear & Wetsuits": {
+            "aov": 28.74,
+            "click_to_order_rate": 0.028,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.565,
+            "videos_per_sample": 1.78
+        }
+    },
+    "Textiles & Soft Furnishings": {
+        "Bedding and Linens": {
+            "aov": 33.43,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 44.0,
+            "organic_commission_pct": 12.0,
+            "paid_commission_pct": 6.0,
+            "shop_tab_share": 0.253,
+            "videos_per_sample": 1.15
+        },
+        "Household Textiles": {
+            "aov": 41.81,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 44.0,
+            "organic_commission_pct": 9.0,
+            "paid_commission_pct": 4.5,
+            "shop_tab_share": 0.374,
+            "videos_per_sample": 1.26
+        }
+    },
+    "Tools & Hardware": {
+        "Garden Tools": {
+            "aov": 42.33,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 6.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.201,
+            "videos_per_sample": 1.0
+        },
+        "Hand Tools": {
+            "aov": 39.68,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 12.2,
+            "paid_commission_pct": 6.1,
+            "shop_tab_share": 0.194,
+            "videos_per_sample": 1.0
+        },
+        "Hardware": {
+            "aov": 47.3,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 412,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 12.5,
+            "paid_commission_pct": 6.2,
+            "shop_tab_share": 0.1,
+            "videos_per_sample": 1.0
+        },
+        "Measuring Tools": {
+            "aov": 30.86,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.145,
+            "videos_per_sample": 1.0
+        },
+        "Power Tools": {
+            "aov": 39.36,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.224,
+            "videos_per_sample": 1.5
+        },
+        "Pumps & Plumbing": {
+            "aov": 34.58,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 301,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 10.8,
+            "paid_commission_pct": 5.4,
+            "shop_tab_share": 0.182,
+            "videos_per_sample": 1.0
+        },
+        "Soldering Equipment": {
+            "aov": 43.91,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 40.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.313,
+            "videos_per_sample": 1.0
+        }
+    },
+    "Toys & Hobbies": {
+        "Classic & Novelty Toys": {
+            "aov": 23.38,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.291,
+            "videos_per_sample": 1.0
+        },
+        "Dolls & Stuffed Toys": {
+            "aov": 29.59,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 9.8,
+            "paid_commission_pct": 4.9,
+            "shop_tab_share": 0.326,
+            "videos_per_sample": 1.0
+        },
+        "Educational Toys": {
+            "aov": 22.41,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 6.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.351,
+            "videos_per_sample": 1.6
+        },
+        "Electric & Remote Control Toys": {
+            "aov": 24.64,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 8.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.172,
+            "videos_per_sample": 1.11
+        },
+        "Games & Puzzles": {
+            "aov": 20.9,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.356,
+            "videos_per_sample": 1.0
+        },
+        "Sports & Outdoor Play": {
+            "aov": 95.16,
+            "click_to_order_rate": 0.022,
+            "clicks_per_video": 200,
+            "gross_margin_pct": 45.0,
+            "organic_commission_pct": 5.0,
+            "paid_commission_pct": 4.0,
+            "shop_tab_share": 0.389,
+            "videos_per_sample": 1.0
+        }
+    },
+    "Womenswear & Underwear": {
+        "Women's Bottoms": {
+            "aov": 46.31,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.568,
+            "videos_per_sample": 1.08
+        },
+        "Women's Dresses": {
+            "aov": 29.37,
+            "click_to_order_rate": 0.03,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.504,
+            "videos_per_sample": 1.0
+        },
+        "Women's Sleepwear & Loungewear": {
+            "aov": 23.08,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.65,
+            "videos_per_sample": 1.0
+        },
+        "Women's Suits & Sets": {
+            "aov": 33.35,
+            "click_to_order_rate": 0.032,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.1,
+            "videos_per_sample": 1.23
+        },
+        "Women's Tops": {
+            "aov": 27.77,
+            "click_to_order_rate": 0.036,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.22,
+            "videos_per_sample": 1.12
+        },
+        "Women's Underwear": {
+            "aov": 27.61,
+            "click_to_order_rate": 0.034,
+            "clicks_per_video": 220,
+            "gross_margin_pct": 52.0,
+            "organic_commission_pct": 10.0,
+            "paid_commission_pct": 5.0,
+            "shop_tab_share": 0.553,
+            "videos_per_sample": 1.0
+        }
+    }
 }
 
+
 CATEGORY_GROSS_MARGIN_DEFAULTS = {
-    "Home Living": 42.0,
-    "Electronics": 35.0,
-    "FMCG": 45.0,
-    "Beauty": 55.0,
-    "Fashion": 52.0,
+    "Automotive & Motorcycle": 38.0,
+    "Baby & Maternity": 46.0,
+    "Beauty & Personal Care": 55.0,
+    "Books, Magazines & Audio": 38.0,
+    "Collectibles": 45.0,
+    "Computers & Office Equipment": 34.0,
+    "Fashion Accessories": 54.0,
+    "Food & Beverages": 45.0,
+    "Furniture": 40.0,
+    "Health": 48.0,
+    "Home Improvement": 42.0,
+    "Home Supplies": 42.0,
+    "Household Appliances": 35.0,
+    "Jewelry Accessories & Derivatives": 58.0,
+    "Kids' Fashion": 50.0,
+    "Kitchenware": 42.0,
+    "Luggage & Bags": 50.0,
+    "Menswear & Underwear": 52.0,
+    "Modest Fashion": 52.0,
+    "Pet Supplies": 45.0,
+    "Phones & Electronics": 35.0,
+    "Shoes": 50.0,
+    "Sports & Outdoor": 45.0,
+    "Textiles & Soft Furnishings": 44.0,
+    "Tools & Hardware": 40.0,
+    "Toys & Hobbies": 45.0,
+    "Womenswear & Underwear": 52.0
 }
 
 
 DEFAULT_SKU_PROFILES = [
-    {"category": "Beauty", "subcategory": "Skincare", "gross_margin_pct": 55.0, "organic_commission_pct": 12.0, "paid_commission_pct": 5.0},
-    {"category": "FMCG", "subcategory": "Personal Care Consumables", "gross_margin_pct": 45.0, "organic_commission_pct": 10.0, "paid_commission_pct": 5.0},
-    {"category": "Fashion", "subcategory": "Fashion Accessories", "gross_margin_pct": 52.0, "organic_commission_pct": 12.0, "paid_commission_pct": 5.0},
-    {"category": "Home Living", "subcategory": "Kitchenware", "gross_margin_pct": 42.0, "organic_commission_pct": 10.0, "paid_commission_pct": 5.0},
-    {"category": "Electronics", "subcategory": "Audio & Headphones", "gross_margin_pct": 35.0, "organic_commission_pct": 8.0, "paid_commission_pct": 4.0},
+    {"category": "Beauty & Personal Care", "subcategory": "Skincare", "gross_margin_pct": 55.0, "organic_commission_pct": 12.0, "paid_commission_pct": 6.0},
+    {"category": "Food & Beverages", "subcategory": "Snacks", "gross_margin_pct": 45.0, "organic_commission_pct": 9.0, "paid_commission_pct": 4.5},
+    {"category": "Health", "subcategory": "Nutrition & Wellness", "gross_margin_pct": 48.0, "organic_commission_pct": 15.0, "paid_commission_pct": 7.5},
+    {"category": "Phones & Electronics", "subcategory": "Mobile Phone Accessories", "gross_margin_pct": 35.0, "organic_commission_pct": 10.0, "paid_commission_pct": 5.0},
+    {"category": "Household Appliances", "subcategory": "Kitchen Appliances", "gross_margin_pct": 35.0, "organic_commission_pct": 10.0, "paid_commission_pct": 5.0},
 ]
 
 
@@ -110,8 +1551,8 @@ PHASES = [
 
 PROMO_WEEKS = 9
 FBT_FREE_SHIPPING_AOV_THRESHOLD = 20.0
-MODEL_VERSION = "DE planning model v1.1 | Hit-product calibrated Apr 2026"
-MODEL_LAST_REVIEWED = "DE hit-product pool check | Apr 2026"
+MODEL_VERSION = "DE planning model v1.2 | Hit-product calibrated Apr 2026"
+MODEL_LAST_REVIEWED = "DE hit-product pool check | Apr 29 2026"
 LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 SCENARIO_ADJUSTMENTS = {
     "conservative": {"clicks": 0.85, "conversion": 0.85, "roas": 0.90},
@@ -172,7 +1613,7 @@ TEXT = {
         "debug_target_profit_gap": "Target profit gap",
         "scenario_snapshot": "Scenario Snapshot",
         "model_last_reviewed": "Model last reviewed",
-        "calibration_note": "Default SKU assumptions now use DE hit-product calibration where source coverage was sufficient. We still recommend aligning key inputs with your AM before using the plan as a business target.",
+        "calibration_note": "Default SKU assumptions now prioritize DE hit-product calibration. Open commission is treated as the open-plan creator commission, and sparse combinations fall back to first-category medians plus planning rules.",
         "internal_logic_checklist": "Internal Logic Checklist",
         "internal_logic_intro": "Use this default-collapsed view for AM or data-team alignment. It explains how the model builds GMV, allocates channels, applies costs, and arrives at profit.",
         "internal_logic_context": "Current plan signals",
@@ -232,7 +1673,7 @@ TEXT = {
         "take_rate_help": "Internal take-rate planning view: the share of GMV reinvested as paid growth budget in this phase.",
         "samples_sku_week": "Samples / SKU / week",
         "sku_setup": "SKU Setup",
-        "sku_caption": "Category selection auto-loads AOV and funnel assumptions. Electronics uses 7% platform commission; all other categories use 9%.",
+        "sku_caption": "Category and subcategory selection auto-load AOV, funnel assumptions, and creator-commission defaults. Electronics-linked first-level categories use 7% platform commission; all others use 9%.",
         "sku_name": "SKU name",
         "category": "Category",
         "subcategory": "Subcategory",
@@ -439,7 +1880,7 @@ TEXT = {
         "phase_strategy_text": "The plan starts with creator content validation, then shifts into paid amplification, and finally scales winning content while Store/Search demand continues to compound.",
         "pdf_proposal_title": "Growth Plan Proposal",
         "benchmark_info": "Data Notes",
-        "benchmark_info_text": "Current AOV, video, click, conversion, and Store/Search assumptions are planning inputs. We recommend aligning with your AM and using TikTok Shop data from similar categories or merchants in your industry.",
+        "benchmark_info_text": "Current AOV, video, click, conversion, Store/Search share, and creator-commission defaults are planning inputs calibrated from recent DE hit-product data where available. We still recommend aligning critical assumptions with your AM and similar TikTok Shop category benchmarks before using the plan as a target.",
         "model_assumptions": "Model Logic",
         "model_logic_intro": "The model follows a SKU-level content commerce funnel, then layers paid acceleration, channel mix, and cost structure on top.",
         "model_logic_1_title": "1. Samples create creator content",
@@ -511,7 +1952,7 @@ TEXT = {
         "debug_target_profit_gap": "目标利润差距",
         "scenario_snapshot": "方案快照",
         "model_last_reviewed": "模型最近校准",
-        "calibration_note": "当前 SKU 默认值已优先使用 DE hit-product 校准口径；如需把结果作为业务目标，仍建议和您的 AM 对齐关键输入。",
+        "calibration_note": "当前 SKU 默认值已优先使用 DE hit-product 校准口径。open commission 已按 open plan 达人佣金处理；若类目样本较稀疏，则回退到一级类目中位数与 planning 规则。",
         "chart_read": "怎么看",
         "read_weekly_chart": "看 GMV 增长是否持续跑赢总成本，以及平台费阶梯变化后利润是否仍保持在 0 以上。",
         "read_cumulative_chart": "看回本路径：曲线反映前期内容沉淀和付费增长是否能覆盖前期投入。",
@@ -558,7 +1999,7 @@ TEXT = {
         "take_rate_help": "内部 take rate 规划视角：该阶段将 GMV 的多少比例作为付费增长预算重新投入。",
         "samples_sku_week": "每个 SKU 每周寄样数",
         "sku_setup": "SKU 设置",
-        "sku_caption": "选择 Category/Subcategory 后会自动加载 AOV 和漏斗假设。Electronics 平台佣金为 7%，其他类目为 9%。",
+        "sku_caption": "选择 Category/Subcategory 后会自动加载 AOV、漏斗假设和达人佣金默认值。一级类目里与 Electronics 相关的类目平台佣金为 7%，其余类目为 9%。",
         "sku_name": "SKU 名称",
         "category": "Category",
         "subcategory": "Subcategory",
@@ -778,7 +2219,7 @@ TEXT = {
         "phase_strategy_text": "计划先验证达人内容，再进入付费加热，最后放大已验证内容；同时店铺/Search 的承接会随着内容沉淀持续复利。",
         "pdf_proposal_title": "增长方案提案",
         "benchmark_info": "数据说明",
-        "benchmark_info_text": "当前 AOV、视频、点击、转化率和店铺/Search 占比是 planning 输入。建议和您的 AM 对齐，参考 TikTok Shop 上类似行业或类似商家的数据进行输入。",
+        "benchmark_info_text": "当前 AOV、视频、点击、转化率、店铺/Search 占比和达人佣金默认值，已优先参考最新 DE hit-product 数据做 planning 校准；若缺少足够样本，则会回退到一级类目口径。正式作为业务目标前，仍建议和您的 AM 对齐关键输入。",
         "model_assumptions": "模型逻辑",
         "model_logic_intro": "模型以 SKU level 的内容电商漏斗为基础，再叠加付费加热、渠道拆分和完整成本结构。",
         "model_logic_1_title": "1. 样品产生达人内容",
@@ -1157,9 +2598,9 @@ st.markdown(
     }
 
     .readonly-rate {
-        background: #FAFBFC;
-        border: 1px solid #D9E0E8;
-        border-radius: 8px;
+        background: #FFFFFF;
+        border: 1px solid #D0D7E2;
+        border-radius: 10px;
         padding: 0.8rem 0.95rem;
         min-height: 76px;
         display: flex;
@@ -1184,15 +2625,15 @@ st.markdown(
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
-        border-color: #CDD6E0;
-        border-radius: 8px;
+        border-color: #D0D7E2;
+        border-radius: 10px;
         background: #FFFFFF;
         box-shadow: none;
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) {
-        border: 1px solid #CDD6E0;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         background: #FFFFFF;
         box-shadow: none;
     }
@@ -1278,9 +2719,8 @@ st.markdown(
     .tabs-shell {
         background: transparent;
         border: 0;
-        border-top: 1px solid #E5E7EB;
         border-radius: 0;
-        padding: 10px 0 0 0;
+        padding: 4px 0 0 0;
         box-shadow: none;
         margin-top: 6px;
     }
@@ -1343,8 +2783,8 @@ st.markdown(
     }
 
     div[data-testid="stExpander"] {
-        border: 1px solid #DCE3EB;
-        border-radius: 8px;
+        border: 1px solid #D0D7E2;
+        border-radius: 10px;
         background: #FFFFFF;
     }
 
@@ -1356,12 +2796,11 @@ st.markdown(
     }
 
     div[data-testid="stPlotlyChart"] {
-        background: transparent;
-        border: 0;
-        border-top: 1px solid #E5E7EB;
-        border-radius: 0;
-        padding: 12px 0 6px 0;
-        margin: 8px 0 8px 0;
+        background: #FFFFFF;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
+        padding: 14px 14px 8px 14px;
+        margin: 10px 0 14px 0;
         box-shadow: none;
         overflow: visible;
     }
@@ -1374,12 +2813,11 @@ st.markdown(
 
     .dashboard-note {
         background: #FFFFFF;
-        border: 1px solid #E7EBF1;
-        border-left: 2px solid #CBD5E1;
-        border-radius: 12px;
+        border: 1px solid #D0D7E2;
+        border-radius: 10px;
         padding: 12px 14px;
         color: #334155;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        box-shadow: none;
         line-height: 1.48;
     }
 
@@ -1393,8 +2831,8 @@ st.markdown(
 
     .dashboard-intro-card {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 14px 16px;
         box-shadow: none;
         min-height: 96px;
@@ -1424,8 +2862,8 @@ st.markdown(
 
     .executive-brief-card {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 14px 16px;
         box-shadow: none;
         min-height: 118px;
@@ -1448,11 +2886,11 @@ st.markdown(
 
     .setup-gate {
         background: #FFFFFF;
-        border: 1px solid #E7ECF2;
+        border: 1px solid #D0D7E2;
         border-radius: 12px;
         padding: 22px 24px;
         margin: 22px 0 14px 0;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.018);
+        box-shadow: none;
     }
 
     .setup-gate-kicker {
@@ -1479,9 +2917,8 @@ st.markdown(
 
     .setup-ready {
         background: #FFFFFF;
-        border: 1px solid #E7ECF2;
-        border-left: 2px solid #CBD5E1;
-        border-radius: 12px;
+        border: 1px solid #D0D7E2;
+        border-radius: 10px;
         padding: 12px 14px;
         margin: 12px 0 18px 0;
         color: #374151;
@@ -1504,8 +2941,8 @@ st.markdown(
 
     .meeting-header {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 18px 18px;
         margin-bottom: 14px;
         box-shadow: none;
@@ -1555,9 +2992,9 @@ st.markdown(
     }
 
     .section-shell {
-        margin: 28px 0 10px 0;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #E5E7EB;
+        margin: 30px 0 12px 0;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #DDE3EA;
     }
 
     .section-eyebrow {
@@ -1579,8 +3016,8 @@ st.markdown(
 
     .action-list {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 16px 18px;
         box-shadow: none;
     }
@@ -1595,8 +3032,8 @@ st.markdown(
 
     .action-group {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 14px 15px;
         min-height: 144px;
         box-shadow: none;
@@ -1660,8 +3097,8 @@ st.markdown(
 
     .readout-card {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 17px 18px;
         min-height: 138px;
         box-shadow: none;
@@ -1684,9 +3121,9 @@ st.markdown(
     }
 
     .chart-lens {
-        background: #FBFCFD;
-        border: 1px solid #DDE4EC;
-        border-radius: 8px;
+        background: #FFFFFF;
+        border: 1px solid #D0D7E2;
+        border-radius: 10px;
         padding: 12px 14px;
         margin: 8px 0 12px 0;
         box-shadow: none;
@@ -1742,29 +3179,28 @@ st.markdown(
     }
 
     .funnel-card-wrap {
-        background: transparent;
-        border: 0;
-        border-top: 1px solid #E5E7EB;
-        border-radius: 0;
-        padding: 12px 0 0 0;
+        background: #FFFFFF;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
+        padding: 14px 14px 10px 14px;
         box-shadow: none;
         margin-bottom: 10px;
     }
 
     .support-panel {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
-        padding: 18px 18px 12px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
+        padding: 18px 18px 14px;
         box-shadow: none;
         margin-bottom: 12px;
     }
 
     .report-appendix {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
-        padding: 0.75rem 0.85rem;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
+        padding: 0.95rem 1rem;
         margin-top: 1rem;
     }
 
@@ -1819,8 +3255,8 @@ st.markdown(
 
     .phase-overview-card {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 16px 16px;
         box-shadow: none;
     }
@@ -1864,8 +3300,8 @@ st.markdown(
 
     .hero-band {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 18px 18px;
         margin: 16px 0 18px 0;
         box-shadow: none;
@@ -1933,8 +3369,8 @@ st.markdown(
 
     .premium-kpi {
         background: #FFFFFF;
-        border: 1px solid #D9E0E8;
-        border-radius: 10px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 16px 16px;
         min-height: 94px;
         height: auto;
@@ -1986,9 +3422,9 @@ st.markdown(
     }
 
     .insight-strip {
-        background: #FBFCFD;
-        border: 1px solid #DDE4EC;
-        border-radius: 8px;
+        background: #FFFFFF;
+        border: 1px solid #D0D7E2;
+        border-radius: 10px;
         color: #4B5563;
         padding: 10px 12px;
         margin: 8px 0 10px 0;
@@ -2006,9 +3442,9 @@ st.markdown(
     }
 
     .status-panel {
-        background: #FAFBFC;
-        border: 1px solid #DDE4EC;
-        border-radius: 8px;
+        background: #FFFFFF;
+        border: 1px solid #D0D7E2;
+        border-radius: 10px;
         padding: 10px 12px;
         margin: 8px 0 12px 0;
         box-shadow: none;
@@ -2089,8 +3525,8 @@ st.markdown(
 
     .export-shell {
         background: #FFFFFF;
-        border: 1px solid #E4E7EB;
-        border-radius: 8px;
+        border: 1px solid #D0D7E2;
+        border-radius: 12px;
         padding: 14px 16px 16px 16px;
         box-shadow: none;
     }
@@ -2197,7 +3633,7 @@ st.markdown(
         font-size: 0.84rem;
         margin-bottom: 0.9rem;
         padding-bottom: 0.75rem;
-        border-bottom: 1px solid #EEF2F6;
+        border-bottom: 1px solid #E5EAF1;
     }
 
     .premium-kpi,
@@ -2220,8 +3656,16 @@ st.markdown(
     .setup-gate,
     .export-shell,
     .chart-lens,
-    .insight-strip {
-        border-color: #E2E8F0;
+    .insight-strip,
+    .readout-card,
+    .executive-brief-card,
+    .dashboard-intro-card,
+    .phase-overview-card,
+    .support-panel,
+    .report-appendix,
+    .action-group,
+    .readonly-rate {
+        border-color: #D0D7E2;
     }
     </style>
     """,
@@ -4300,7 +5744,7 @@ with st.sidebar:
     n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
     st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
     render_sidebar_meta(f"{T['model_version']}: {MODEL_VERSION}")
-    st.caption(T["calibration_note"])
+    render_sidebar_meta(T["calibration_note"])
     render_sidebar_divider()
     if st.button(T["reset_defaults"], key="reset_request_btn"):
         st.session_state["reset_confirm_pending"] = True
@@ -4559,16 +6003,26 @@ else:
     for i in range(int(n_skus)):
         initialize_sku(i)
 
-st.info(f"**{T['plan_preview']}**: {plan_preview_text(n_skus, phase_inputs, weeks_per_phase, organic_click_window_weeks, ads_roas)}")
-st.caption(T["assumption_quality_text"].format(status=assumption_status))
+render_status_panel(
+    T["plan_preview"],
+    plan_preview_text(n_skus, phase_inputs, weeks_per_phase, organic_click_window_weeks, ads_roas),
+    tone="info",
+    compact=True,
+    kicker=T["assumption_quality_text"].format(status=assumption_status),
+)
 scenario_label = {
     "conservative": T["scenario_conservative"],
     "base": T["scenario_base"],
     "upside": T["scenario_upside"],
 }.get(scenario_case, T["scenario_base"])
-st.info(f"**{T['scenario_snapshot']}**: {scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label)}")
-st.caption(f"{T['model_last_reviewed']}: {MODEL_LAST_REVIEWED}")
-st.caption(T["calibration_note"])
+render_status_panel(
+    T["scenario_snapshot"],
+    scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label),
+    tone="info",
+    compact=True,
+    kicker=f"{T['model_last_reviewed']}: {MODEL_LAST_REVIEWED}",
+)
+render_subtle_note(T["calibration_note"])
 for i in range(int(n_skus)):
     initialize_sku(i)
 product_df_preview = build_product_df(int(n_skus))
@@ -4698,6 +6152,7 @@ if st.session_state.get("has_generated", False):
 
         render_section_header(T["phase_trend"])
         render_subtle_note(T["phase_strategy_text"], T["phase_strategy"])
+        render_phase_overview(phase_summary)
         selected_phase_key = st.radio(
             "",
             options=[p["key"] for p in phase_inputs],
@@ -4711,7 +6166,7 @@ if st.session_state.get("has_generated", False):
         phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
         objective = phase_objective(selected_phase["key"])
         if objective:
-            st.caption(objective)
+            render_subtle_note(objective, T["phase_objective"])
         phase_kpis = [
             (T["total_gmv"], money(phase_row["GMV"], 0), "#315EEC"),
             (T["total_profit"], money(phase_row["Profit"], 0), "#178A62" if phase_row["Profit"] >= 0 else "#B42318"),
