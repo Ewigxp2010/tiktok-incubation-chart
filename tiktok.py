@@ -2900,7 +2900,16 @@ st.markdown(
         gap: 8px;
     }
 
-    .st-key-selected_phase_view div[role="radiogroup"] label,
+    .st-key-selected_phase_view div[role="radiogroup"] label {
+        background: #FFFFFF;
+        border: 1.5px solid #D5DEEA;
+        border-radius: 14px;
+        padding: 11px 18px;
+        min-height: 56px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+        transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+    }
+
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
         background: #F8FAFC;
         border: 1px solid #E7ECF2;
@@ -2909,11 +2918,31 @@ st.markdown(
         min-height: 38px;
     }
 
-    .st-key-selected_phase_view div[role="radiogroup"] label:has(input:checked),
+    .st-key-selected_phase_view div[role="radiogroup"] label:hover {
+        border-color: #BFCBDA;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    }
+
+    .st-key-selected_phase_view div[role="radiogroup"] label:has(input:checked) {
+        background: linear-gradient(180deg, #FFFFFF 0%, #F8FBFF 100%);
+        border-color: #8FAEDD;
+        box-shadow: 0 0 0 1px rgba(49, 94, 236, 0.08), 0 6px 18px rgba(49, 94, 236, 0.08);
+    }
+
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label:has(input:checked) {
         background: #FFFFFF;
         border-color: #DDE4EC;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+    }
+
+    .st-key-selected_phase_view div[role="radiogroup"] label p {
+        font-size: 0.98rem !important;
+        font-weight: 720 !important;
+        color: #1F2937 !important;
+    }
+
+    .st-key-selected_phase_view div[role="radiogroup"] label:has(input:checked) p {
+        color: #111827 !important;
     }
 
     .stButton > button {
