@@ -2550,9 +2550,9 @@ st.markdown(
     }
 
     .cover-shell {
-        max-width: 1080px;
+        max-width: 1120px;
         margin: 0 auto;
-        padding: 10vh 0 0 0;
+        padding: 11vh 0 0 0;
         position: relative;
     }
 
@@ -2574,49 +2574,49 @@ st.markdown(
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #315EEC;
-        background: rgba(49, 94, 236, 0.08);
-        border: 1px solid rgba(49, 94, 236, 0.16);
-        padding: 0.48rem 0.9rem;
+        color: #2E5BEB;
+        background: rgba(46, 91, 235, 0.08);
+        border: 1px solid rgba(46, 91, 235, 0.14);
+        padding: 0.44rem 0.82rem;
         border-radius: 999px;
-        font-size: 0.76rem;
+        font-size: 0.72rem;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.12em;
-        margin-bottom: 0.55rem;
+        letter-spacing: 0.14em;
+        margin-bottom: 0.7rem;
     }
 
     .cover-logo-title {
         color: #0F172A;
-        font-size: clamp(3.25rem, 5.8vw, 5.9rem);
-        font-weight: 840;
-        line-height: 0.96;
-        letter-spacing: -0.065em;
+        font-size: clamp(3.6rem, 6vw, 6.3rem);
+        font-weight: 835;
+        line-height: 0.92;
+        letter-spacing: -0.075em;
         max-width: 1120px;
         white-space: nowrap;
     }
 
     .cover-logo-subtitle {
-        color: #667085;
-        font-size: 1rem;
-        line-height: 1.7;
-        margin: 0.9rem auto 0 auto;
-        max-width: 620px;
+        color: #56647B;
+        font-size: 1.04rem;
+        line-height: 1.65;
+        margin: 1rem auto 0 auto;
+        max-width: 560px;
         text-align: center;
     }
 
     .cover-bottom-row {
-        max-width: 880px;
-        margin: 2.3rem auto 0 auto;
+        max-width: 920px;
+        margin: 2.6rem auto 0 auto;
     }
 
     .cover-row-label {
-        color: #667085;
-        font-size: 0.74rem;
+        color: #6B7280;
+        font-size: 0.71rem;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.16em;
-        margin: 0 0 0.8rem 0.2rem;
+        letter-spacing: 0.17em;
+        margin: 0 0 0.85rem 0.3rem;
         text-align: left;
     }
 
@@ -2642,11 +2642,11 @@ st.markdown(
     }
 
     .cover-note {
-        color: #667085;
-        font-size: 0.86rem;
-        line-height: 1.62;
-        max-width: 600px;
-        margin: 0.95rem auto 0 auto;
+        color: #6B7280;
+        font-size: 0.8rem;
+        line-height: 1.58;
+        max-width: 520px;
+        margin: 1.15rem auto 0 auto;
         text-align: center;
     }
 
@@ -2656,28 +2656,28 @@ st.markdown(
     }
 
     .cover-bottom-row .stButton > button {
-        min-height: 64px;
-        border-radius: 20px;
-        font-size: 1.04rem;
-        font-weight: 760;
-        background: linear-gradient(180deg, #315EEC 0%, #2249D8 100%);
+        min-height: 68px;
+        border-radius: 18px;
+        font-size: 1.06rem;
+        font-weight: 770;
+        background: linear-gradient(180deg, #315EEC 0%, #244DDC 100%);
         border: 0;
-        box-shadow: 0 16px 32px rgba(49, 94, 236, 0.22);
+        box-shadow: 0 16px 36px rgba(49, 94, 236, 0.18);
     }
 
     .cover-bottom-row [data-testid="stNumberInputContainer"] input {
-        min-height: 64px;
-        border-radius: 20px;
+        min-height: 68px;
+        border-radius: 18px;
         font-size: 1.08rem;
-        font-weight: 700;
+        font-weight: 680;
         background: #FFFFFF;
-        border: 1px solid #D7E0EE;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+        border: 1.5px solid #D5DEE9;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
     }
 
     .cover-bottom-row [data-testid="stNumberInputContainer"] button {
-        min-height: 64px;
-        border-radius: 18px;
+        min-height: 68px;
+        border-radius: 16px;
     }
 
     @media (max-width: 1100px) {
@@ -2730,10 +2730,10 @@ st.markdown(
     }
 
     .readonly-rate {
-        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
-        border: 1px solid #DCE3EC;
-        border-radius: 12px;
-        padding: 0.82rem 0.95rem;
+        background: #FFFFFF;
+        border: 1.5px solid #D8E0EA;
+        border-radius: 14px;
+        padding: 0.88rem 1rem;
         min-height: 78px;
         display: flex;
         flex-direction: column;
@@ -2764,10 +2764,10 @@ st.markdown(
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) {
-        border: 1px solid #D8E0EA;
-        border-radius: 14px;
+        border: 1.5px solid #D8E0EA;
+        border-radius: 16px;
         background: #FFFFFF;
-        box-shadow: none;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.035);
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) > div {
@@ -2778,10 +2778,10 @@ st.markdown(
     div[data-testid="stNumberInput"] [data-baseweb="input"],
     div[data-testid="stTextInput"] [data-baseweb="input"],
     div[data-testid="stSelectbox"] [data-baseweb="select"] {
-        border: 1px solid #D5DDE7 !important;
-        border-radius: 10px !important;
-        background: linear-gradient(180deg, #FFFFFF 0%, #FCFDFE 100%) !important;
-        box-shadow: none !important;
+        border: 1.5px solid #D5DDE7 !important;
+        border-radius: 12px !important;
+        background: #FFFFFF !important;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02) !important;
     }
 
     div[data-testid="stNumberInput"] [data-baseweb="input"]:hover,
@@ -2793,8 +2793,8 @@ st.markdown(
     div[data-testid="stNumberInput"] [data-baseweb="input"]:focus-within,
     div[data-testid="stTextInput"] [data-baseweb="input"]:focus-within,
     div[data-testid="stSelectbox"] [data-baseweb="select"]:focus-within {
-        border-color: #96A6BD !important;
-        box-shadow: 0 0 0 1px #96A6BD inset, 0 0 0 4px rgba(49, 94, 236, 0.06) !important;
+        border-color: #7D93B3 !important;
+        box-shadow: 0 0 0 1px #7D93B3 inset, 0 0 0 5px rgba(49, 94, 236, 0.07) !important;
     }
 
     div[data-testid="stNumberInput"] input,
@@ -3439,12 +3439,12 @@ st.markdown(
     }
 
     .hero-band {
-        background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 16px;
-        padding: 24px 24px;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFF 100%);
+        border: 1.5px solid #D8E0EA;
+        border-radius: 20px;
+        padding: 26px 28px;
         margin: 18px 0 20px 0;
-        box-shadow: none;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
         display: grid;
         grid-template-columns: minmax(320px, 1.6fr) repeat(3, minmax(150px, 0.52fr));
         gap: 18px;
@@ -3453,21 +3453,21 @@ st.markdown(
 
     .hero-title {
         color: #111827;
-        font-size: clamp(1.8rem, 2.8vw, 2.7rem);
+        font-size: clamp(1.95rem, 3vw, 2.9rem);
         font-weight: 810;
-        line-height: 0.98;
-        letter-spacing: -0.03em;
-        margin-bottom: 10px;
+        line-height: 0.94;
+        letter-spacing: -0.04em;
+        margin-bottom: 12px;
     }
 
     .hero-subtitle {
-        color: #4B5563;
-        font-size: 1rem;
-        line-height: 1.5;
+        color: #5B667A;
+        font-size: 1.02rem;
+        line-height: 1.56;
     }
 
     .hero-kpi {
-        border-left: 1px solid #E5E7EB;
+        border-left: 1px solid #E6EBF1;
         padding-left: 16px;
         min-width: 0;
     }
@@ -3512,13 +3512,13 @@ st.markdown(
 
     .premium-kpi {
         background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 12px;
+        border: 1.5px solid #D8E0EA;
+        border-radius: 14px;
         padding: 16px 16px;
         min-height: 94px;
         height: auto;
         overflow: visible;
-        box-shadow: none;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -3567,14 +3567,14 @@ st.markdown(
     .insight-strip {
         background: transparent;
         border: 0;
-        border-top: 1px solid #E6EAF0;
+        border-top: 1px solid #E7ECF2;
         border-radius: 0;
         color: #667085;
-        padding: 10px 2px 0 2px;
+        padding: 12px 2px 0 2px;
         margin: 2px 0 16px 0;
         box-shadow: none;
-        line-height: 1.55;
-        font-size: 0.84rem;
+        line-height: 1.5;
+        font-size: 0.82rem;
     }
 
     .insight-strip.compact {
@@ -3587,11 +3587,11 @@ st.markdown(
 
     .status-panel {
         background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 10px;
-        padding: 10px 12px;
+        border: 1.5px solid #D8E0EA;
+        border-radius: 12px;
+        padding: 11px 13px;
         margin: 8px 0 12px 0;
-        box-shadow: none;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.025);
     }
 
     .status-panel.compact {
@@ -3812,6 +3812,14 @@ st.markdown(
     .action-group,
     .readonly-rate {
         border-color: #D0D7E2;
+    }
+
+    div[data-testid="stPlotlyChart"] {
+        background: linear-gradient(180deg, #FFFFFF 0%, #FCFDFE 100%);
+        border: 1.5px solid #D9E1EB;
+        border-radius: 18px;
+        padding: 8px 10px 2px 10px;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.035) !important;
     }
     </style>
     """,
@@ -5523,14 +5531,14 @@ def apply_plotly_layout(fig, title, height=460):
             "text": title,
             "x": 0.0,
             "xanchor": "left",
-            "y": 0.99,
+            "y": 0.985,
             "yanchor": "top",
-            "font": {"size": 12, "color": "#111827", "family": "Arial, sans-serif"},
+            "font": {"size": 13, "color": "#111827", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=52, r=72, t=78, b=46),
+        margin=dict(l=50, r=68, t=84, b=44),
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="#FCFCFD",
+        plot_bgcolor="#FFFFFF",
         font=dict(color="#111827", family="Arial, sans-serif"),
         legend=dict(
             orientation="h",
@@ -5550,18 +5558,18 @@ def apply_plotly_layout(fig, title, height=460):
     )
     fig.update_xaxes(
         showgrid=True,
-        gridcolor="#F5F7FA",
+        gridcolor="#EEF2F7",
         zeroline=False,
-        linecolor="#EEF2F6",
+        linecolor="#E5EAF0",
         tickfont=dict(color="#667085", size=10),
         ticklen=0,
         automargin=True,
     )
     fig.update_yaxes(
         showgrid=True,
-        gridcolor="#F5F7FA",
+        gridcolor="#EEF2F7",
         zeroline=False,
-        linecolor="#EEF2F6",
+        linecolor="#E5EAF0",
         tickfont=dict(color="#667085", size=10),
         ticklen=0,
         automargin=True,
