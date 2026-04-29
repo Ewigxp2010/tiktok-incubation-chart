@@ -2555,7 +2555,7 @@ st.markdown(
     }
 
     .cover-shell {
-        max-width: 920px;
+        max-width: 1080px;
         margin: 0 auto;
         padding: 10vh 0 0 0;
     }
@@ -2592,11 +2592,12 @@ st.markdown(
 
     .cover-logo-title {
         color: #0F172A;
-        font-size: clamp(3.25rem, 6.8vw, 5.8rem);
+        font-size: clamp(3.25rem, 5.8vw, 5.9rem);
         font-weight: 840;
         line-height: 0.96;
         letter-spacing: -0.065em;
-        max-width: 900px;
+        max-width: 1120px;
+        white-space: nowrap;
     }
 
     .cover-logo-subtitle {
@@ -2604,21 +2605,23 @@ st.markdown(
         font-size: 1.04rem;
         line-height: 1.72;
         margin: 1rem auto 0 auto;
-        max-width: 640px;
+        max-width: 700px;
         text-align: center;
     }
 
     .cover-bottom-row {
-        max-width: 820px;
+        max-width: 920px;
         margin: 2.7rem auto 0 auto;
     }
 
-    .cover-action-shell {
-        background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,251,255,0.96) 100%);
-        border: 1px solid #DCE3F0;
-        border-radius: 26px;
-        padding: 16px;
-        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+    .cover-row-label {
+        color: #667085;
+        font-size: 0.74rem;
+        font-weight: 760;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        margin: 0 0 0.8rem 0.2rem;
+        text-align: left;
     }
 
     .cover-field {
@@ -2657,21 +2660,34 @@ st.markdown(
     }
 
     .cover-bottom-row .stButton > button {
-        min-height: 54px;
-        border-radius: 16px;
-        font-size: 1rem;
+        min-height: 64px;
+        border-radius: 20px;
+        font-size: 1.04rem;
         font-weight: 760;
-        background: #315EEC;
-        border-color: #315EEC;
-        box-shadow: 0 10px 26px rgba(49, 94, 236, 0.18);
+        background: linear-gradient(180deg, #315EEC 0%, #2249D8 100%);
+        border: 0;
+        box-shadow: 0 16px 32px rgba(49, 94, 236, 0.22);
     }
 
     .cover-bottom-row [data-testid="stNumberInputContainer"] input {
-        min-height: 54px;
-        border-radius: 16px;
-        font-size: 1rem;
-        font-weight: 650;
-        background: rgba(255,255,255,0.92);
+        min-height: 64px;
+        border-radius: 20px;
+        font-size: 1.08rem;
+        font-weight: 700;
+        background: #FFFFFF;
+        border: 1px solid #D7E0EE;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+    }
+
+    .cover-bottom-row [data-testid="stNumberInputContainer"] button {
+        min-height: 64px;
+        border-radius: 18px;
+    }
+
+    @media (max-width: 1100px) {
+        .cover-logo-title {
+            white-space: normal;
+        }
     }
 
     div[data-testid="stMetric"] {
@@ -5873,20 +5889,24 @@ if not st.session_state.get("sku_count_confirmed", False) and not st.session_sta
         unsafe_allow_html=True,
     )
     render_cover_page(5)
-    st.markdown('<div class="cover-bottom-row"><div class="cover-action-shell">', unsafe_allow_html=True)
-    cover_col1, cover_col2 = st.columns([1.15, 0.95], vertical_alignment="bottom")
+    st.markdown(f'<div class="cover-bottom-row"><div class="cover-row-label">{escape(T["expected_listing_skus"])}</div></div>', unsafe_allow_html=True)
+    cover_col1, cover_col2 = st.columns([1.25, 1.05], vertical_alignment="bottom")
     with cover_col1:
-        st.markdown(f'<div class="cover-field"><div class="cover-field-kicker">{escape(T["expected_listing_skus"])}</div>', unsafe_allow_html=True)
-        st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input", label_visibility="collapsed")
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.number_input(
+            T["expected_listing_skus"],
+            min_value=1,
+            max_value=26,
+            value=5,
+            step=1,
+            key="n_skus_input",
+            label_visibility="collapsed",
+        )
     with cover_col2:
-        st.markdown('<div class="cover-button-wrap">', unsafe_allow_html=True)
         if st.button(T["continue_setup"], type="primary", use_container_width=True):
             st.session_state["sku_count_confirmed"] = True
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
     st.markdown(
-        f'</div><div class="cover-note"><strong>{escape(T["model_version"])}:</strong> {escape(MODEL_VERSION)}. {escape(T["calibration_note"])}</div></div>',
+        f'<div class="cover-note"><strong>{escape(T["model_version"])}:</strong> {escape(MODEL_VERSION)}. {escape(T["calibration_note"])}</div>',
         unsafe_allow_html=True,
     )
     st.stop()
