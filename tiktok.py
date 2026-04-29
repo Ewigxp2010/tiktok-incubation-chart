@@ -2498,11 +2498,6 @@ st.markdown(
         background: var(--tts-bg);
     }
 
-    [data-testid="stSidebar"] {
-        background: #FFFFFF;
-        border-right: 1px solid #ECEFF3;
-    }
-
     [data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {
         gap: 0.55rem;
     }
@@ -2525,16 +2520,16 @@ st.markdown(
     }
 
     section[data-testid="stSidebar"] {
-        background: #FBFCFD;
-        border-right: 1px solid #E3E8EE;
+        background: linear-gradient(180deg, #FCFDFE 0%, #F7F9FC 100%);
+        border-right: 1px solid #E7ECF2;
     }
 
     section[data-testid="stSidebar"] h2,
     section[data-testid="stSidebar"] h3 {
         color: #1F2937;
-        font-size: 0.98rem;
-        font-weight: 760;
-        margin-top: 0.6rem;
+        font-size: 0.94rem;
+        font-weight: 780;
+        margin-top: 0.55rem;
     }
 
     h1 {
@@ -2558,6 +2553,7 @@ st.markdown(
         max-width: 1080px;
         margin: 0 auto;
         padding: 10vh 0 0 0;
+        position: relative;
     }
 
     .cover-logo-row {
@@ -2602,16 +2598,16 @@ st.markdown(
 
     .cover-logo-subtitle {
         color: #667085;
-        font-size: 1.04rem;
-        line-height: 1.72;
-        margin: 1rem auto 0 auto;
-        max-width: 700px;
+        font-size: 1rem;
+        line-height: 1.7;
+        margin: 0.9rem auto 0 auto;
+        max-width: 620px;
         text-align: center;
     }
 
     .cover-bottom-row {
-        max-width: 920px;
-        margin: 2.7rem auto 0 auto;
+        max-width: 880px;
+        margin: 2.3rem auto 0 auto;
     }
 
     .cover-row-label {
@@ -2647,10 +2643,10 @@ st.markdown(
 
     .cover-note {
         color: #667085;
-        font-size: 0.9rem;
-        line-height: 1.65;
-        max-width: 620px;
-        margin: 1.15rem auto 0 auto;
+        font-size: 0.86rem;
+        line-height: 1.62;
+        max-width: 600px;
+        margin: 0.95rem auto 0 auto;
         text-align: center;
     }
 
@@ -2734,11 +2730,11 @@ st.markdown(
     }
 
     .readonly-rate {
-        background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 10px;
-        padding: 0.8rem 0.95rem;
-        min-height: 76px;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
+        border: 1px solid #DCE3EC;
+        border-radius: 12px;
+        padding: 0.82rem 0.95rem;
+        min-height: 78px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -2768,31 +2764,37 @@ st.markdown(
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) {
-        border: 1px solid #D0D7E2;
-        border-radius: 12px;
+        border: 1px solid #D8E0EA;
+        border-radius: 14px;
         background: #FFFFFF;
         box-shadow: none;
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) > div {
-        padding-top: 2px;
-        padding-bottom: 2px;
+        padding-top: 4px;
+        padding-bottom: 4px;
     }
 
     div[data-testid="stNumberInput"] [data-baseweb="input"],
     div[data-testid="stTextInput"] [data-baseweb="input"],
     div[data-testid="stSelectbox"] [data-baseweb="select"] {
-        border: 1px solid #D7DEE7 !important;
-        border-radius: 8px !important;
-        background: #FFFFFF !important;
+        border: 1px solid #D5DDE7 !important;
+        border-radius: 10px !important;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FCFDFE 100%) !important;
         box-shadow: none !important;
+    }
+
+    div[data-testid="stNumberInput"] [data-baseweb="input"]:hover,
+    div[data-testid="stTextInput"] [data-baseweb="input"]:hover,
+    div[data-testid="stSelectbox"] [data-baseweb="select"]:hover {
+        border-color: #C2CCDA !important;
     }
 
     div[data-testid="stNumberInput"] [data-baseweb="input"]:focus-within,
     div[data-testid="stTextInput"] [data-baseweb="input"]:focus-within,
     div[data-testid="stSelectbox"] [data-baseweb="select"]:focus-within {
-        border-color: #AAB5C2 !important;
-        box-shadow: 0 0 0 1px #AAB5C2 inset !important;
+        border-color: #96A6BD !important;
+        box-shadow: 0 0 0 1px #96A6BD inset, 0 0 0 4px rgba(49, 94, 236, 0.06) !important;
     }
 
     div[data-testid="stNumberInput"] input,
@@ -2817,7 +2819,7 @@ st.markdown(
     section[data-testid="stSidebar"] div[data-testid="stNumberInput"] [data-baseweb="input"],
     section[data-testid="stSidebar"] div[data-testid="stTextInput"] [data-baseweb="input"],
     section[data-testid="stSidebar"] div[data-testid="stSelectbox"] [data-baseweb="select"] {
-        border-color: #CDD6E0 !important;
+        border-color: #D2DAE5 !important;
         background: #FFFFFF !important;
     }
 
@@ -3052,20 +3054,21 @@ st.markdown(
     }
 
     .setup-ready {
-        background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 10px;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFD 100%);
+        border: 1px solid #D9E1EB;
+        border-radius: 12px;
         padding: 12px 14px;
         margin: 12px 0 18px 0;
         color: #374151;
         box-shadow: none;
+        line-height: 1.55;
     }
 
     .sidebar-meta {
-        color: #94A3B8;
-        font-size: 0.76rem;
-        line-height: 1.45;
-        margin: 4px 0 8px 0;
+        color: #98A2B3;
+        font-size: 0.74rem;
+        line-height: 1.5;
+        margin: 5px 0 9px 0;
     }
 
     .sidebar-divider {
@@ -3765,18 +3768,18 @@ st.markdown(
     }
 
     .sku-title {
-        font-size: 1rem;
-        font-weight: 780;
+        font-size: 1.02rem;
+        font-weight: 790;
         color: #111827;
-        margin-bottom: 0.28rem;
+        margin-bottom: 0.32rem;
     }
 
     .sku-subtitle {
         color: #6B7280;
         font-size: 0.84rem;
-        margin-bottom: 0.9rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid #E5EAF1;
+        margin-bottom: 1rem;
+        padding-bottom: 0.82rem;
+        border-bottom: 1px solid #E8EDF4;
     }
 
     .premium-kpi,
