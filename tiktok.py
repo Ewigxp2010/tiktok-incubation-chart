@@ -1729,11 +1729,11 @@ TEXT = {
         "affiliate_video_gmv": "Affiliate Video GMV",
         "paid_gmv_increment": "Incremental GMV from paid growth",
         "shoptab_gmv": "Store/Search GMV",
-        "phase_total_breakdown": "What drives phase profit",
+        "phase_total_breakdown": "Phase Profit Bridge",
         "supporting_charts": "Business Drivers",
-        "section_primary": "Primary view",
+        "section_primary": "Core view",
         "section_secondary": "Supporting view",
-        "investment_split": "Where the investment goes",
+        "investment_split": "Investment Mix",
         "product_profile": "Product Profile",
         "hero_title": "{weeks}-week incubation plan for {skus} SKUs",
         "hero_subtitle": "Projected {gmv} GMV with {growth_investment} growth investment. Break-even: {break_even}.",
@@ -2056,11 +2056,11 @@ TEXT = {
         "affiliate_video_gmv": "达人视频 GMV",
         "paid_gmv_increment": "付费加热带来的增量 GMV",
         "shoptab_gmv": "店铺/Search GMV",
-        "phase_total_breakdown": "阶段利润由什么驱动",
+        "phase_total_breakdown": "阶段利润桥",
         "supporting_charts": "业务驱动因素",
-        "section_primary": "主视图",
+        "section_primary": "核心视图",
         "section_secondary": "辅助视图",
-        "investment_split": "投入花在哪里",
+        "investment_split": "投入结构",
         "product_profile": "产品组合",
         "hero_title": "{weeks} 周、{skus} 个 SKU 的孵化计划",
         "hero_subtitle": "预计产生 {gmv} GMV，需要 {growth_investment} 增长投入。Break-even：{break_even}。",
@@ -6743,9 +6743,9 @@ if st.session_state.get("has_generated", False):
             )
             st.plotly_chart(make_scale_chart(df_all, T["forecast_gmv"], weekly_be, height=430), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             render_chart_panel_caption(
-                "Compare GMV with total cost to see whether scale stays ahead of operating spend."
+                "GMV versus total cost."
                 if lang != "zh" else
-                "对比 GMV 与总成本，判断增长规模是否持续跑赢经营支出。"
+                "对比 GMV 与总成本。"
             )
         chart_left, chart_right = st.columns(2, gap="large")
         with chart_left:
@@ -6755,9 +6755,9 @@ if st.session_state.get("has_generated", False):
                 )
                 st.plotly_chart(make_profit_investment_chart(df_all, T["sales_contribution"], height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                 render_chart_panel_caption(
-                    "Read weekly profit against growth investment."
+                    "Weekly profit versus growth investment."
                     if lang != "zh" else
-                    "查看单周利润与增长投入。"
+                    "单周利润与增长投入。"
                 )
         with chart_right:
             with st.container(border=True):
@@ -6766,9 +6766,9 @@ if st.session_state.get("has_generated", False):
                 )
                 st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be, height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                 render_chart_panel_caption(
-                    "Track whether cumulative profit recovers upfront investment."
+                    "Cumulative profit versus upfront investment."
                     if lang != "zh" else
-                    "查看累计利润是否覆盖前期投入。"
+                    "累计利润与前期投入。"
                 )
         render_subtle_note(overall_chart_insight(df_all), T["chart_insight"])
         if meeting_mode:
