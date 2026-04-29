@@ -1684,6 +1684,7 @@ TEXT = {
         "sample_investment": "Sample Investment",
         "ads_investment": "Ads Investment",
         "benchmark_expander": "View / adjust category funnel assumptions",
+        "benchmark_note": "Defaults come from recent DE category calibration. Adjust only when you want to override the planning baseline.",
         "videos_sample": "Videos / sample",
         "clicks_video": "Clicks / video",
         "click_order": "Click-to-order (%)",
@@ -2010,6 +2011,7 @@ TEXT = {
         "sample_investment": "样品投入",
         "ads_investment": "广告投入",
         "benchmark_expander": "查看 / 调整类目漏斗假设",
+        "benchmark_note": "默认值优先来自最新 DE 类目校准；仅在需要覆盖当前 planning 基线时再调整。",
         "videos_sample": "每个样品产出视频数",
         "clicks_video": "每条视频商品点击数",
         "click_order": "点击到下单转化率 (%)",
@@ -2285,6 +2287,7 @@ TEXT["de"] = {
     "sample_investment": "Sample-Investition",
     "ads_investment": "Ads-Investition",
     "benchmark_expander": "Kategorie-Funnel-Annahmen anzeigen / anpassen",
+    "benchmark_note": "Standardwerte stammen aus der aktuellen DE-Kalibrierung. Nur anpassen, wenn Sie die Planungsbasis bewusst uberschreiben wollen.",
     "videos_sample": "Videos / Sample",
     "clicks_video": "Klicks / Video",
     "click_order": "Klick-zu-Bestellung (%)",
@@ -2373,6 +2376,7 @@ TEXT["nl"] = {
     "sample_investment": "Sample-investering",
     "ads_investment": "Ads-investering",
     "benchmark_expander": "Categorie-funnelaannames bekijken / aanpassen",
+    "benchmark_note": "Standaardwaarden komen uit de recente DE-kalibratie. Pas ze alleen aan als je de planningsbasis bewust wilt overschrijven.",
     "videos_sample": "Video's / sample",
     "clicks_video": "Clicks / video",
     "click_order": "Click-to-order (%)",
@@ -2551,9 +2555,9 @@ st.markdown(
     }
 
     .cover-shell {
-        max-width: 1120px;
+        max-width: 1160px;
         margin: 0 auto;
-        padding: 11vh 0 0 0;
+        padding: 12vh 0 0 0;
         position: relative;
     }
 
@@ -2575,49 +2579,49 @@ st.markdown(
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #2E5BEB;
-        background: rgba(46, 91, 235, 0.08);
-        border: 1px solid rgba(46, 91, 235, 0.14);
-        padding: 0.44rem 0.82rem;
+        color: #315EEC;
+        background: rgba(49, 94, 236, 0.09);
+        border: 1px solid rgba(49, 94, 236, 0.16);
+        padding: 0.48rem 0.9rem;
         border-radius: 999px;
-        font-size: 0.72rem;
-        font-weight: 760;
+        font-size: 0.7rem;
+        font-weight: 780;
         text-transform: uppercase;
-        letter-spacing: 0.14em;
-        margin-bottom: 0.7rem;
+        letter-spacing: 0.16em;
+        margin-bottom: 0.95rem;
     }
 
     .cover-logo-title {
         color: #0F172A;
-        font-size: clamp(3.6rem, 6vw, 6.3rem);
-        font-weight: 835;
-        line-height: 0.92;
-        letter-spacing: -0.075em;
-        max-width: 1120px;
+        font-size: clamp(4.2rem, 6vw, 6.7rem);
+        font-weight: 860;
+        line-height: 0.94;
+        letter-spacing: -0.08em;
+        max-width: 1100px;
         white-space: nowrap;
     }
 
     .cover-logo-subtitle {
-        color: #56647B;
-        font-size: 1.04rem;
-        line-height: 1.65;
-        margin: 1rem auto 0 auto;
-        max-width: 560px;
+        color: #617089;
+        font-size: 1.08rem;
+        line-height: 1.58;
+        margin: 1.15rem auto 0 auto;
+        max-width: 620px;
         text-align: center;
     }
 
     .cover-bottom-row {
-        max-width: 920px;
-        margin: 2.6rem auto 0 auto;
+        max-width: 980px;
+        margin: 3.1rem auto 0 auto;
     }
 
     .cover-row-label {
-        color: #6B7280;
-        font-size: 0.71rem;
-        font-weight: 760;
+        color: #7A8699;
+        font-size: 0.69rem;
+        font-weight: 780;
         text-transform: uppercase;
-        letter-spacing: 0.17em;
-        margin: 0 0 0.85rem 0.3rem;
+        letter-spacing: 0.18em;
+        margin: 0 0 0.75rem 0.3rem;
         text-align: left;
     }
 
@@ -2643,11 +2647,11 @@ st.markdown(
     }
 
     .cover-note {
-        color: #6B7280;
-        font-size: 0.8rem;
-        line-height: 1.58;
-        max-width: 520px;
-        margin: 1.15rem auto 0 auto;
+        color: #738196;
+        font-size: 0.78rem;
+        line-height: 1.7;
+        max-width: 620px;
+        margin: 1.3rem auto 0 auto;
         text-align: center;
     }
 
@@ -2657,28 +2661,43 @@ st.markdown(
     }
 
     .cover-bottom-row .stButton > button {
-        min-height: 68px;
-        border-radius: 18px;
-        font-size: 1.06rem;
-        font-weight: 770;
+        min-height: 74px;
+        border-radius: 20px;
+        font-size: 1.08rem;
+        font-weight: 780;
         background: linear-gradient(180deg, #315EEC 0%, #244DDC 100%);
         border: 0;
-        box-shadow: 0 16px 36px rgba(49, 94, 236, 0.18);
+        box-shadow: 0 18px 38px rgba(49, 94, 236, 0.2);
     }
 
     .cover-bottom-row [data-testid="stNumberInputContainer"] input {
-        min-height: 68px;
-        border-radius: 18px;
-        font-size: 1.08rem;
-        font-weight: 680;
+        min-height: 74px;
+        border-radius: 20px;
+        font-size: 1.12rem;
+        font-weight: 700;
         background: #FFFFFF;
-        border: 1.5px solid #D5DEE9;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+        border: 1.5px solid #D6DFEA;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045);
     }
 
     .cover-bottom-row [data-testid="stNumberInputContainer"] button {
-        min-height: 68px;
-        border-radius: 16px;
+        min-height: 74px;
+        border-radius: 18px;
+    }
+
+    .cover-bottom-row + div[data-testid="stHorizontalBlock"] {
+        max-width: 980px;
+        margin: 0 auto;
+        align-items: end;
+        gap: 1rem;
+    }
+
+    .cover-bottom-row + div[data-testid="stHorizontalBlock"] [data-testid="column"] {
+        align-self: stretch;
+    }
+
+    .cover-bottom-row + div[data-testid="stHorizontalBlock"] [data-testid="stNumberInputContainer"] {
+        margin-top: 0;
     }
 
     @media (max-width: 1100px) {
@@ -2937,6 +2956,33 @@ st.markdown(
     div[data-testid="stExpander"] details summary p {
         color: #111827;
         font-weight: 700;
+    }
+
+    div[data-testid="stExpander"] div[data-testid="stExpander"] {
+        margin-top: 0.8rem;
+        border: 1px solid #E3E9F2;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #FBFCFE 0%, #F7F9FC 100%);
+        box-shadow: none;
+    }
+
+    div[data-testid="stExpander"] div[data-testid="stExpander"] details summary {
+        padding-top: 0.15rem;
+        padding-bottom: 0.15rem;
+    }
+
+    div[data-testid="stExpander"] div[data-testid="stExpander"] details summary p {
+        color: #2B3648;
+        font-size: 0.92rem;
+        font-weight: 680;
+    }
+
+    .benchmark-note {
+        color: #6B7280;
+        font-size: 0.81rem;
+        line-height: 1.55;
+        margin: 0.1rem 0 0.9rem 0;
+        max-width: 760px;
     }
 
     div[data-testid="stAlert"] {
@@ -6174,6 +6220,7 @@ if show_setup:
                 st.caption(f"{T['fbt_status']}: {fbt_status} · {T['effective_logistics']}: {money(effective_logistics, 2)}")
 
             with st.expander(T["benchmark_expander"], expanded=False):
+                st.markdown(f'<div class="benchmark-note">{escape(T["benchmark_note"])}</div>', unsafe_allow_html=True)
                 b1, b2, b3, b4 = st.columns(4)
                 with b1:
                     st.number_input(T["videos_sample"], min_value=0.0, max_value=5.0, step=0.05, key=f"videos_per_sample_{i}", help=T["videos_sample_help"])
