@@ -1518,7 +1518,7 @@ st.markdown(
 
     .meeting-header-kicker {
         color: #64748B;
-        font-size: 0.82rem;
+        font-size: 0.86rem;
         font-weight: 760;
         text-transform: uppercase;
         letter-spacing: 0.04em;
@@ -1527,9 +1527,9 @@ st.markdown(
 
     .meeting-header-title {
         color: #111827;
-        font-size: 1.34rem;
-        font-weight: 780;
-        line-height: 1.15;
+        font-size: 1.56rem;
+        font-weight: 790;
+        line-height: 1.12;
     }
 
     .meeting-header-meta {
@@ -1562,7 +1562,7 @@ st.markdown(
 
     .section-eyebrow {
         color: #64748B;
-        font-size: 0.75rem;
+        font-size: 0.78rem;
         font-weight: 780;
         text-transform: uppercase;
         letter-spacing: 0.04em;
@@ -1571,7 +1571,7 @@ st.markdown(
 
     .section-title {
         color: #111827;
-        font-size: clamp(1.08rem, 1.36vw, 1.22rem);
+        font-size: clamp(1.18rem, 1.5vw, 1.34rem);
         font-weight: 760;
         line-height: 1.16;
         margin: 0 0 2px 0;
@@ -1877,16 +1877,16 @@ st.markdown(
 
     .hero-title {
         color: #111827;
-        font-size: 1.22rem;
+        font-size: 1.42rem;
         font-weight: 790;
-        line-height: 1.18;
-        margin-bottom: 6px;
+        line-height: 1.14;
+        margin-bottom: 8px;
     }
 
     .hero-subtitle {
         color: #4B5563;
-        font-size: 0.94rem;
-        line-height: 1.45;
+        font-size: 1rem;
+        line-height: 1.5;
     }
 
     .hero-kpi {
@@ -1904,7 +1904,7 @@ st.markdown(
 
     .hero-kpi-value {
         color: #111827;
-        font-size: clamp(1.02rem, 1.35vw, 1.22rem);
+        font-size: clamp(1.12rem, 1.52vw, 1.34rem);
         font-weight: 800;
         line-height: 1.2;
         overflow-wrap: anywhere;
@@ -1971,7 +1971,7 @@ st.markdown(
 
     .premium-kpi-value {
         color: #111827;
-        font-size: clamp(1rem, 1.58vw, 1.28rem);
+        font-size: clamp(1.08rem, 1.72vw, 1.42rem);
         font-weight: 800;
         line-height: 1.18;
         overflow-wrap: anywhere;
