@@ -2555,103 +2555,127 @@ st.markdown(
     }
 
     .cover-shell {
-        background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 22px;
-        padding: 52px 56px 42px 56px;
-        margin: 18px 0 22px 0;
-        box-shadow: none;
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 9vh 0 0 0;
     }
 
     .cover-logo-row {
         display: flex;
-        align-items: flex-start;
-        gap: 22px;
-        margin-bottom: 22px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        text-align: center;
     }
 
     .cover-logo-mark {
-        width: 92px;
-        height: 92px;
-        border-radius: 26px;
-        background: #111827;
+        width: 72px;
+        height: 72px;
+        border-radius: 22px;
+        background: #0F172A;
         color: #FFFFFF;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2.15rem;
-        font-weight: 840;
-        letter-spacing: 0.01em;
-        flex: 0 0 92px;
+        font-size: 1.7rem;
+        font-weight: 820;
+        letter-spacing: -0.02em;
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
     }
 
     .cover-logo-meta {
         min-width: 0;
-        max-width: 860px;
+        text-align: center;
     }
 
     .cover-logo-kicker {
         color: #667085;
-        font-size: 0.8rem;
+        font-size: 0.76rem;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.12em;
-        margin-bottom: 10px;
+        letter-spacing: 0.18em;
+        margin-bottom: 0.35rem;
     }
 
     .cover-logo-title {
-        color: #111827;
-        font-size: clamp(2.7rem, 4.8vw, 4.7rem);
+        color: #0F172A;
+        font-size: clamp(3.4rem, 7vw, 6.4rem);
         font-weight: 840;
-        line-height: 0.92;
-        letter-spacing: -0.05em;
+        line-height: 0.94;
+        letter-spacing: -0.07em;
+        max-width: 980px;
     }
 
     .cover-logo-subtitle {
-        color: #475467;
+        color: #667085;
         font-size: 1.02rem;
-        line-height: 1.55;
-        margin-top: 16px;
-        max-width: 760px;
+        line-height: 1.7;
+        margin: 0.9rem auto 0 auto;
+        max-width: 680px;
+        text-align: center;
     }
 
     .cover-bottom-row {
-        display: grid;
-        grid-template-columns: minmax(240px, 300px) minmax(220px, 280px) 1fr;
-        gap: 18px;
-        align-items: start;
-        margin-top: 34px;
+        max-width: 760px;
+        margin: 2.4rem auto 0 auto;
+    }
+
+    .cover-action-shell {
+        background: #FFFFFF;
+        border: 1px solid #D8DEE8;
+        border-radius: 24px;
+        padding: 14px;
+        box-shadow: 0 20px 48px rgba(15, 23, 42, 0.06);
     }
 
     .cover-field {
-        background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 16px;
-        padding: 14px 16px 8px 16px;
-        min-height: 92px;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        min-height: 0;
     }
 
     .cover-field-kicker {
         color: #667085;
-        font-size: 0.74rem;
+        font-size: 0.7rem;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        margin-bottom: 8px;
+        letter-spacing: 0.14em;
+        margin: 0 0 0.45rem 0.2rem;
     }
 
     .cover-button-wrap {
         display: flex;
         align-items: stretch;
-        min-height: 92px;
     }
 
     .cover-note {
         color: #667085;
         font-size: 0.9rem;
-        line-height: 1.55;
-        max-width: 420px;
-        padding-top: 8px;
+        line-height: 1.65;
+        max-width: 640px;
+        margin: 1rem auto 0 auto;
+        text-align: center;
+    }
+
+    .cover-note strong {
+        color: #111827;
+        font-weight: 700;
+    }
+
+    .cover-bottom-row .stButton > button {
+        min-height: 54px;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-weight: 760;
+    }
+
+    .cover-bottom-row [data-testid="stNumberInputContainer"] input {
+        min-height: 54px;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-weight: 650;
     }
 
     div[data-testid="stMetric"] {
@@ -5838,9 +5862,24 @@ def format_table(df, money_cols=None, pct_cols=None, number_cols=None, decimal_c
 
 
 if not st.session_state.get("sku_count_confirmed", False) and not st.session_state.get("has_generated", False):
+    st.markdown(
+        """
+        <style>
+        section[data-testid="stSidebar"] { display: none !important; }
+        [data-testid="collapsedControl"] { display: none !important; }
+        [data-testid="stAppViewContainer"] > .main .block-container {
+            max-width: 1080px;
+            padding-left: 2.75rem;
+            padding-right: 2.75rem;
+            padding-top: 2.5rem;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
     render_cover_page(5)
-    st.markdown('<div class="cover-bottom-row">', unsafe_allow_html=True)
-    cover_col1, cover_col2, cover_col3 = st.columns([1.05, 0.9, 1.2])
+    st.markdown('<div class="cover-bottom-row"><div class="cover-action-shell">', unsafe_allow_html=True)
+    cover_col1, cover_col2 = st.columns([1.15, 0.95], vertical_alignment="bottom")
     with cover_col1:
         st.markdown(f'<div class="cover-field"><div class="cover-field-kicker">{escape(T["expected_listing_skus"])}</div>', unsafe_allow_html=True)
         st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input", label_visibility="collapsed")
@@ -5851,9 +5890,10 @@ if not st.session_state.get("sku_count_confirmed", False) and not st.session_sta
             st.session_state["sku_count_confirmed"] = True
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
-    with cover_col3:
-        st.markdown(f'<div class="cover-note">{escape(T["calibration_note"])}</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown(
+        f'</div><div class="cover-note"><strong>{escape(T["model_version"])}:</strong> {escape(MODEL_VERSION)}. {escape(T["calibration_note"])}</div></div>',
+        unsafe_allow_html=True,
+    )
     st.stop()
 
 with st.sidebar:
