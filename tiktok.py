@@ -1923,6 +1923,10 @@ st.markdown(
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
+    .kpi-grid.kpi-grid-three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .kpi-grid.kpi-grid-compact {
         grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
     }
@@ -2656,6 +2660,8 @@ def render_kpi_grid(items, compact=False, fixed_cols=None):
     class_names = ["kpi-grid"]
     if compact:
         class_names.append("kpi-grid-compact")
+    if fixed_cols == 3:
+        class_names.append("kpi-grid-three")
     if fixed_cols == 4:
         class_names.append("kpi-grid-four")
     class_name = " ".join(class_names)
@@ -4663,10 +4669,6 @@ if st.session_state.get("has_generated", False):
         )
 
         render_section_header(T["executive_dashboard"])
-        render_dashboard_intro(
-            snapshot_text=scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
-            diagnosis_text=diagnosis_text,
-        )
         if not st.session_state.get("plan_locked", False):
             if st.button(T["lock_plan"], key="lock_plan_btn"):
                 st.session_state["plan_locked"] = True
@@ -4683,21 +4685,15 @@ if st.session_state.get("has_generated", False):
             (T["total_profit"], money(overall["Total Profit"], 0), "#178A62" if overall["Total Profit"] >= 0 else "#B42318"),
             (T["growth_investment"], money(overall["Growth Investment"], 0), "#4F46E5"),
             (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#64748B"),
-            (T["weekly_profit"], weekly_be_label, "#64748B"),
-            (T["cumulative_be"], cumulative_be_label, "#64748B"),
-            (T["orders"], f"{overall['Total Orders']:,.0f}", "#178A62"),
             (T["channel_mix"], main_gmv_channel(df_all), "#94A3B8"),
-        ], fixed_cols=4)
-        render_executive_brief(
-            executive_brief_items(
-                overall=overall,
-                df_all=df_all,
-                weekly_be_label=weekly_be_label,
-                cumulative_be_label=cumulative_be_label,
-                driver=total_cost_driver,
-            )
+            (T["cumulative_be"], cumulative_be_label, "#64748B"),
+        ], fixed_cols=3)
+        render_status_panel(
+            T["diagnosis_summary"],
+            diagnosis_text,
+            tone="info",
+            compact=True,
         )
-        st.caption(T["planning_disclaimer"])
         target_items = target_comparison_items(overall, target_gmv, target_profit)
 
         render_section_header(T["phase_trend"])
@@ -4814,6 +4810,21 @@ if st.session_state.get("has_generated", False):
             if target_items:
                 st.subheader(T["target_comparison"])
                 render_kpi_grid(target_items)
+
+            render_subtle_note(
+                scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
+                T["scenario_snapshot"],
+            )
+            render_executive_brief(
+                executive_brief_items(
+                    overall=overall,
+                    df_all=df_all,
+                    weekly_be_label=weekly_be_label,
+                    cumulative_be_label=cumulative_be_label,
+                    driver=total_cost_driver,
+                )
+            )
+            st.caption(T["planning_disclaimer"])
 
             st.subheader(T["commercial_takeaways"])
             render_business_readout(business_readout)
