@@ -5807,7 +5807,7 @@ def add_phase_bands(fig, df, target_row=None, target_col=None):
         )
 
 
-def add_end_label(fig, x, y, text, color, row=None, col=None, xshift=10):
+def add_end_label(fig, x, y, text, color, row=None, col=None, xshift=10, yshift=0):
     kwargs = {}
     if row is not None:
         kwargs["row"] = row
@@ -5817,6 +5817,7 @@ def add_end_label(fig, x, y, text, color, row=None, col=None, xshift=10):
         x=x,
         y=y,
         xshift=xshift,
+        yshift=yshift,
         showarrow=False,
         text=text,
         font=dict(size=9, color=color, family="Arial, sans-serif"),
@@ -5901,31 +5902,39 @@ def make_scale_chart(df, title, break_even_week=None, height=330):
     fig = go.Figure()
     add_phase_bands(fig, df)
     max_week = int(df["Global Week"].max())
-    for label, col, color, width, fill in [
-        (T["forecast_gmv"], "GMV", CHART_COLORS["gmv"], 3.0, True),
-        (T["total_cost_label"], "Total Cost", CHART_COLORS["cost"], 2.0, False),
-    ]:
-        fig.add_trace(
-            go.Scatter(
-                x=df["Global Week"],
-                y=df[col],
-                mode="lines+markers",
-                line=dict(color=color, width=width, shape="spline", smoothing=0.52),
-                fill="tozeroy" if fill else None,
-                fillcolor="rgba(45, 91, 255, 0.08)" if fill else None,
-                marker=dict(size=4.4 if fill else 3.6, color=color, line=dict(color="#FFFFFF", width=0.9)),
-                hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
-            )
+    fig.add_trace(
+        go.Scatter(
+            x=df["Global Week"],
+            y=df["Total Cost"],
+            mode="lines+markers",
+            name=T["total_cost_label"],
+            line=dict(color=CHART_COLORS["cost"], width=2.1, shape="spline", smoothing=0.52),
+            marker=dict(size=3.6, color=CHART_COLORS["cost"], line=dict(color="#FFFFFF", width=0.9)),
+            hovertemplate=f"{T['total_cost_label']}: €%{{y:,.0f}}<extra></extra>",
         )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=df["Global Week"],
+            y=df["GMV"],
+            mode="lines+markers",
+            name=T["forecast_gmv"],
+            line=dict(color=CHART_COLORS["gmv"], width=3.0, shape="spline", smoothing=0.52),
+            marker=dict(size=4.2, color=CHART_COLORS["gmv"], line=dict(color="#FFFFFF", width=1.0)),
+            fill="tonexty",
+            fillcolor="rgba(49, 94, 236, 0.10)",
+            hovertemplate=f"{T['forecast_gmv']}: €%{{y:,.0f}}<extra></extra>",
+        )
+    )
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#98A2B3")
     apply_plotly_layout(fig, "", height=height)
-    fig.update_layout(showlegend=False, margin=dict(l=42, r=54, t=10, b=28))
+    fig.update_layout(showlegend=False, margin=dict(l=42, r=68, t=10, b=28))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"], dtick=week_tick_step(max_week), tickmode="linear")
     last_x = df["Global Week"].iloc[-1]
-    add_end_label(fig, last_x, float(df["GMV"].iloc[-1]), money(float(df["GMV"].iloc[-1]), 0), CHART_COLORS["gmv"])
-    add_end_label(fig, last_x, float(df["Total Cost"].iloc[-1]), money(float(df["Total Cost"].iloc[-1]), 0), CHART_COLORS["cost"])
+    add_end_label(fig, last_x, float(df["GMV"].iloc[-1]), money(float(df["GMV"].iloc[-1]), 0), CHART_COLORS["gmv"], xshift=16, yshift=-10)
+    add_end_label(fig, last_x, float(df["Total Cost"].iloc[-1]), money(float(df["Total Cost"].iloc[-1]), 0), CHART_COLORS["cost"], xshift=16, yshift=10)
     return fig
 
 
