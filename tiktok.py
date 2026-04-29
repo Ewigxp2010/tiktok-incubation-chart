@@ -1562,11 +1562,11 @@ SCENARIO_ADJUSTMENTS = {
     "upside": {"clicks": 1.15, "conversion": 1.15, "roas": 1.10},
 }
 CHART_COLORS = {
-    "gmv": "#2F5BEA",
-    "cost": "#7A8394",
-    "profit": "#1D8B67",
+    "gmv": "#2D5BFF",
+    "cost": "#6B7280",
+    "profit": "#198C6E",
     "cumulative": "#5B5BD6",
-    "grid": "#F0F4F8",
+    "grid": "#F3F6FA",
     "text": "#111827",
 }
 
@@ -5745,6 +5745,14 @@ def add_terminal_value_labels(fig, series):
         )
 
 
+def week_tick_step(max_week):
+    if max_week <= 6:
+        return 1
+    if max_week <= 12:
+        return 2
+    return 4
+
+
 def add_phase_bands(fig, df, target_row=None, target_col=None):
     phase_ranges = df.groupby(["Phase Key"], as_index=False).agg(
         start_week=("Global Week", "min"),
@@ -5857,18 +5865,20 @@ def make_weekly_chart(df, title, break_even_week=None):
 def make_scale_chart(df, title, break_even_week=None, height=330):
     fig = go.Figure()
     add_phase_bands(fig, df)
+    max_week = int(df["Global Week"].max())
     for label, col, color, width, fill in [
-        (T["forecast_gmv"], "GMV", CHART_COLORS["gmv"], 2.9, True),
-        (T["total_cost_label"], "Total Cost", CHART_COLORS["cost"], 2.1, False),
+        (T["forecast_gmv"], "GMV", CHART_COLORS["gmv"], 3.0, True),
+        (T["total_cost_label"], "Total Cost", CHART_COLORS["cost"], 2.0, False),
     ]:
         fig.add_trace(
             go.Scatter(
                 x=df["Global Week"],
                 y=df[col],
-                mode="lines",
+                mode="lines+markers",
                 line=dict(color=color, width=width, shape="spline", smoothing=0.52),
                 fill="tozeroy" if fill else None,
-                fillcolor="rgba(49, 94, 236, 0.08)" if fill else None,
+                fillcolor="rgba(45, 91, 255, 0.08)" if fill else None,
+                marker=dict(size=4.4 if fill else 3.6, color=color, line=dict(color="#FFFFFF", width=0.9)),
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
             )
         )
@@ -5877,7 +5887,7 @@ def make_scale_chart(df, title, break_even_week=None, height=330):
     apply_plotly_layout(fig, "", height=height)
     fig.update_layout(showlegend=False, margin=dict(l=42, r=54, t=10, b=28))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
+    fig.update_xaxes(title=T["week"], dtick=week_tick_step(max_week), tickmode="linear")
     last_x = df["Global Week"].iloc[-1]
     add_end_label(fig, last_x, float(df["GMV"].iloc[-1]), money(float(df["GMV"].iloc[-1]), 0), CHART_COLORS["gmv"])
     add_end_label(fig, last_x, float(df["Total Cost"].iloc[-1]), money(float(df["Total Cost"].iloc[-1]), 0), CHART_COLORS["cost"])
@@ -5886,12 +5896,13 @@ def make_scale_chart(df, title, break_even_week=None, height=330):
 
 def make_profit_investment_chart(df, title, height=310):
     fig = go.Figure()
+    max_week = int(df["Global Week"].max())
     fig.add_trace(
         go.Bar(
             x=df["Global Week"],
             y=df["Growth Investment"],
             name=T["growth_investment"],
-            marker=dict(color="rgba(91, 91, 214, 0.14)", line=dict(color="#5B5BD6", width=1)),
+            marker=dict(color="rgba(91, 91, 214, 0.16)", line=dict(color="#6B63E8", width=0.9)),
             hovertemplate=f"{T['growth_investment']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
@@ -5900,15 +5911,15 @@ def make_profit_investment_chart(df, title, height=310):
             x=df["Global Week"],
             y=df["Profit"],
             name=T["profit_label"],
-            marker=dict(color="rgba(23, 138, 98, 0.76)", line=dict(color="#178A62", width=0.8)),
+            marker=dict(color="rgba(25, 140, 110, 0.72)", line=dict(color="#198C6E", width=0.8)),
             hovertemplate=f"{T['profit_label']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
     fig.add_hline(y=0, line_color="#98A2B3", line_width=1)
     apply_plotly_layout(fig, "", height=height)
-    fig.update_layout(showlegend=False, margin=dict(l=42, r=54, t=10, b=28), barmode="group", bargap=0.42)
+    fig.update_layout(showlegend=False, margin=dict(l=42, r=54, t=10, b=28), barmode="group", bargap=0.56)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
+    fig.update_xaxes(title=T["week"], dtick=week_tick_step(max_week), tickmode="linear")
     last_x = df["Global Week"].iloc[-1]
     add_end_label(fig, last_x, float(df["Profit"].iloc[-1]), money(float(df["Profit"].iloc[-1]), 0), CHART_COLORS["profit"], xshift=14)
     add_end_label(fig, last_x, float(df["Growth Investment"].iloc[-1]), money(float(df["Growth Investment"].iloc[-1]), 0), "#5B5BD6", xshift=14)
@@ -5918,6 +5929,7 @@ def make_profit_investment_chart(df, title, height=310):
 def make_cumulative_profit_chart(df, break_even_week=None, height=520):
     temp = df.copy()
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
+    max_week = int(temp["Global Week"].max())
     fig = go.Figure()
     add_phase_bands(fig, temp)
     fig.add_trace(
@@ -5927,8 +5939,8 @@ def make_cumulative_profit_chart(df, break_even_week=None, height=520):
             mode="lines+markers",
             fill="tozeroy",
             name=T["cumulative_profit_trend"],
-            line=dict(color=CHART_COLORS["cumulative"], width=2.5, shape="spline", smoothing=0.36),
-            marker=dict(size=4.2, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=0.8)),
+            line=dict(color=CHART_COLORS["cumulative"], width=2.45, shape="spline", smoothing=0.36),
+            marker=dict(size=4.0, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=0.8)),
             fillcolor="rgba(79, 70, 229, 0.07)",
             hovertemplate=f"{T['cumulative_profit_trend']}: €%{{y:,.0f}}<extra></extra>",
         )
@@ -5939,7 +5951,7 @@ def make_cumulative_profit_chart(df, break_even_week=None, height=520):
     apply_plotly_layout(fig, "", height=height)
     fig.update_layout(showlegend=False, margin=dict(l=44, r=48, t=10, b=28))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
+    fig.update_xaxes(title=T["week"], dtick=week_tick_step(max_week), tickmode="linear")
     add_end_label(
         fig,
         temp["Global Week"].iloc[-1],
@@ -6066,6 +6078,7 @@ def make_phase_cumulative_chart(phase_df, title):
     temp["Cumulative Total Cost"] = temp["Total Cost"].cumsum()
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
     temp["Cumulative Growth Investment"] = temp["Growth Investment"].cumsum()
+    max_week = int(temp["Week in Phase"].max())
 
     fig = make_subplots(
         rows=2,
@@ -6083,11 +6096,12 @@ def make_phase_cumulative_chart(phase_df, title):
             go.Scatter(
                 x=temp["Week in Phase"],
                 y=temp[col],
-                mode="lines",
+                mode="lines+markers",
                 name=label,
                 line=dict(color=color, width=width, shape="spline", smoothing=0.52),
                 fill="tozeroy" if col == "Cumulative GMV" else None,
-                fillcolor="rgba(49, 94, 236, 0.06)" if col == "Cumulative GMV" else None,
+                fillcolor="rgba(45, 91, 255, 0.06)" if col == "Cumulative GMV" else None,
+                marker=dict(size=4.0 if col == "Cumulative GMV" else 3.4, color=color, line=dict(color="#FFFFFF", width=0.8)),
                 hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
             ),
             row=1,
@@ -6098,7 +6112,7 @@ def make_phase_cumulative_chart(phase_df, title):
             x=temp["Week in Phase"],
             y=temp["Cumulative Growth Investment"],
             name=T["growth_investment"],
-            marker=dict(color="rgba(91, 91, 214, 0.20)", line=dict(color="#5B5BD6", width=1)),
+            marker=dict(color="rgba(91, 91, 214, 0.16)", line=dict(color="#6B63E8", width=0.9)),
             hovertemplate=f"{T['growth_investment']}: €%{{y:,.0f}}<extra></extra>",
         ),
         row=2,
@@ -6109,7 +6123,7 @@ def make_phase_cumulative_chart(phase_df, title):
             x=temp["Week in Phase"],
             y=temp["Cumulative Profit"],
             name=T["profit_label"],
-            marker=dict(color="rgba(23, 138, 98, 0.78)", line=dict(color="#178A62", width=0.8)),
+            marker=dict(color="rgba(25, 140, 110, 0.72)", line=dict(color="#198C6E", width=0.8)),
             hovertemplate=f"{T['profit_label']}: €%{{y:,.0f}}<extra></extra>",
         ),
         row=2,
@@ -6126,13 +6140,13 @@ def make_phase_cumulative_chart(phase_df, title):
     apply_plotly_layout(fig, "", height=540)
     fig.update_layout(
         showlegend=False,
-        margin=dict(l=54, r=74, t=24, b=46),
+        margin=dict(l=44, r=54, t=16, b=34),
         barmode="group",
-        bargap=0.42,
+        bargap=0.56,
     )
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", row=1, col=1)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", row=2, col=1)
-    fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear", row=2, col=1)
+    fig.update_xaxes(title=T["week"], dtick=week_tick_step(max_week), tickmode="linear", row=2, col=1)
     fig.update_xaxes(title="", row=1, col=1)
     return fig
 
