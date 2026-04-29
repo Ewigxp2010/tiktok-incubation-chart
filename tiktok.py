@@ -1562,11 +1562,11 @@ SCENARIO_ADJUSTMENTS = {
     "upside": {"clicks": 1.15, "conversion": 1.15, "roas": 1.10},
 }
 CHART_COLORS = {
-    "gmv": "#315EEC",
-    "cost": "#6B7280",
-    "profit": "#178A62",
-    "cumulative": "#4F46E5",
-    "grid": "#E7ECF2",
+    "gmv": "#2F5BEA",
+    "cost": "#7A8394",
+    "profit": "#1D8B67",
+    "cumulative": "#5B5BD6",
+    "grid": "#F0F4F8",
     "text": "#111827",
 }
 
@@ -5596,7 +5596,7 @@ def apply_plotly_layout(fig, title, height=460):
             "font": {"size": 12, "color": "#111827", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=52, r=58, t=66, b=36),
+        margin=dict(l=50, r=54, t=58, b=34),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#FFFFFF",
         font=dict(color="#111827", family="Arial, sans-serif"),
@@ -5612,24 +5612,24 @@ def apply_plotly_layout(fig, title, height=460):
         hovermode="x unified",
         hoverlabel=dict(
             bgcolor="#FFFFFF",
-            bordercolor="#DDE4EC",
+            bordercolor="#E7ECF2",
             font=dict(color="#111827", size=11),
         ),
     )
     fig.update_xaxes(
         showgrid=True,
-        gridcolor="#EEF2F7",
+        gridcolor=CHART_COLORS["grid"],
         zeroline=False,
-        linecolor="#E5EAF0",
+        linecolor="#EDF2F7",
         tickfont=dict(color="#667085", size=10),
         ticklen=0,
         automargin=True,
     )
     fig.update_yaxes(
         showgrid=True,
-        gridcolor="#EEF2F7",
+        gridcolor=CHART_COLORS["grid"],
         zeroline=False,
-        linecolor="#E5EAF0",
+        linecolor="#EDF2F7",
         tickfont=dict(color="#667085", size=10),
         ticklen=0,
         automargin=True,
