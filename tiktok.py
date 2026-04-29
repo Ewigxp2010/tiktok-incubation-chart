@@ -6662,17 +6662,8 @@ if st.session_state.get("has_generated", False):
             key=f"phase_chart_mode_{selected_phase['key']}",
         )
         phase_chart_title = phase_label(selected_phase)
-        phase_chart_subtitle = (
-            "Cumulative weekly scale and economics inside this phase."
-            if lang != "zh" else
-            "查看本阶段内累计规模与经营贡献。"
-        ) if chart_mode == T["phase_chart_cumulative"] else (
-            "Bridge from phase GMV to phase net profit."
-            if lang != "zh" else
-            "查看该阶段从 GMV 到净利润的利润桥。"
-        )
         with st.container(border=True):
-            render_chart_panel_header(phase_chart_title, phase_chart_subtitle, T["section_primary"])
+            render_chart_panel_header(phase_chart_title, None)
             if chart_mode == T["phase_chart_cumulative"]:
                 st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             else:
@@ -6680,25 +6671,29 @@ if st.session_state.get("has_generated", False):
             render_chart_panel_caption(f"<strong>{escape(T['chart_insight'])}.</strong> {escape(phase_chart_insight(phase_row))}")
 
         render_section_header(T["charts"], T["section_primary"])
-        chart_left, chart_right = st.columns([1.34, 0.96], gap="large")
+        with st.container(border=True):
+            render_chart_panel_header(
+                T["forecast_gmv"],
+                "Weekly growth path versus operating cost."
+                if lang != "zh" else
+                "周度增长路径与经营成本对照。",
+            )
+            st.plotly_chart(make_scale_chart(df_all, T["forecast_gmv"], weekly_be, height=430), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+            render_chart_panel_caption(
+                "<strong>How to read.</strong> Compare GMV with total cost to see whether scale stays ahead of operating spend."
+                if lang != "zh" else
+                "<strong>怎么看。</strong> 对比 GMV 与总成本，判断增长规模是否持续跑赢经营支出。"
+            )
+        chart_left, chart_right = st.columns(2, gap="large")
         with chart_left:
             with st.container(border=True):
                 render_chart_panel_header(
-                    T["forecast_gmv"],
-                    None,
-                )
-                st.plotly_chart(make_scale_chart(df_all, T["forecast_gmv"], weekly_be, height=350), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-                render_chart_panel_caption(
-                    "<strong>How to read.</strong> Compare GMV with total cost."
-                    if lang != "zh" else
-                    "<strong>怎么看。</strong> 对比 GMV 与总成本。"
-                )
-            with st.container(border=True):
-                render_chart_panel_header(
                     T["sales_contribution"],
-                    None,
+                    "Weekly profit versus growth investment."
+                    if lang != "zh" else
+                    "单周利润与增长投入对照。",
                 )
-                st.plotly_chart(make_profit_investment_chart(df_all, T["sales_contribution"], height=288), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                st.plotly_chart(make_profit_investment_chart(df_all, T["sales_contribution"], height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                 render_chart_panel_caption(
                     "<strong>How to read.</strong> Read weekly profit against growth investment."
                     if lang != "zh" else
@@ -6708,9 +6703,11 @@ if st.session_state.get("has_generated", False):
             with st.container(border=True):
                 render_chart_panel_header(
                     T["cumulative_profit_trend"],
-                    None,
+                    "Whether cumulative profit fully recovers upfront investment."
+                    if lang != "zh" else
+                    "累计利润是否覆盖前期投入。",
                 )
-                st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be, height=670), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be, height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                 render_chart_panel_caption(
                     f"<strong>{escape(T['chart_read'])}.</strong> "
                     + (
