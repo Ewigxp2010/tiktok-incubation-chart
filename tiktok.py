@@ -2557,7 +2557,7 @@ st.markdown(
     .cover-shell {
         max-width: 920px;
         margin: 0 auto;
-        padding: 9vh 0 0 0;
+        padding: 10vh 0 0 0;
     }
 
     .cover-logo-row {
@@ -2569,64 +2569,56 @@ st.markdown(
         text-align: center;
     }
 
-    .cover-logo-mark {
-        width: 72px;
-        height: 72px;
-        border-radius: 22px;
-        background: #0F172A;
-        color: #FFFFFF;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.7rem;
-        font-weight: 820;
-        letter-spacing: -0.02em;
-        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
-    }
-
     .cover-logo-meta {
         min-width: 0;
         text-align: center;
     }
 
     .cover-logo-kicker {
-        color: #667085;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #315EEC;
+        background: rgba(49, 94, 236, 0.08);
+        border: 1px solid rgba(49, 94, 236, 0.16);
+        padding: 0.48rem 0.9rem;
+        border-radius: 999px;
         font-size: 0.76rem;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.18em;
-        margin-bottom: 0.35rem;
+        letter-spacing: 0.12em;
+        margin-bottom: 0.55rem;
     }
 
     .cover-logo-title {
         color: #0F172A;
-        font-size: clamp(3.4rem, 7vw, 6.4rem);
+        font-size: clamp(3.25rem, 6.8vw, 5.8rem);
         font-weight: 840;
-        line-height: 0.94;
-        letter-spacing: -0.07em;
-        max-width: 980px;
+        line-height: 0.96;
+        letter-spacing: -0.065em;
+        max-width: 900px;
     }
 
     .cover-logo-subtitle {
         color: #667085;
-        font-size: 1.02rem;
-        line-height: 1.7;
-        margin: 0.9rem auto 0 auto;
-        max-width: 680px;
+        font-size: 1.04rem;
+        line-height: 1.72;
+        margin: 1rem auto 0 auto;
+        max-width: 640px;
         text-align: center;
     }
 
     .cover-bottom-row {
-        max-width: 760px;
-        margin: 2.4rem auto 0 auto;
+        max-width: 820px;
+        margin: 2.7rem auto 0 auto;
     }
 
     .cover-action-shell {
-        background: #FFFFFF;
-        border: 1px solid #D8DEE8;
-        border-radius: 24px;
-        padding: 14px;
-        box-shadow: 0 20px 48px rgba(15, 23, 42, 0.06);
+        background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,251,255,0.96) 100%);
+        border: 1px solid #DCE3F0;
+        border-radius: 26px;
+        padding: 16px;
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
     }
 
     .cover-field {
@@ -2654,8 +2646,8 @@ st.markdown(
         color: #667085;
         font-size: 0.9rem;
         line-height: 1.65;
-        max-width: 640px;
-        margin: 1rem auto 0 auto;
+        max-width: 620px;
+        margin: 1.15rem auto 0 auto;
         text-align: center;
     }
 
@@ -2669,6 +2661,9 @@ st.markdown(
         border-radius: 16px;
         font-size: 1rem;
         font-weight: 760;
+        background: #315EEC;
+        border-color: #315EEC;
+        box-shadow: 0 10px 26px rgba(49, 94, 236, 0.18);
     }
 
     .cover-bottom-row [data-testid="stNumberInputContainer"] input {
@@ -2676,6 +2671,7 @@ st.markdown(
         border-radius: 16px;
         font-size: 1rem;
         font-weight: 650;
+        background: rgba(255,255,255,0.92);
     }
 
     div[data-testid="stMetric"] {
@@ -4319,7 +4315,6 @@ def render_cover_page(default_skus):
         f"""
         <div class="cover-shell">
             <div class="cover-logo-row">
-                <div class="cover-logo-mark">TS</div>
                 <div class="cover-logo-meta">
                     <div class="cover-logo-kicker">{escape(lang_tag)}</div>
                     <div class="cover-logo-title">{escape(T["meeting_header"])}</div>
