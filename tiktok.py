@@ -5625,6 +5625,7 @@ def make_weekly_chart(df, title, break_even_week=None):
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
     apply_plotly_layout(fig, title, height=500)
+    fig.update_layout(showlegend=False, margin=dict(l=52, r=84, t=64, b=54))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"])
     last_x = df["Global Week"].iloc[-1]
@@ -5660,6 +5661,7 @@ def make_cumulative_profit_chart(df, break_even_week=None):
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
     apply_plotly_layout(fig, T["cumulative_profit_trend"], height=500)
+    fig.update_layout(showlegend=False, margin=dict(l=52, r=84, t=64, b=54))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"])
     add_terminal_value_labels(
