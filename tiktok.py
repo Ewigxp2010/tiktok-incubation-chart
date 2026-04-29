@@ -5850,6 +5850,67 @@ def make_weekly_chart(df, title, break_even_week=None):
     return fig
 
 
+def make_scale_chart(df, title, break_even_week=None):
+    fig = go.Figure()
+    add_phase_bands(fig, df)
+    for label, col, color, width, fill in [
+        (T["forecast_gmv"], "GMV", CHART_COLORS["gmv"], 2.9, True),
+        (T["total_cost_label"], "Total Cost", CHART_COLORS["cost"], 2.1, False),
+    ]:
+        fig.add_trace(
+            go.Scatter(
+                x=df["Global Week"],
+                y=df[col],
+                mode="lines",
+                line=dict(color=color, width=width, shape="spline", smoothing=0.52),
+                fill="tozeroy" if fill else None,
+                fillcolor="rgba(49, 94, 236, 0.08)" if fill else None,
+                hovertemplate=f"{label}: €%{{y:,.0f}}<extra></extra>",
+            )
+        )
+    if break_even_week is not None:
+        fig.add_vline(x=break_even_week, line_dash="dash", line_color="#98A2B3")
+    apply_plotly_layout(fig, "", height=360)
+    fig.update_layout(showlegend=False, margin=dict(l=48, r=72, t=18, b=38))
+    fig.update_yaxes(tickprefix="€", tickformat=",.0f")
+    fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
+    last_x = df["Global Week"].iloc[-1]
+    add_end_label(fig, last_x, float(df["GMV"].iloc[-1]), money(float(df["GMV"].iloc[-1]), 0), CHART_COLORS["gmv"])
+    add_end_label(fig, last_x, float(df["Total Cost"].iloc[-1]), money(float(df["Total Cost"].iloc[-1]), 0), CHART_COLORS["cost"])
+    return fig
+
+
+def make_profit_investment_chart(df, title):
+    fig = go.Figure()
+    fig.add_trace(
+        go.Bar(
+            x=df["Global Week"],
+            y=df["Growth Investment"],
+            name=T["growth_investment"],
+            marker=dict(color="rgba(91, 91, 214, 0.14)", line=dict(color="#5B5BD6", width=1)),
+            hovertemplate=f"{T['growth_investment']}: €%{{y:,.0f}}<extra></extra>",
+        )
+    )
+    fig.add_trace(
+        go.Bar(
+            x=df["Global Week"],
+            y=df["Profit"],
+            name=T["profit_label"],
+            marker=dict(color="rgba(23, 138, 98, 0.76)", line=dict(color="#178A62", width=0.8)),
+            hovertemplate=f"{T['profit_label']}: €%{{y:,.0f}}<extra></extra>",
+        )
+    )
+    fig.add_hline(y=0, line_color="#98A2B3", line_width=1)
+    apply_plotly_layout(fig, "", height=360)
+    fig.update_layout(showlegend=False, margin=dict(l=48, r=72, t=18, b=38), barmode="group", bargap=0.42)
+    fig.update_yaxes(tickprefix="€", tickformat=",.0f")
+    fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
+    last_x = df["Global Week"].iloc[-1]
+    add_end_label(fig, last_x, float(df["Profit"].iloc[-1]), money(float(df["Profit"].iloc[-1]), 0), CHART_COLORS["profit"], xshift=14)
+    add_end_label(fig, last_x, float(df["Growth Investment"].iloc[-1]), money(float(df["Growth Investment"].iloc[-1]), 0), "#5B5BD6", xshift=14)
+    return fig
+
+
 def make_cumulative_profit_chart(df, break_even_week=None):
     temp = df.copy()
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
@@ -5862,17 +5923,17 @@ def make_cumulative_profit_chart(df, break_even_week=None):
             mode="lines+markers",
             fill="tozeroy",
             name=T["cumulative_profit_trend"],
-            line=dict(color=CHART_COLORS["cumulative"], width=2.8, shape="spline", smoothing=0.58),
-            marker=dict(size=6.2, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=1.2)),
-            fillcolor="rgba(79, 70, 229, 0.11)",
+            line=dict(color=CHART_COLORS["cumulative"], width=2.6, shape="spline", smoothing=0.42),
+            marker=dict(size=5.2, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=1)),
+            fillcolor="rgba(79, 70, 229, 0.09)",
             hovertemplate=f"{T['cumulative_profit_trend']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
-    apply_plotly_layout(fig, "", height=500)
-    fig.update_layout(showlegend=False, margin=dict(l=52, r=72, t=24, b=46))
+    apply_plotly_layout(fig, "", height=360)
+    fig.update_layout(showlegend=False, margin=dict(l=48, r=68, t=18, b=38))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"])
     add_end_label(
@@ -6615,25 +6676,44 @@ if st.session_state.get("has_generated", False):
             render_chart_panel_caption(f"<strong>{escape(T['chart_insight'])}.</strong> {escape(phase_chart_insight(phase_row))}")
 
         render_section_header(T["charts"], T["section_primary"])
-        chart_col1, chart_col2 = st.columns(2, gap="large")
+        chart_col1, chart_col2, chart_col3 = st.columns(3, gap="large")
         with chart_col1:
             with st.container(border=True):
                 render_chart_panel_header(
-                    T["overall_weekly"],
-                    "Commercial scale versus operating cost, with weekly profit and paid investment beneath."
+                    T["forecast_gmv"],
+                    "Scale progression versus operating cost."
                     if lang != "zh" else
-                    "上层看 GMV 与总成本，下层看单周利润与付费投入。",
+                    "查看经营规模与总成本的周度变化。",
                     T["section_primary"],
                 )
-                st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-                render_chart_panel_caption(f"<strong>{escape(T['chart_read'])}.</strong> {escape(T['read_weekly_chart'])}")
+                st.plotly_chart(make_scale_chart(df_all, T["forecast_gmv"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                render_chart_panel_caption(
+                    "<strong>How to read.</strong> Compare GMV against total cost to see whether scale remains ahead of operating spend."
+                    if lang != "zh" else
+                    "<strong>怎么看。</strong> 对比 GMV 与总成本，判断经营规模是否持续跑赢经营支出。"
+                )
         with chart_col2:
             with st.container(border=True):
                 render_chart_panel_header(
-                    T["cumulative_profit_trend"],
-                    "Use this to judge whether early investment is recovered as the program compounds."
+                    T["sales_contribution"],
+                    "Weekly profit versus growth investment."
                     if lang != "zh" else
-                    "用这张图判断前期投入是否随着计划推进被逐步回收。",
+                    "查看单周利润与增长投入的对照关系。",
+                    T["section_primary"],
+                )
+                st.plotly_chart(make_profit_investment_chart(df_all, T["sales_contribution"]), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                render_chart_panel_caption(
+                    "<strong>How to read.</strong> This panel separates profit and paid growth so the trade-off is easier to read."
+                    if lang != "zh" else
+                    "<strong>怎么看。</strong> 这张图把利润和付费投入拆开，便于判断二者之间的取舍关系。"
+                )
+        with chart_col3:
+            with st.container(border=True):
+                render_chart_panel_header(
+                    T["cumulative_profit_trend"],
+                    "Whether the program fully recovers upfront investment over time."
+                    if lang != "zh" else
+                    "判断计划是否随着推进逐步完全收回前期投入。",
                     T["section_primary"],
                 )
                 st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
