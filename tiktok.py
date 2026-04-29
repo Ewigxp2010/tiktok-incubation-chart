@@ -2784,6 +2784,18 @@ st.markdown(
         box-shadow: none;
     }
 
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.chart-card-title) {
+        border: 1px solid #D8E1EC;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FCFDFE 100%);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+    }
+
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.chart-card-title) > div {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) {
         border: 1.5px solid #D8E0EA;
         border-radius: 16px;
@@ -3406,11 +3418,11 @@ st.markdown(
 
     .chart-card {
         background: #FFFFFF;
-        border: 1px solid #D8E0EA;
-        border-radius: 16px;
-        padding: 16px 16px 12px 16px;
+        border: 0;
+        border-radius: 0;
+        padding: 14px 14px 10px 14px;
         box-shadow: none;
-        margin: 8px 0 16px 0;
+        margin: 6px 0 12px 0;
     }
 
     .chart-card-header {
@@ -3418,7 +3430,7 @@ st.markdown(
         justify-content: space-between;
         align-items: flex-start;
         gap: 14px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     .chart-card-kicker {
@@ -3437,17 +3449,18 @@ st.markdown(
 
     .chart-card-title {
         color: #111827;
-        font-size: 1rem;
-        font-weight: 760;
-        line-height: 1.24;
+        font-size: 1.02rem;
+        font-weight: 740;
+        line-height: 1.22;
         margin: 0;
     }
 
     .chart-card-subtitle {
-        color: #667085;
-        font-size: 0.8rem;
-        line-height: 1.45;
-        margin-top: 3px;
+        color: #7A8597;
+        font-size: 0.77rem;
+        line-height: 1.42;
+        margin-top: 4px;
+        max-width: 44ch;
     }
 
     .chart-card-body {
@@ -3455,17 +3468,17 @@ st.markdown(
     }
 
     .chart-card-footer {
-        margin-top: 8px;
+        margin-top: 6px;
         padding-top: 0;
         border-top: 0;
-        color: #667085;
-        font-size: 0.77rem;
-        line-height: 1.46;
+        color: #7A8597;
+        font-size: 0.74rem;
+        line-height: 1.42;
     }
 
     .chart-card-footer strong {
-        color: #111827;
-        font-weight: 760;
+        color: #475467;
+        font-weight: 700;
     }
 
     .report-appendix {
