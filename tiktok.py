@@ -6104,7 +6104,7 @@ if show_setup:
         subcategory = st.session_state[f"subcategory_{i}"]
         sku_name_preview = st.session_state[f"sku_name_{i}"] or chr(65 + i)
         expander_label = f"SKU {i + 1} · {sku_name_preview} · {category} / {subcategory}"
-        with st.expander(expander_label, expanded=(i == 0)):
+        with st.expander(expander_label, expanded=(not st.session_state.get("has_generated", False))):
             category = st.session_state[f"category_{i}"]
             subcategory = st.session_state[f"subcategory_{i}"]
             st.markdown(
