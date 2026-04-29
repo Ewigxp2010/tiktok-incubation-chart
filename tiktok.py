@@ -1613,7 +1613,7 @@ TEXT = {
         "debug_target_profit_gap": "Target profit gap",
         "scenario_snapshot": "Scenario Snapshot",
         "model_last_reviewed": "Model last reviewed",
-        "calibration_note": "Default SKU assumptions now prioritize DE hit-product calibration. Open commission is treated as the open-plan creator commission, and sparse combinations fall back to first-category medians plus planning rules.",
+        "calibration_note": "Default SKU assumptions use recent DE hit-product calibration.",
         "internal_logic_checklist": "Internal Logic Checklist",
         "internal_logic_intro": "Use this default-collapsed view for AM or data-team alignment. It explains how the model builds GMV, allocates channels, applies costs, and arrives at profit.",
         "internal_logic_context": "Current plan signals",
@@ -1628,8 +1628,8 @@ TEXT = {
         "internal_logic_fee_on": "The new-seller fee benefit is on, so weeks 1-{promo_weeks} use the 5% platform fee before reverting to the category default rate.",
         "internal_logic_fee_off": "The new-seller fee benefit is off, so the model uses the default category platform commission throughout the full plan.",
         "chart_read": "How to read",
-        "read_weekly_chart": "Read this as whether GMV growth is outpacing total cost, and whether profit stays above zero after the fee step-up.",
-        "read_cumulative_chart": "Read this as the payback path: the curve shows whether earlier content and paid growth recover the upfront investment.",
+        "read_weekly_chart": "Track whether GMV stays ahead of cost and profit remains positive.",
+        "read_cumulative_chart": "Track whether cumulative profit recovers upfront investment.",
         "assumption_appendix": "Assumption Appendix",
         "reset_defaults": "Reset defaults",
         "reset_sku_assumptions": "Reset SKU assumptions",
@@ -1738,8 +1738,8 @@ TEXT = {
         "hero_investment": "Growth Investment",
         "hero_break_even": "Break-even",
         "chart_insight": "Chart Insight",
-        "overall_chart_insight": "GMV moves from {start_gmv} in Week 1 to {end_gmv} by Week {end_week}. The plan's cumulative profit ends at {cum_profit}.",
-        "phase_chart_insight": "{phase} ends with {gmv} GMV, {profit} profit, and {investment} growth investment.",
+        "overall_chart_insight": "Week 1 GMV: {start_gmv}. Week {end_week} GMV: {end_gmv}. Final cumulative profit: {cum_profit}.",
+        "phase_chart_insight": "{phase}: {gmv} GMV, {profit} profit, {investment} investment.",
         "client_narrative": "Plan Interpretation",
         "narrative_what": "What happens: The model estimates {gmv} GMV and {profit} total profit over {weeks} weeks.",
         "narrative_why": "Why it happens: The largest GMV source is {channel}, supported by {samples} samples and {videos} creator videos.",
@@ -1839,7 +1839,7 @@ TEXT = {
         "main_risk_text": "{driver} is the largest cost driver; validate this assumption before treating the forecast as a target.",
         "cost_explanation": "Cost Explanation",
         "cost_explanation_text": "Profit is mainly shaped by {driver}, which accounts for {share} of total cost. Sample investment is {sample_share} and ads investment is {ads_share} of total cost, so the biggest margin lever is not always the visible growth budget.",
-        "planning_disclaimer": "This simulator is for planning discussion only. Please calibrate inputs with your AM and similar TikTok Shop category or merchant data before using the output as a business target.",
+        "planning_disclaimer": "For planning use only. Align key inputs with your AM before using this as a target.",
         "phase_trend": "Phase-by-Phase Trend",
         "summary": "Summary",
         "phase_summary": "Phase Summary",
@@ -1952,10 +1952,10 @@ TEXT = {
         "debug_target_profit_gap": "目标利润差距",
         "scenario_snapshot": "方案快照",
         "model_last_reviewed": "模型最近校准",
-        "calibration_note": "当前 SKU 默认值已优先使用 DE hit-product 校准口径。open commission 已按 open plan 达人佣金处理；若类目样本较稀疏，则回退到一级类目中位数与 planning 规则。",
+        "calibration_note": "当前 SKU 默认值优先使用最新 DE hit-product 校准口径。",
         "chart_read": "怎么看",
-        "read_weekly_chart": "看 GMV 增长是否持续跑赢总成本，以及平台费阶梯变化后利润是否仍保持在 0 以上。",
-        "read_cumulative_chart": "看回本路径：曲线反映前期内容沉淀和付费增长是否能覆盖前期投入。",
+        "read_weekly_chart": "看 GMV 是否持续跑赢成本、利润是否保持为正。",
+        "read_cumulative_chart": "看累计利润是否覆盖前期投入。",
         "assumption_appendix": "假设附录",
         "reset_defaults": "恢复默认值",
         "reset_sku_assumptions": "仅恢复 SKU 假设",
@@ -2064,8 +2064,8 @@ TEXT = {
         "hero_investment": "增长投入",
         "hero_break_even": "Break-even",
         "chart_insight": "图表解读",
-        "overall_chart_insight": "GMV 从第 1 周的 {start_gmv} 增长到第 {end_week} 周的 {end_gmv}，累计利润最终为 {cum_profit}。",
-        "phase_chart_insight": "{phase} 结束时预计产生 {gmv} GMV，利润 {profit}，增长投入 {investment}。",
+        "overall_chart_insight": "第 1 周 GMV：{start_gmv}；第 {end_week} 周 GMV：{end_gmv}；累计利润：{cum_profit}。",
+        "phase_chart_insight": "{phase}：{gmv} GMV，利润 {profit}，投入 {investment}。",
         "client_narrative": "计划解读",
         "narrative_what": "结果：模型预计在 {weeks} 周内产生 {gmv} GMV，总利润为 {profit}。",
         "narrative_why": "原因：最大的 GMV 来源是 {channel}，同时由 {samples} 个样品和 {videos} 条达人视频支撑。",
@@ -2178,7 +2178,7 @@ TEXT = {
         "main_risk_text": "{driver} 是当前最大的成本项；建议在把结果作为目标前，先确认该假设是否合理。",
         "cost_explanation": "成本解释",
         "cost_explanation_text": "当前利润主要受 {driver} 影响，该项占总成本 {share}。样品投入占总成本 {sample_share}，广告投入占总成本 {ads_share}，因此最大的利润杠杆不一定是最显眼的增长预算。",
-        "planning_disclaimer": "本工具仅用于业务规划讨论。建议和您的 AM 对齐，并结合 TikTok Shop 类似行业或类似商家的数据校准输入后，再将输出作为业务目标参考。",
+        "planning_disclaimer": "本工具仅用于规划讨论。建议先和您的 AM 对齐关键输入，再作为业务目标参考。",
         "phase_trend": "分阶段趋势",
         "summary": "汇总",
         "phase_summary": "阶段汇总",
@@ -4662,7 +4662,7 @@ def cost_explanation(row):
 def render_insight(text, compact=False):
     class_name = "insight-strip compact" if compact else "insight-strip"
     st.markdown(
-        f'<div class="{class_name}"><strong style="color:#111827;font-weight:760;">{T["chart_insight"]}.</strong> {text}</div>',
+        f'<div class="{class_name}"><strong style="color:#111827;font-weight:720;">{T["chart_insight"]}</strong> {text}</div>',
         unsafe_allow_html=True,
     )
 
@@ -6376,40 +6376,38 @@ if st.session_state.get("has_generated", False):
             with support_tabs[0]:
                 if lang == "zh":
                     render_subtle_note(
-                        f"这张图展示内容投入如何放大为生意结果：{overall['Total Samples']:,.0f} 个样品预计沉淀 "
-                        f"{overall['Total Videos']:,.0f} 条达人视频，带来 {overall['Total Clicks']:,.0f} 次商品点击和 "
-                        f"{overall['Total Orders']:,.0f} 个订单。",
+                        f"{overall['Total Samples']:,.0f} 个样品预计带来 {overall['Total Videos']:,.0f} 条视频、"
+                        f"{overall['Total Clicks']:,.0f} 次点击和 {overall['Total Orders']:,.0f} 个订单。",
                         "商业视角",
                     )
                 else:
                     render_subtle_note(
-                        f"This view shows how content seeding scales into commercial demand: {overall['Total Samples']:,.0f} samples "
-                        f"are expected to create {overall['Total Videos']:,.0f} creator videos, {overall['Total Clicks']:,.0f} product clicks, "
-                        f"and {overall['Total Orders']:,.0f} orders.",
+                        f"{overall['Total Samples']:,.0f} samples scale into {overall['Total Videos']:,.0f} videos, "
+                        f"{overall['Total Clicks']:,.0f} clicks, and {overall['Total Orders']:,.0f} orders.",
                         "Business lens",
                     )
                 render_funnel_summary(df_all)
             with support_tabs[1]:
                 if lang == "zh":
                     render_subtle_note(
-                        "这张图看的是 GMV 渠道归因结构：渠道只有达人视频 GMV 和店铺/Search GMV。付费加热带来的增量 GMV 已经拆回这两个渠道中，不作为第三个独立渠道展示。",
+                        "这里只看两条渠道：达人视频 GMV 和店铺/Search GMV。付费增量已拆回这两条渠道。",
                         "商业视角",
                     )
                 else:
                     render_subtle_note(
-                        "This view separates GMV ownership into two channels only: Affiliate Video GMV and Store/Search GMV. Incremental GMV from paid growth is allocated back into those two channels rather than shown as a third one.",
+                        "This view shows only two channels: Affiliate Video GMV and Store/Search GMV. Paid uplift is allocated back into those two lines.",
                         "Business lens",
                     )
                 st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             with support_tabs[2]:
                 if lang == "zh":
                     render_subtle_note(
-                        f"这张图解释成本压力来自哪里。当前最大成本项是 {total_cost_driver}，因此优化利润时应优先判断这个成本是否合理，而不只看样品或广告预算。",
+                        f"当前最大成本项是 {total_cost_driver}，利润优化应先看这一项。",
                         "商业视角",
                     )
                 else:
                     render_subtle_note(
-                        f"This view explains where margin pressure comes from. The largest cost driver is {total_cost_driver}, so profit optimization should start there, not only with samples or ads.",
+                        f"The largest cost driver is {total_cost_driver}; margin work should start there.",
                         "Business lens",
                     )
                 st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
