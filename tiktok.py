@@ -3406,11 +3406,11 @@ st.markdown(
 
     .chart-card {
         background: #FFFFFF;
-        border: 1px solid #D5DEE9;
-        border-radius: 18px;
-        padding: 18px 18px 14px 18px;
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);
-        margin: 10px 0 18px 0;
+        border: 1px solid #D8E0EA;
+        border-radius: 16px;
+        padding: 16px 16px 12px 16px;
+        box-shadow: none;
+        margin: 8px 0 16px 0;
     }
 
     .chart-card-header {
@@ -3418,7 +3418,7 @@ st.markdown(
         justify-content: space-between;
         align-items: flex-start;
         gap: 14px;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
     }
 
     .chart-card-kicker {
@@ -3437,17 +3437,17 @@ st.markdown(
 
     .chart-card-title {
         color: #111827;
-        font-size: 1.04rem;
-        font-weight: 770;
+        font-size: 1rem;
+        font-weight: 760;
         line-height: 1.24;
         margin: 0;
     }
 
     .chart-card-subtitle {
         color: #667085;
-        font-size: 0.84rem;
-        line-height: 1.52;
-        margin-top: 4px;
+        font-size: 0.8rem;
+        line-height: 1.45;
+        margin-top: 3px;
     }
 
     .chart-card-body {
@@ -3455,12 +3455,12 @@ st.markdown(
     }
 
     .chart-card-footer {
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid #EEF2F6;
+        margin-top: 8px;
+        padding-top: 0;
+        border-top: 0;
         color: #667085;
-        font-size: 0.81rem;
-        line-height: 1.55;
+        font-size: 0.77rem;
+        line-height: 1.46;
     }
 
     .chart-card-footer strong {
@@ -3951,6 +3951,10 @@ st.markdown(
         border-radius: 0;
         padding: 0;
         box-shadow: none !important;
+    }
+
+    div[data-testid="stPlotlyChart"] > div {
+        min-height: 0 !important;
     }
     </style>
     """,
@@ -5679,10 +5683,10 @@ def apply_plotly_layout(fig, title, height=460):
             "xanchor": "left",
             "y": 0.985,
             "yanchor": "top",
-            "font": {"size": 12, "color": "#111827", "family": "Arial, sans-serif"},
+            "font": {"size": 11, "color": "#111827", "family": "Arial, sans-serif"},
         },
         height=height,
-        margin=dict(l=50, r=54, t=58, b=34),
+        margin=dict(l=40, r=26, t=16, b=28),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="#FFFFFF",
         font=dict(color="#111827", family="Arial, sans-serif"),
@@ -5707,7 +5711,7 @@ def apply_plotly_layout(fig, title, height=460):
         gridcolor=CHART_COLORS["grid"],
         zeroline=False,
         linecolor="#EDF2F7",
-        tickfont=dict(color="#667085", size=10),
+        tickfont=dict(color="#667085", size=9),
         ticklen=0,
         automargin=True,
     )
@@ -5716,7 +5720,7 @@ def apply_plotly_layout(fig, title, height=460):
         gridcolor=CHART_COLORS["grid"],
         zeroline=False,
         linecolor="#EDF2F7",
-        tickfont=dict(color="#667085", size=10),
+        tickfont=dict(color="#667085", size=9),
         ticklen=0,
         automargin=True,
     )
@@ -5871,7 +5875,7 @@ def make_scale_chart(df, title, break_even_week=None, height=330):
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#98A2B3")
     apply_plotly_layout(fig, "", height=height)
-    fig.update_layout(showlegend=False, margin=dict(l=48, r=72, t=18, b=38))
+    fig.update_layout(showlegend=False, margin=dict(l=42, r=54, t=10, b=28))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
     last_x = df["Global Week"].iloc[-1]
@@ -5902,7 +5906,7 @@ def make_profit_investment_chart(df, title, height=310):
     )
     fig.add_hline(y=0, line_color="#98A2B3", line_width=1)
     apply_plotly_layout(fig, "", height=height)
-    fig.update_layout(showlegend=False, margin=dict(l=48, r=72, t=18, b=38), barmode="group", bargap=0.42)
+    fig.update_layout(showlegend=False, margin=dict(l=42, r=54, t=10, b=28), barmode="group", bargap=0.42)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
     last_x = df["Global Week"].iloc[-1]
@@ -5923,9 +5927,9 @@ def make_cumulative_profit_chart(df, break_even_week=None, height=520):
             mode="lines+markers",
             fill="tozeroy",
             name=T["cumulative_profit_trend"],
-            line=dict(color=CHART_COLORS["cumulative"], width=2.6, shape="spline", smoothing=0.42),
-            marker=dict(size=5.2, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=1)),
-            fillcolor="rgba(79, 70, 229, 0.09)",
+            line=dict(color=CHART_COLORS["cumulative"], width=2.5, shape="spline", smoothing=0.36),
+            marker=dict(size=4.2, color=CHART_COLORS["cumulative"], line=dict(color="#FFFFFF", width=0.8)),
+            fillcolor="rgba(79, 70, 229, 0.07)",
             hovertemplate=f"{T['cumulative_profit_trend']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
@@ -5933,9 +5937,9 @@ def make_cumulative_profit_chart(df, break_even_week=None, height=520):
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
     apply_plotly_layout(fig, "", height=height)
-    fig.update_layout(showlegend=False, margin=dict(l=52, r=72, t=20, b=40))
+    fig.update_layout(showlegend=False, margin=dict(l=44, r=48, t=10, b=28))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
-    fig.update_xaxes(title=T["week"])
+    fig.update_xaxes(title=T["week"], dtick=1, tickmode="linear")
     add_end_label(
         fig,
         temp["Global Week"].iloc[-1],
@@ -6676,47 +6680,45 @@ if st.session_state.get("has_generated", False):
             render_chart_panel_caption(f"<strong>{escape(T['chart_insight'])}.</strong> {escape(phase_chart_insight(phase_row))}")
 
         render_section_header(T["charts"], T["section_primary"])
-        chart_left, chart_right = st.columns([1.02, 1.08], gap="large")
+        chart_left, chart_right = st.columns([1.34, 0.96], gap="large")
         with chart_left:
             with st.container(border=True):
                 render_chart_panel_header(
                     T["forecast_gmv"],
-                    "Scale progression versus operating cost."
-                    if lang != "zh" else
-                    "查看经营规模与总成本的周度变化。",
-                    T["section_primary"],
+                    None,
                 )
-                st.plotly_chart(make_scale_chart(df_all, T["forecast_gmv"], weekly_be, height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                st.plotly_chart(make_scale_chart(df_all, T["forecast_gmv"], weekly_be, height=350), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                 render_chart_panel_caption(
-                    "<strong>How to read.</strong> Compare GMV against total cost to see whether scale remains ahead of operating spend."
+                    "<strong>How to read.</strong> Compare GMV with total cost."
                     if lang != "zh" else
-                    "<strong>怎么看。</strong> 对比 GMV 与总成本，判断经营规模是否持续跑赢经营支出。"
+                    "<strong>怎么看。</strong> 对比 GMV 与总成本。"
                 )
             with st.container(border=True):
                 render_chart_panel_header(
                     T["sales_contribution"],
-                    "Weekly profit versus growth investment."
-                    if lang != "zh" else
-                    "查看单周利润与增长投入的对照关系。",
-                    T["section_primary"],
+                    None,
                 )
-                st.plotly_chart(make_profit_investment_chart(df_all, T["sales_contribution"], height=300), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                st.plotly_chart(make_profit_investment_chart(df_all, T["sales_contribution"], height=288), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                 render_chart_panel_caption(
-                    "<strong>How to read.</strong> This panel separates profit and paid growth so the trade-off is easier to read."
+                    "<strong>How to read.</strong> Read weekly profit against growth investment."
                     if lang != "zh" else
-                    "<strong>怎么看。</strong> 这张图把利润和付费投入拆开，便于判断二者之间的取舍关系。"
+                    "<strong>怎么看。</strong> 查看单周利润与增长投入。"
                 )
         with chart_right:
             with st.container(border=True):
                 render_chart_panel_header(
                     T["cumulative_profit_trend"],
-                    "Whether the program fully recovers upfront investment over time."
-                    if lang != "zh" else
-                    "判断计划是否随着推进逐步完全收回前期投入。",
-                    T["section_primary"],
+                    None,
                 )
-                st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be, height=700), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-                render_chart_panel_caption(f"<strong>{escape(T['chart_read'])}.</strong> {escape(T['read_cumulative_chart'])}")
+                st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be, height=670), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                render_chart_panel_caption(
+                    f"<strong>{escape(T['chart_read'])}.</strong> "
+                    + (
+                        "Track whether cumulative profit recovers upfront investment."
+                        if lang != "zh" else
+                        "查看累计利润是否覆盖前期投入。"
+                    )
+                )
         render_status_panel(T["chart_insight"], overall_chart_insight(df_all), tone="info", compact=True)
         if meeting_mode:
             support_container = st.expander(T["supporting_charts"], expanded=False)
