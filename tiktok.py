@@ -3379,12 +3379,12 @@ st.markdown(
     }
 
     .funnel-card-wrap {
-        background: #FFFFFF;
-        border: 1px solid #D0D7E2;
-        border-radius: 12px;
-        padding: 14px 14px 10px 14px;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        padding: 0 0 2px 0;
         box-shadow: none;
-        margin-bottom: 10px;
+        margin-bottom: 0;
     }
 
     .support-panel {
@@ -4817,20 +4817,19 @@ def render_chart_lens(title, body, compact=False):
     )
 
 
-def render_chart_card_start(title, subtitle=None, kicker=None):
+def render_chart_panel_header(title, subtitle=None, kicker=None):
     kicker_html = f'<div class="chart-card-kicker">{escape(str(kicker))}</div>' if kicker else ""
     subtitle_html = f'<div class="chart-card-subtitle">{escape(str(subtitle))}</div>' if subtitle else ""
     st.markdown(
-        f'<div class="chart-card"><div class="chart-card-header"><div>'
+        f'<div class="chart-card-header"><div>'
         f'{kicker_html}<div class="chart-card-title">{escape(str(title))}</div>{subtitle_html}'
-        f'</div></div><div class="chart-card-body">',
+        f'</div></div>',
         unsafe_allow_html=True,
     )
 
 
-def render_chart_card_end(caption=None):
-    caption_html = f'<div class="chart-card-footer">{caption}</div>' if caption else ""
-    st.markdown(f'</div>{caption_html}</div>', unsafe_allow_html=True)
+def render_chart_panel_caption(caption):
+    st.markdown(f'<div class="chart-card-footer">{caption}</div>', unsafe_allow_html=True)
 
 
 def render_subtle_note(body, label=None):
@@ -6607,35 +6606,38 @@ if st.session_state.get("has_generated", False):
             if lang != "zh" else
             "查看该阶段从 GMV 到净利润的利润桥。"
         )
-        render_chart_card_start(phase_chart_title, phase_chart_subtitle, T["section_primary"])
-        if chart_mode == T["phase_chart_cumulative"]:
-            st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        else:
-            st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-        render_chart_card_end(f"<strong>{escape(T['chart_insight'])}.</strong> {escape(phase_chart_insight(phase_row))}")
+        with st.container(border=True):
+            render_chart_panel_header(phase_chart_title, phase_chart_subtitle, T["section_primary"])
+            if chart_mode == T["phase_chart_cumulative"]:
+                st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+            else:
+                st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+            render_chart_panel_caption(f"<strong>{escape(T['chart_insight'])}.</strong> {escape(phase_chart_insight(phase_row))}")
 
         render_section_header(T["charts"], T["section_primary"])
         chart_col1, chart_col2 = st.columns(2, gap="large")
         with chart_col1:
-            render_chart_card_start(
-                T["overall_weekly"],
-                "Commercial scale versus operating cost, with weekly profit and paid investment beneath."
-                if lang != "zh" else
-                "上层看 GMV 与总成本，下层看单周利润与付费投入。",
-                T["section_primary"],
-            )
-            st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-            render_chart_card_end(f"<strong>{escape(T['chart_read'])}.</strong> {escape(T['read_weekly_chart'])}")
+            with st.container(border=True):
+                render_chart_panel_header(
+                    T["overall_weekly"],
+                    "Commercial scale versus operating cost, with weekly profit and paid investment beneath."
+                    if lang != "zh" else
+                    "上层看 GMV 与总成本，下层看单周利润与付费投入。",
+                    T["section_primary"],
+                )
+                st.plotly_chart(make_weekly_chart(df_all, T["overall_weekly"], weekly_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                render_chart_panel_caption(f"<strong>{escape(T['chart_read'])}.</strong> {escape(T['read_weekly_chart'])}")
         with chart_col2:
-            render_chart_card_start(
-                T["cumulative_profit_trend"],
-                "Use this to judge whether early investment is recovered as the program compounds."
-                if lang != "zh" else
-                "用这张图判断前期投入是否随着计划推进被逐步回收。",
-                T["section_primary"],
-            )
-            st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-            render_chart_card_end(f"<strong>{escape(T['chart_read'])}.</strong> {escape(T['read_cumulative_chart'])}")
+            with st.container(border=True):
+                render_chart_panel_header(
+                    T["cumulative_profit_trend"],
+                    "Use this to judge whether early investment is recovered as the program compounds."
+                    if lang != "zh" else
+                    "用这张图判断前期投入是否随着计划推进被逐步回收。",
+                    T["section_primary"],
+                )
+                st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                render_chart_panel_caption(f"<strong>{escape(T['chart_read'])}.</strong> {escape(T['read_cumulative_chart'])}")
         render_status_panel(T["chart_insight"], overall_chart_insight(df_all), tone="info", compact=True)
         if meeting_mode:
             support_container = st.expander(T["supporting_charts"], expanded=False)
@@ -6643,59 +6645,61 @@ if st.session_state.get("has_generated", False):
             render_section_header(T["supporting_charts"], T["section_secondary"])
             support_container = st.container()
         with support_container:
-            st.markdown('<div class="support-panel"><div class="chart-card-grid">', unsafe_allow_html=True)
-            support_col1, support_col2 = st.columns(2, gap="large")
+            support_col1, support_col2, support_col3 = st.columns(3, gap="large")
             with support_col1:
-                render_chart_card_start(
-                    T["funnel_summary"],
-                    "How samples convert into content, clicks, and orders."
-                    if lang != "zh" else
-                    "查看样品如何转化为内容、点击和订单。",
-                    T["section_secondary"],
-                )
-                render_funnel_summary(df_all)
-                render_chart_card_end(
-                    (
-                        f"<strong>Business lens.</strong> {overall['Total Samples']:,.0f} samples scale into "
-                        f"{overall['Total Videos']:,.0f} videos, {overall['Total Clicks']:,.0f} clicks, and "
-                        f"{overall['Total Orders']:,.0f} orders."
-                    ) if lang != "zh" else (
-                        f"<strong>商业视角。</strong>{overall['Total Samples']:,.0f} 个样品预计带来 "
-                        f"{overall['Total Videos']:,.0f} 条视频、{overall['Total Clicks']:,.0f} 次点击和 "
-                        f"{overall['Total Orders']:,.0f} 个订单。"
+                with st.container(border=True):
+                    render_chart_panel_header(
+                        T["funnel_summary"],
+                        "How samples convert into content, clicks, and orders."
+                        if lang != "zh" else
+                        "查看样品如何转化为内容、点击和订单。",
+                        T["section_secondary"],
                     )
-                )
+                    render_funnel_summary(df_all)
+                    render_chart_panel_caption(
+                        (
+                            f"<strong>Business lens.</strong> {overall['Total Samples']:,.0f} samples scale into "
+                            f"{overall['Total Videos']:,.0f} videos, {overall['Total Clicks']:,.0f} clicks, and "
+                            f"{overall['Total Orders']:,.0f} orders."
+                        ) if lang != "zh" else (
+                            f"<strong>商业视角。</strong>{overall['Total Samples']:,.0f} 个样品预计带来 "
+                            f"{overall['Total Videos']:,.0f} 条视频、{overall['Total Clicks']:,.0f} 次点击和 "
+                            f"{overall['Total Orders']:,.0f} 个订单。"
+                        )
+                    )
             with support_col2:
-                render_chart_card_start(
-                    T["channel_mix"],
-                    "Channel composition after paid uplift is allocated back into affiliate and store/search."
-                    if lang != "zh" else
-                    "付费增量回流到达人视频和店铺/Search 后的渠道结构。",
-                    T["section_secondary"],
-                )
-                st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-                render_chart_card_end(
-                    "<strong>Business lens.</strong> This view keeps only two channels: Affiliate Video GMV and Store/Search GMV."
-                    if lang != "zh" else
-                    "<strong>商业视角。</strong>这里只看两条渠道：达人视频 GMV 和店铺/Search GMV。"
-                )
-            render_chart_card_start(
-                T["investment_split"],
-                "Cost composition across product cost, commissions, logistics, samples, and paid growth."
-                if lang != "zh" else
-                "查看商品成本、佣金、物流、样品和付费加热的投入结构。",
-                T["section_secondary"],
-            )
-            st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-            render_chart_card_end(
-                (
-                    f"<strong>Business lens.</strong> The largest cost driver is {escape(total_cost_driver)}; margin work should start there."
-                ) if lang != "zh" else (
-                    f"<strong>商业视角。</strong>当前最大成本项是 {escape(total_cost_driver)}，利润优化应先看这一项。"
-                )
-            )
+                with st.container(border=True):
+                    render_chart_panel_header(
+                        T["channel_mix"],
+                        "Channel composition after paid uplift is allocated back into affiliate and store/search."
+                        if lang != "zh" else
+                        "付费增量回流到达人视频和店铺/Search 后的渠道结构。",
+                        T["section_secondary"],
+                    )
+                    st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                    render_chart_panel_caption(
+                        "<strong>Business lens.</strong> This view keeps only two channels: Affiliate Video GMV and Store/Search GMV."
+                        if lang != "zh" else
+                        "<strong>商业视角。</strong>这里只看两条渠道：达人视频 GMV 和店铺/Search GMV。"
+                    )
+            with support_col3:
+                with st.container(border=True):
+                    render_chart_panel_header(
+                        T["investment_split"],
+                        "Cost composition across product cost, commissions, logistics, samples, and paid growth."
+                        if lang != "zh" else
+                        "查看商品成本、佣金、物流、样品和付费加热的投入结构。",
+                        T["section_secondary"],
+                    )
+                    st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
+                    render_chart_panel_caption(
+                        (
+                            f"<strong>Business lens.</strong> The largest cost driver is {escape(total_cost_driver)}; margin work should start there."
+                        ) if lang != "zh" else (
+                            f"<strong>商业视角。</strong>当前最大成本项是 {escape(total_cost_driver)}，利润优化应先看这一项。"
+                        )
+                    )
             render_status_panel(T["cost_explanation"], total_cost_explanation, tone="info", compact=True)
-            st.markdown('</div></div>', unsafe_allow_html=True)
 
         render_section_header(T["next_actions"])
         render_grouped_actions(next_actions)
