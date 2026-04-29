@@ -5674,7 +5674,12 @@ def add_phase_bands(fig, df, target_row=None, target_col=None):
         )
 
 
-def add_end_label(fig, x, y, text, color, row=1, col=1, xshift=10):
+def add_end_label(fig, x, y, text, color, row=None, col=None, xshift=10):
+    kwargs = {}
+    if row is not None:
+        kwargs["row"] = row
+    if col is not None:
+        kwargs["col"] = col
     fig.add_annotation(
         x=x,
         y=y,
@@ -5688,8 +5693,7 @@ def add_end_label(fig, x, y, text, color, row=1, col=1, xshift=10):
         xanchor="left",
         yanchor="middle",
         align="left",
-        row=row,
-        col=col,
+        **kwargs,
     )
 
 
@@ -5741,17 +5745,17 @@ def make_weekly_chart(df, title, break_even_week=None):
     fig.add_hline(y=0, line_color="#98A2B3", line_width=1, row=2, col=1)
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#98A2B3", row="all", col=1)
-    apply_plotly_layout(fig, title, height=560)
+    apply_plotly_layout(fig, "", height=560)
     fig.update_layout(showlegend=False, margin=dict(l=52, r=76, t=58, b=52))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", row=1, col=1)
     fig.update_yaxes(tickprefix="€", tickformat=",.0f", row=2, col=1)
     fig.update_xaxes(title=T["week"], row=2, col=1, dtick=1, tickmode="linear")
     fig.update_xaxes(title="", row=1, col=1)
     last_x = df["Global Week"].iloc[-1]
-    add_end_label(fig, last_x, float(df["GMV"].iloc[-1]), money(float(df["GMV"].iloc[-1]), 0), CHART_COLORS["gmv"], row=1)
-    add_end_label(fig, last_x, float(df["Total Cost"].iloc[-1]), money(float(df["Total Cost"].iloc[-1]), 0), CHART_COLORS["cost"], row=1)
-    add_end_label(fig, last_x, float(df["Profit"].iloc[-1]), money(float(df["Profit"].iloc[-1]), 0), CHART_COLORS["profit"], row=2)
-    add_end_label(fig, last_x, float(df["Growth Investment"].iloc[-1]), money(float(df["Growth Investment"].iloc[-1]), 0), "#5B5BD6", row=2)
+    add_end_label(fig, last_x, float(df["GMV"].iloc[-1]), money(float(df["GMV"].iloc[-1]), 0), CHART_COLORS["gmv"], row=1, col=1)
+    add_end_label(fig, last_x, float(df["Total Cost"].iloc[-1]), money(float(df["Total Cost"].iloc[-1]), 0), CHART_COLORS["cost"], row=1, col=1)
+    add_end_label(fig, last_x, float(df["Profit"].iloc[-1]), money(float(df["Profit"].iloc[-1]), 0), CHART_COLORS["profit"], row=2, col=1)
+    add_end_label(fig, last_x, float(df["Growth Investment"].iloc[-1]), money(float(df["Growth Investment"].iloc[-1]), 0), "#5B5BD6", row=2, col=1)
     return fig
 
 
@@ -5776,7 +5780,7 @@ def make_cumulative_profit_chart(df, break_even_week=None):
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
-    apply_plotly_layout(fig, T["cumulative_profit_trend"], height=500)
+    apply_plotly_layout(fig, "", height=500)
     fig.update_layout(showlegend=False, margin=dict(l=52, r=72, t=58, b=52))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"])
@@ -5889,7 +5893,7 @@ def make_phase_total_chart(phase_row):
             hovertemplate="<b>%{x}</b><br>€%{y:,.0f}<extra></extra>",
         )
     )
-    apply_plotly_layout(fig, f"{phase_row['Phase']} - {T['phase_total_breakdown']}", height=560)
+    apply_plotly_layout(fig, "", height=560)
     fig.update_layout(
         showlegend=False,
         margin=dict(l=72, r=38, t=58, b=106),
@@ -5952,13 +5956,13 @@ def make_phase_cumulative_chart(phase_df, title):
         )
 
     last = temp.iloc[-1]
-    add_end_label(fig, last["Week in Phase"], float(last["Cumulative GMV"]), money(float(last["Cumulative GMV"]), 0), CHART_COLORS["gmv"], row=1)
-    add_end_label(fig, last["Week in Phase"], float(last["Cumulative Total Cost"]), money(float(last["Cumulative Total Cost"]), 0), CHART_COLORS["cost"], row=1)
-    add_end_label(fig, last["Week in Phase"], float(last["Cumulative Profit"]), money(float(last["Cumulative Profit"]), 0), CHART_COLORS["profit"], row=2)
-    add_end_label(fig, last["Week in Phase"], float(last["Cumulative Growth Investment"]), money(float(last["Cumulative Growth Investment"]), 0), "#5B5BD6", row=2)
+    add_end_label(fig, last["Week in Phase"], float(last["Cumulative GMV"]), money(float(last["Cumulative GMV"]), 0), CHART_COLORS["gmv"], row=1, col=1)
+    add_end_label(fig, last["Week in Phase"], float(last["Cumulative Total Cost"]), money(float(last["Cumulative Total Cost"]), 0), CHART_COLORS["cost"], row=1, col=1)
+    add_end_label(fig, last["Week in Phase"], float(last["Cumulative Profit"]), money(float(last["Cumulative Profit"]), 0), CHART_COLORS["profit"], row=2, col=1)
+    add_end_label(fig, last["Week in Phase"], float(last["Cumulative Growth Investment"]), money(float(last["Cumulative Growth Investment"]), 0), "#5B5BD6", row=2, col=1)
 
     fig.add_hline(y=0, line_color="#98A2B3", line_width=1, opacity=0.85, row=2, col=1)
-    apply_plotly_layout(fig, title, height=560)
+    apply_plotly_layout(fig, "", height=560)
     fig.update_layout(
         showlegend=False,
         margin=dict(l=54, r=74, t=58, b=52),
