@@ -2934,9 +2934,9 @@ st.markdown(
     div[data-testid="stPlotlyChart"] {
         background: #FFFFFF;
         border: 1px solid #D0D7E2;
-        border-radius: 12px;
-        padding: 14px 14px 8px 14px;
-        margin: 10px 0 14px 0;
+        border-radius: 14px;
+        padding: 16px 16px 10px 16px;
+        margin: 12px 0 12px 0;
         box-shadow: none;
         overflow: visible;
     }
@@ -3079,8 +3079,8 @@ st.markdown(
         background: #FFFFFF;
         border: 1px solid #D0D7E2;
         border-radius: 16px;
-        padding: 24px 24px;
-        margin-bottom: 16px;
+        padding: 22px 24px;
+        margin-bottom: 22px;
         box-shadow: none;
         display: flex;
         align-items: flex-end;
@@ -3129,25 +3129,25 @@ st.markdown(
     }
 
     .section-shell {
-        margin: 30px 0 12px 0;
-        padding-bottom: 12px;
-        border-bottom: 1px solid #DDE3EA;
+        margin: 40px 0 14px 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #E2E8F0;
     }
 
     .section-eyebrow {
         color: #64748B;
-        font-size: 0.78rem;
+        font-size: 0.74rem;
         font-weight: 780;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin-bottom: 6px;
+        letter-spacing: 0.08em;
+        margin-bottom: 7px;
     }
 
     .section-title {
         color: #111827;
-        font-size: clamp(1.18rem, 1.5vw, 1.34rem);
-        font-weight: 760;
-        line-height: 1.16;
+        font-size: clamp(1.28rem, 1.65vw, 1.5rem);
+        font-weight: 780;
+        line-height: 1.12;
         margin: 0 0 2px 0;
     }
 
@@ -3262,7 +3262,7 @@ st.markdown(
         border: 1px solid #D0D7E2;
         border-radius: 10px;
         padding: 12px 14px;
-        margin: 8px 0 12px 0;
+        margin: 10px 0 14px 0;
         box-shadow: none;
     }
 
@@ -3301,10 +3301,10 @@ st.markdown(
 
     .subtle-note {
         color: #667085;
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         line-height: 1.55;
-        padding: 2px 0 10px 0;
-        margin: 0 0 10px 0;
+        padding: 0 0 8px 0;
+        margin: 0 0 8px 0;
     }
 
     .subtle-note strong {
@@ -3327,10 +3327,10 @@ st.markdown(
     .support-panel {
         background: #FFFFFF;
         border: 1px solid #D0D7E2;
-        border-radius: 12px;
-        padding: 18px 18px 14px;
+        border-radius: 14px;
+        padding: 16px 16px 12px;
         box-shadow: none;
-        margin-bottom: 12px;
+        margin-bottom: 14px;
     }
 
     .report-appendix {
