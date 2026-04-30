@@ -5004,6 +5004,8 @@ def render_chart_panel_header(title, subtitle=None, kicker=None):
 
 
 def render_chart_panel_caption(caption):
+    if st.session_state.get("meeting_mode_input", False) and st.session_state.get("has_generated", False):
+        return
     st.markdown(
         f'<div class="inline-note"><details><summary>{escape(T["chart_read"])}</summary>'
         f'<div class="inline-note-body">{caption}</div></details></div>',
@@ -5012,6 +5014,8 @@ def render_chart_panel_caption(caption):
 
 
 def render_subtle_note(body, label=None):
+    if st.session_state.get("meeting_mode_input", False) and st.session_state.get("has_generated", False):
+        return
     summary = escape(str(label)) if label else escape(T["chart_read"])
     body_html = escape(str(body)).replace("\n", "<br>")
     st.markdown(
@@ -6701,7 +6705,8 @@ if st.session_state.get("plan_locked", False):
         st.session_state["plan_locked"] = False
         st.rerun()
 
-if st.button(T["generate"], type="primary"):
+show_generate_button = (not st.session_state.get("has_generated", False)) or (not meeting_mode)
+if show_generate_button and st.button(T["generate"], type="primary"):
     st.session_state["has_generated"] = True
     st.session_state["plan_locked"] = False
     st.session_state["_scroll_to_results"] = True
