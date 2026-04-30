@@ -2946,6 +2946,8 @@ st.markdown(
         min-height: 42px;
         width: 100%;
         justify-content: center;
+        display: flex;
+        align-items: center;
     }
 
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] {
@@ -2953,6 +2955,13 @@ st.markdown(
         grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: stretch;
         width: 100%;
+    }
+
+    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label > div {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
     }
 
     .st-key-selected_phase_view div[role="radiogroup"] label:hover {
@@ -2976,6 +2985,7 @@ st.markdown(
         font-size: 0.92rem !important;
         font-weight: 680 !important;
         color: #334155 !important;
+        text-align: center !important;
     }
 
     .st-key-selected_phase_view div[role="radiogroup"] label p {
