@@ -6330,7 +6330,7 @@ with st.sidebar:
     n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
     st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
     render_sidebar_meta(f"{T['model_version']}: {MODEL_VERSION}")
-    render_sidebar_meta(T["calibration_note"])
+    render_subtle_note(T["calibration_note"], T["model_version"])
     render_sidebar_divider()
     if st.button(T["reset_defaults"], key="reset_request_btn"):
         st.session_state["reset_confirm_pending"] = True
@@ -6350,7 +6350,7 @@ with st.sidebar:
 
     sidebar_meeting_compact = meeting_mode and st.session_state.get("has_generated", False)
     if sidebar_meeting_compact:
-        render_status_panel(T["meeting_mode"], T["meeting_mode_sidebar_note"], tone="info", compact=True)
+        render_subtle_note(T["meeting_mode_sidebar_note"], T["meeting_mode"])
         if st.button(T["back_to_client_view"], key="back_to_client_view_btn"):
             st.session_state["selected_phase_view"] = PHASES[0]["key"]
             for phase in PHASES:
@@ -6597,31 +6597,27 @@ else:
     for i in range(int(n_skus)):
         initialize_sku(i)
 
-render_status_panel(
-    T["plan_preview"],
+render_subtle_note(
     plan_preview_text(n_skus, phase_inputs, weeks_per_phase, organic_click_window_weeks, ads_roas),
-    tone="info",
-    compact=True,
-    kicker=T["assumption_quality_text"].format(status=assumption_status),
+    T["assumption_quality_text"].format(status=assumption_status),
 )
 scenario_label = {
     "conservative": T["scenario_conservative"],
     "base": T["scenario_base"],
     "upside": T["scenario_upside"],
 }.get(scenario_case, T["scenario_base"])
-render_status_panel(
-    T["scenario_snapshot"],
+render_subtle_note(
     scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label),
-    tone="info",
-    compact=True,
-    kicker=f"{T['model_last_reviewed']}: {MODEL_LAST_REVIEWED}",
+    T["scenario_snapshot"],
 )
-render_subtle_note(T["calibration_note"])
 for i in range(int(n_skus)):
     initialize_sku(i)
 product_df_preview = build_product_df(int(n_skus))
 if use_fbt:
-    st.caption(logistics_display_text(product_df_preview, float(logistics_cost), True))
+    render_subtle_note(
+        logistics_display_text(product_df_preview, float(logistics_cost), True),
+        T["fbt"],
+    )
 
 if st.session_state.get("plan_locked", False):
     st.warning(T["plan_locked"])
