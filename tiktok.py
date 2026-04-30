@@ -6410,7 +6410,6 @@ with st.sidebar:
     n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
     st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
     render_sidebar_meta(f"{T['model_version']}: {MODEL_VERSION}")
-    render_subtle_note(T["calibration_note"], T["model_version"])
     render_sidebar_divider()
     if st.button(T["reset_defaults"], key="reset_request_btn"):
         st.session_state["reset_confirm_pending"] = True
@@ -6430,7 +6429,6 @@ with st.sidebar:
 
     sidebar_meeting_compact = meeting_mode and st.session_state.get("has_generated", False)
     if sidebar_meeting_compact:
-        render_subtle_note(T["meeting_mode_sidebar_note"], T["meeting_mode"])
         if st.button(T["back_to_client_view"], key="back_to_client_view_btn"):
             st.session_state["selected_phase_view"] = PHASES[0]["key"]
             for phase in PHASES:
@@ -6535,7 +6533,6 @@ show_setup = (not meeting_mode) or (not st.session_state.get("has_generated", Fa
 
 if show_setup:
     st.subheader(T["sku_setup"])
-    render_subtle_note(T["sku_caption"], T["sku_setup"])
     with st.expander(T["benchmark_info"], expanded=False):
         st.write(T["benchmark_info_text"])
     with st.expander(T["model_assumptions"], expanded=False):
@@ -6677,36 +6674,21 @@ else:
     for i in range(int(n_skus)):
         initialize_sku(i)
 
-render_subtle_note(
-    plan_preview_text(n_skus, phase_inputs, weeks_per_phase, organic_click_window_weeks, ads_roas),
-    T["assumption_quality_text"].format(status=assumption_status),
-)
 scenario_label = {
     "conservative": T["scenario_conservative"],
     "base": T["scenario_base"],
     "upside": T["scenario_upside"],
 }.get(scenario_case, T["scenario_base"])
-render_subtle_note(
-    scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label),
-    T["scenario_snapshot"],
-)
 for i in range(int(n_skus)):
     initialize_sku(i)
 product_df_preview = build_product_df(int(n_skus))
-if use_fbt:
-    render_subtle_note(
-        logistics_display_text(product_df_preview, float(logistics_cost), True),
-        T["fbt"],
-    )
-
 if st.session_state.get("plan_locked", False):
     st.warning(T["plan_locked"])
     if st.button(T["unlock_plan"], key="unlock_plan_btn"):
         st.session_state["plan_locked"] = False
         st.rerun()
 
-show_generate_button = (not st.session_state.get("has_generated", False)) or (not meeting_mode)
-if show_generate_button and st.button(T["generate"], type="primary"):
+if (not st.session_state.get("has_generated", False)) and st.button(T["generate"], type="primary"):
     st.session_state["has_generated"] = True
     st.session_state["plan_locked"] = False
     st.session_state["_scroll_to_results"] = True
@@ -6801,7 +6783,6 @@ if st.session_state.get("has_generated", False):
             )
             st.session_state["_scroll_to_results"] = False
 
-        render_meeting_header(meeting_notes, generated_at, assumption_status)
         render_hero(
             overall=overall,
             weeks=int(weeks_per_phase) * len(PHASES),
@@ -6829,14 +6810,9 @@ if st.session_state.get("has_generated", False):
             (T["channel_mix"], main_gmv_channel(df_all), "#94A3B8"),
             (T["cumulative_be"], cumulative_be_label, "#64748B"),
         ], fixed_cols=3)
-        render_subtle_note(
-            diagnosis_text,
-            T["diagnosis_summary"],
-        )
         target_items = target_comparison_items(overall, target_gmv, target_profit)
 
         render_section_header(T["phase_trend"])
-        render_subtle_note(T["phase_strategy_text"], T["phase_strategy"])
         render_phase_overview(phase_summary)
         selected_phase_key = render_segmented_buttons(
             [p["key"] for p in phase_inputs],
@@ -6847,8 +6823,6 @@ if st.session_state.get("has_generated", False):
         phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
         phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
         objective = phase_objective(selected_phase["key"])
-        if objective:
-            render_subtle_note(objective, T["phase_objective"])
         phase_kpis = [
             (T["total_gmv"], money(phase_row["GMV"], 0), "#315EEC"),
             (T["total_profit"], money(phase_row["Profit"], 0), "#178A62" if phase_row["Profit"] >= 0 else "#B42318"),
@@ -6909,7 +6883,6 @@ if st.session_state.get("has_generated", False):
                     if lang != "zh" else
                     "累计利润与前期投入。"
                 )
-        render_subtle_note(overall_chart_insight(df_all), T["chart_insight"])
         if meeting_mode:
             support_container = st.expander(T["supporting_charts"], expanded=False)
         else:
@@ -6961,7 +6934,6 @@ if st.session_state.get("has_generated", False):
                             f"<strong>商业视角。</strong>当前最大成本项是 {escape(total_cost_driver)}，利润优化应先看这一项。"
                         )
                     )
-            render_subtle_note(total_cost_explanation, T["cost_explanation"])
 
         render_section_header(T["next_actions"])
         render_grouped_actions(next_actions)
@@ -7201,75 +7173,71 @@ if st.session_state.get("has_generated", False):
             f"TikTokShop_GrowthPlan_{export_date}"
         )
         render_section_header(T["export_materials"])
-        st.markdown('<div class="export-shell">', unsafe_allow_html=True)
         st.markdown(f'<div class="export-shell-caption">{escape(T["export_materials_note"])}</div>', unsafe_allow_html=True)
-        try:
-            dl_summary, dl_html, dl_one_pager, dl_pdf = st.columns(4)
-            with dl_summary:
-                st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
-                with st.container(border=True):
-                    st.markdown(
-                        f'<div class="export-card-title">{T["download_customer_summary"]}</div>'
-                        f'<div class="export-card-desc">{T["export_summary_desc"]}</div>',
-                        unsafe_allow_html=True,
-                    )
-                    st.download_button(
-                        T["download_customer_summary"],
-                        data=csv_bytes(customer_summary),
-                        file_name=f"{export_prefix}_summary.csv",
-                        mime="text/csv",
-                        use_container_width=True,
-                    )
-                st.markdown('</div>', unsafe_allow_html=True)
-            with dl_html:
-                st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
-                with st.container(border=True):
-                    st.markdown(
-                        f'<div class="export-card-title">{T["download_meeting_html"]}</div>'
-                        f'<div class="export-card-desc">{T["export_html_desc"]}</div>',
-                        unsafe_allow_html=True,
-                    )
-                    st.download_button(
-                        T["download_meeting_html"],
-                        data=meeting_html.encode("utf-8"),
-                        file_name=f"{export_prefix}_summary.html",
-                        mime="text/html",
-                        use_container_width=True,
-                    )
-                st.markdown('</div>', unsafe_allow_html=True)
-            with dl_one_pager:
-                st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
-                with st.container(border=True):
-                    st.markdown(
-                        f'<div class="export-card-title">{T["download_one_pager_pdf"]}</div>'
-                        f'<div class="export-card-desc">{T["export_one_pager_desc"]}</div>',
-                        unsafe_allow_html=True,
-                    )
-                    st.download_button(
-                        T["download_one_pager_pdf"],
-                        data=one_pager_pdf,
-                        file_name=f"{export_prefix}_one_pager.pdf",
-                        mime="application/pdf",
-                        use_container_width=True,
-                    )
-                st.markdown('</div>', unsafe_allow_html=True)
-            with dl_pdf:
-                st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
-                with st.container(border=True):
-                    st.markdown(
-                        f'<div class="export-card-title">{T["download_meeting_pdf"]}</div>'
-                        f'<div class="export-card-desc">{T["export_detail_desc"]}</div>',
-                        unsafe_allow_html=True,
-                    )
-                    st.download_button(
-                        T["download_meeting_pdf"],
-                        data=meeting_pdf,
-                        file_name=f"{export_prefix}_detail.pdf",
-                        mime="application/pdf",
-                        use_container_width=True,
-                    )
-                st.markdown('</div>', unsafe_allow_html=True)
-        finally:
+        dl_summary, dl_html, dl_one_pager, dl_pdf = st.columns(4)
+        with dl_summary:
+            st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown(
+                    f'<div class="export-card-title">{T["download_customer_summary"]}</div>'
+                    f'<div class="export-card-desc">{T["export_summary_desc"]}</div>',
+                    unsafe_allow_html=True,
+                )
+                st.download_button(
+                    T["download_customer_summary"],
+                    data=csv_bytes(customer_summary),
+                    file_name=f"{export_prefix}_summary.csv",
+                    mime="text/csv",
+                    use_container_width=True,
+                )
+            st.markdown('</div>', unsafe_allow_html=True)
+        with dl_html:
+            st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown(
+                    f'<div class="export-card-title">{T["download_meeting_html"]}</div>'
+                    f'<div class="export-card-desc">{T["export_html_desc"]}</div>',
+                    unsafe_allow_html=True,
+                )
+                st.download_button(
+                    T["download_meeting_html"],
+                    data=meeting_html.encode("utf-8"),
+                    file_name=f"{export_prefix}_summary.html",
+                    mime="text/html",
+                    use_container_width=True,
+                )
+            st.markdown('</div>', unsafe_allow_html=True)
+        with dl_one_pager:
+            st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown(
+                    f'<div class="export-card-title">{T["download_one_pager_pdf"]}</div>'
+                    f'<div class="export-card-desc">{T["export_one_pager_desc"]}</div>',
+                    unsafe_allow_html=True,
+                )
+                st.download_button(
+                    T["download_one_pager_pdf"],
+                    data=one_pager_pdf,
+                    file_name=f"{export_prefix}_one_pager.pdf",
+                    mime="application/pdf",
+                    use_container_width=True,
+                )
+            st.markdown('</div>', unsafe_allow_html=True)
+        with dl_pdf:
+            st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown(
+                    f'<div class="export-card-title">{T["download_meeting_pdf"]}</div>'
+                    f'<div class="export-card-desc">{T["export_detail_desc"]}</div>',
+                    unsafe_allow_html=True,
+                )
+                st.download_button(
+                    T["download_meeting_pdf"],
+                    data=meeting_pdf,
+                    file_name=f"{export_prefix}_detail.pdf",
+                    mime="application/pdf",
+                    use_container_width=True,
+                )
             st.markdown('</div>', unsafe_allow_html=True)
         if not meeting_mode:
             st.subheader(T["summary"])
