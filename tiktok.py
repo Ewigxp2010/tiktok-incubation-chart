@@ -2927,6 +2927,15 @@ st.markdown(
         transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
         width: 100%;
         justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+
+    .st-key-selected_phase_view div[role="radiogroup"] label > div {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
     }
 
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
@@ -2973,6 +2982,7 @@ st.markdown(
         font-size: 0.98rem !important;
         font-weight: 720 !important;
         color: #1F2937 !important;
+        text-align: center !important;
     }
 
     .st-key-selected_phase_view div[role="radiogroup"] label:has(input:checked) p {
