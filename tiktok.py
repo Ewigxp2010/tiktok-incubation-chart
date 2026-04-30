@@ -2900,6 +2900,13 @@ st.markdown(
         gap: 8px;
     }
 
+    .st-key-selected_phase_view div[role="radiogroup"] {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+        width: 100%;
+    }
+
     .st-key-selected_phase_view div[role="radiogroup"] label {
         background: #FFFFFF;
         border: 1.5px solid #D5DEEA;
@@ -2908,6 +2915,8 @@ st.markdown(
         min-height: 56px;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
         transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+        width: 100%;
+        justify-content: center;
     }
 
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
