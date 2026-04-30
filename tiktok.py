@@ -3239,6 +3239,54 @@ st.markdown(
         margin: 5px 0 9px 0;
     }
 
+    .inline-note {
+        margin: 0.3rem 0 0.45rem 0;
+    }
+
+    .inline-note details {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+    }
+
+    .inline-note summary {
+        list-style: none;
+        cursor: pointer;
+        color: #667085;
+        font-size: 0.78rem;
+        font-weight: 620;
+        line-height: 1.4;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .inline-note summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .inline-note summary::before {
+        content: "+";
+        color: #98A2B3;
+        font-size: 0.82rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .inline-note details[open] summary::before {
+        content: "−";
+    }
+
+    .inline-note-body {
+        color: #667085;
+        font-size: 0.8rem;
+        line-height: 1.55;
+        margin-top: 0.35rem;
+        max-width: 920px;
+    }
+
     .sidebar-divider {
         height: 1px;
         background: #E5EAF1;
@@ -4956,21 +5004,21 @@ def render_chart_panel_header(title, subtitle=None, kicker=None):
 
 
 def render_chart_panel_caption(caption):
-    left, right = st.columns([0.94, 0.06])
-    with right:
-        with st.popover("?", help=T["chart_read"], use_container_width=True):
-            st.caption(T["chart_read"])
-            st.markdown(caption, unsafe_allow_html=True)
+    st.markdown(
+        f'<div class="inline-note"><details><summary>{escape(T["chart_read"])}</summary>'
+        f'<div class="inline-note-body">{caption}</div></details></div>',
+        unsafe_allow_html=True,
+    )
 
 
 def render_subtle_note(body, label=None):
-    hint_label = str(label) if label else T["chart_read"]
-    left, right = st.columns([0.94, 0.06])
-    with right:
-        with st.popover("?", help=hint_label, use_container_width=True):
-            if label:
-                st.caption(str(label))
-            st.write(str(body))
+    summary = escape(str(label)) if label else escape(T["chart_read"])
+    body_html = escape(str(body)).replace("\n", "<br>")
+    st.markdown(
+        f'<div class="inline-note"><details><summary>{summary}</summary>'
+        f'<div class="inline-note-body">{body_html}</div></details></div>',
+        unsafe_allow_html=True,
+    )
 
 
 def render_status_panel(title, body, tone="info", compact=False, kicker=None):
