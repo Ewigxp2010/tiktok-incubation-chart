@@ -2922,9 +2922,18 @@ st.markdown(
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
         background: #F8FAFC;
         border: 1px solid #E7ECF2;
-        border-radius: 10px;
-        padding: 7px 14px;
-        min-height: 38px;
+        border-radius: 12px;
+        padding: 8px 14px;
+        min-height: 42px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
+        width: 100%;
     }
 
     .st-key-selected_phase_view div[role="radiogroup"] label:hover {
@@ -2940,8 +2949,14 @@ st.markdown(
 
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label:has(input:checked) {
         background: #FFFFFF;
-        border-color: #DDE4EC;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+        border-color: #CCD7E4;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+
+    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label p {
+        font-size: 0.92rem !important;
+        font-weight: 680 !important;
+        color: #334155 !important;
     }
 
     .st-key-selected_phase_view div[role="radiogroup"] label p {
