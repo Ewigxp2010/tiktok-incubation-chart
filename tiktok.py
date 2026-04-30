@@ -2940,6 +2940,10 @@ st.markdown(
         gap: 12px;
     }
 
+    .st-key-selected_phase_view div[role="radiogroup"] label > div > div:first-child {
+        display: none !important;
+    }
+
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
         background: #F8FAFC;
         border: 1px solid #E7ECF2;
@@ -2966,6 +2970,10 @@ st.markdown(
         justify-content: center;
         align-items: center;
         gap: 10px;
+    }
+
+    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label > div > div:first-child {
+        display: none !important;
     }
 
     .st-key-selected_phase_view div[role="radiogroup"] label:hover {
