@@ -4512,6 +4512,26 @@ def render_section_header(title, eyebrow=None):
     )
 
 
+def render_segmented_buttons(options, state_key, format_func=str):
+    if not options:
+        return None
+    if state_key not in st.session_state:
+        st.session_state[state_key] = options[0]
+    selected = st.session_state.get(state_key, options[0])
+    cols = st.columns(len(options), gap="small")
+    for idx, option in enumerate(options):
+        with cols[idx]:
+            if st.button(
+                format_func(option),
+                key=f"{state_key}__btn__{idx}",
+                type="primary" if option == selected else "secondary",
+                use_container_width=True,
+            ):
+                st.session_state[state_key] = option
+                selected = option
+    return selected
+
+
 def render_dashboard_intro(snapshot_text, diagnosis_text):
     html = (
         '<div class="dashboard-intro">'
@@ -6765,13 +6785,10 @@ if st.session_state.get("has_generated", False):
         render_section_header(T["phase_trend"])
         render_subtle_note(T["phase_strategy_text"], T["phase_strategy"])
         render_phase_overview(phase_summary)
-        selected_phase_key = st.radio(
-            "",
-            options=[p["key"] for p in phase_inputs],
+        selected_phase_key = render_segmented_buttons(
+            [p["key"] for p in phase_inputs],
+            "selected_phase_view",
             format_func=lambda key: phase_label(next(p for p in phase_inputs if p["key"] == key)),
-            horizontal=True,
-            label_visibility="collapsed",
-            key="selected_phase_view",
         )
         selected_phase = next(p for p in phase_inputs if p["key"] == selected_phase_key)
         phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
@@ -6792,11 +6809,9 @@ if st.session_state.get("has_generated", False):
             ])
         render_kpi_grid(phase_kpis, compact=True)
 
-        chart_mode = st.radio(
-            T["phase_chart_mode"],
-            options=[T["phase_chart_cumulative"], T["phase_chart_total"]],
-            horizontal=True,
-            key=f"phase_chart_mode_{selected_phase['key']}",
+        chart_mode = render_segmented_buttons(
+            [T["phase_chart_cumulative"], T["phase_chart_total"]],
+            f"phase_chart_mode_{selected_phase['key']}",
         )
         phase_chart_title = phase_label(selected_phase)
         with st.container(border=True):
