@@ -2932,6 +2932,8 @@ st.markdown(
     }
 
     .st-key-selected_phase_view div[role="radiogroup"] label > div {
+        display: flex !important;
+        flex-direction: row !important;
         width: 100%;
         justify-content: center;
         align-items: center;
@@ -2958,6 +2960,8 @@ st.markdown(
     }
 
     div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label > div {
+        display: flex !important;
+        flex-direction: row !important;
         width: 100%;
         justify-content: center;
         align-items: center;
@@ -2993,6 +2997,7 @@ st.markdown(
         font-weight: 720 !important;
         color: #1F2937 !important;
         text-align: center !important;
+        white-space: nowrap !important;
     }
 
     .st-key-selected_phase_view div[role="radiogroup"] label:has(input:checked) p {
