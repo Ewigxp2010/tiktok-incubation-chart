@@ -4927,15 +4927,21 @@ def render_chart_panel_header(title, subtitle=None, kicker=None):
 
 
 def render_chart_panel_caption(caption):
-    st.markdown(f'<div class="chart-card-footer">{caption}</div>', unsafe_allow_html=True)
+    left, right = st.columns([0.94, 0.06])
+    with right:
+        with st.popover("?", help=T["chart_read"], use_container_width=True):
+            st.caption(T["chart_read"])
+            st.markdown(caption, unsafe_allow_html=True)
 
 
 def render_subtle_note(body, label=None):
-    prefix = f"<strong>{escape(str(label))}:</strong> " if label else ""
-    st.markdown(
-        f'<div class="subtle-note">{prefix}{escape(str(body))}</div>',
-        unsafe_allow_html=True,
-    )
+    hint_label = str(label) if label else T["chart_read"]
+    left, right = st.columns([0.94, 0.06])
+    with right:
+        with st.popover("?", help=hint_label, use_container_width=True):
+            if label:
+                st.caption(str(label))
+            st.write(str(body))
 
 
 def render_status_panel(title, body, tone="info", compact=False, kicker=None):
@@ -6388,7 +6394,7 @@ with st.sidebar:
             key="logistics_cost_manual",
         )
         if use_fbt:
-            st.caption(T["fbt_help"])
+            render_subtle_note(T["fbt_help"], T["fbt"])
 
         st.header(T["growth_levers"])
         ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
@@ -6405,7 +6411,7 @@ with st.sidebar:
             key="scenario_case_input",
             help=T["scenario_case_help"],
         )
-        st.caption(T["scenario_case_detail"])
+        render_subtle_note(T["scenario_case_detail"], T["scenario_case"])
         st.header(T["target_setup"])
         target_gmv = st.number_input(T["target_gmv"], min_value=0.0, value=0.0, step=1000.0, key="target_gmv_input", help=T["target_gmv_help"])
         target_profit = st.number_input(T["target_profit"], min_value=0.0, value=0.0, step=1000.0, key="target_profit_input", help=T["target_profit_help"])
@@ -6448,12 +6454,12 @@ show_setup = (not meeting_mode) or (not st.session_state.get("has_generated", Fa
 
 if show_setup:
     st.subheader(T["sku_setup"])
-    st.caption(T["sku_caption"])
+    render_subtle_note(T["sku_caption"], T["sku_setup"])
     with st.expander(T["benchmark_info"], expanded=False):
         st.write(T["benchmark_info_text"])
     with st.expander(T["model_assumptions"], expanded=False):
         render_model_logic()
-        st.caption(T["planning_disclaimer"])
+        render_subtle_note(T["planning_disclaimer"], T["model_assumptions"])
 
     with st.expander(T["meeting_notes"], expanded=False):
         n1, n2, n3, n4 = st.columns(4)
@@ -6562,7 +6568,10 @@ if show_setup:
                 )
 
             if use_fbt:
-                st.caption(f"{T['fbt_status']}: {fbt_status} · {T['effective_logistics']}: {money(effective_logistics, 2)}")
+                render_subtle_note(
+                    f"{T['fbt_status']}: {fbt_status} · {T['effective_logistics']}: {money(effective_logistics, 2)}",
+                    T["fbt"],
+                )
 
             with st.expander(T["benchmark_expander"], expanded=False):
                 st.markdown(f'<div class="benchmark-note">{escape(T["benchmark_note"])}</div>', unsafe_allow_html=True)
