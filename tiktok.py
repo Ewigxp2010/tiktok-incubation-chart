@@ -2990,6 +2990,7 @@ st.markdown(
         font-weight: 680 !important;
         color: #334155 !important;
         text-align: center !important;
+        white-space: nowrap !important;
     }
 
     .st-key-selected_phase_view div[role="radiogroup"] label p {
