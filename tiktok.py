@@ -6752,11 +6752,9 @@ if st.session_state.get("has_generated", False):
             (T["channel_mix"], main_gmv_channel(df_all), "#94A3B8"),
             (T["cumulative_be"], cumulative_be_label, "#64748B"),
         ], fixed_cols=3)
-        render_status_panel(
-            T["diagnosis_summary"],
+        render_subtle_note(
             diagnosis_text,
-            tone="info",
-            compact=True,
+            T["diagnosis_summary"],
         )
         target_items = target_comparison_items(overall, target_gmv, target_profit)
 
@@ -6891,7 +6889,7 @@ if st.session_state.get("has_generated", False):
                             f"<strong>商业视角。</strong>当前最大成本项是 {escape(total_cost_driver)}，利润优化应先看这一项。"
                         )
                     )
-            render_status_panel(T["cost_explanation"], total_cost_explanation, tone="info", compact=True)
+            render_subtle_note(total_cost_explanation, T["cost_explanation"])
 
         render_section_header(T["next_actions"])
         render_grouped_actions(next_actions)
