@@ -6783,15 +6783,16 @@ if st.session_state.get("has_generated", False):
             )
             st.session_state["_scroll_to_results"] = False
 
-        render_hero(
-            overall=overall,
-            weeks=int(weeks_per_phase) * len(PHASES),
-            skus=int(n_skus),
-            break_even_label=cumulative_be_label,
-        )
+        if not meeting_mode:
+            render_hero(
+                overall=overall,
+                weeks=int(weeks_per_phase) * len(PHASES),
+                skus=int(n_skus),
+                break_even_label=cumulative_be_label,
+            )
 
         render_section_header(T["executive_dashboard"])
-        if not st.session_state.get("plan_locked", False):
+        if (not meeting_mode) and (not st.session_state.get("plan_locked", False)):
             if st.button(T["lock_plan"], key="lock_plan_btn"):
                 st.session_state["plan_locked"] = True
                 st.session_state["_locked_product_df"] = product_df.copy()
@@ -6834,7 +6835,7 @@ if st.session_state.get("has_generated", False):
                 (T["total_cost"], money(phase_row["Total Cost"], 0), "#6B7280"),
                 (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#178A62"),
             ])
-        render_kpi_grid(phase_kpis, compact=True)
+            render_kpi_grid(phase_kpis, compact=True)
 
         chart_mode = render_segmented_buttons(
             [T["phase_chart_cumulative"], T["phase_chart_total"]],
@@ -7173,7 +7174,8 @@ if st.session_state.get("has_generated", False):
             f"TikTokShop_GrowthPlan_{export_date}"
         )
         render_section_header(T["export_materials"])
-        st.markdown(f'<div class="export-shell-caption">{escape(T["export_materials_note"])}</div>', unsafe_allow_html=True)
+        if not meeting_mode:
+            st.markdown(f'<div class="export-shell-caption">{escape(T["export_materials_note"])}</div>', unsafe_allow_html=True)
         dl_summary, dl_html, dl_one_pager, dl_pdf = st.columns(4)
         with dl_summary:
             st.markdown('<div class="export-card-shell">', unsafe_allow_html=True)
