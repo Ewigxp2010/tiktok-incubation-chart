@@ -6408,17 +6408,6 @@ if not st.session_state.get("sku_count_confirmed", False) and not st.session_sta
 with st.sidebar:
     st.header(T["plan_setup"])
     n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
-    st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
-    render_sidebar_meta(f"{T['model_version']}: {MODEL_VERSION}")
-    render_sidebar_divider()
-    if st.button(T["reset_defaults"], key="reset_request_btn"):
-        st.session_state["reset_confirm_pending"] = True
-    if st.session_state.get("reset_confirm_pending", False):
-        render_status_panel(T["reset_defaults"], T["reset_pending"], tone="warning", compact=True)
-        if st.button(T["reset_confirm"], key="reset_confirm_btn"):
-            reset_defaults()
-    if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"]):
-        reset_sku_assumptions(n_skus)
 
     meeting_mode = st.checkbox(
         T["meeting_mode"],
@@ -6449,6 +6438,17 @@ with st.sidebar:
             samples_per_sku = int(st.session_state.get(f"_model_samples_per_sku_{idx}", st.session_state.get(f"samples_per_sku_{idx}", phase["samples_per_sku"])))
             phase_inputs.append({**phase, "take_rate": take_rate_pct / 100, "samples_per_sku": samples_per_sku})
     else:
+        st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
+        render_sidebar_meta(f"{T['model_version']}: {MODEL_VERSION}")
+        render_sidebar_divider()
+        if st.button(T["reset_defaults"], key="reset_request_btn"):
+            st.session_state["reset_confirm_pending"] = True
+        if st.session_state.get("reset_confirm_pending", False):
+            render_status_panel(T["reset_defaults"], T["reset_pending"], tone="warning", compact=True)
+            if st.button(T["reset_confirm"], key="reset_confirm_btn"):
+                reset_defaults()
+        if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"]):
+            reset_sku_assumptions(n_skus)
         promo_60d = st.checkbox(
             T["promo"],
             value=True,
@@ -6783,14 +6783,6 @@ if st.session_state.get("has_generated", False):
             )
             st.session_state["_scroll_to_results"] = False
 
-        if not meeting_mode:
-            render_hero(
-                overall=overall,
-                weeks=int(weeks_per_phase) * len(PHASES),
-                skus=int(n_skus),
-                break_even_label=cumulative_be_label,
-            )
-
         render_section_header(T["executive_dashboard"])
         if (not meeting_mode) and (not st.session_state.get("plan_locked", False)):
             if st.button(T["lock_plan"], key="lock_plan_btn"):
@@ -6803,14 +6795,18 @@ if st.session_state.get("has_generated", False):
                 st.session_state["_locked_scenario_label"] = scenario_label
                 st.session_state["_locked_scenario_case"] = scenario_case
                 st.rerun()
-        render_kpi_grid([
+        dashboard_items = [
             (T["total_gmv"], money(overall["Total GMV"], 0), "#315EEC"),
             (T["total_profit"], money(overall["Total Profit"], 0), "#178A62" if overall["Total Profit"] >= 0 else "#B42318"),
             (T["growth_investment"], money(overall["Growth Investment"], 0), "#4F46E5"),
-            (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#64748B"),
-            (T["channel_mix"], main_gmv_channel(df_all), "#94A3B8"),
             (T["cumulative_be"], cumulative_be_label, "#64748B"),
-        ], fixed_cols=3)
+        ]
+        if not meeting_mode:
+            dashboard_items.extend([
+                (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#64748B"),
+                (T["channel_mix"], main_gmv_channel(df_all), "#94A3B8"),
+            ])
+        render_kpi_grid(dashboard_items, fixed_cols=2 if meeting_mode else 3)
         target_items = target_comparison_items(overall, target_gmv, target_profit)
 
         render_section_header(T["phase_trend"])
@@ -6824,19 +6820,6 @@ if st.session_state.get("has_generated", False):
         phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
         phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
         objective = phase_objective(selected_phase["key"])
-        phase_kpis = [
-            (T["total_gmv"], money(phase_row["GMV"], 0), "#315EEC"),
-            (T["total_profit"], money(phase_row["Profit"], 0), "#178A62" if phase_row["Profit"] >= 0 else "#B42318"),
-            (T["sample_investment"], money(phase_row["Samples Cost"], 0), "#4F46E5"),
-            (T["ads_investment"], money(phase_row["Ads Cost"], 0), "#94A3B8"),
-        ]
-        if not meeting_mode:
-            phase_kpis.extend([
-                (T["total_cost"], money(phase_row["Total Cost"], 0), "#6B7280"),
-                (T["sales_contribution"], money(phase_row["Sales Contribution"], 0), "#178A62"),
-            ])
-            render_kpi_grid(phase_kpis, compact=True)
-
         chart_mode = render_segmented_buttons(
             [T["phase_chart_cumulative"], T["phase_chart_total"]],
             f"phase_chart_mode_{selected_phase['key']}",
