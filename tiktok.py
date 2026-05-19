@@ -2506,11 +2506,39 @@ def normalize_assumption_status(value):
     return legacy_labels.get(value, "planning")
 
 
+def normalize_phase_chart_mode(value):
+    if value in PHASE_CHART_MODE_KEYS:
+        return value
+    legacy_labels = {}
+    for text_map in TEXT.values():
+        legacy_labels[text_map["phase_chart_cumulative"]] = "cumulative"
+        legacy_labels[text_map["phase_chart_total"]] = "total"
+    return legacy_labels.get(value, "cumulative")
+
+
 def phase_chart_mode_label(mode_key):
     return {
         "cumulative": T["phase_chart_cumulative"],
         "total": T["phase_chart_total"],
     }.get(mode_key, T["phase_chart_cumulative"])
+
+
+def migrate_session_state():
+    phase_keys = [phase["key"] for phase in PHASES]
+    if st.session_state.get("selected_phase_view") not in (None, *phase_keys):
+        st.session_state["selected_phase_view"] = phase_keys[0]
+
+    for phase_key in phase_keys:
+        mode_key = f"phase_chart_mode_{phase_key}"
+        if mode_key in st.session_state:
+            st.session_state[mode_key] = normalize_phase_chart_mode(st.session_state[mode_key])
+
+    for status_key in ("assumption_status_input", "_model_assumption_status"):
+        if status_key in st.session_state:
+            st.session_state[status_key] = normalize_assumption_status(st.session_state[status_key])
+
+
+migrate_session_state()
 
 st.markdown(
     """
