@@ -2478,9 +2478,39 @@ with st.sidebar:
         options=["en", "zh", "de", "nl"],
         format_func=lambda code: LANG_LABELS[code],
         index=0,
+        key="language_input",
     )
 
 T = TEXT[lang]
+
+ASSUMPTION_STATUS_KEYS = ["planning", "am_aligned", "merchant_confirmed"]
+PHASE_CHART_MODE_KEYS = ["cumulative", "total"]
+
+
+def assumption_status_label(status_key):
+    return {
+        "planning": T["benchmark_input"],
+        "am_aligned": T["am_aligned_input"],
+        "merchant_confirmed": T["merchant_confirmed_input"],
+    }.get(status_key, T["benchmark_input"])
+
+
+def normalize_assumption_status(value):
+    if value in ASSUMPTION_STATUS_KEYS:
+        return value
+    legacy_labels = {}
+    for text_map in TEXT.values():
+        legacy_labels[text_map["benchmark_input"]] = "planning"
+        legacy_labels[text_map["am_aligned_input"]] = "am_aligned"
+        legacy_labels[text_map["merchant_confirmed_input"]] = "merchant_confirmed"
+    return legacy_labels.get(value, "planning")
+
+
+def phase_chart_mode_label(mode_key):
+    return {
+        "cumulative": T["phase_chart_cumulative"],
+        "total": T["phase_chart_total"],
+    }.get(mode_key, T["phase_chart_cumulative"])
 
 st.markdown(
     """
@@ -4566,6 +4596,9 @@ def render_segmented_buttons(options, state_key, format_func=str):
     if state_key not in st.session_state:
         st.session_state[state_key] = options[0]
     selected = st.session_state.get(state_key, options[0])
+    if selected not in options:
+        selected = options[0]
+        st.session_state[state_key] = selected
     cols = st.columns(len(options), gap="small")
     for idx, option in enumerate(options):
         with cols[idx]:
@@ -4829,9 +4862,10 @@ def scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scen
 
 
 def forecast_range(overall, assumption_status):
-    if assumption_status == T["merchant_confirmed_input"]:
+    assumption_status_key = normalize_assumption_status(assumption_status)
+    if assumption_status_key == "merchant_confirmed":
         spread = 0.08
-    elif assumption_status == T["am_aligned_input"]:
+    elif assumption_status_key == "am_aligned":
         spread = 0.12
     else:
         spread = 0.20
@@ -6421,7 +6455,7 @@ with st.sidebar:
         if st.button(T["back_to_client_view"], key="back_to_client_view_btn"):
             st.session_state["selected_phase_view"] = PHASES[0]["key"]
             for phase in PHASES:
-                st.session_state[f"phase_chart_mode_{phase['key']}"] = T["phase_chart_cumulative"]
+                st.session_state[f"phase_chart_mode_{phase['key']}"] = "cumulative"
             st.rerun()
         promo_60d = bool(st.session_state.get("_model_promo_60d", st.session_state.get("promo_60d_input", True)))
         use_fbt = bool(st.session_state.get("_model_use_fbt", st.session_state.get("use_fbt_input", False)))
@@ -6549,9 +6583,13 @@ if show_setup:
             meeting_date = st.date_input(T["meeting_date"], value=datetime.now().date(), key="meeting_date_input")
         with n4:
             am_name = st.text_input(T["am_name"], key="am_name_input")
-        assumption_status = st.selectbox(
+        st.session_state["assumption_status_input"] = normalize_assumption_status(
+            st.session_state.get("assumption_status_input", "planning")
+        )
+        assumption_status_key = st.selectbox(
             T["assumption_status"],
-            options=[T["benchmark_input"], T["am_aligned_input"], T["merchant_confirmed_input"]],
+            options=ASSUMPTION_STATUS_KEYS,
+            format_func=assumption_status_label,
             index=0,
             key="assumption_status_input",
         )
@@ -6572,7 +6610,8 @@ if show_setup:
     st.session_state["_model_meeting_date"] = str(meeting_date)
     st.session_state["_model_am_name"] = am_name
     st.session_state["_model_key_recommendation"] = key_recommendation
-    st.session_state["_model_assumption_status"] = assumption_status
+    st.session_state["_model_assumption_status"] = assumption_status_key
+    assumption_status = assumption_status_label(assumption_status_key)
 
     for i in range(int(n_skus)):
         initialize_sku(i)
@@ -6670,7 +6709,11 @@ else:
         "am_name": st.session_state.get("_model_am_name", st.session_state.get("am_name_input", "")),
         "key_recommendation": st.session_state.get("_model_key_recommendation", st.session_state.get("key_recommendation_input", T["key_recommendation_default"])),
     }
-    assumption_status = st.session_state.get("_model_assumption_status", st.session_state.get("assumption_status_input", T["benchmark_input"]))
+    assumption_status_key = normalize_assumption_status(
+        st.session_state.get("_model_assumption_status", st.session_state.get("assumption_status_input", "planning"))
+    )
+    st.session_state["_model_assumption_status"] = assumption_status_key
+    assumption_status = assumption_status_label(assumption_status_key)
     for i in range(int(n_skus)):
         initialize_sku(i)
 
@@ -6821,13 +6864,14 @@ if st.session_state.get("has_generated", False):
         phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
         objective = phase_objective(selected_phase["key"])
         chart_mode = render_segmented_buttons(
-            [T["phase_chart_cumulative"], T["phase_chart_total"]],
+            PHASE_CHART_MODE_KEYS,
             f"phase_chart_mode_{selected_phase['key']}",
+            format_func=phase_chart_mode_label,
         )
         phase_chart_title = phase_label(selected_phase)
         with st.container(border=True):
             render_chart_panel_header(phase_chart_title)
-            if chart_mode == T["phase_chart_cumulative"]:
+            if chart_mode == "cumulative":
                 st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True, config={"displayModeBar": False, "responsive": True})
             else:
                 st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True, config={"displayModeBar": False, "responsive": True})
