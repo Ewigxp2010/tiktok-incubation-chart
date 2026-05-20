@@ -1544,6 +1544,186 @@ DEFAULT_SKU_PROFILES = [
     {"category": "Household Appliances", "subcategory": "Kitchen Appliances", "gross_margin_pct": 35.0, "organic_commission_pct": 10.0, "paid_commission_pct": 5.0},
 ]
 
+CATEGORY_LABELS = {
+    "zh": {
+        "Automotive & Motorcycle": "汽车与摩托车",
+        "Baby & Maternity": "母婴用品",
+        "Beauty & Personal Care": "美妆个护",
+        "Books, Magazines & Audio": "图书、杂志与音频",
+        "Collectibles": "收藏品",
+        "Computers & Office Equipment": "电脑与办公设备",
+        "Fashion Accessories": "时尚配饰",
+        "Food & Beverages": "食品饮料",
+        "Furniture": "家具",
+        "Health": "健康",
+        "Home Improvement": "家装建材",
+        "Home Supplies": "家居用品",
+        "Household Appliances": "家用电器",
+        "Jewelry Accessories & Derivatives": "珠宝配饰及衍生品",
+        "Kids' Fashion": "童装童鞋",
+        "Kitchenware": "厨具",
+        "Luggage & Bags": "箱包",
+        "Menswear & Underwear": "男装与内衣",
+        "Modest Fashion": "端庄服饰",
+        "Pet Supplies": "宠物用品",
+        "Phones & Electronics": "手机与电子产品",
+        "Shoes": "鞋靴",
+        "Sports & Outdoor": "运动户外",
+        "Textiles & Soft Furnishings": "家纺软装",
+        "Tools & Hardware": "工具与五金",
+        "Toys & Hobbies": "玩具与兴趣爱好",
+        "Womenswear & Underwear": "女装与内衣",
+    },
+    "de": {
+        "Automotive & Motorcycle": "Auto & Motorrad",
+        "Baby & Maternity": "Baby & Schwangerschaft",
+        "Beauty & Personal Care": "Beauty & Körperpflege",
+        "Books, Magazines & Audio": "Bücher, Magazine & Audio",
+        "Collectibles": "Sammlerstücke",
+        "Computers & Office Equipment": "Computer & Büroausstattung",
+        "Fashion Accessories": "Modeaccessoires",
+        "Food & Beverages": "Lebensmittel & Getränke",
+        "Furniture": "Möbel",
+        "Health": "Gesundheit",
+        "Home Improvement": "Heimwerken",
+        "Home Supplies": "Haushaltswaren",
+        "Household Appliances": "Haushaltsgeräte",
+        "Jewelry Accessories & Derivatives": "Schmuckzubehör & Derivate",
+        "Kids' Fashion": "Kindermode",
+        "Kitchenware": "Küchenwaren",
+        "Luggage & Bags": "Gepäck & Taschen",
+        "Menswear & Underwear": "Herrenmode & Unterwäsche",
+        "Modest Fashion": "Modest Fashion",
+        "Pet Supplies": "Tierbedarf",
+        "Phones & Electronics": "Telefone & Elektronik",
+        "Shoes": "Schuhe",
+        "Sports & Outdoor": "Sport & Outdoor",
+        "Textiles & Soft Furnishings": "Textilien & Heimtextilien",
+        "Tools & Hardware": "Werkzeuge & Hardware",
+        "Toys & Hobbies": "Spielzeug & Hobbys",
+        "Womenswear & Underwear": "Damenmode & Unterwäsche",
+    },
+    "nl": {
+        "Automotive & Motorcycle": "Auto & motor",
+        "Baby & Maternity": "Baby & zwangerschap",
+        "Beauty & Personal Care": "Beauty & persoonlijke verzorging",
+        "Books, Magazines & Audio": "Boeken, magazines & audio",
+        "Collectibles": "Verzamelobjecten",
+        "Computers & Office Equipment": "Computers & kantoorapparatuur",
+        "Fashion Accessories": "Modeaccessoires",
+        "Food & Beverages": "Eten & drinken",
+        "Furniture": "Meubels",
+        "Health": "Gezondheid",
+        "Home Improvement": "Woningverbetering",
+        "Home Supplies": "Huishoudelijke artikelen",
+        "Household Appliances": "Huishoudelijke apparaten",
+        "Jewelry Accessories & Derivatives": "Sieradenaccessoires & derivaten",
+        "Kids' Fashion": "Kindermode",
+        "Kitchenware": "Keukengerei",
+        "Luggage & Bags": "Bagage & tassen",
+        "Menswear & Underwear": "Herenmode & ondergoed",
+        "Modest Fashion": "Modest fashion",
+        "Pet Supplies": "Dierbenodigdheden",
+        "Phones & Electronics": "Telefoons & elektronica",
+        "Shoes": "Schoenen",
+        "Sports & Outdoor": "Sport & outdoor",
+        "Textiles & Soft Furnishings": "Textiel & zachte inrichting",
+        "Tools & Hardware": "Gereedschap & hardware",
+        "Toys & Hobbies": "Speelgoed & hobby's",
+        "Womenswear & Underwear": "Damesmode & ondergoed",
+    },
+}
+
+SUBCATEGORY_LABELS = {
+    "zh": {
+        "Car Electronics": "汽车电子", "Car Exterior Accessories": "汽车外饰配件", "Car Interior Accessories": "汽车内饰配件", "Car Repair Tools": "汽车维修工具", "Car Washing & Maintenance": "洗车与保养",
+        "Baby Care & Health": "婴儿护理与健康", "Baby Clothing & Shoes": "婴儿服装与鞋", "Baby Fashion Accessories": "婴儿时尚配饰", "Baby Furniture": "婴儿家具", "Baby Safety": "婴儿安全用品", "Baby Toys": "婴儿玩具", "Baby Travel Gear": "婴儿出行用品", "Maternity Supplies": "孕产用品", "Nursing & Feeding": "哺乳与喂养",
+        "Bath & Body Care": "沐浴身体护理", "Eye & Ear Care": "眼耳护理", "Fragrance": "香水香氛", "Haircare & Styling": "头发护理与造型", "Hand & Foot Care": "手足护理", "Makeup": "彩妆", "Men's Care": "男士护理", "Nail Care": "美甲护理", "Nasal & Oral Care": "鼻腔与口腔护理", "Personal Care Appliances": "个护电器", "Skincare": "护肤", "Special Personal Care": "特殊个护",
+        "Children's & Infants' Books": "儿童与婴幼儿图书", "Education & Schooling": "教育与学习", "Humanities & Social Sciences": "人文社科",
+        "Entertainment": "娱乐收藏", "Sports Collectibles": "体育收藏", "Trading Cards & Accessories": "集换式卡牌与配件",
+        "Computer Accessories": "电脑配件", "Data Storage & Software": "数据存储与软件", "Network Components": "网络组件", "Office Equipment": "办公设备", "Office Stationery & Supplies": "办公文具与用品",
+        "Clothes Accessories": "服饰配件", "Costume Jewelry & Accessories": "饰品与配件", "Eyewear": "眼镜", "Fashion Watches & Accessories": "时尚手表与配件", "Hair Accessories": "发饰", "Hair Extensions & Wigs": "接发与假发",
+        "Baking": "烘焙", "Drinks": "饮品", "Pantry Food": "食品储备", "Snacks": "零食", "Staples & Cooking Essentials": "主食与烹饪基础食材",
+        "Children's Furniture": "儿童家具", "Commercial Furniture": "商用家具", "Indoor Furniture": "室内家具", "Outdoor Furniture": "户外家具",
+        "Medical Supplies": "医疗用品", "Nutrition & Wellness": "营养与健康",
+        "Bathroom Fixtures": "卫浴五金", "Building Supplies": "建筑材料", "Electrical Equipment & Supplies": "电气设备与用品", "Garden Supplies": "园艺用品", "Kitchen Fixtures": "厨房装置", "Lights & Lighting": "灯具照明", "Security & Safety": "安防安全", "Smart Home Systems": "智能家居系统",
+        "Bathroom Supplies": "浴室用品", "Festive & Party Supplies": "节庆派对用品", "Home Care Supplies": "家庭清洁护理", "Home Decor": "家居装饰", "Home Organizers": "收纳用品", "Laundry Tools & Accessories": "洗衣工具与配件", "Miscellaneous Home": "其他家居",
+        "Commercial Appliances": "商用电器", "Home Appliances": "家庭电器", "Kitchen Appliances": "厨房电器", "Large Home Appliances": "大家电",
+        "Pearl": "珍珠", "Platinum, Carat Gold": "铂金与K金",
+        "Boys' Footwear": "男童鞋", "Kids' Fashion Accessories": "儿童时尚配饰",
+        "Barbecue": "烧烤", "Cookware": "锅具", "Cutlery & Tableware": "餐具", "Drinkware": "饮具", "Kitchen Utensils & Gadgets": "厨房工具与小物", "Tea & Coffeeware": "茶具与咖啡器具",
+        "Functional Bags": "功能包", "Luggage & Travel Bags": "行李箱与旅行包", "Men's Bags": "男包", "Women's Bags": "女包",
+        "Men's Bottoms": "男士下装", "Men's Tops": "男士上装", "Men's Underwear & Socks": "男士内衣袜子",
+        "Hijabs": "头巾", "Prayer Attire & Equipment": "祈祷服饰与用品",
+        "Bird Supplies": "鸟类用品", "Dog & Cat Accessories": "猫狗配件", "Dog & Cat Food": "猫狗食品", "Dog & Cat Furniture": "猫狗家具", "Dog & Cat Grooming": "猫狗美容护理", "Dog & Cat Litter": "猫狗清洁用品", "Farm Animal & Poultry Supplies": "农场动物与家禽用品",
+        "Audio & Video": "音频与视频", "Cameras & Photography": "相机与摄影", "Gaming & Consoles": "游戏与主机", "Mobile Phone Accessories": "手机配件", "Phones & Tablets": "手机与平板", "Smart & Wearable Devices": "智能与穿戴设备", "Tablet & Computer Accessories": "平板与电脑配件", "Universal Accessories": "通用配件",
+        "Men's Shoes": "男鞋", "Shoe Accessories": "鞋配件", "Women's Shoes": "女鞋",
+        "Ball Sports": "球类运动", "Camping & Hiking": "露营徒步", "Fitness": "健身", "Leisure & Outdoor Recreation Equipment": "休闲户外装备", "Sport & Outdoor Clothing": "运动户外服装", "Sports & Outdoor Accessories": "运动户外配件", "Sports Footwear": "运动鞋", "Swimwear, Surfwear & Wetsuits": "泳装冲浪服与潜水服",
+        "Bedding and Linens": "床品与布草", "Household Textiles": "家用纺织品",
+        "Garden Tools": "园艺工具", "Hand Tools": "手动工具", "Hardware": "五金", "Measuring Tools": "测量工具", "Power Tools": "电动工具", "Pumps & Plumbing": "泵与管道", "Soldering Equipment": "焊接设备",
+        "Classic & Novelty Toys": "经典与新奇玩具", "Dolls & Stuffed Toys": "娃娃与毛绒玩具", "Educational Toys": "益智教育玩具", "Electric & Remote Control Toys": "电动与遥控玩具", "Games & Puzzles": "游戏与拼图", "Sports & Outdoor Play": "运动与户外玩具",
+        "Women's Bottoms": "女士下装", "Women's Dresses": "女士连衣裙", "Women's Sleepwear & Loungewear": "女士睡衣家居服", "Women's Suits & Sets": "女士套装", "Women's Tops": "女士上装", "Women's Underwear": "女士内衣",
+    },
+    "de": {
+        "Car Electronics": "Autoelektronik", "Car Exterior Accessories": "Auto-Außenzubehör", "Car Interior Accessories": "Auto-Innenzubehör", "Car Repair Tools": "Autoreparaturwerkzeuge", "Car Washing & Maintenance": "Autowäsche & Pflege",
+        "Baby Care & Health": "Babypflege & Gesundheit", "Baby Clothing & Shoes": "Babykleidung & Schuhe", "Baby Fashion Accessories": "Baby-Modeaccessoires", "Baby Furniture": "Babymöbel", "Baby Safety": "Babysicherheit", "Baby Toys": "Babyspielzeug", "Baby Travel Gear": "Baby-Reiseausstattung", "Maternity Supplies": "Schwangerschaftsbedarf", "Nursing & Feeding": "Stillen & Füttern",
+        "Bath & Body Care": "Bad- & Körperpflege", "Eye & Ear Care": "Augen- & Ohrenpflege", "Fragrance": "Duft", "Haircare & Styling": "Haarpflege & Styling", "Hand & Foot Care": "Hand- & Fußpflege", "Makeup": "Make-up", "Men's Care": "Männerpflege", "Nail Care": "Nagelpflege", "Nasal & Oral Care": "Nasen- & Mundpflege", "Personal Care Appliances": "Körperpflegegeräte", "Skincare": "Hautpflege", "Special Personal Care": "Spezielle Körperpflege",
+        "Children's & Infants' Books": "Kinder- & Babybücher", "Education & Schooling": "Bildung & Schule", "Humanities & Social Sciences": "Geistes- & Sozialwissenschaften",
+        "Entertainment": "Entertainment", "Sports Collectibles": "Sport-Sammlerstücke", "Trading Cards & Accessories": "Sammelkarten & Zubehör",
+        "Computer Accessories": "Computerzubehör", "Data Storage & Software": "Datenspeicher & Software", "Network Components": "Netzwerkkomponenten", "Office Equipment": "Bürogeräte", "Office Stationery & Supplies": "Bürobedarf & Schreibwaren",
+        "Clothes Accessories": "Kleidungsaccessoires", "Costume Jewelry & Accessories": "Modeschmuck & Accessoires", "Eyewear": "Brillen", "Fashion Watches & Accessories": "Modeuhren & Zubehör", "Hair Accessories": "Haarschmuck", "Hair Extensions & Wigs": "Extensions & Perücken",
+        "Baking": "Backen", "Drinks": "Getränke", "Pantry Food": "Vorratslebensmittel", "Snacks": "Snacks", "Staples & Cooking Essentials": "Grundnahrungsmittel & Kochzutaten",
+        "Children's Furniture": "Kindermöbel", "Commercial Furniture": "Gewerbemöbel", "Indoor Furniture": "Innenmöbel", "Outdoor Furniture": "Outdoor-Möbel",
+        "Medical Supplies": "Medizinbedarf", "Nutrition & Wellness": "Ernährung & Wellness",
+        "Bathroom Fixtures": "Badarmaturen", "Building Supplies": "Baumaterialien", "Electrical Equipment & Supplies": "Elektrogeräte & Zubehör", "Garden Supplies": "Gartenbedarf", "Kitchen Fixtures": "Küchenausstattung", "Lights & Lighting": "Lampen & Beleuchtung", "Security & Safety": "Sicherheit", "Smart Home Systems": "Smart-Home-Systeme",
+        "Bathroom Supplies": "Badbedarf", "Festive & Party Supplies": "Fest- & Partybedarf", "Home Care Supplies": "Haushaltspflege", "Home Decor": "Wohnaccessoires", "Home Organizers": "Aufbewahrung", "Laundry Tools & Accessories": "Wäschetools & Zubehör", "Miscellaneous Home": "Sonstiges Wohnen",
+        "Commercial Appliances": "Gewerbegeräte", "Home Appliances": "Haushaltsgeräte", "Kitchen Appliances": "Küchengeräte", "Large Home Appliances": "Großgeräte",
+        "Pearl": "Perlen", "Platinum, Carat Gold": "Platin & Karatgold",
+        "Boys' Footwear": "Jungenschuhe", "Kids' Fashion Accessories": "Kinder-Modeaccessoires",
+        "Barbecue": "Grillen", "Cookware": "Kochgeschirr", "Cutlery & Tableware": "Besteck & Geschirr", "Drinkware": "Trinkgefäße", "Kitchen Utensils & Gadgets": "Küchenutensilien & Gadgets", "Tea & Coffeeware": "Tee- & Kaffeezubehör",
+        "Functional Bags": "Funktionstaschen", "Luggage & Travel Bags": "Gepäck & Reisetaschen", "Men's Bags": "Herrentaschen", "Women's Bags": "Damentaschen",
+        "Men's Bottoms": "Herrenhosen", "Men's Tops": "Herrenoberteile", "Men's Underwear & Socks": "Herrenunterwäsche & Socken",
+        "Hijabs": "Hijabs", "Prayer Attire & Equipment": "Gebetskleidung & Zubehör",
+        "Bird Supplies": "Vogelbedarf", "Dog & Cat Accessories": "Hunde- & Katzenzubehör", "Dog & Cat Food": "Hunde- & Katzenfutter", "Dog & Cat Furniture": "Hunde- & Katzenmöbel", "Dog & Cat Grooming": "Hunde- & Katzenpflege", "Dog & Cat Litter": "Hunde- & Katzenstreu", "Farm Animal & Poultry Supplies": "Nutztiere & Geflügelbedarf",
+        "Audio & Video": "Audio & Video", "Cameras & Photography": "Kameras & Fotografie", "Gaming & Consoles": "Gaming & Konsolen", "Mobile Phone Accessories": "Handyzubehör", "Phones & Tablets": "Telefone & Tablets", "Smart & Wearable Devices": "Smart- & Wearable-Geräte", "Tablet & Computer Accessories": "Tablet- & Computerzubehör", "Universal Accessories": "Universalzubehör",
+        "Men's Shoes": "Herrenschuhe", "Shoe Accessories": "Schuhzubehör", "Women's Shoes": "Damenschuhe",
+        "Ball Sports": "Ballsport", "Camping & Hiking": "Camping & Wandern", "Fitness": "Fitness", "Leisure & Outdoor Recreation Equipment": "Freizeit- & Outdoor-Ausrüstung", "Sport & Outdoor Clothing": "Sport- & Outdoorbekleidung", "Sports & Outdoor Accessories": "Sport- & Outdoorzubehör", "Sports Footwear": "Sportschuhe", "Swimwear, Surfwear & Wetsuits": "Bademode, Surfwear & Neoprenanzüge",
+        "Bedding and Linens": "Bettwaren & Wäsche", "Household Textiles": "Haushaltstextilien",
+        "Garden Tools": "Gartenwerkzeuge", "Hand Tools": "Handwerkzeuge", "Hardware": "Hardware", "Measuring Tools": "Messwerkzeuge", "Power Tools": "Elektrowerkzeuge", "Pumps & Plumbing": "Pumpen & Sanitär", "Soldering Equipment": "Lötgeräte",
+        "Classic & Novelty Toys": "Klassisches & Neuheitenspielzeug", "Dolls & Stuffed Toys": "Puppen & Plüschtiere", "Educational Toys": "Lernspielzeug", "Electric & Remote Control Toys": "Elektrisches & ferngesteuertes Spielzeug", "Games & Puzzles": "Spiele & Puzzles", "Sports & Outdoor Play": "Sport- & Outdoor-Spielzeug",
+        "Women's Bottoms": "Damenunterteile", "Women's Dresses": "Damenkleider", "Women's Sleepwear & Loungewear": "Damen-Nachtwäsche & Loungewear", "Women's Suits & Sets": "Damenanzüge & Sets", "Women's Tops": "Damenoberteile", "Women's Underwear": "Damenunterwäsche",
+    },
+    "nl": {
+        "Car Electronics": "Auto-elektronica", "Car Exterior Accessories": "Auto-exterieuraccessoires", "Car Interior Accessories": "Auto-interieuraccessoires", "Car Repair Tools": "Autoreparatiegereedschap", "Car Washing & Maintenance": "Autowas & onderhoud",
+        "Baby Care & Health": "Babyverzorging & gezondheid", "Baby Clothing & Shoes": "Babykleding & schoenen", "Baby Fashion Accessories": "Baby-modeaccessoires", "Baby Furniture": "Babymeubels", "Baby Safety": "Babyveiligheid", "Baby Toys": "Babyspeelgoed", "Baby Travel Gear": "Babyreisartikelen", "Maternity Supplies": "Zwangerschapsbenodigdheden", "Nursing & Feeding": "Borstvoeding & voeding",
+        "Bath & Body Care": "Bad- & lichaamsverzorging", "Eye & Ear Care": "Oog- & oorverzorging", "Fragrance": "Geuren", "Haircare & Styling": "Haarverzorging & styling", "Hand & Foot Care": "Hand- & voetverzorging", "Makeup": "Make-up", "Men's Care": "Mannenverzorging", "Nail Care": "Nagelverzorging", "Nasal & Oral Care": "Neus- & mondverzorging", "Personal Care Appliances": "Persoonlijke verzorgingsapparaten", "Skincare": "Huidverzorging", "Special Personal Care": "Speciale persoonlijke verzorging",
+        "Children's & Infants' Books": "Kinder- & babyboeken", "Education & Schooling": "Onderwijs & scholing", "Humanities & Social Sciences": "Geestes- & sociale wetenschappen",
+        "Entertainment": "Entertainment", "Sports Collectibles": "Sportverzamelobjecten", "Trading Cards & Accessories": "Ruilkaarten & accessoires",
+        "Computer Accessories": "Computeraccessoires", "Data Storage & Software": "Dataopslag & software", "Network Components": "Netwerkcomponenten", "Office Equipment": "Kantoorapparatuur", "Office Stationery & Supplies": "Kantoorartikelen",
+        "Clothes Accessories": "Kledingaccessoires", "Costume Jewelry & Accessories": "Modesieraden & accessoires", "Eyewear": "Brillen", "Fashion Watches & Accessories": "Modehorloges & accessoires", "Hair Accessories": "Haaraccessoires", "Hair Extensions & Wigs": "Hairextensions & pruiken",
+        "Baking": "Bakken", "Drinks": "Dranken", "Pantry Food": "Voorraadkast-eten", "Snacks": "Snacks", "Staples & Cooking Essentials": "Basisproducten & kookbenodigdheden",
+        "Children's Furniture": "Kindermeubels", "Commercial Furniture": "Commerciële meubels", "Indoor Furniture": "Binnenmeubels", "Outdoor Furniture": "Buitenmeubels",
+        "Medical Supplies": "Medische benodigdheden", "Nutrition & Wellness": "Voeding & wellness",
+        "Bathroom Fixtures": "Badkamerarmaturen", "Building Supplies": "Bouwmaterialen", "Electrical Equipment & Supplies": "Elektrische apparatuur & benodigdheden", "Garden Supplies": "Tuinbenodigdheden", "Kitchen Fixtures": "Keukenarmaturen", "Lights & Lighting": "Lampen & verlichting", "Security & Safety": "Beveiliging & veiligheid", "Smart Home Systems": "Smart-home-systemen",
+        "Bathroom Supplies": "Badkamerbenodigdheden", "Festive & Party Supplies": "Feest- & partybenodigdheden", "Home Care Supplies": "Huishoudverzorging", "Home Decor": "Woondecoratie", "Home Organizers": "Opbergers", "Laundry Tools & Accessories": "Wasaccessoires", "Miscellaneous Home": "Overig wonen",
+        "Commercial Appliances": "Commerciële apparaten", "Home Appliances": "Huishoudelijke apparaten", "Kitchen Appliances": "Keukenapparaten", "Large Home Appliances": "Grote huishoudelijke apparaten",
+        "Pearl": "Parels", "Platinum, Carat Gold": "Platina & karaatgoud",
+        "Boys' Footwear": "Jongensschoenen", "Kids' Fashion Accessories": "Kinder-modeaccessoires",
+        "Barbecue": "Barbecue", "Cookware": "Kookgerei", "Cutlery & Tableware": "Bestek & servies", "Drinkware": "Drinkgerei", "Kitchen Utensils & Gadgets": "Keukengerei & gadgets", "Tea & Coffeeware": "Thee- & koffieware",
+        "Functional Bags": "Functionele tassen", "Luggage & Travel Bags": "Bagage & reistassen", "Men's Bags": "Herentassen", "Women's Bags": "Damestassen",
+        "Men's Bottoms": "Herenbroeken", "Men's Tops": "Herentops", "Men's Underwear & Socks": "Herenondergoed & sokken",
+        "Hijabs": "Hijabs", "Prayer Attire & Equipment": "Gebedskleding & uitrusting",
+        "Bird Supplies": "Vogelbenodigdheden", "Dog & Cat Accessories": "Honden- & kattenaccessoires", "Dog & Cat Food": "Honden- & kattenvoer", "Dog & Cat Furniture": "Honden- & kattenmeubels", "Dog & Cat Grooming": "Honden- & kattenverzorging", "Dog & Cat Litter": "Honden- & kattenbakvulling", "Farm Animal & Poultry Supplies": "Boerderijdieren- & pluimveebenodigdheden",
+        "Audio & Video": "Audio & video", "Cameras & Photography": "Camera's & fotografie", "Gaming & Consoles": "Gaming & consoles", "Mobile Phone Accessories": "Mobiele telefoonaccessoires", "Phones & Tablets": "Telefoons & tablets", "Smart & Wearable Devices": "Smart & wearable apparaten", "Tablet & Computer Accessories": "Tablet- & computeraccessoires", "Universal Accessories": "Universele accessoires",
+        "Men's Shoes": "Herenschoenen", "Shoe Accessories": "Schoenaccessoires", "Women's Shoes": "Damesschoenen",
+        "Ball Sports": "Balsporten", "Camping & Hiking": "Kamperen & wandelen", "Fitness": "Fitness", "Leisure & Outdoor Recreation Equipment": "Vrijetijds- & outdooruitrusting", "Sport & Outdoor Clothing": "Sport- & outdoorkleding", "Sports & Outdoor Accessories": "Sport- & outdooraccessoires", "Sports Footwear": "Sportschoenen", "Swimwear, Surfwear & Wetsuits": "Badmode, surfwear & wetsuits",
+        "Bedding and Linens": "Beddengoed & linnengoed", "Household Textiles": "Huishoudtextiel",
+        "Garden Tools": "Tuingereedschap", "Hand Tools": "Handgereedschap", "Hardware": "Hardware", "Measuring Tools": "Meetgereedschap", "Power Tools": "Elektrisch gereedschap", "Pumps & Plumbing": "Pompen & sanitair", "Soldering Equipment": "Soldeerapparatuur",
+        "Classic & Novelty Toys": "Klassiek & nieuwigheidsspeelgoed", "Dolls & Stuffed Toys": "Poppen & knuffels", "Educational Toys": "Educatief speelgoed", "Electric & Remote Control Toys": "Elektrisch & afstandsbediend speelgoed", "Games & Puzzles": "Spellen & puzzels", "Sports & Outdoor Play": "Sport- & buitenspeelgoed",
+        "Women's Bottoms": "Damesbroeken", "Women's Dresses": "Damesjurken", "Women's Sleepwear & Loungewear": "Damesnachtkleding & loungewear", "Women's Suits & Sets": "Damespakken & sets", "Women's Tops": "Damestops", "Women's Underwear": "Damesondergoed",
+    },
+}
+
 
 PHASES = [
     {"key": "phase1", "name": "Phase 1 - Cold Start", "samples_per_sku": 30, "take_rate": 0.00, "color": "#F6F8FB"},
@@ -2002,10 +2182,10 @@ TEXT = {
         "take_rate_help": "内部 take rate 规划视角：该阶段将 GMV 的多少比例作为付费增长预算重新投入。",
         "samples_sku_week": "每个 SKU 每周寄样数",
         "sku_setup": "SKU 设置",
-        "sku_caption": "选择 Category/Subcategory 后会自动加载 AOV、漏斗假设和达人佣金默认值。一级类目里与 Electronics 相关的类目平台佣金为 7%，其余类目为 9%。",
+        "sku_caption": "选择类目/子类目后会自动加载 AOV、漏斗假设和达人佣金默认值。一级类目里与电子产品相关的类目平台佣金为 7%，其余类目为 9%。",
         "sku_name": "SKU 名称",
-        "category": "Category",
-        "subcategory": "Subcategory",
+        "category": "类目",
+        "subcategory": "子类目",
         "gross_margin": "毛利率 (%)",
         "platform_commission": "平台佣金",
         "avg_sample_cost": "平均样品成本 / 件",
@@ -2283,6 +2463,7 @@ TEXT["de"] = {
     "sku_caption": "Die Kategorieauswahl lädt AOV und Funnel-Annahmen automatisch. Electronics nutzt 7% Plattformkommission; alle anderen Kategorien 9%.",
     "sku_name": "SKU-Name",
     "category": "Kategorie",
+    "subcategory": "Unterkategorie",
     "platform_commission": "Plattformkommission",
     "avg_sample_cost": "Ø Sample-Kosten / Stück",
     "sample_investment": "Sample-Investition",
@@ -2372,6 +2553,7 @@ TEXT["nl"] = {
     "sku_caption": "Categoriekeuze laadt AOV en funnelaannames automatisch. Electronics gebruikt 7% platformcommissie; alle andere categorieen 9%.",
     "sku_name": "SKU-naam",
     "category": "Categorie",
+    "subcategory": "Subcategorie",
     "platform_commission": "Platformcommissie",
     "avg_sample_cost": "Gem. samplekosten / stuk",
     "sample_investment": "Sample-investering",
@@ -4175,6 +4357,18 @@ def phase_label(phase):
     return T[phase["key"]]
 
 
+def category_label(category):
+    return CATEGORY_LABELS.get(lang, {}).get(category, category)
+
+
+def subcategory_label(subcategory):
+    return SUBCATEGORY_LABELS.get(lang, {}).get(subcategory, subcategory)
+
+
+def category_path_label(category, subcategory):
+    return f"{category_label(category)} / {subcategory_label(subcategory)}"
+
+
 def csv_bytes(df):
     return df.to_csv(index=False).encode("utf-8-sig")
 
@@ -5867,8 +6061,10 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         )
         appendix_lines = []
         for _, sku in product_df.iterrows():
+            category_display = category_label(sku["Category"])
+            subcategory_display = subcategory_label(sku["Subcategory"])
             appendix_lines.append(
-                f"{sku['SKU']} | {sku['Category']} / {sku['Subcategory']} | "
+                f"{sku['SKU']} | {category_display} / {subcategory_display} | "
                 f"AOV {money(sku['AOV'], 2)} | Margin {pct(sku['Gross Margin'], 0)} | "
                 f"Videos/sample {float(sku['Videos / Sample']):.2f} | "
                 f"Clicks/video {float(sku['Clicks / Video']):,.0f} | "
@@ -6646,14 +6842,14 @@ if show_setup:
         category = st.session_state[f"category_{i}"]
         subcategory = st.session_state[f"subcategory_{i}"]
         sku_name_preview = st.session_state[f"sku_name_{i}"] or chr(65 + i)
-        expander_label = f"SKU {i + 1} · {sku_name_preview} · {category} / {subcategory}"
+        expander_label = f"SKU {i + 1} · {sku_name_preview} · {category_path_label(category, subcategory)}"
         with st.expander(expander_label, expanded=(not st.session_state.get("has_generated", False))):
             category = st.session_state[f"category_{i}"]
             subcategory = st.session_state[f"subcategory_{i}"]
             st.markdown(
                 f"""
                 <div class="sku-title">SKU {i + 1}</div>
-                <div class="sku-subtitle">{category} / {subcategory} · {pct(PLATFORM_COMMISSION[category], 0)} {T["platform_commission"]}</div>
+                <div class="sku-subtitle">{category_path_label(category, subcategory)} · {pct(PLATFORM_COMMISSION[category], 0)} {T["platform_commission"]}</div>
                 """,
                 unsafe_allow_html=True,
             )
@@ -6661,13 +6857,28 @@ if show_setup:
             with c1:
                 st.text_input(T["sku_name"], key=f"sku_name_{i}")
             with c2:
-                st.selectbox(T["category"], options=list(CATEGORY_PRESETS.keys()), key=f"category_{i}")
+                category_options = list(CATEGORY_PRESETS.keys())
+                category_index = category_options.index(category) if category in category_options else 0
+                st.selectbox(
+                    T["category"],
+                    options=category_options,
+                    index=category_index,
+                    key=f"category_{i}",
+                    format_func=category_label,
+                )
             category = st.session_state[f"category_{i}"]
             subcategories = list(CATEGORY_PRESETS[category].keys())
             if st.session_state[f"subcategory_{i}"] not in subcategories:
                 st.session_state[f"subcategory_{i}"] = subcategories[0]
             with c3:
-                st.selectbox(T["subcategory"], options=subcategories, key=f"subcategory_{i}")
+                subcategory_index = subcategories.index(st.session_state[f"subcategory_{i}"])
+                st.selectbox(
+                    T["subcategory"],
+                    options=subcategories,
+                    index=subcategory_index,
+                    key=f"subcategory_{i}",
+                    format_func=subcategory_label,
+                )
 
             refresh_if_category_changed(i)
             fbt_status, effective_logistics = sku_fbt_status(
@@ -7113,6 +7324,8 @@ if st.session_state.get("has_generated", False):
             if not meeting_mode:
                 with st.expander(T["product_profile"], expanded=False):
                     product_display = product_df.copy()
+                    product_display["Category"] = product_display["Category"].map(category_label)
+                    product_display["Subcategory"] = product_display["Subcategory"].map(subcategory_label)
                     product_display[T["fbt_status"]] = product_df["AOV"].map(
                         lambda x: sku_fbt_status(float(x), float(logistics_cost), bool(use_fbt))[0]
                     )
@@ -7127,6 +7340,8 @@ if st.session_state.get("has_generated", False):
                     product_display["Organic Creator Commission Rate"] = product_display["Organic Creator Commission Rate"].map(lambda x: pct(x, 1))
                     product_display["Paid Creator Commission Rate"] = product_display["Paid Creator Commission Rate"].map(lambda x: pct(x, 1))
                     product_display = product_display.rename(columns={
+                        "Category": T["category"],
+                        "Subcategory": T["subcategory"],
                         "ShopTab GMV Share": T["shoptab_share"],
                         "Organic Creator Commission Rate": T["organic_commission_sku"],
                         "Paid Creator Commission Rate": T["paid_commission_sku"],
