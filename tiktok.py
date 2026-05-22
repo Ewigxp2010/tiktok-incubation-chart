@@ -9,7 +9,7 @@ from datetime import datetime
 from html import escape
 
 
-st.set_page_config(page_title="TikTok Shop Growth Visualizer", layout="wide")
+st.set_page_config(page_title="TikTok Shop Growth Visualizer", page_icon="📈", layout="wide")
 
 
 # Planning defaults calibrated with the DE hit-product pool check
