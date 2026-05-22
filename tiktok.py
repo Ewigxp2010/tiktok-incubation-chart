@@ -2083,9 +2083,9 @@ TEXT = {
         "model_logic_5_body": "Phase 2 and Phase 3 can apply paid acceleration as a percentage of GMV. The model uses Ads ROAS to estimate the incremental GMV added by that budget, then allocates that increment back into Affiliate Video GMV and Store/Search GMV rather than treating it as a standalone channel.",
         "model_logic_5_formula": "Incremental paid GMV is estimated from paid budget share x Ads ROAS",
         "model_logic_6_title": "6. Cost and profit are calculated from the full operating model",
-        "model_logic_6_body": "Product cost is derived from AOV and gross margin. Sample investment uses product cost plus logistics. Profit subtracts product cost, platform fee, creator commission, logistics, samples, and ads from GMV.",
+        "model_logic_6_body": "Product cost is derived from AOV and gross margin. Sample investment uses product cost plus sample shipping. Profit subtracts product cost, platform fee, creator commission, customer order logistics, samples, and ads from GMV.",
         "model_logic_6_formula": "Profit = GMV - Product Cost - Platform Fee - Creator Commission - Logistics - Samples - Ads",
-        "model_assumptions_text": "SKU-level model: samples create creator videos, videos generate long-tail clicks and orders, organic GMV splits into Affiliate Video and Store/Search, paid acceleration adds incremental GMV, and profit is calculated after product cost, platform fee, creator commission, logistics, sample investment, and ads.",
+        "model_assumptions_text": "SKU-level model: samples create creator videos, videos generate long-tail clicks and orders, organic GMV splits into Affiliate Video and Store/Search, paid acceleration adds incremental GMV, and profit is calculated after product cost, platform fee, creator commission, customer order logistics, sample investment, and ads.",
         "download_customer_summary": "Summary CSV",
         "download_meeting_html": "Meeting HTML",
         "download_one_pager_pdf": "One-page PDF",
@@ -2424,9 +2424,9 @@ TEXT = {
         "model_logic_5_body": "第二、第三阶段可以设置付费增长预算占 GMV 的比例。模型会结合广告 ROAS，估算该预算带来的增量 GMV，再把这部分增量拆回达人视频 GMV 和店铺/Search GMV，而不是把它视为独立渠道。",
         "model_logic_5_formula": "付费增量 GMV 由付费预算占比 x 广告 ROAS 推算",
         "model_logic_6_title": "6. 成本和利润来自完整经营模型",
-        "model_logic_6_body": "商品成本由 AOV 和毛利率反推；样品投入由商品成本加物流成本构成；利润会扣除商品成本、平台费、达人佣金、物流、样品投入和广告投入。",
+        "model_logic_6_body": "商品成本由 AOV 和毛利率反推；样品投入由商品成本加样品寄送成本构成；利润会扣除商品成本、平台费、达人佣金、客户订单物流、样品投入和广告投入。",
         "model_logic_6_formula": "利润 = GMV - 商品成本 - 平台费 - 达人佣金 - 物流 - 样品投入 - 广告投入",
-        "model_assumptions_text": "SKU level 模型：样品产生达人视频，视频在长尾周期内持续带来点击和订单，自然 GMV 拆分为达人视频与店铺/Search，付费加热带来增量 GMV，最终利润扣除商品成本、平台费、达人佣金、物流、样品投入和广告投入。",
+        "model_assumptions_text": "SKU level 模型：样品产生达人视频，视频在长尾周期内持续带来点击和订单，自然 GMV 拆分为达人视频与店铺/Search，付费加热带来增量 GMV，最终利润扣除商品成本、平台费、达人佣金、客户订单物流、样品投入和广告投入。",
         "download_customer_summary": "总结 CSV",
         "download_meeting_html": "会议 HTML",
         "download_one_pager_pdf": "一页 PDF",
@@ -2661,11 +2661,12 @@ def safe_filename_part(value, fallback="Brand"):
 
 
 with st.sidebar:
+    if "language_input" not in st.session_state:
+        st.session_state["language_input"] = "en"
     lang = st.selectbox(
         "Language",
         options=["en", "zh", "de", "nl"],
         format_func=lambda code: LANG_LABELS[code],
-        index=0,
         key="language_input",
     )
 
@@ -4835,7 +4836,7 @@ def render_segmented_buttons(options, state_key, format_func=str):
                 format_func(option),
                 key=f"{state_key}__btn__{idx}",
                 type="primary" if option == selected else "secondary",
-                use_container_width=True,
+                width="stretch",
             ):
                 st.session_state[state_key] = option
                 selected = option
@@ -6108,7 +6109,9 @@ def reset_defaults():
         "_model_sample_shipping_cost",
         "_locked_df_all", "_locked_product_df", "_locked_phase_inputs",
         "_locked_weeks_per_phase", "_locked_ads_roas", "_locked_scenario_label",
-        "_locked_scenario_case",
+        "_locked_scenario_case", "_locked_promo_60d", "_locked_use_fbt",
+        "_locked_logistics_cost", "_locked_sample_shipping_cost",
+        "_locked_organic_click_window_weeks", "_locked_target_gmv", "_locked_target_profit",
     }
     for key in list(st.session_state.keys()):
         if key in exact_keys or any(key.startswith(prefix) for prefix in prefixes):
@@ -6663,7 +6666,7 @@ if not st.session_state.get("sku_count_confirmed", False) and not st.session_sta
             label_visibility="collapsed",
         )
     with cover_col2:
-        if st.button(T["continue_setup"], type="primary", use_container_width=True):
+        if st.button(T["continue_setup"], type="primary", width="stretch"):
             st.session_state["sku_count_confirmed"] = True
             st.rerun()
     st.markdown(
@@ -6753,6 +6756,8 @@ with st.sidebar:
         st.header(T["growth_levers"])
         ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
         organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1, key="organic_window_input")
+        if st.session_state.get("scenario_case_input") not in {"conservative", "base", "upside"}:
+            st.session_state["scenario_case_input"] = "base"
         scenario_case = st.selectbox(
             T["scenario_case"],
             options=["conservative", "base", "upside"],
@@ -6761,7 +6766,6 @@ with st.sidebar:
                 "base": T["scenario_base"],
                 "upside": T["scenario_upside"],
             }[key],
-            index=1,
             key="scenario_case_input",
             help=T["scenario_case_help"],
         )
@@ -6832,7 +6836,6 @@ if show_setup:
             T["assumption_status"],
             options=ASSUMPTION_STATUS_KEYS,
             format_func=assumption_status_label,
-            index=0,
             key="assumption_status_input",
         )
         key_recommendation = st.text_area(
@@ -6876,11 +6879,9 @@ if show_setup:
                 st.text_input(T["sku_name"], key=f"sku_name_{i}")
             with c2:
                 category_options = list(CATEGORY_PRESETS.keys())
-                category_index = category_options.index(category) if category in category_options else 0
                 st.selectbox(
                     T["category"],
                     options=category_options,
-                    index=category_index,
                     key=f"category_{i}",
                     format_func=category_label,
                 )
@@ -6889,11 +6890,9 @@ if show_setup:
             if st.session_state[f"subcategory_{i}"] not in subcategories:
                 st.session_state[f"subcategory_{i}"] = subcategories[0]
             with c3:
-                subcategory_index = subcategories.index(st.session_state[f"subcategory_{i}"])
                 st.selectbox(
                     T["subcategory"],
                     options=subcategories,
-                    index=subcategory_index,
                     key=f"subcategory_{i}",
                     format_func=subcategory_label,
                 )
@@ -7003,6 +7002,13 @@ if st.session_state.get("has_generated", False):
             effective_ads_roas = st.session_state["_locked_ads_roas"]
             scenario_label = st.session_state.get("_locked_scenario_label", scenario_label)
             scenario_case = st.session_state.get("_locked_scenario_case", scenario_case)
+            promo_60d = st.session_state.get("_locked_promo_60d", promo_60d)
+            use_fbt = st.session_state.get("_locked_use_fbt", use_fbt)
+            logistics_cost = st.session_state.get("_locked_logistics_cost", logistics_cost)
+            sample_shipping_cost = st.session_state.get("_locked_sample_shipping_cost", sample_shipping_cost)
+            organic_click_window_weeks = st.session_state.get("_locked_organic_click_window_weeks", organic_click_window_weeks)
+            target_gmv = st.session_state.get("_locked_target_gmv", target_gmv)
+            target_profit = st.session_state.get("_locked_target_profit", target_profit)
         else:
             product_df = build_product_df(int(n_skus))
             adjusted_product_df, effective_ads_roas = apply_scenario_adjustment(product_df, ads_roas, scenario_case)
@@ -7096,6 +7102,13 @@ if st.session_state.get("has_generated", False):
                 st.session_state["_locked_ads_roas"] = float(effective_ads_roas)
                 st.session_state["_locked_scenario_label"] = scenario_label
                 st.session_state["_locked_scenario_case"] = scenario_case
+                st.session_state["_locked_promo_60d"] = bool(promo_60d)
+                st.session_state["_locked_use_fbt"] = bool(use_fbt)
+                st.session_state["_locked_logistics_cost"] = float(logistics_cost)
+                st.session_state["_locked_sample_shipping_cost"] = float(sample_shipping_cost)
+                st.session_state["_locked_organic_click_window_weeks"] = int(organic_click_window_weeks)
+                st.session_state["_locked_target_gmv"] = float(target_gmv)
+                st.session_state["_locked_target_profit"] = float(target_profit)
                 st.rerun()
         dashboard_items = [
             (T["total_gmv"], money(overall["Total GMV"], 0), "#315EEC"),
@@ -7337,7 +7350,7 @@ if st.session_state.get("has_generated", False):
                         n_skus=n_skus,
                         locked=st.session_state.get("plan_locked", False),
                     ),
-                    use_container_width=True,
+                    width="stretch",
                     hide_index=True,
                 )
 
@@ -7366,7 +7379,7 @@ if st.session_state.get("has_generated", False):
                         "Organic Creator Commission Rate": T["organic_commission_sku"],
                         "Paid Creator Commission Rate": T["paid_commission_sku"],
                     })
-                    st.dataframe(product_display, use_container_width=True)
+                    st.dataframe(product_display, width="stretch")
 
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -7480,7 +7493,7 @@ if st.session_state.get("has_generated", False):
                     data=csv_bytes(customer_summary),
                     file_name=f"{export_prefix}_summary.csv",
                     mime="text/csv",
-                    use_container_width=True,
+                    width="stretch",
                 )
             st.markdown('</div>', unsafe_allow_html=True)
         with dl_html:
@@ -7496,7 +7509,7 @@ if st.session_state.get("has_generated", False):
                     data=meeting_html.encode("utf-8"),
                     file_name=f"{export_prefix}_summary.html",
                     mime="text/html",
-                    use_container_width=True,
+                    width="stretch",
                 )
             st.markdown('</div>', unsafe_allow_html=True)
         with dl_one_pager:
@@ -7512,7 +7525,7 @@ if st.session_state.get("has_generated", False):
                     data=one_pager_pdf,
                     file_name=f"{export_prefix}_one_pager.pdf",
                     mime="application/pdf",
-                    use_container_width=True,
+                    width="stretch",
                 )
             st.markdown('</div>', unsafe_allow_html=True)
         with dl_pdf:
@@ -7528,7 +7541,7 @@ if st.session_state.get("has_generated", False):
                     data=meeting_pdf,
                     file_name=f"{export_prefix}_detail.pdf",
                     mime="application/pdf",
-                    use_container_width=True,
+                    width="stretch",
                 )
             st.markdown('</div>', unsafe_allow_html=True)
         if not meeting_mode:
@@ -7548,7 +7561,7 @@ if st.session_state.get("has_generated", False):
                 })
                 st.dataframe(
                     phase_summary_display,
-                    use_container_width=True,
+                    width="stretch",
                 )
 
         if not meeting_mode:
@@ -7556,7 +7569,7 @@ if st.session_state.get("has_generated", False):
                 st.markdown(f"**{T['overall_summary']}**")
                 st.dataframe(
                     format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
-                    use_container_width=True,
+                    width="stretch",
                 )
                 st.markdown(f"**{T['weekly_details']}**")
                 weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols)
@@ -7567,7 +7580,7 @@ if st.session_state.get("has_generated", False):
                     "ShopTab Paid GMV": f"{T['shoptab_gmv']} Paid",
                     "ShopTab GMV": T["shoptab_gmv"],
                 })
-                st.dataframe(weekly_display, use_container_width=True)
+                st.dataframe(weekly_display, width="stretch")
 
                 d1, d2 = st.columns(2)
                 d1.download_button(T["download_weekly"], data=csv_bytes(df_all), file_name=f"{export_prefix}_weekly_details.csv", mime="text/csv")
