@@ -1828,7 +1828,15 @@ TEXT = {
         "promo_no": "No, use default category commission",
         "fulfillment": "Non-FBT customer order logistics cost €/order",
         "fulfillment_fbt_fallback": "Fallback customer order logistics cost €/order for SKUs at or below €20",
+        "logistics_carrier_cost": "Carrier / last-mile cost €/order",
+        "logistics_pick_pack_cost": "Pick & pack cost €/order",
+        "logistics_return_allowance": "Return / failed delivery allowance €/order",
+        "logistics_total": "Order logistics total",
+        "logistics_detail_note": "{total} per order = {carrier} carrier + {pick_pack} pick & pack + {returns} return allowance.",
         "sample_shipping_cost": "Sample shipping cost €/sample",
+        "sample_handling_cost": "Sample pack & handling €/sample",
+        "sample_shipping_total": "Sample logistics total",
+        "sample_shipping_detail_note": "{total} per sample = {shipping} shipping + {handling} pack & handling.",
         "fbt": "Use FBT free shipping",
         "fbt_yes": "Yes, set logistics cost to €0",
         "fbt_no": "No, use manual logistics cost",
@@ -2156,7 +2164,15 @@ TEXT = {
         "promo_no": "否，使用默认类目佣金",
         "fulfillment": "非 FBT 客户订单物流成本 €/单",
         "fulfillment_fbt_fallback": "AOV 不高于 €20 的 SKU 兜底客户订单物流成本 €/单",
+        "logistics_carrier_cost": "承运商/尾程成本 €/单",
+        "logistics_pick_pack_cost": "拣货打包成本 €/单",
+        "logistics_return_allowance": "退货/派送失败预留 €/单",
+        "logistics_total": "订单物流合计",
+        "logistics_detail_note": "每单 {total} = 承运商 {carrier} + 拣货打包 {pick_pack} + 退货预留 {returns}。",
         "sample_shipping_cost": "样品寄送成本 €/个样品",
+        "sample_handling_cost": "样品包装处理 €/个样品",
+        "sample_shipping_total": "样品物流合计",
+        "sample_shipping_detail_note": "每个样品 {total} = 寄送 {shipping} + 包装处理 {handling}。",
         "fbt": "使用 FBT 包邮",
         "fbt_yes": "是，物流成本按 €0 计算",
         "fbt_no": "否，使用手动物流成本",
@@ -2448,7 +2464,15 @@ TEXT["de"] = {
     "promo_no": "Nein, Standard-Kategoriekommission verwenden",
     "fulfillment": "Non-FBT Logistikkosten pro Kundenbestellung €/Bestellung",
     "fulfillment_fbt_fallback": "Fallback-Logistikkosten pro Kundenbestellung €/Bestellung für SKUs mit AOV ≤ €20",
+    "logistics_carrier_cost": "Carrier-/Last-Mile-Kosten €/Bestellung",
+    "logistics_pick_pack_cost": "Pick-&-Pack-Kosten €/Bestellung",
+    "logistics_return_allowance": "Retouren-/Fehlzustellungs-Puffer €/Bestellung",
+    "logistics_total": "Bestelllogistik gesamt",
+    "logistics_detail_note": "{total} pro Bestellung = {carrier} Carrier + {pick_pack} Pick & Pack + {returns} Retourenpuffer.",
     "sample_shipping_cost": "Sample-Versandkosten €/Sample",
+    "sample_handling_cost": "Sample-Verpackung & Handling €/Sample",
+    "sample_shipping_total": "Sample-Logistik gesamt",
+    "sample_shipping_detail_note": "{total} pro Sample = {shipping} Versand + {handling} Verpackung & Handling.",
     "fbt": "FBT-Gratisversand nutzen",
     "fbt_yes": "Ja, Logistikkosten auf €0 setzen",
     "fbt_no": "Nein, manuelle Logistikkosten nutzen",
@@ -2540,7 +2564,15 @@ TEXT["nl"] = {
     "promo_no": "Nee, standaard categoriecommissie gebruiken",
     "fulfillment": "Non-FBT logistieke kosten per klantorder €/order",
     "fulfillment_fbt_fallback": "Fallback logistieke kosten per klantorder €/order voor SKU's met AOV ≤ €20",
+    "logistics_carrier_cost": "Carrier / last-mile kosten €/order",
+    "logistics_pick_pack_cost": "Pick & pack kosten €/order",
+    "logistics_return_allowance": "Retour / mislukte levering buffer €/order",
+    "logistics_total": "Orderlogistiek totaal",
+    "logistics_detail_note": "{total} per order = {carrier} carrier + {pick_pack} pick & pack + {returns} retourbuffer.",
     "sample_shipping_cost": "Sampleverzendkosten €/sample",
+    "sample_handling_cost": "Sample verpakken & handling €/sample",
+    "sample_shipping_total": "Samplelogistiek totaal",
+    "sample_shipping_detail_note": "{total} per sample = {shipping} verzending + {handling} verpakken & handling.",
     "fbt": "FBT gratis verzending gebruiken",
     "fbt_yes": "Ja, logistieke kosten op €0 zetten",
     "fbt_no": "Nee, handmatige logistieke kosten gebruiken",
@@ -4510,6 +4542,25 @@ def sku_fbt_status(aov, logistics_cost, use_fbt):
     return status, effective_cost
 
 
+def logistics_detail_display(carrier_cost, pick_pack_cost, return_allowance):
+    total = float(carrier_cost) + float(pick_pack_cost) + float(return_allowance)
+    return T["logistics_detail_note"].format(
+        total=money(total, 2),
+        carrier=money(float(carrier_cost), 2),
+        pick_pack=money(float(pick_pack_cost), 2),
+        returns=money(float(return_allowance), 2),
+    )
+
+
+def sample_shipping_detail_display(shipping_cost, handling_cost):
+    total = float(shipping_cost) + float(handling_cost)
+    return T["sample_shipping_detail_note"].format(
+        total=money(total, 2),
+        shipping=money(float(shipping_cost), 2),
+        handling=money(float(handling_cost), 2),
+    )
+
+
 def build_weekly_model(
     product_df,
     phase_inputs,
@@ -6097,7 +6148,9 @@ def reset_defaults():
     )
     exact_keys = {
         "has_generated", "selected_phase_view", "logistics_cost_manual",
-        "sample_shipping_cost_manual", "meeting_mode_input", "n_skus_input", "promo_60d_input", "use_fbt_input",
+        "logistics_carrier_cost_manual", "logistics_pick_pack_cost_manual",
+        "logistics_return_allowance_manual", "sample_shipping_cost_manual",
+        "sample_handling_cost_manual", "meeting_mode_input", "n_skus_input", "promo_60d_input", "use_fbt_input",
         "weeks_per_phase_input", "ads_roas_input", "organic_window_input",
         "reset_confirm_pending", "brand_name_input", "meeting_date_input",
         "am_name_input", "key_recommendation_input", "assumption_status_input",
@@ -6106,11 +6159,16 @@ def reset_defaults():
         "_model_brand_name", "_model_meeting_date", "_model_am_name",
         "_model_key_recommendation", "_model_assumption_status", "_model_scenario_name",
         "_model_target_gmv", "_model_target_profit", "_model_scenario_case",
-        "_model_sample_shipping_cost",
+        "_model_logistics_carrier_cost", "_model_logistics_pick_pack_cost",
+        "_model_logistics_return_allowance", "_model_sample_shipping_cost",
+        "_model_sample_delivery_cost", "_model_sample_handling_cost",
         "_locked_df_all", "_locked_product_df", "_locked_phase_inputs",
         "_locked_weeks_per_phase", "_locked_ads_roas", "_locked_scenario_label",
         "_locked_scenario_case", "_locked_promo_60d", "_locked_use_fbt",
         "_locked_logistics_cost", "_locked_sample_shipping_cost",
+        "_locked_logistics_carrier_cost", "_locked_logistics_pick_pack_cost",
+        "_locked_logistics_return_allowance", "_locked_sample_delivery_cost",
+        "_locked_sample_handling_cost",
         "_locked_organic_click_window_weeks", "_locked_target_gmv", "_locked_target_profit",
     }
     for key in list(st.session_state.keys()):
@@ -6696,8 +6754,13 @@ with st.sidebar:
         promo_60d = bool(st.session_state.get("_model_promo_60d", st.session_state.get("promo_60d_input", True)))
         use_fbt = bool(st.session_state.get("_model_use_fbt", st.session_state.get("use_fbt_input", False)))
         weeks_per_phase = int(st.session_state.get("_model_weeks_per_phase", st.session_state.get("weeks_per_phase_input", 4)))
-        logistics_cost = float(st.session_state.get("_model_logistics_cost", st.session_state.get("logistics_cost_manual", 5.0)))
-        sample_shipping_cost = float(st.session_state.get("_model_sample_shipping_cost", st.session_state.get("sample_shipping_cost_manual", logistics_cost)))
+        logistics_carrier_cost = float(st.session_state.get("_model_logistics_carrier_cost", st.session_state.get("logistics_carrier_cost_manual", st.session_state.get("logistics_cost_manual", 5.0))))
+        logistics_pick_pack_cost = float(st.session_state.get("_model_logistics_pick_pack_cost", st.session_state.get("logistics_pick_pack_cost_manual", 0.0)))
+        logistics_return_allowance = float(st.session_state.get("_model_logistics_return_allowance", st.session_state.get("logistics_return_allowance_manual", 0.0)))
+        logistics_cost = float(st.session_state.get("_model_logistics_cost", logistics_carrier_cost + logistics_pick_pack_cost + logistics_return_allowance))
+        sample_delivery_cost = float(st.session_state.get("_model_sample_delivery_cost", st.session_state.get("sample_shipping_cost_manual", logistics_cost)))
+        sample_handling_cost = float(st.session_state.get("_model_sample_handling_cost", st.session_state.get("sample_handling_cost_manual", 0.0)))
+        sample_shipping_cost = float(st.session_state.get("_model_sample_shipping_cost", sample_delivery_cost + sample_handling_cost))
         ads_roas = float(st.session_state.get("_model_ads_roas", st.session_state.get("ads_roas_input", 6.0)))
         organic_click_window_weeks = int(st.session_state.get("_model_organic_click_window_weeks", st.session_state.get("organic_window_input", 4)))
         target_gmv = float(st.session_state.get("_model_target_gmv", st.session_state.get("target_gmv_input", 0.0)))
@@ -6735,20 +6798,57 @@ with st.sidebar:
         weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1, key="weeks_per_phase_input")
 
         st.header(T["cost_assumptions"])
+        legacy_order_cost = float(st.session_state.get("logistics_cost_manual", 5.0))
+        if "logistics_carrier_cost_manual" not in st.session_state:
+            st.session_state["logistics_carrier_cost_manual"] = legacy_order_cost
+        if "logistics_pick_pack_cost_manual" not in st.session_state:
+            st.session_state["logistics_pick_pack_cost_manual"] = 0.0
+        if "logistics_return_allowance_manual" not in st.session_state:
+            st.session_state["logistics_return_allowance_manual"] = 0.0
+        if "sample_handling_cost_manual" not in st.session_state:
+            st.session_state["sample_handling_cost_manual"] = 0.0
         fulfillment_label = T["fulfillment_fbt_fallback"] if use_fbt else T["fulfillment"]
-        logistics_cost = st.number_input(
-            fulfillment_label,
+        st.caption(fulfillment_label)
+        logistics_carrier_cost = st.number_input(
+            T["logistics_carrier_cost"],
             min_value=0.0,
-            value=5.0,
-            step=0.5,
-            key="logistics_cost_manual",
+            step=0.25,
+            key="logistics_carrier_cost_manual",
         )
-        sample_shipping_cost = st.number_input(
+        logistics_pick_pack_cost = st.number_input(
+            T["logistics_pick_pack_cost"],
+            min_value=0.0,
+            step=0.25,
+            key="logistics_pick_pack_cost_manual",
+        )
+        logistics_return_allowance = st.number_input(
+            T["logistics_return_allowance"],
+            min_value=0.0,
+            step=0.25,
+            key="logistics_return_allowance_manual",
+        )
+        logistics_cost = float(logistics_carrier_cost) + float(logistics_pick_pack_cost) + float(logistics_return_allowance)
+        render_subtle_note(
+            logistics_detail_display(logistics_carrier_cost, logistics_pick_pack_cost, logistics_return_allowance),
+            T["logistics_total"],
+        )
+        sample_delivery_cost = st.number_input(
             T["sample_shipping_cost"],
             min_value=0.0,
             value=5.0,
             step=0.5,
             key="sample_shipping_cost_manual",
+        )
+        sample_handling_cost = st.number_input(
+            T["sample_handling_cost"],
+            min_value=0.0,
+            step=0.25,
+            key="sample_handling_cost_manual",
+        )
+        sample_shipping_cost = float(sample_delivery_cost) + float(sample_handling_cost)
+        render_subtle_note(
+            sample_shipping_detail_display(sample_delivery_cost, sample_handling_cost),
+            T["sample_shipping_total"],
         )
         if use_fbt:
             render_subtle_note(T["fbt_help"], T["fbt"])
@@ -6798,7 +6898,12 @@ with st.sidebar:
         st.session_state["_model_promo_60d"] = bool(promo_60d)
         st.session_state["_model_use_fbt"] = bool(use_fbt)
         st.session_state["_model_weeks_per_phase"] = int(weeks_per_phase)
+        st.session_state["_model_logistics_carrier_cost"] = float(logistics_carrier_cost)
+        st.session_state["_model_logistics_pick_pack_cost"] = float(logistics_pick_pack_cost)
+        st.session_state["_model_logistics_return_allowance"] = float(logistics_return_allowance)
         st.session_state["_model_logistics_cost"] = float(logistics_cost)
+        st.session_state["_model_sample_delivery_cost"] = float(sample_delivery_cost)
+        st.session_state["_model_sample_handling_cost"] = float(sample_handling_cost)
         st.session_state["_model_sample_shipping_cost"] = float(sample_shipping_cost)
         st.session_state["_model_ads_roas"] = float(ads_roas)
         st.session_state["_model_organic_click_window_weeks"] = int(organic_click_window_weeks)
@@ -7004,7 +7109,12 @@ if st.session_state.get("has_generated", False):
             scenario_case = st.session_state.get("_locked_scenario_case", scenario_case)
             promo_60d = st.session_state.get("_locked_promo_60d", promo_60d)
             use_fbt = st.session_state.get("_locked_use_fbt", use_fbt)
+            logistics_carrier_cost = st.session_state.get("_locked_logistics_carrier_cost", st.session_state.get("_model_logistics_carrier_cost", st.session_state.get("logistics_carrier_cost_manual", logistics_cost)))
+            logistics_pick_pack_cost = st.session_state.get("_locked_logistics_pick_pack_cost", st.session_state.get("_model_logistics_pick_pack_cost", st.session_state.get("logistics_pick_pack_cost_manual", 0.0)))
+            logistics_return_allowance = st.session_state.get("_locked_logistics_return_allowance", st.session_state.get("_model_logistics_return_allowance", st.session_state.get("logistics_return_allowance_manual", 0.0)))
             logistics_cost = st.session_state.get("_locked_logistics_cost", logistics_cost)
+            sample_delivery_cost = st.session_state.get("_locked_sample_delivery_cost", st.session_state.get("_model_sample_delivery_cost", st.session_state.get("sample_shipping_cost_manual", sample_shipping_cost)))
+            sample_handling_cost = st.session_state.get("_locked_sample_handling_cost", st.session_state.get("_model_sample_handling_cost", st.session_state.get("sample_handling_cost_manual", 0.0)))
             sample_shipping_cost = st.session_state.get("_locked_sample_shipping_cost", sample_shipping_cost)
             organic_click_window_weeks = st.session_state.get("_locked_organic_click_window_weeks", organic_click_window_weeks)
             target_gmv = st.session_state.get("_locked_target_gmv", target_gmv)
@@ -7056,6 +7166,8 @@ if st.session_state.get("has_generated", False):
         forecast_range_values = forecast_range(overall, assumption_status)
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
         logistics_display = logistics_display_text(product_df, float(logistics_cost), bool(use_fbt))
+        if not use_fbt:
+            logistics_display = logistics_detail_display(logistics_carrier_cost, logistics_pick_pack_cost, logistics_return_allowance)
         assumption_summary = build_assumption_summary(
             phase_inputs=phase_inputs,
             weeks_per_phase=int(weeks_per_phase),
@@ -7104,7 +7216,12 @@ if st.session_state.get("has_generated", False):
                 st.session_state["_locked_scenario_case"] = scenario_case
                 st.session_state["_locked_promo_60d"] = bool(promo_60d)
                 st.session_state["_locked_use_fbt"] = bool(use_fbt)
+                st.session_state["_locked_logistics_carrier_cost"] = float(logistics_carrier_cost)
+                st.session_state["_locked_logistics_pick_pack_cost"] = float(logistics_pick_pack_cost)
+                st.session_state["_locked_logistics_return_allowance"] = float(logistics_return_allowance)
                 st.session_state["_locked_logistics_cost"] = float(logistics_cost)
+                st.session_state["_locked_sample_delivery_cost"] = float(sample_delivery_cost)
+                st.session_state["_locked_sample_handling_cost"] = float(sample_handling_cost)
                 st.session_state["_locked_sample_shipping_cost"] = float(sample_shipping_cost)
                 st.session_state["_locked_organic_click_window_weeks"] = int(organic_click_window_weeks)
                 st.session_state["_locked_target_gmv"] = float(target_gmv)
