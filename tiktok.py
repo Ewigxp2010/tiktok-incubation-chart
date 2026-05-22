@@ -1826,12 +1826,13 @@ TEXT = {
         "promo": "New seller: apply first-60-day 5% platform fee",
         "promo_yes": "Apply first-60-day 5% platform fee",
         "promo_no": "No, use default category commission",
-        "fulfillment": "Fulfillment / shipping cost €/unit",
-        "fulfillment_fbt_fallback": "Fallback logistics cost €/unit for SKUs at or below €20",
+        "fulfillment": "Non-FBT customer order logistics cost €/order",
+        "fulfillment_fbt_fallback": "Fallback customer order logistics cost €/order for SKUs at or below €20",
+        "sample_shipping_cost": "Sample shipping cost €/sample",
         "fbt": "Use FBT free shipping",
         "fbt_yes": "Yes, set logistics cost to €0",
         "fbt_no": "No, use manual logistics cost",
-        "fbt_help": "Planning assumption: when selected, SKUs with AOV above €20 use €0 logistics cost; lower-AOV SKUs keep the manual logistics cost.",
+        "fbt_help": "Planning assumption: when selected, customer orders for SKUs with AOV above €20 use €0 logistics cost; lower-AOV SKUs keep the manual order logistics cost. Sample shipping is controlled separately.",
         "fbt_active_all": "€0.00 effective under FBT",
         "fbt_active_mixed": "Mixed under FBT ({logistics} fallback for AOV ≤ €20)",
         "fbt_active_none": "{logistics} fallback still applies (no current SKU above €20)",
@@ -1992,7 +1993,7 @@ TEXT = {
         "assumption_phase_plan": "Phase plan",
         "assumption_phase_plan_value": "{weeks} weeks per phase; samples per SKU/week: {samples}; paid growth budget: {take_rates}.",
         "assumption_operating": "Operating setup",
-        "assumption_operating_value": "{skus} SKUs; logistics cost {logistics}; content sales window {organic_window} weeks.",
+        "assumption_operating_value": "{skus} SKUs; order logistics {logistics}; sample shipping {sample_shipping}; content sales window {organic_window} weeks.",
         "assumption_growth": "Growth setup",
         "assumption_growth_value": "Ads ROAS {ads_roas}; new seller platform-fee benefit: {promo}; FBT free shipping: {fbt}.",
         "yes": "Yes",
@@ -2153,12 +2154,13 @@ TEXT = {
         "promo": "是否为新商家：适用前约60天平台费 5%",
         "promo_yes": "适用前约60天平台费 5%",
         "promo_no": "否，使用默认类目佣金",
-        "fulfillment": "履约/寄送成本 €/件",
-        "fulfillment_fbt_fallback": "AOV 不高于 €20 的 SKU 兜底物流成本 €/件",
+        "fulfillment": "非 FBT 客户订单物流成本 €/单",
+        "fulfillment_fbt_fallback": "AOV 不高于 €20 的 SKU 兜底客户订单物流成本 €/单",
+        "sample_shipping_cost": "样品寄送成本 €/个样品",
         "fbt": "使用 FBT 包邮",
         "fbt_yes": "是，物流成本按 €0 计算",
         "fbt_no": "否，使用手动物流成本",
-        "fbt_help": "沙盘假设：勾选后，AOV 高于 €20 的 SKU 物流成本按 €0 计算；AOV 不高于 €20 的 SKU 仍使用手动物流成本。",
+        "fbt_help": "沙盘假设：勾选后，AOV 高于 €20 的 SKU 客户订单物流成本按 €0 计算；AOV 不高于 €20 的 SKU 仍使用手动订单物流成本。样品寄送成本单独控制。",
         "fbt_active_all": "当前有效物流成本为 €0.00（FBT 生效）",
         "fbt_active_mixed": "FBT 部分生效（AOV 不高于 €20 的 SKU 仍使用 {logistics} 兜底）",
         "fbt_active_none": "当前仍使用 {logistics} 兜底物流成本（没有 SKU 高于 €20）",
@@ -2332,7 +2334,7 @@ TEXT = {
         "assumption_phase_plan": "阶段计划",
         "assumption_phase_plan_value": "每阶段 {weeks} 周；每 SKU 每周寄样：{samples}；付费增长预算占比：{take_rates}。",
         "assumption_operating": "运营设置",
-        "assumption_operating_value": "{skus} 个 SKU；履约/寄送成本 {logistics}；内容出单窗口 {organic_window} 周。",
+        "assumption_operating_value": "{skus} 个 SKU；订单物流 {logistics}；样品寄送 {sample_shipping}；内容出单窗口 {organic_window} 周。",
         "assumption_growth": "增长设置",
         "assumption_growth_value": "广告 ROAS {ads_roas}；新商家平台费优惠：{promo}；FBT 包邮：{fbt}。",
         "yes": "是",
@@ -2444,11 +2446,13 @@ TEXT["de"] = {
     "promo": "Neuer Seller: 5% Plattformgebühr für die ersten ~60 Tage anwenden",
     "promo_yes": "5% Plattformgebühr für die ersten ~60 Tage anwenden",
     "promo_no": "Nein, Standard-Kategoriekommission verwenden",
-    "fulfillment": "Logistikkosten €/Stück oder Bestellung",
+    "fulfillment": "Non-FBT Logistikkosten pro Kundenbestellung €/Bestellung",
+    "fulfillment_fbt_fallback": "Fallback-Logistikkosten pro Kundenbestellung €/Bestellung für SKUs mit AOV ≤ €20",
+    "sample_shipping_cost": "Sample-Versandkosten €/Sample",
     "fbt": "FBT-Gratisversand nutzen",
     "fbt_yes": "Ja, Logistikkosten auf €0 setzen",
     "fbt_no": "Nein, manuelle Logistikkosten nutzen",
-    "fbt_help": "Planungsannahme: Bei Auswahl nutzen SKUs mit AOV über €20 Logistikkosten von €0; SKUs mit niedrigerem AOV behalten die manuellen Logistikkosten.",
+    "fbt_help": "Planungsannahme: Bei Auswahl nutzen Kundenbestellungen für SKUs mit AOV über €20 Logistikkosten von €0; niedrigere-AOV SKUs behalten die manuellen Bestell-Logistikkosten. Sample-Versand wird separat gesteuert.",
     "creator_commission": "Organische Creator-Provision",
     "paid_creator_commission": "Paid-Traffic-Creator-Provision",
     "organic_click_window": "Content-Tail-Zeitraum (Wochen)",
@@ -2534,11 +2538,13 @@ TEXT["nl"] = {
     "promo": "Nieuwe seller: 5% platform fee voor de eerste ~60 dagen toepassen",
     "promo_yes": "5% platform fee voor de eerste ~60 dagen toepassen",
     "promo_no": "Nee, standaard categoriecommissie gebruiken",
-    "fulfillment": "Logistieke kosten €/stuk of order",
+    "fulfillment": "Non-FBT logistieke kosten per klantorder €/order",
+    "fulfillment_fbt_fallback": "Fallback logistieke kosten per klantorder €/order voor SKU's met AOV ≤ €20",
+    "sample_shipping_cost": "Sampleverzendkosten €/sample",
     "fbt": "FBT gratis verzending gebruiken",
     "fbt_yes": "Ja, logistieke kosten op €0 zetten",
     "fbt_no": "Nee, handmatige logistieke kosten gebruiken",
-    "fbt_help": "Planningsaanname: wanneer geselecteerd, gebruiken SKU's met AOV boven €20 logistieke kosten van €0; lagere-AOV SKU's gebruiken de handmatige logistieke kosten.",
+    "fbt_help": "Planningsaanname: wanneer geselecteerd, gebruiken klantorders voor SKU's met AOV boven €20 logistieke kosten van €0; lagere-AOV SKU's gebruiken de handmatige orderlogistiek. Sampleverzending wordt apart ingesteld.",
     "creator_commission": "Organische creator commissie",
     "paid_creator_commission": "Paid-traffic creator commissie",
     "organic_click_window": "Content traffic tail periode (weken)",
@@ -4509,6 +4515,7 @@ def build_weekly_model(
     weeks_per_phase,
     promo_60d,
     logistics_cost,
+    sample_shipping_cost,
     use_fbt,
     organic_click_window_weeks,
     ads_roas,
@@ -4518,7 +4525,7 @@ def build_weekly_model(
     platform_fee_rates = product_df["Platform Fee Rate"].to_numpy()
     product_cost_per_unit = aov * (1 - gross_margin)
     logistics_cost_per_unit = effective_logistics_cost_per_unit(aov, logistics_cost, use_fbt)
-    sample_all_in_cost_per_unit = product_cost_per_unit + logistics_cost_per_unit
+    sample_all_in_cost_per_unit = product_cost_per_unit + float(sample_shipping_cost)
 
     videos_per_sample = product_df["Videos / Sample"].to_numpy()
     clicks_per_video = product_df["Clicks / Video"].to_numpy()
@@ -4916,7 +4923,7 @@ def render_cover_page(default_skus):
     )
 
 
-def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_display, ads_roas, organic_click_window_weeks, promo_60d, use_fbt):
+def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_display, sample_shipping_cost, ads_roas, organic_click_window_weeks, promo_60d, use_fbt):
     samples = " / ".join(str(int(phase["samples_per_sku"])) for phase in phase_inputs)
     take_rates = " / ".join(pct(float(phase["take_rate"]), 0) for phase in phase_inputs)
     yes = T["yes"]
@@ -4936,6 +4943,7 @@ def build_assumption_summary(phase_inputs, weeks_per_phase, n_skus, logistics_di
             T["assumption_operating_value"].format(
                 skus=int(n_skus),
                 logistics=logistics_display,
+                sample_shipping=money(float(sample_shipping_cost), 2),
                 organic_window=int(organic_click_window_weeks),
             ),
             "#178A62",
@@ -6088,7 +6096,7 @@ def reset_defaults():
     )
     exact_keys = {
         "has_generated", "selected_phase_view", "logistics_cost_manual",
-        "meeting_mode_input", "n_skus_input", "promo_60d_input", "use_fbt_input",
+        "sample_shipping_cost_manual", "meeting_mode_input", "n_skus_input", "promo_60d_input", "use_fbt_input",
         "weeks_per_phase_input", "ads_roas_input", "organic_window_input",
         "reset_confirm_pending", "brand_name_input", "meeting_date_input",
         "am_name_input", "key_recommendation_input", "assumption_status_input",
@@ -6097,6 +6105,7 @@ def reset_defaults():
         "_model_brand_name", "_model_meeting_date", "_model_am_name",
         "_model_key_recommendation", "_model_assumption_status", "_model_scenario_name",
         "_model_target_gmv", "_model_target_profit", "_model_scenario_case",
+        "_model_sample_shipping_cost",
         "_locked_df_all", "_locked_product_df", "_locked_phase_inputs",
         "_locked_weeks_per_phase", "_locked_ads_roas", "_locked_scenario_label",
         "_locked_scenario_case",
@@ -6685,6 +6694,7 @@ with st.sidebar:
         use_fbt = bool(st.session_state.get("_model_use_fbt", st.session_state.get("use_fbt_input", False)))
         weeks_per_phase = int(st.session_state.get("_model_weeks_per_phase", st.session_state.get("weeks_per_phase_input", 4)))
         logistics_cost = float(st.session_state.get("_model_logistics_cost", st.session_state.get("logistics_cost_manual", 5.0)))
+        sample_shipping_cost = float(st.session_state.get("_model_sample_shipping_cost", st.session_state.get("sample_shipping_cost_manual", logistics_cost)))
         ads_roas = float(st.session_state.get("_model_ads_roas", st.session_state.get("ads_roas_input", 6.0)))
         organic_click_window_weeks = int(st.session_state.get("_model_organic_click_window_weeks", st.session_state.get("organic_window_input", 4)))
         target_gmv = float(st.session_state.get("_model_target_gmv", st.session_state.get("target_gmv_input", 0.0)))
@@ -6729,6 +6739,13 @@ with st.sidebar:
             value=5.0,
             step=0.5,
             key="logistics_cost_manual",
+        )
+        sample_shipping_cost = st.number_input(
+            T["sample_shipping_cost"],
+            min_value=0.0,
+            value=5.0,
+            step=0.5,
+            key="sample_shipping_cost_manual",
         )
         if use_fbt:
             render_subtle_note(T["fbt_help"], T["fbt"])
@@ -6778,6 +6795,7 @@ with st.sidebar:
         st.session_state["_model_use_fbt"] = bool(use_fbt)
         st.session_state["_model_weeks_per_phase"] = int(weeks_per_phase)
         st.session_state["_model_logistics_cost"] = float(logistics_cost)
+        st.session_state["_model_sample_shipping_cost"] = float(sample_shipping_cost)
         st.session_state["_model_ads_roas"] = float(ads_roas)
         st.session_state["_model_organic_click_window_weeks"] = int(organic_click_window_weeks)
         st.session_state["_model_target_gmv"] = float(target_gmv)
@@ -6994,6 +7012,7 @@ if st.session_state.get("has_generated", False):
                 weeks_per_phase=int(weeks_per_phase),
                 promo_60d=bool(promo_60d),
                 logistics_cost=float(logistics_cost),
+                sample_shipping_cost=float(sample_shipping_cost),
                 use_fbt=bool(use_fbt),
                 organic_click_window_weeks=int(organic_click_window_weeks),
                 ads_roas=float(effective_ads_roas),
@@ -7036,6 +7055,7 @@ if st.session_state.get("has_generated", False):
             weeks_per_phase=int(weeks_per_phase),
             n_skus=int(n_skus),
             logistics_display=logistics_display,
+            sample_shipping_cost=float(sample_shipping_cost),
             ads_roas=float(effective_ads_roas),
             organic_click_window_weeks=int(organic_click_window_weeks),
             promo_60d=bool(promo_60d),
