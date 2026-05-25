@@ -4063,6 +4063,8 @@ st.markdown(
     }
 
     .hero-mark {
+        position: relative;
+        overflow: hidden;
         width: 52px;
         height: 52px;
         border-radius: 16px;
@@ -4070,19 +4072,45 @@ st.markdown(
         align-items: center;
         justify-content: center;
         color: #FFFFFF;
-        background: linear-gradient(135deg, rgba(37,244,238,0.24), rgba(254,44,85,0.20));
-        border: 1px solid rgba(255,255,255,0.22);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+        background:
+            radial-gradient(circle at 28% 18%, rgba(255,255,255,0.34), transparent 32%),
+            linear-gradient(135deg, rgba(37,244,238,0.26), rgba(49,94,236,0.28) 48%, rgba(254,44,85,0.24));
+        border: 1px solid rgba(255,255,255,0.26);
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.20),
+            0 14px 32px rgba(37,244,238,0.10),
+            0 16px 34px rgba(254,44,85,0.08);
     }
 
     .hero-mark svg,
     .hero-kpi-icon svg,
     .premium-kpi-icon svg,
     .growth-path-icon svg {
-        width: 1.15em;
-        height: 1.15em;
-        stroke-width: 2;
+        position: relative;
+        z-index: 1;
+        width: 1.22em;
+        height: 1.22em;
+        stroke-width: 1.9;
         display: block;
+    }
+
+    .hero-mark::after,
+    .hero-kpi-icon::after,
+    .premium-kpi-icon::after,
+    .growth-path-icon::after,
+    .growth-engine-mark::after,
+    .growth-engine-step-icon::after {
+        content: "";
+        position: absolute;
+        width: 34%;
+        height: 34%;
+        right: 8%;
+        top: 8%;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.34);
+        filter: blur(2px);
+        opacity: 0.52;
+        pointer-events: none;
     }
 
     .hero-title {
@@ -4107,6 +4135,8 @@ st.markdown(
     }
 
     .hero-kpi-icon {
+        position: relative;
+        overflow: hidden;
         width: 34px;
         height: 34px;
         border-radius: 12px;
@@ -4114,8 +4144,11 @@ st.markdown(
         align-items: center;
         justify-content: center;
         color: #FFFFFF;
-        background: rgba(255,255,255,0.10);
-        border: 1px solid rgba(255,255,255,0.14);
+        background:
+            radial-gradient(circle at 30% 20%, rgba(255,255,255,0.26), transparent 34%),
+            rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
         margin-bottom: 10px;
     }
 
@@ -4193,16 +4226,26 @@ st.markdown(
     }
 
     .premium-kpi-icon {
+        position: relative;
+        overflow: hidden;
         flex: 0 0 34px;
         width: 34px;
         height: 34px;
-        border-radius: 12px;
+        border-radius: 13px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         color: var(--kpi-accent, var(--tts-blue));
-        background: color-mix(in srgb, var(--kpi-accent, var(--tts-blue)) 10%, #FFFFFF);
-        border: 1px solid color-mix(in srgb, var(--kpi-accent, var(--tts-blue)) 18%, #FFFFFF);
+        background:
+            radial-gradient(circle at 28% 18%, rgba(255,255,255,0.92), transparent 34%),
+            linear-gradient(145deg,
+                color-mix(in srgb, var(--kpi-accent, var(--tts-blue)) 16%, #FFFFFF),
+                color-mix(in srgb, var(--kpi-accent, var(--tts-blue)) 6%, #FFFFFF)
+            );
+        border: 1px solid color-mix(in srgb, var(--kpi-accent, var(--tts-blue)) 22%, #FFFFFF);
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.82),
+            0 8px 18px color-mix(in srgb, var(--kpi-accent, var(--tts-blue)) 16%, transparent);
     }
 
     .kpi-grid.kpi-grid-compact .premium-kpi {
@@ -4396,22 +4439,32 @@ st.markdown(
     }
 
     .growth-path-icon {
+        position: relative;
+        overflow: hidden;
         flex: 0 0 30px;
         width: 30px;
         height: 30px;
-        border-radius: 10px;
+        border-radius: 12px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         color: var(--tts-blue);
-        background: rgba(49, 94, 236, 0.08);
-        border: 1px solid rgba(49, 94, 236, 0.12);
+        background:
+            radial-gradient(circle at 28% 20%, rgba(255,255,255,0.92), transparent 34%),
+            linear-gradient(145deg, rgba(49, 94, 236, 0.13), rgba(37, 244, 238, 0.07));
+        border: 1px solid rgba(49, 94, 236, 0.16);
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.72),
+            0 8px 16px rgba(49, 94, 236, 0.08);
     }
 
     .growth-path-summary .growth-path-icon {
         color: #FFFFFF;
-        background: rgba(255,255,255,0.10);
-        border-color: rgba(255,255,255,0.16);
+        background:
+            radial-gradient(circle at 30% 20%, rgba(255,255,255,0.26), transparent 34%),
+            rgba(255,255,255,0.10);
+        border-color: rgba(255,255,255,0.18);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
     }
 
     .growth-path-title {
@@ -4484,6 +4537,8 @@ st.markdown(
     }
 
     .growth-engine-mark {
+        position: relative;
+        overflow: hidden;
         width: 40px;
         height: 40px;
         border-radius: 14px;
@@ -4491,16 +4546,23 @@ st.markdown(
         align-items: center;
         justify-content: center;
         color: #FFFFFF;
-        background: linear-gradient(135deg, var(--tts-blue), var(--tts-violet));
-        box-shadow: 0 12px 22px rgba(49, 94, 236, 0.20);
+        background:
+            radial-gradient(circle at 28% 18%, rgba(255,255,255,0.30), transparent 34%),
+            linear-gradient(135deg, var(--tts-blue), var(--tts-violet) 56%, var(--tts-red));
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.20),
+            0 12px 22px rgba(49, 94, 236, 0.20);
         flex: 0 0 40px;
     }
 
     .growth-engine-mark svg,
     .growth-engine-step-icon svg {
-        width: 1.15em;
-        height: 1.15em;
-        stroke-width: 2;
+        position: relative;
+        z-index: 1;
+        width: 1.22em;
+        height: 1.22em;
+        stroke-width: 1.9;
         display: block;
     }
 
@@ -4557,15 +4619,25 @@ st.markdown(
     }
 
     .growth-engine-step-icon {
+        position: relative;
+        overflow: hidden;
         width: 32px;
         height: 32px;
-        border-radius: 11px;
+        border-radius: 13px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         color: var(--step-accent, var(--tts-blue));
-        background: color-mix(in srgb, var(--step-accent, var(--tts-blue)) 10%, #FFFFFF);
-        border: 1px solid color-mix(in srgb, var(--step-accent, var(--tts-blue)) 18%, #FFFFFF);
+        background:
+            radial-gradient(circle at 28% 18%, rgba(255,255,255,0.92), transparent 34%),
+            linear-gradient(145deg,
+                color-mix(in srgb, var(--step-accent, var(--tts-blue)) 18%, #FFFFFF),
+                color-mix(in srgb, var(--step-accent, var(--tts-blue)) 7%, #FFFFFF)
+            );
+        border: 1px solid color-mix(in srgb, var(--step-accent, var(--tts-blue)) 23%, #FFFFFF);
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.82),
+            0 8px 18px color-mix(in srgb, var(--step-accent, var(--tts-blue)) 15%, transparent);
         flex: 0 0 32px;
     }
 
