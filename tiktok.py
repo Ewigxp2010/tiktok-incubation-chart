@@ -1923,6 +1923,13 @@ TEXT = {
         "section_primary": "Core view",
         "section_secondary": "Supporting view",
         "growth_profit_path": "Growth & Profit Path",
+        "growth_engine": "Growth Engine",
+        "growth_engine_subtitle": "How samples compound into creator content, demand, orders, and GMV.",
+        "growth_engine_rate": "Step efficiency",
+        "growth_engine_video_rate": "videos / sample",
+        "growth_engine_click_rate": "clicks / video",
+        "growth_engine_order_rate": "orders / click",
+        "growth_engine_aov": "GMV / order",
         "investment_split": "Investment Mix",
         "product_profile": "Product Profile",
         "hero_title": "{weeks}-week incubation plan for {skus} SKUs",
@@ -2260,6 +2267,13 @@ TEXT = {
         "section_primary": "核心视图",
         "section_secondary": "辅助视图",
         "growth_profit_path": "增长与利润路径",
+        "growth_engine": "增长引擎",
+        "growth_engine_subtitle": "样品如何逐步转化为达人内容、需求、订单和 GMV。",
+        "growth_engine_rate": "阶段效率",
+        "growth_engine_video_rate": "视频 / 样品",
+        "growth_engine_click_rate": "点击 / 视频",
+        "growth_engine_order_rate": "订单 / 点击",
+        "growth_engine_aov": "GMV / 订单",
         "investment_split": "投入结构",
         "product_profile": "产品组合",
         "hero_title": "{weeks} 周、{skus} 个 SKU 的孵化计划",
@@ -4445,6 +4459,142 @@ st.markdown(
         color: #FFFFFF;
     }
 
+    .growth-engine-panel {
+        background: linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(248,251,255,0.94) 100%);
+        border: 1px solid #D6E0EC;
+        border-radius: 20px;
+        padding: 18px;
+        margin: 0 0 24px 0;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.055);
+    }
+
+    .growth-engine-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .growth-engine-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    .growth-engine-mark {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        background: linear-gradient(135deg, var(--tts-blue), var(--tts-violet));
+        box-shadow: 0 12px 22px rgba(49, 94, 236, 0.20);
+        flex: 0 0 40px;
+    }
+
+    .growth-engine-mark svg,
+    .growth-engine-step-icon svg {
+        width: 1.15em;
+        height: 1.15em;
+        stroke-width: 2;
+        display: block;
+    }
+
+    .growth-engine-title {
+        color: #0F172A;
+        font-size: 1.05rem;
+        font-weight: 850;
+        line-height: 1.15;
+    }
+
+    .growth-engine-subtitle {
+        color: #64748B;
+        font-size: 0.82rem;
+        line-height: 1.42;
+        margin-top: 3px;
+    }
+
+    .growth-engine-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .growth-engine-step {
+        position: relative;
+        background: #FFFFFF;
+        border: 1px solid #DCE5EF;
+        border-radius: 16px;
+        padding: 14px;
+        min-height: 132px;
+        overflow: hidden;
+    }
+
+    .growth-engine-step::after {
+        content: "";
+        position: absolute;
+        top: 28px;
+        right: -18px;
+        width: 36px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--tts-cyan), var(--tts-blue));
+        opacity: 0.45;
+    }
+
+    .growth-engine-step:last-child::after {
+        display: none;
+    }
+
+    .growth-engine-step-top {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 12px;
+    }
+
+    .growth-engine-step-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 11px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--step-accent, var(--tts-blue));
+        background: color-mix(in srgb, var(--step-accent, var(--tts-blue)) 10%, #FFFFFF);
+        border: 1px solid color-mix(in srgb, var(--step-accent, var(--tts-blue)) 18%, #FFFFFF);
+        flex: 0 0 32px;
+    }
+
+    .growth-engine-step-label {
+        color: #64748B;
+        font-size: 0.68rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        line-height: 1.2;
+    }
+
+    .growth-engine-step-value {
+        color: #0F172A;
+        font-size: clamp(1rem, 1.45vw, 1.32rem);
+        font-weight: 860;
+        line-height: 1.12;
+        overflow-wrap: anywhere;
+        margin-bottom: 8px;
+    }
+
+    .growth-engine-step-rate {
+        color: #667085;
+        font-size: 0.75rem;
+        line-height: 1.35;
+        padding-top: 8px;
+        border-top: 1px solid #EEF3F8;
+    }
+
     .export-shell {
         background: #FFFFFF;
         border: 1px solid #D0D7E2;
@@ -4520,6 +4670,7 @@ st.markdown(
         .cover-summary-grid,
         .hero-band,
         .growth-path-strip,
+        .growth-engine-grid,
         .dashboard-intro,
         .executive-brief-grid,
         .kpi-grid,
@@ -5239,6 +5390,77 @@ def render_growth_path_strip(phase_summary, payback_label, driver):
         "</div>"
     )
     st.markdown(f'<div class="growth-path-strip">{"".join(cards)}</div>', unsafe_allow_html=True)
+
+
+def render_growth_engine(overall):
+    samples = float(overall.get("Total Samples", 0) or 0)
+    videos = float(overall.get("Total Videos", 0) or 0)
+    clicks = float(overall.get("Total Clicks", 0) or 0)
+    orders = float(overall.get("Total Orders", 0) or 0)
+    gmv = float(overall.get("Total GMV", 0) or 0)
+
+    steps = [
+        {
+            "label": T["samples_label"],
+            "value": f"{samples:,.0f}",
+            "rate": T["growth_engine_rate"],
+            "icon": "sample",
+            "accent": "#315EEC",
+        },
+        {
+            "label": T["videos_label"],
+            "value": f"{videos:,.0f}",
+            "rate": f"{videos / samples:.2f} {T['growth_engine_video_rate']}" if samples else "-",
+            "icon": "phase",
+            "accent": "#25D7D2",
+        },
+        {
+            "label": T["clicks_label"],
+            "value": f"{clicks:,.0f}",
+            "rate": f"{clicks / videos:,.0f} {T['growth_engine_click_rate']}" if videos else "-",
+            "icon": "channel",
+            "accent": "#7C3AED",
+        },
+        {
+            "label": T["orders_label"],
+            "value": f"{orders:,.0f}",
+            "rate": f"{pct(orders / clicks, 1)} {T['growth_engine_order_rate']}" if clicks else "-",
+            "icon": "target",
+            "accent": "#12A08C",
+        },
+        {
+            "label": T["forecast_gmv"],
+            "value": money(gmv, 0),
+            "rate": f"{money(gmv / orders, 2)} {T['growth_engine_aov']}" if orders else "-",
+            "icon": "trend",
+            "accent": "#FE2C55",
+        },
+    ]
+    step_html = []
+    for step in steps:
+        step_html.append(
+            f'<div class="growth-engine-step" style="--step-accent:{escape(step["accent"])};">'
+            '<div class="growth-engine-step-top">'
+            f'<div class="growth-engine-step-icon">{icon_svg(step["icon"])}</div>'
+            f'<div class="growth-engine-step-label">{escape(step["label"])}</div>'
+            '</div>'
+            f'<div class="growth-engine-step-value">{escape(step["value"])}</div>'
+            f'<div class="growth-engine-step-rate">{escape(step["rate"])}</div>'
+            '</div>'
+        )
+    html = (
+        '<div class="growth-engine-panel">'
+        '<div class="growth-engine-header">'
+        '<div class="growth-engine-title-wrap">'
+        f'<div class="growth-engine-mark">{icon_svg("spark")}</div>'
+        '<div>'
+        f'<div class="growth-engine-title">{escape(T["growth_engine"])}</div>'
+        f'<div class="growth-engine-subtitle">{escape(T["growth_engine_subtitle"])}</div>'
+        '</div></div></div>'
+        f'<div class="growth-engine-grid">{"".join(step_html)}</div>'
+        '</div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def render_cover_page(default_skus):
@@ -7499,6 +7721,7 @@ if st.session_state.get("has_generated", False):
             break_even_label=cumulative_be_label,
         )
         render_growth_path_strip(phase_summary, cumulative_be_label, total_cost_driver)
+        render_growth_engine(overall)
         render_dashboard_intro(
             scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
             diagnosis_text,
