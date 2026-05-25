@@ -4041,6 +4041,36 @@ st.markdown(
         z-index: 1;
     }
 
+    .hero-copy {
+        display: grid;
+        grid-template-columns: 52px minmax(0, 1fr);
+        gap: 16px;
+        align-items: start;
+    }
+
+    .hero-mark {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        background: linear-gradient(135deg, rgba(37,244,238,0.24), rgba(254,44,85,0.20));
+        border: 1px solid rgba(255,255,255,0.22);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+
+    .hero-mark svg,
+    .hero-kpi-icon svg,
+    .premium-kpi-icon svg,
+    .growth-path-icon svg {
+        width: 1.15em;
+        height: 1.15em;
+        stroke-width: 2;
+        display: block;
+    }
+
     .hero-title {
         color: #FFFFFF;
         font-size: clamp(1.95rem, 3vw, 2.9rem);
@@ -4060,6 +4090,19 @@ st.markdown(
         border-left: 1px solid rgba(255,255,255,0.18);
         padding-left: 16px;
         min-width: 0;
+    }
+
+    .hero-kpi-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.14);
+        margin-bottom: 10px;
     }
 
     .hero-kpi-label {
@@ -4126,6 +4169,26 @@ st.markdown(
         border-radius: 0 0 999px 999px;
         background: var(--kpi-accent, var(--tts-blue));
         opacity: 0.9;
+    }
+
+    .premium-kpi-top {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        min-height: 2.8em;
+    }
+
+    .premium-kpi-icon {
+        flex: 0 0 34px;
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--kpi-accent, var(--tts-blue));
+        background: color-mix(in srgb, var(--kpi-accent, var(--tts-blue)) 10%, #FFFFFF);
+        border: 1px solid color-mix(in srgb, var(--kpi-accent, var(--tts-blue)) 18%, #FFFFFF);
     }
 
     .kpi-grid.kpi-grid-compact .premium-kpi {
@@ -4311,12 +4374,38 @@ st.markdown(
         margin-bottom: 8px;
     }
 
+    .growth-path-heading {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .growth-path-icon {
+        flex: 0 0 30px;
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--tts-blue);
+        background: rgba(49, 94, 236, 0.08);
+        border: 1px solid rgba(49, 94, 236, 0.12);
+    }
+
+    .growth-path-summary .growth-path-icon {
+        color: #FFFFFF;
+        background: rgba(255,255,255,0.10);
+        border-color: rgba(255,255,255,0.16);
+    }
+
     .growth-path-title {
         color: #111827;
         font-size: 0.96rem;
         font-weight: 800;
         line-height: 1.2;
-        margin-bottom: 10px;
+        margin: 0;
     }
 
     .growth-path-metrics {
@@ -4450,6 +4539,10 @@ st.markdown(
             border-top: 1px solid #E5E7EB;
             padding-left: 0;
             padding-top: 12px;
+        }
+
+        .hero-copy {
+            grid-template-columns: 1fr;
         }
 
         [data-testid="stAppViewContainer"] > .main .block-container {
@@ -4957,13 +5050,54 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
     return pd.DataFrame(rows, columns=["Metric", "Value"])
 
 
+ICON_SVG = {
+    "trend": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17.5 9.5 12l3.8 3.8L20 7.5"/><path d="M15.5 7.5H20V12"/></svg>',
+    "profit": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M17 7.5c-.8-1.2-2.4-2-4.5-2-2.5 0-4.5 1.2-4.5 3.2 0 4.4 9 2 9 6.6 0 2-2 3.2-4.8 3.2-2.2 0-4-.8-5.2-2.1"/></svg>',
+    "investment": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5h16v10H4z"/><path d="M7 8.5V6h10v2.5"/><path d="M16.5 13.5h2"/><path d="M7.5 12.5h5"/></svg>',
+    "target": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3"/><path d="M21.5 12h-3"/><path d="M12 21.5v-3"/><path d="M2.5 12h3"/></svg>',
+    "sample": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5 12 5l6 3.5v7L12 19l-6-3.5z"/><path d="m6 8.5 6 3.5 6-3.5"/><path d="M12 12v7"/></svg>',
+    "ads": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15.5V8.8l10.5-3v12.4z"/><path d="M15.5 9.5h2.2a2.8 2.8 0 0 1 0 5.6h-2.2"/><path d="m8 16 1.2 4"/></svg>',
+    "channel": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h6v6H4z"/><path d="M14 5h6v6h-6z"/><path d="M14 15h6v4h-6z"/><path d="M10 10h2.2c1 0 1.8-.8 1.8-1.8V8"/><path d="M10 10h2.2c1 0 1.8.8 1.8 1.8V17"/></svg>',
+    "cost": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h12"/><path d="M6 12h12"/><path d="M6 18h8"/><path d="M17 15l3 3-3 3"/></svg>',
+    "phase": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg>',
+    "spark": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 13.9 9l5.6 1.9-5.6 1.9L12 18.5l-1.9-5.7-5.6-1.9L10.1 9z"/><path d="M18 3v4"/><path d="M20 5h-4"/></svg>',
+}
+
+
+def icon_svg(name):
+    return ICON_SVG.get(name, ICON_SVG["spark"])
+
+
+def icon_for_label(label):
+    label_text = str(label)
+    if label_text in {T.get("total_gmv"), T.get("forecast_gmv"), T.get("hero_gmv"), T.get("gmv_per_sample"), T.get("sample_gmv_roi")}:
+        return "trend"
+    if label_text in {T.get("total_profit"), T.get("net_profit"), T.get("profit_per_sample"), T.get("weekly_profit")}:
+        return "profit"
+    if label_text in {T.get("growth_investment"), T.get("sample_investment"), T.get("hero_investment")}:
+        return "investment"
+    if label_text in {T.get("cumulative_be"), T.get("hero_break_even"), T.get("target_gmv"), T.get("target_profit")}:
+        return "target"
+    if label_text in {T.get("total_samples"), T.get("samples_label"), T.get("videos_per_sample_kpi"), T.get("orders_per_sample")}:
+        return "sample"
+    if label_text in {T.get("ads_investment"), T.get("take_rate"), T.get("ads_roas")}:
+        return "ads"
+    if label_text in {T.get("channel_mix"), T.get("affiliate_video_gmv"), T.get("shoptab_gmv")}:
+        return "channel"
+    if label_text in {T.get("cost_explanation"), T.get("cost_fulfillment"), T.get("total_cost_label")}:
+        return "cost"
+    return "spark"
+
+
 def render_kpi_grid(items, compact=False, fixed_cols=None):
     cards = []
     for label, value, accent in items:
         accent_style = f' style="--kpi-accent:{escape(str(accent))};"' if accent else ""
+        icon = icon_svg(icon_for_label(label))
         cards.append(
             f'<div class="premium-kpi"{accent_style}>'
-            f'<div class="premium-kpi-label">{escape(str(label))}</div>'
+            f'<div class="premium-kpi-top"><div class="premium-kpi-icon">{icon}</div>'
+            f'<div class="premium-kpi-label">{escape(str(label))}</div></div>'
             f'<div class="premium-kpi-value">{escape(str(value))}</div>'
             "</div>"
         )
@@ -5056,12 +5190,14 @@ def render_hero(overall, weeks, skus, break_even_label):
         break_even=break_even_label,
     )
     html = (
-        '<div class="hero-band"><div>'
+        '<div class="hero-band"><div class="hero-copy">'
+        f'<div class="hero-mark">{icon_svg("trend")}</div>'
+        '<div>'
         f'<div class="hero-title">{T["hero_title"].format(weeks=weeks, skus=skus)}</div>'
-        f'<div class="hero-subtitle">{escape(subtitle)}</div>'
-        f'</div><div class="hero-kpi"><div class="hero-kpi-label">{escape(T["hero_gmv"])}</div><div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div></div>'
-        f'<div class="hero-kpi"><div class="hero-kpi-label">{escape(T["hero_investment"])}</div><div class="hero-kpi-value">{money(overall["Growth Investment"], 0)}</div></div>'
-        f'<div class="hero-kpi"><div class="hero-kpi-label">{escape(T["hero_break_even"])}</div><div class="hero-kpi-value">{escape(break_even_label)}</div></div>'
+        f'<div class="hero-subtitle">{escape(subtitle)}</div></div>'
+        f'</div><div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("trend")}</div><div class="hero-kpi-label">{escape(T["hero_gmv"])}</div><div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div></div>'
+        f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("investment")}</div><div class="hero-kpi-label">{escape(T["hero_investment"])}</div><div class="hero-kpi-value">{money(overall["Growth Investment"], 0)}</div></div>'
+        f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("target")}</div><div class="hero-kpi-label">{escape(T["hero_break_even"])}</div><div class="hero-kpi-value">{escape(break_even_label)}</div></div>'
         '</div>'
     )
     st.markdown(html, unsafe_allow_html=True)
@@ -5081,7 +5217,8 @@ def render_growth_path_strip(phase_summary, payback_label, driver):
         cards.append(
             f'<div class="growth-path-node">'
             f'<div class="growth-path-kicker">Phase {idx}</div>'
-            f'<div class="growth-path-title">{escape(str(row["Phase"]))}</div>'
+            f'<div class="growth-path-heading"><div class="growth-path-icon">{icon_svg("phase")}</div>'
+            f'<div class="growth-path-title">{escape(str(row["Phase"]))}</div></div>'
             f'<div class="growth-path-metrics">{metric_html}</div>'
             "</div>"
         )
@@ -5096,7 +5233,8 @@ def render_growth_path_strip(phase_summary, payback_label, driver):
     cards.append(
         f'<div class="growth-path-node growth-path-summary">'
         f'<div class="growth-path-kicker">{escape(T["section_primary"])}</div>'
-        f'<div class="growth-path-title">{escape(T["growth_profit_path"])}</div>'
+        f'<div class="growth-path-heading"><div class="growth-path-icon">{icon_svg("target")}</div>'
+        f'<div class="growth-path-title">{escape(T["growth_profit_path"])}</div></div>'
         f'<div class="growth-path-metrics">{summary_html}</div>'
         "</div>"
     )
