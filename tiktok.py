@@ -1930,6 +1930,37 @@ TEXT = {
         "growth_engine_click_rate": "clicks / video",
         "growth_engine_order_rate": "orders / click",
         "growth_engine_aov": "GMV / order",
+        "growth_diagnostics": "Growth Diagnostics",
+        "growth_diagnostics_subtitle": "Priority levers based on the current funnel and cost structure.",
+        "diagnostic_priority": "Priority",
+        "diagnostic_current": "Current signal",
+        "diagnostic_action": "Recommended move",
+        "diagnostic_good": "Healthy",
+        "diagnostic_attention": "Watch",
+        "diagnostic_high": "High priority",
+        "diagnostic_profit_title": "Profitability pressure",
+        "diagnostic_profit_action": "Improve margin, reduce logistics or paid acceleration before scaling.",
+        "diagnostic_sample_title": "Sample efficiency",
+        "diagnostic_sample_action": "Tighten sample quantity, sample cost, or SKU selection before expanding seeding.",
+        "diagnostic_video_title": "Creator video yield",
+        "diagnostic_video_action": "Improve creator matching, brief quality, and sample follow-up to lift videos per sample.",
+        "diagnostic_click_title": "Content click power",
+        "diagnostic_click_action": "Use stronger hooks, proof points, pricing cues, and creative testing to lift clicks per video.",
+        "diagnostic_conversion_title": "Click-to-order conversion",
+        "diagnostic_conversion_action": "Review PDP, price, voucher, reviews, shipping promise, and creator offer clarity.",
+        "diagnostic_order_value_title": "Order value",
+        "diagnostic_order_value_action": "Test bundles, multipacks, or hero SKU mix to increase GMV per order.",
+        "diagnostic_logistics_title": "Order logistics drag",
+        "diagnostic_logistics_action": "Review FBT eligibility, carrier cost, pick-pack cost, and return allowance.",
+        "diagnostic_paid_title": "Paid-growth dependence",
+        "diagnostic_paid_action": "Validate ROAS confidence and phase 2/3 budget readiness before treating upside as target.",
+        "diagnostic_healthy_title": "Growth engine is balanced",
+        "diagnostic_healthy_action": "Use the base plan as the discussion anchor and validate SKU-level assumptions with AM data.",
+        "scenario_comparison": "Scenario Comparison",
+        "scenario_comparison_subtitle": "Conservative, base, and upside outcomes under the same SKU and phase setup.",
+        "scenario_current": "Current view",
+        "scenario_delta_base": "vs base GMV",
+        "scenario_payback": "Payback",
         "investment_split": "Investment Mix",
         "product_profile": "Product Profile",
         "hero_title": "{weeks}-week incubation plan for {skus} SKUs",
@@ -2274,6 +2305,37 @@ TEXT = {
         "growth_engine_click_rate": "点击 / 视频",
         "growth_engine_order_rate": "订单 / 点击",
         "growth_engine_aov": "GMV / 订单",
+        "growth_diagnostics": "增长诊断",
+        "growth_diagnostics_subtitle": "基于当前漏斗和成本结构，自动识别优先优化杠杆。",
+        "diagnostic_priority": "优先级",
+        "diagnostic_current": "当前信号",
+        "diagnostic_action": "建议动作",
+        "diagnostic_good": "健康",
+        "diagnostic_attention": "关注",
+        "diagnostic_high": "高优先级",
+        "diagnostic_profit_title": "利润压力",
+        "diagnostic_profit_action": "放大前优先优化毛利、物流成本或付费加热强度。",
+        "diagnostic_sample_title": "样品效率",
+        "diagnostic_sample_action": "扩大寄样前，先收紧样品数量、样品成本或 SKU 选择。",
+        "diagnostic_video_title": "达人视频产出",
+        "diagnostic_video_action": "优化达人匹配、brief 质量和样品跟进，提升每个样品带来的视频数。",
+        "diagnostic_click_title": "内容点击能力",
+        "diagnostic_click_action": "通过更强 hook、卖点、价格信息和素材测试提升每条视频点击。",
+        "diagnostic_conversion_title": "点击到下单转化",
+        "diagnostic_conversion_action": "检查 PDP、价格、券、评价、物流承诺和达人权益表达。",
+        "diagnostic_order_value_title": "客单价",
+        "diagnostic_order_value_action": "测试组合装、多件装或 hero SKU 组合，提高每单 GMV。",
+        "diagnostic_logistics_title": "订单物流拖累",
+        "diagnostic_logistics_action": "复核 FBT 资格、承运成本、拣配成本和退货/失败配送预留。",
+        "diagnostic_paid_title": "付费增长依赖",
+        "diagnostic_paid_action": "在把乐观结果作为目标前，先验证 ROAS 可信度和 Phase 2/3 预算准备。",
+        "diagnostic_healthy_title": "增长引擎较均衡",
+        "diagnostic_healthy_action": "可以用基准方案作为讨论锚点，并用 AM 数据继续验证 SKU level 假设。",
+        "scenario_comparison": "场景对比",
+        "scenario_comparison_subtitle": "在相同 SKU 和阶段设置下，对比保守、基准和乐观结果。",
+        "scenario_current": "当前视图",
+        "scenario_delta_base": "较基准 GMV",
+        "scenario_payback": "回本",
         "investment_split": "投入结构",
         "product_profile": "产品组合",
         "hero_title": "{weeks} 周、{skus} 个 SKU 的孵化计划",
@@ -4667,6 +4729,151 @@ st.markdown(
         border-top: 1px solid #EEF3F8;
     }
 
+    .decision-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+        gap: 14px;
+        margin: 0 0 24px 0;
+        align-items: stretch;
+    }
+
+    .decision-panel {
+        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
+        border: 1px solid #D6E0EC;
+        border-radius: 18px;
+        padding: 16px;
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+        min-width: 0;
+    }
+
+    .decision-panel-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #0F172A;
+        font-size: 0.98rem;
+        font-weight: 850;
+        line-height: 1.2;
+        margin-bottom: 4px;
+    }
+
+    .decision-panel-title .premium-kpi-icon {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+    }
+
+    .decision-panel-subtitle {
+        color: #64748B;
+        font-size: 0.78rem;
+        line-height: 1.4;
+        margin: 0 0 14px 42px;
+    }
+
+    .diagnostic-card {
+        border: 1px solid #E2E8F0;
+        border-radius: 15px;
+        padding: 14px;
+        background:
+            radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--diagnostic-accent, var(--tts-blue)) 10%, transparent), transparent 34%),
+            #FFFFFF;
+    }
+
+    .diagnostic-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .diagnostic-name {
+        color: #0F172A;
+        font-size: 1rem;
+        font-weight: 850;
+        line-height: 1.2;
+    }
+
+    .diagnostic-pill {
+        color: var(--diagnostic-accent, var(--tts-blue));
+        background: color-mix(in srgb, var(--diagnostic-accent, var(--tts-blue)) 10%, #FFFFFF);
+        border: 1px solid color-mix(in srgb, var(--diagnostic-accent, var(--tts-blue)) 20%, #FFFFFF);
+        border-radius: 999px;
+        padding: 5px 8px;
+        font-size: 0.66rem;
+        font-weight: 820;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+    }
+
+    .diagnostic-signal {
+        color: #334155;
+        font-size: 0.86rem;
+        font-weight: 760;
+        line-height: 1.35;
+        margin-bottom: 9px;
+    }
+
+    .diagnostic-action {
+        color: #667085;
+        font-size: 0.8rem;
+        line-height: 1.45;
+    }
+
+    .scenario-card-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .scenario-card {
+        border: 1px solid #E2E8F0;
+        border-radius: 14px;
+        padding: 12px;
+        background: #FFFFFF;
+        min-width: 0;
+    }
+
+    .scenario-card.is-current {
+        border-color: color-mix(in srgb, var(--scenario-accent, var(--tts-blue)) 34%, #FFFFFF);
+        box-shadow: 0 10px 22px color-mix(in srgb, var(--scenario-accent, var(--tts-blue)) 12%, transparent);
+    }
+
+    .scenario-name {
+        color: #0F172A;
+        font-size: 0.78rem;
+        font-weight: 850;
+        line-height: 1.2;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+    }
+
+    .scenario-current-badge {
+        color: var(--scenario-accent, var(--tts-blue));
+        font-size: 0.62rem;
+        font-weight: 820;
+        white-space: nowrap;
+    }
+
+    .scenario-gmv {
+        color: #0F172A;
+        font-size: clamp(0.92rem, 1.25vw, 1.12rem);
+        font-weight: 880;
+        line-height: 1.15;
+        overflow-wrap: anywhere;
+        margin-bottom: 8px;
+    }
+
+    .scenario-meta {
+        color: #667085;
+        font-size: 0.72rem;
+        line-height: 1.4;
+    }
+
     .export-shell {
         background: #FFFFFF;
         border: 1px solid #D0D7E2;
@@ -4743,6 +4950,8 @@ st.markdown(
         .hero-band,
         .growth-path-strip,
         .growth-engine-grid,
+        .decision-grid,
+        .scenario-card-grid,
         .dashboard-intro,
         .executive-brief-grid,
         .kpi-grid,
@@ -5535,6 +5744,102 @@ def render_growth_engine(overall):
     st.markdown(html, unsafe_allow_html=True)
 
 
+def growth_bottleneck(overall, df_all):
+    samples = float(overall.get("Total Samples", 0) or 0)
+    videos = float(overall.get("Total Videos", 0) or 0)
+    clicks = float(overall.get("Total Clicks", 0) or 0)
+    orders = float(overall.get("Total Orders", 0) or 0)
+    gmv = float(overall.get("Total GMV", 0) or 0)
+    profit_margin = float(overall.get("Profit Margin", 0) or 0)
+    sample_roi = float(overall.get("GMV / Sample Cost", 0) or 0)
+    paid_share = float(df_all["Paid GMV Lift"].sum()) / gmv if gmv > 0 and "Paid GMV Lift" in df_all.columns else 0.0
+    logistics_per_order = float(df_all["Fulfillment Cost"].sum()) / orders if orders > 0 and "Fulfillment Cost" in df_all.columns else 0.0
+    videos_per_sample = videos / samples if samples > 0 else 0.0
+    clicks_per_video = clicks / videos if videos > 0 else 0.0
+    order_rate = orders / clicks if clicks > 0 else 0.0
+    gmv_per_order = gmv / orders if orders > 0 else 0.0
+
+    candidates = [
+        (max(0.0, 0.08 - profit_margin) / 0.08, T["diagnostic_profit_title"], f"{T['profit_margin']}: {pct(profit_margin, 1)}", T["diagnostic_profit_action"], "profit"),
+        (max(0.0, 5.0 - sample_roi) / 5.0, T["diagnostic_sample_title"], f"{T['sample_gmv_roi']}: {sample_roi:.1f}x", T["diagnostic_sample_action"], "sample"),
+        (max(0.0, 1.20 - videos_per_sample) / 1.20, T["diagnostic_video_title"], f"{T['videos_per_sample_kpi']}: {videos_per_sample:.2f}", T["diagnostic_video_action"], "phase"),
+        (max(0.0, 180.0 - clicks_per_video) / 180.0, T["diagnostic_click_title"], f"{T['growth_engine_click_rate']}: {clicks_per_video:,.0f}", T["diagnostic_click_action"], "channel"),
+        (max(0.0, 0.08 - order_rate) / 0.08, T["diagnostic_conversion_title"], f"{T['click_order']}: {pct(order_rate, 1)}", T["diagnostic_conversion_action"], "target"),
+        (max(0.0, 22.0 - gmv_per_order) / 22.0, T["diagnostic_order_value_title"], f"{T['growth_engine_aov']}: {money(gmv_per_order, 2)}", T["diagnostic_order_value_action"], "trend"),
+        (max(0.0, logistics_per_order - 2.50) / 2.50, T["diagnostic_logistics_title"], f"{T['fulfillment']}: {money(logistics_per_order, 2)}", T["diagnostic_logistics_action"], "cost"),
+        (max(0.0, paid_share - 0.35) / 0.35, T["diagnostic_paid_title"], f"{T['paid_gmv_increment']}: {pct(paid_share, 1)}", T["diagnostic_paid_action"], "ads"),
+    ]
+    score, title, signal, action, icon = max(candidates, key=lambda item: item[0])
+    if score <= 0.04:
+        return {
+            "title": T["diagnostic_healthy_title"],
+            "signal": f"{T['profit_margin']}: {pct(profit_margin, 1)} · {T['sample_gmv_roi']}: {sample_roi:.1f}x",
+            "action": T["diagnostic_healthy_action"],
+            "icon": "spark",
+            "severity": T["diagnostic_good"],
+            "accent": "#12A08C",
+        }
+    if score >= 0.45:
+        severity = T["diagnostic_high"]
+        accent = "#FE2C55"
+    else:
+        severity = T["diagnostic_attention"]
+        accent = "#F59E0B"
+    return {
+        "title": title,
+        "signal": signal,
+        "action": action,
+        "icon": icon,
+        "severity": severity,
+        "accent": accent,
+    }
+
+
+def render_decision_panel(overall, df_all, scenario_rows, current_scenario):
+    bottleneck = growth_bottleneck(overall, df_all)
+    diagnostic_html = (
+        f'<div class="diagnostic-card" style="--diagnostic-accent:{escape(bottleneck["accent"])};">'
+        '<div class="diagnostic-top">'
+        f'<div><div class="diagnostic-name">{escape(bottleneck["title"])}</div></div>'
+        f'<div class="diagnostic-pill">{escape(bottleneck["severity"])}</div>'
+        '</div>'
+        f'<div class="diagnostic-signal">{escape(T["diagnostic_current"])}: {escape(bottleneck["signal"])}</div>'
+        f'<div class="diagnostic-action">{escape(T["diagnostic_action"])}: {escape(bottleneck["action"])}</div>'
+        '</div>'
+    )
+    scenario_cards = []
+    base_gmv = next((row["gmv"] for row in scenario_rows if row["key"] == "base" and row["gmv"] is not None), None)
+    for row in scenario_rows:
+        is_current = row["key"] == current_scenario
+        delta = row["gmv"] - base_gmv if row["gmv"] is not None and base_gmv is not None else None
+        delta_text = money(delta, 0) if delta is not None else "-"
+        gmv_text = money(row["gmv"], 0) if row["gmv"] is not None else "-"
+        profit_text = money(row["profit"], 0) if row["profit"] is not None else "-"
+        payback_text = f"Week {row['payback']}" if row["payback"] else T["not_reached"]
+        current_badge = f'<span class="scenario-current-badge">{escape(T["scenario_current"])}</span>' if is_current else ""
+        current_class = " is-current" if is_current else ""
+        scenario_cards.append(
+            f'<div class="scenario-card{current_class}" style="--scenario-accent:{escape(row["accent"])};">'
+            f'<div class="scenario-name"><span>{escape(row["label"])}</span>{current_badge}</div>'
+            f'<div class="scenario-gmv">{gmv_text}</div>'
+            f'<div class="scenario-meta">{escape(T["total_profit"])}: {profit_text}<br>{escape(T["scenario_payback"])}: {escape(payback_text)}<br>{escape(T["scenario_delta_base"])}: {escape(delta_text)}</div>'
+            '</div>'
+        )
+    html = (
+        '<div class="decision-grid">'
+        '<div class="decision-panel">'
+        f'<div class="decision-panel-title"><div class="premium-kpi-icon" style="--kpi-accent:{escape(bottleneck["accent"])};">{icon_svg(bottleneck["icon"])}</div><span>{escape(T["growth_diagnostics"])}</span></div>'
+        f'<div class="decision-panel-subtitle">{escape(T["growth_diagnostics_subtitle"])}</div>'
+        f'{diagnostic_html}</div>'
+        '<div class="decision-panel">'
+        f'<div class="decision-panel-title"><div class="premium-kpi-icon" style="--kpi-accent:#315EEC;">{icon_svg("trend")}</div><span>{escape(T["scenario_comparison"])}</span></div>'
+        f'<div class="decision-panel-subtitle">{escape(T["scenario_comparison_subtitle"])}</div>'
+        f'<div class="scenario-card-grid">{"".join(scenario_cards)}</div>'
+        '</div></div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
+
+
 def render_cover_page(default_skus):
     lang_tag = {
         "en": "DE planning model",
@@ -5718,6 +6023,54 @@ def apply_scenario_adjustment(product_df, ads_roas, scenario_key):
     adjusted["Clicks / Video"] = adjusted["Clicks / Video"] * factors["clicks"]
     adjusted["Click-to-order Rate"] = (adjusted["Click-to-order Rate"] * factors["conversion"]).clip(upper=1.0)
     return adjusted, float(ads_roas) * factors["roas"]
+
+
+def scenario_comparison_rows(product_df, phase_inputs, weeks_per_phase, promo_60d, logistics_cost, sample_shipping_cost, use_fbt, organic_click_window_weeks, base_ads_roas):
+    labels = {
+        "conservative": T["scenario_conservative"],
+        "base": T["scenario_base"],
+        "upside": T["scenario_upside"],
+    }
+    accents = {
+        "conservative": "#64748B",
+        "base": "#315EEC",
+        "upside": "#12A08C",
+    }
+    rows = []
+    for key in ["conservative", "base", "upside"]:
+        try:
+            adjusted_product_df, scenario_ads_roas = apply_scenario_adjustment(product_df, base_ads_roas, key)
+            scenario_df = build_weekly_model(
+                product_df=adjusted_product_df,
+                phase_inputs=phase_inputs,
+                weeks_per_phase=int(weeks_per_phase),
+                promo_60d=bool(promo_60d),
+                logistics_cost=float(logistics_cost),
+                sample_shipping_cost=float(sample_shipping_cost),
+                use_fbt=bool(use_fbt),
+                organic_click_window_weeks=int(organic_click_window_weeks),
+                ads_roas=float(scenario_ads_roas),
+            )
+            scenario_overall = build_overall_summary(scenario_df).iloc[0]
+            payback = first_cumulative_break_even_week(scenario_df)
+            rows.append({
+                "key": key,
+                "label": labels[key],
+                "gmv": float(scenario_overall["Total GMV"]),
+                "profit": float(scenario_overall["Total Profit"]),
+                "payback": payback,
+                "accent": accents[key],
+            })
+        except ValueError:
+            rows.append({
+                "key": key,
+                "label": labels[key],
+                "gmv": None,
+                "profit": None,
+                "payback": None,
+                "accent": accents[key],
+            })
+    return rows
 
 
 def scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label):
@@ -7747,6 +8100,19 @@ if st.session_state.get("has_generated", False):
         takeaways = commercial_takeaways(overall, df_all, cumulative_be_label, total_cost_driver)
         business_readout = business_readout_items(overall, df_all, cumulative_be_label, total_cost_driver)
         forecast_range_values = forecast_range(overall, assumption_status)
+        selected_scenario_roas_factor = SCENARIO_ADJUSTMENTS.get(scenario_case, SCENARIO_ADJUSTMENTS["base"])["roas"]
+        base_ads_roas = float(effective_ads_roas) / selected_scenario_roas_factor if selected_scenario_roas_factor else float(effective_ads_roas)
+        scenario_rows = scenario_comparison_rows(
+            product_df=product_df,
+            phase_inputs=phase_inputs,
+            weeks_per_phase=int(weeks_per_phase),
+            promo_60d=bool(promo_60d),
+            logistics_cost=float(logistics_cost),
+            sample_shipping_cost=float(sample_shipping_cost),
+            use_fbt=bool(use_fbt),
+            organic_click_window_weeks=int(organic_click_window_weeks),
+            base_ads_roas=float(base_ads_roas),
+        )
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
         logistics_display = logistics_display_text(product_df, float(logistics_cost), bool(use_fbt))
         if not use_fbt:
@@ -7794,6 +8160,7 @@ if st.session_state.get("has_generated", False):
         )
         render_growth_path_strip(phase_summary, cumulative_be_label, total_cost_driver)
         render_growth_engine(overall)
+        render_decision_panel(overall, df_all, scenario_rows, scenario_case)
         render_dashboard_intro(
             scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
             diagnosis_text,
