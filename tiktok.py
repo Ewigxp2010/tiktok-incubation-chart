@@ -1956,11 +1956,12 @@ TEXT = {
         "diagnostic_paid_action": "Validate ROAS confidence and phase 2/3 budget readiness before treating upside as target.",
         "diagnostic_healthy_title": "Growth engine is balanced",
         "diagnostic_healthy_action": "Use the base plan as the discussion anchor and validate SKU-level assumptions with AM data.",
-        "scenario_comparison": "Scenario Comparison",
-        "scenario_comparison_subtitle": "Conservative, base, and upside outcomes under the same SKU and phase setup.",
-        "scenario_current": "Current view",
-        "scenario_delta_base": "vs base GMV",
-        "scenario_payback": "Payback",
+        "decision_focus": "Decision Focus",
+        "decision_focus_subtitle": "Current-plan signals to guide the next growth discussion.",
+        "focus_payback": "Payback quality",
+        "focus_driver": "Primary driver",
+        "focus_efficiency": "Efficiency signal",
+        "focus_cost": "Cost pressure",
         "investment_split": "Investment Mix",
         "product_profile": "Product Profile",
         "hero_title": "{weeks}-week incubation plan for {skus} SKUs",
@@ -2331,11 +2332,12 @@ TEXT = {
         "diagnostic_paid_action": "在把乐观结果作为目标前，先验证 ROAS 可信度和 Phase 2/3 预算准备。",
         "diagnostic_healthy_title": "增长引擎较均衡",
         "diagnostic_healthy_action": "可以用基准方案作为讨论锚点，并用 AM 数据继续验证 SKU level 假设。",
-        "scenario_comparison": "场景对比",
-        "scenario_comparison_subtitle": "在相同 SKU 和阶段设置下，对比保守、基准和乐观结果。",
-        "scenario_current": "当前视图",
-        "scenario_delta_base": "较基准 GMV",
-        "scenario_payback": "回本",
+        "decision_focus": "决策焦点",
+        "decision_focus_subtitle": "围绕当前方案，提炼下一轮增长讨论的关键判断。",
+        "focus_payback": "回本质量",
+        "focus_driver": "主要驱动",
+        "focus_efficiency": "效率信号",
+        "focus_cost": "成本压力",
         "investment_split": "投入结构",
         "product_profile": "产品组合",
         "hero_title": "{weeks} 周、{skus} 个 SKU 的孵化计划",
@@ -4821,26 +4823,24 @@ st.markdown(
         line-height: 1.45;
     }
 
-    .scenario-card-grid {
+    .focus-card-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
     }
 
-    .scenario-card {
+    .focus-card {
         border: 1px solid #E2E8F0;
         border-radius: 14px;
         padding: 12px;
-        background: #FFFFFF;
+        background:
+            radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--focus-accent, var(--tts-blue)) 9%, transparent), transparent 34%),
+            #FFFFFF;
         min-width: 0;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.76);
     }
 
-    .scenario-card.is-current {
-        border-color: color-mix(in srgb, var(--scenario-accent, var(--tts-blue)) 34%, #FFFFFF);
-        box-shadow: 0 10px 22px color-mix(in srgb, var(--scenario-accent, var(--tts-blue)) 12%, transparent);
-    }
-
-    .scenario-name {
+    .focus-name {
         color: #0F172A;
         font-size: 0.78rem;
         font-weight: 850;
@@ -4852,14 +4852,27 @@ st.markdown(
         gap: 6px;
     }
 
-    .scenario-current-badge {
-        color: var(--scenario-accent, var(--tts-blue));
-        font-size: 0.62rem;
-        font-weight: 820;
-        white-space: nowrap;
+    .focus-icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--focus-accent, var(--tts-blue));
+        background: color-mix(in srgb, var(--focus-accent, var(--tts-blue)) 10%, #FFFFFF);
+        border: 1px solid color-mix(in srgb, var(--focus-accent, var(--tts-blue)) 20%, #FFFFFF);
+        flex: 0 0 26px;
     }
 
-    .scenario-gmv {
+    .focus-icon svg {
+        width: 1.05em;
+        height: 1.05em;
+        stroke-width: 1.9;
+        display: block;
+    }
+
+    .focus-value {
         color: #0F172A;
         font-size: clamp(0.92rem, 1.25vw, 1.12rem);
         font-weight: 880;
@@ -4868,7 +4881,7 @@ st.markdown(
         margin-bottom: 8px;
     }
 
-    .scenario-meta {
+    .focus-meta {
         color: #667085;
         font-size: 0.72rem;
         line-height: 1.4;
@@ -4951,7 +4964,7 @@ st.markdown(
         .growth-path-strip,
         .growth-engine-grid,
         .decision-grid,
-        .scenario-card-grid,
+        .focus-card-grid,
         .dashboard-intro,
         .executive-brief-grid,
         .kpi-grid,
@@ -5795,7 +5808,7 @@ def growth_bottleneck(overall, df_all):
     }
 
 
-def render_decision_panel(overall, df_all, scenario_rows, current_scenario):
+def render_decision_panel(overall, df_all, cumulative_be_label, driver):
     bottleneck = growth_bottleneck(overall, df_all)
     diagnostic_html = (
         f'<div class="diagnostic-card" style="--diagnostic-accent:{escape(bottleneck["accent"])};">'
@@ -5807,22 +5820,19 @@ def render_decision_panel(overall, df_all, scenario_rows, current_scenario):
         f'<div class="diagnostic-action">{escape(T["diagnostic_action"])}: {escape(bottleneck["action"])}</div>'
         '</div>'
     )
-    scenario_cards = []
-    base_gmv = next((row["gmv"] for row in scenario_rows if row["key"] == "base" and row["gmv"] is not None), None)
-    for row in scenario_rows:
-        is_current = row["key"] == current_scenario
-        delta = row["gmv"] - base_gmv if row["gmv"] is not None and base_gmv is not None else None
-        delta_text = money(delta, 0) if delta is not None else "-"
-        gmv_text = money(row["gmv"], 0) if row["gmv"] is not None else "-"
-        profit_text = money(row["profit"], 0) if row["profit"] is not None else "-"
-        payback_text = f"Week {row['payback']}" if row["payback"] else T["not_reached"]
-        current_badge = f'<span class="scenario-current-badge">{escape(T["scenario_current"])}</span>' if is_current else ""
-        current_class = " is-current" if is_current else ""
-        scenario_cards.append(
-            f'<div class="scenario-card{current_class}" style="--scenario-accent:{escape(row["accent"])};">'
-            f'<div class="scenario-name"><span>{escape(row["label"])}</span>{current_badge}</div>'
-            f'<div class="scenario-gmv">{gmv_text}</div>'
-            f'<div class="scenario-meta">{escape(T["total_profit"])}: {profit_text}<br>{escape(T["scenario_payback"])}: {escape(payback_text)}<br>{escape(T["scenario_delta_base"])}: {escape(delta_text)}</div>'
+    focus_items = [
+        (T["focus_payback"], cumulative_be_label, f"{T['total_profit']}: {money(overall['Total Profit'], 0)}", "target", "#315EEC"),
+        (T["focus_driver"], main_gmv_channel(df_all), f"{T['forecast_gmv']}: {money(overall['Total GMV'], 0)}", "trend", "#12A08C"),
+        (T["focus_efficiency"], f"{float(overall['GMV / Sample Cost']):.1f}x", f"{T['profit_margin']}: {pct(float(overall['Profit Margin']), 1)}", "spark", "#7C3AED"),
+        (T["focus_cost"], driver, f"{T['total_cost_label']}: {money(overall['Total Cost'], 0)}", "cost", "#FE2C55"),
+    ]
+    focus_cards = []
+    for label, value, meta, icon, accent in focus_items:
+        focus_cards.append(
+            f'<div class="focus-card" style="--focus-accent:{escape(accent)};">'
+            f'<div class="focus-name"><span>{escape(label)}</span><span class="focus-icon">{icon_svg(icon)}</span></div>'
+            f'<div class="focus-value">{escape(str(value))}</div>'
+            f'<div class="focus-meta">{escape(str(meta))}</div>'
             '</div>'
         )
     html = (
@@ -5832,9 +5842,9 @@ def render_decision_panel(overall, df_all, scenario_rows, current_scenario):
         f'<div class="decision-panel-subtitle">{escape(T["growth_diagnostics_subtitle"])}</div>'
         f'{diagnostic_html}</div>'
         '<div class="decision-panel">'
-        f'<div class="decision-panel-title"><div class="premium-kpi-icon" style="--kpi-accent:#315EEC;">{icon_svg("trend")}</div><span>{escape(T["scenario_comparison"])}</span></div>'
-        f'<div class="decision-panel-subtitle">{escape(T["scenario_comparison_subtitle"])}</div>'
-        f'<div class="scenario-card-grid">{"".join(scenario_cards)}</div>'
+        f'<div class="decision-panel-title"><div class="premium-kpi-icon" style="--kpi-accent:#315EEC;">{icon_svg("target")}</div><span>{escape(T["decision_focus"])}</span></div>'
+        f'<div class="decision-panel-subtitle">{escape(T["decision_focus_subtitle"])}</div>'
+        f'<div class="focus-card-grid">{"".join(focus_cards)}</div>'
         '</div></div>'
     )
     st.markdown(html, unsafe_allow_html=True)
@@ -6023,54 +6033,6 @@ def apply_scenario_adjustment(product_df, ads_roas, scenario_key):
     adjusted["Clicks / Video"] = adjusted["Clicks / Video"] * factors["clicks"]
     adjusted["Click-to-order Rate"] = (adjusted["Click-to-order Rate"] * factors["conversion"]).clip(upper=1.0)
     return adjusted, float(ads_roas) * factors["roas"]
-
-
-def scenario_comparison_rows(product_df, phase_inputs, weeks_per_phase, promo_60d, logistics_cost, sample_shipping_cost, use_fbt, organic_click_window_weeks, base_ads_roas):
-    labels = {
-        "conservative": T["scenario_conservative"],
-        "base": T["scenario_base"],
-        "upside": T["scenario_upside"],
-    }
-    accents = {
-        "conservative": "#64748B",
-        "base": "#315EEC",
-        "upside": "#12A08C",
-    }
-    rows = []
-    for key in ["conservative", "base", "upside"]:
-        try:
-            adjusted_product_df, scenario_ads_roas = apply_scenario_adjustment(product_df, base_ads_roas, key)
-            scenario_df = build_weekly_model(
-                product_df=adjusted_product_df,
-                phase_inputs=phase_inputs,
-                weeks_per_phase=int(weeks_per_phase),
-                promo_60d=bool(promo_60d),
-                logistics_cost=float(logistics_cost),
-                sample_shipping_cost=float(sample_shipping_cost),
-                use_fbt=bool(use_fbt),
-                organic_click_window_weeks=int(organic_click_window_weeks),
-                ads_roas=float(scenario_ads_roas),
-            )
-            scenario_overall = build_overall_summary(scenario_df).iloc[0]
-            payback = first_cumulative_break_even_week(scenario_df)
-            rows.append({
-                "key": key,
-                "label": labels[key],
-                "gmv": float(scenario_overall["Total GMV"]),
-                "profit": float(scenario_overall["Total Profit"]),
-                "payback": payback,
-                "accent": accents[key],
-            })
-        except ValueError:
-            rows.append({
-                "key": key,
-                "label": labels[key],
-                "gmv": None,
-                "profit": None,
-                "payback": None,
-                "accent": accents[key],
-            })
-    return rows
 
 
 def scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label):
@@ -8100,19 +8062,6 @@ if st.session_state.get("has_generated", False):
         takeaways = commercial_takeaways(overall, df_all, cumulative_be_label, total_cost_driver)
         business_readout = business_readout_items(overall, df_all, cumulative_be_label, total_cost_driver)
         forecast_range_values = forecast_range(overall, assumption_status)
-        selected_scenario_roas_factor = SCENARIO_ADJUSTMENTS.get(scenario_case, SCENARIO_ADJUSTMENTS["base"])["roas"]
-        base_ads_roas = float(effective_ads_roas) / selected_scenario_roas_factor if selected_scenario_roas_factor else float(effective_ads_roas)
-        scenario_rows = scenario_comparison_rows(
-            product_df=product_df,
-            phase_inputs=phase_inputs,
-            weeks_per_phase=int(weeks_per_phase),
-            promo_60d=bool(promo_60d),
-            logistics_cost=float(logistics_cost),
-            sample_shipping_cost=float(sample_shipping_cost),
-            use_fbt=bool(use_fbt),
-            organic_click_window_weeks=int(organic_click_window_weeks),
-            base_ads_roas=float(base_ads_roas),
-        )
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
         logistics_display = logistics_display_text(product_df, float(logistics_cost), bool(use_fbt))
         if not use_fbt:
@@ -8160,7 +8109,7 @@ if st.session_state.get("has_generated", False):
         )
         render_growth_path_strip(phase_summary, cumulative_be_label, total_cost_driver)
         render_growth_engine(overall)
-        render_decision_panel(overall, df_all, scenario_rows, scenario_case)
+        render_decision_panel(overall, df_all, cumulative_be_label, total_cost_driver)
         render_dashboard_intro(
             scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
             diagnosis_text,
