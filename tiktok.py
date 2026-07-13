@@ -1929,6 +1929,8 @@ TEXT = {
         "insight_payback_not_reached": "Cumulative payback is not reached within the plan",
         "model_updated": "Model updated",
         "live_model": "Live model",
+        "product_console": "Growth Planning Console",
+        "product_status": "Live forecast",
         "model_calculating": "Refreshing growth model...",
         "peak_gmv": "Peak GMV",
         "break_even_marker": "Positive weekly profit",
@@ -2314,6 +2316,8 @@ TEXT = {
         "insight_payback_not_reached": "方案周期内尚未实现累计回本",
         "model_updated": "模型已更新",
         "live_model": "实时模型",
+        "product_console": "增长规划控制台",
+        "product_status": "实时预测",
         "model_calculating": "正在刷新增长模型...",
         "peak_gmv": "GMV 峰值",
         "break_even_marker": "单周利润转正",
@@ -2991,7 +2995,7 @@ st.markdown(
         font-size: 0.7rem;
         font-weight: 780;
         text-transform: uppercase;
-        letter-spacing: 0.16em;
+        letter-spacing: 0;
         margin-bottom: 0.95rem;
     }
 
@@ -3000,7 +3004,7 @@ st.markdown(
         font-size: clamp(4.2rem, 6vw, 6.7rem);
         font-weight: 860;
         line-height: 0.94;
-        letter-spacing: -0.08em;
+        letter-spacing: 0;
         max-width: 1100px;
         white-space: nowrap;
     }
@@ -3024,7 +3028,7 @@ st.markdown(
         font-size: 0.69rem;
         font-weight: 780;
         text-transform: uppercase;
-        letter-spacing: 0.18em;
+        letter-spacing: 0;
         margin: 0 0 0.75rem 0.3rem;
         text-align: left;
     }
@@ -3041,7 +3045,7 @@ st.markdown(
         font-size: 0.7rem;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.14em;
+        letter-spacing: 0;
         margin: 0 0 0.45rem 0.2rem;
     }
 
@@ -3170,7 +3174,7 @@ st.markdown(
         font-weight: 680;
         margin-bottom: 6px;
         text-transform: uppercase;
-        letter-spacing: 0.03em;
+        letter-spacing: 0;
     }
 
     .readonly-rate-value {
@@ -3552,7 +3556,7 @@ st.markdown(
         font-size: 0.76rem;
         font-weight: 780;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0;
         margin-bottom: 6px;
     }
 
@@ -3583,7 +3587,7 @@ st.markdown(
         font-size: 0.74rem;
         font-weight: 780;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0;
         margin-bottom: 8px;
     }
 
@@ -3716,7 +3720,7 @@ st.markdown(
         font-size: 0.86rem;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0;
         margin-bottom: 5px;
     }
 
@@ -3725,7 +3729,7 @@ st.markdown(
         font-size: clamp(2rem, 3.2vw, 3rem);
         font-weight: 810;
         line-height: 0.98;
-        letter-spacing: -0.03em;
+        letter-spacing: 0;
     }
 
     .meeting-header-meta {
@@ -3761,7 +3765,7 @@ st.markdown(
         font-size: 0.74rem;
         font-weight: 780;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0;
         margin-bottom: 7px;
     }
 
@@ -3906,7 +3910,7 @@ st.markdown(
         margin-bottom: 4px;
         color: #475569;
         text-transform: uppercase;
-        letter-spacing: 0.03em;
+        letter-spacing: 0;
     }
 
     .chart-lens-body {
@@ -3933,7 +3937,7 @@ st.markdown(
         color: #475569;
         font-weight: 760;
         text-transform: uppercase;
-        letter-spacing: 0.03em;
+        letter-spacing: 0;
         font-size: 0.74rem;
     }
 
@@ -3982,7 +3986,7 @@ st.markdown(
         color: var(--tts-blue);
         font-size: 0.68rem;
         font-weight: 760;
-        letter-spacing: 0.08em;
+        letter-spacing: 0;
         text-transform: uppercase;
         white-space: nowrap;
         margin-bottom: 6px;
@@ -4036,7 +4040,7 @@ st.markdown(
         font-weight: 780;
         margin-bottom: 10px;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0;
     }
 
     .funnel-card-grid {
@@ -4099,7 +4103,7 @@ st.markdown(
         margin-bottom: 10px;
         line-height: 1.25;
         text-transform: uppercase;
-        letter-spacing: 0.02em;
+        letter-spacing: 0;
     }
 
     .phase-overview-metrics {
@@ -4218,7 +4222,7 @@ st.markdown(
         font-size: clamp(1.95rem, 3vw, 2.9rem);
         font-weight: 810;
         line-height: 0.94;
-        letter-spacing: -0.04em;
+        letter-spacing: 0;
         margin-bottom: 12px;
     }
 
@@ -4258,7 +4262,7 @@ st.markdown(
         font-weight: 760;
         margin-bottom: 8px;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: 0;
     }
 
     .hero-kpi-value {
@@ -4312,7 +4316,7 @@ st.markdown(
         font-size: 0.66rem;
         font-weight: 840;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0;
         margin-bottom: 4px;
     }
 
@@ -4501,7 +4505,7 @@ st.markdown(
         font-size: 0.76rem;
         font-weight: 780;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0;
         margin-bottom: 4px;
     }
 
@@ -4603,7 +4607,7 @@ st.markdown(
         font-size: 0.68rem;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0;
         margin-bottom: 8px;
     }
 
@@ -4822,7 +4826,7 @@ st.markdown(
         font-size: 0.68rem;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0;
         line-height: 1.2;
     }
 
@@ -4917,7 +4921,7 @@ st.markdown(
         font-size: 0.66rem;
         font-weight: 820;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: 0;
         white-space: nowrap;
     }
 
@@ -5068,6 +5072,306 @@ st.markdown(
         margin-top: auto;
     }
 
+    /* Premium product system: restrained surfaces, crisp hierarchy, TikTok accents. */
+    [data-testid="stAppViewContainer"] > .main {
+        background: linear-gradient(180deg, #F8F9FB 0%, #F1F3F6 100%);
+    }
+
+    .block-container {
+        max-width: 1280px;
+    }
+
+    section[data-testid="stSidebar"] {
+        background: #FAFBFC;
+        border-right-color: #E1E5EA;
+        box-shadow: 12px 0 34px rgba(16, 24, 40, 0.035);
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stExpander"] {
+        border-color: #E0E5EB;
+        border-radius: 10px;
+        background: #FFFFFF;
+        box-shadow: 0 3px 10px rgba(16, 24, 40, 0.025);
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stExpander"] details[open] {
+        background: #FFFFFF;
+    }
+
+    .product-masthead {
+        min-height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 0 2px 14px 2px;
+        border-bottom: 1px solid #E0E4EA;
+        margin-bottom: 16px;
+    }
+
+    .product-brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 0;
+    }
+
+    .product-symbol {
+        position: relative;
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        background: #141820;
+        border: 1px solid #262C36;
+        border-radius: 9px;
+        box-shadow: 0 6px 16px rgba(16, 24, 40, 0.14);
+    }
+
+    .product-symbol::before,
+    .product-symbol::after {
+        content: "";
+        position: absolute;
+        width: 8px;
+        height: 2px;
+        border-radius: 2px;
+        top: -1px;
+    }
+
+    .product-symbol::before { left: 7px; background: var(--tts-cyan); }
+    .product-symbol::after { right: 7px; background: var(--tts-red); }
+
+    .product-symbol svg {
+        width: 19px;
+        height: 19px;
+        stroke-width: 1.9;
+    }
+
+    .product-brand-name {
+        color: #11151C;
+        font-size: 0.96rem;
+        font-weight: 820;
+        line-height: 1.15;
+        letter-spacing: 0;
+    }
+
+    .product-brand-subtitle {
+        color: #7A8493;
+        font-size: 0.69rem;
+        font-weight: 680;
+        line-height: 1.3;
+        margin-top: 2px;
+        letter-spacing: 0;
+    }
+
+    .product-masthead-meta {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #667085;
+        font-size: 0.68rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .product-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #13795B;
+        padding: 6px 9px;
+        border: 1px solid #D6E8E1;
+        background: #F4FAF7;
+        border-radius: 8px;
+    }
+
+    .product-status::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #16A37E;
+        box-shadow: 0 0 0 3px rgba(22, 163, 126, 0.10);
+    }
+
+    .hero-band {
+        background: linear-gradient(115deg, #11151D 0%, #1B202A 100%);
+        border-color: #272E39;
+        border-radius: 14px;
+        padding: 27px 28px;
+        margin: 0 0 20px 0;
+        box-shadow: 0 18px 42px rgba(16, 24, 40, 0.16);
+    }
+
+    .hero-band::before {
+        inset: 0 22px auto 22px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--tts-cyan) 0 42%, rgba(255,255,255,0.22) 42% 58%, var(--tts-red) 58% 100%);
+        border-radius: 0 0 3px 3px;
+        opacity: 0.9;
+    }
+
+    .hero-mark {
+        border-radius: 11px;
+        background: rgba(255,255,255,0.08);
+        border-color: rgba(255,255,255,0.14);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .hero-mark::after,
+    .hero-kpi-icon::after,
+    .premium-kpi-icon::after,
+    .growth-path-icon::after,
+    .growth-engine-mark::after,
+    .growth-engine-step-icon::after {
+        display: none;
+    }
+
+    .hero-title {
+        font-size: clamp(1.85rem, 2.7vw, 2.55rem);
+        line-height: 1.02;
+        letter-spacing: 0;
+    }
+
+    .hero-kpi-icon {
+        border-radius: 8px;
+        background: rgba(255,255,255,0.07);
+        box-shadow: none;
+    }
+
+    .hero-kpi-label,
+    .cover-logo-kicker,
+    .cover-row-label,
+    .cover-field-kicker,
+    .readonly-rate-label,
+    .section-eyebrow,
+    .growth-path-kicker,
+    .growth-engine-step-label,
+    .executive-insight-kicker,
+    .status-panel-kicker,
+    .phase-overview-title,
+    .funnel-card-title {
+        letter-spacing: 0;
+    }
+
+    .cover-logo-title {
+        letter-spacing: 0;
+    }
+
+    .executive-insight-shell {
+        background: #FFFFFF;
+        border-color: #E0E5EB;
+        border-radius: 12px;
+        box-shadow: 0 8px 22px rgba(16, 24, 40, 0.045);
+    }
+
+    .executive-insight-icon,
+    .growth-engine-mark {
+        border-radius: 10px;
+        background: #171B23;
+        border-color: #2B313C;
+        box-shadow: 0 8px 18px rgba(16, 24, 40, 0.14);
+    }
+
+    .executive-insight-kicker {
+        color: #586273;
+    }
+
+    .model-live-chip {
+        border-radius: 8px;
+    }
+
+    .premium-kpi,
+    .growth-path-node,
+    .phase-overview-card,
+    .decision-panel {
+        background: #FFFFFF;
+        border-color: #E0E5EB;
+        border-radius: 10px;
+        box-shadow: 0 7px 20px rgba(16, 24, 40, 0.04);
+    }
+
+    .premium-kpi::before {
+        left: 0;
+        right: auto;
+        top: 16px;
+        bottom: 16px;
+        width: 2px;
+        height: auto;
+        border-radius: 0 2px 2px 0;
+    }
+
+    .premium-kpi-icon,
+    .growth-path-icon,
+    .growth-engine-step-icon {
+        border-radius: 8px;
+        box-shadow: none;
+        background: color-mix(in srgb, var(--kpi-accent, var(--step-accent, var(--tts-blue))) 8%, #FFFFFF);
+    }
+
+    .growth-path-node::after,
+    .growth-engine-step::after {
+        background: #CBD3DD;
+        opacity: 0.85;
+    }
+
+    .growth-path-summary {
+        background: #171B23;
+        border-color: #252B35;
+    }
+
+    .growth-engine-panel {
+        background: #FFFFFF;
+        border-color: #E0E5EB;
+        border-radius: 12px;
+        box-shadow: 0 9px 26px rgba(16, 24, 40, 0.045);
+    }
+
+    .growth-engine-step {
+        border-color: #E5E9EE;
+        border-radius: 9px;
+        background: #FCFDFE;
+    }
+
+    .diagnostic-card {
+        background: #FCFDFE;
+        border-color: #E3E8EE;
+        border-radius: 9px;
+    }
+
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.chart-card-title) {
+        border-color: #E0E5EB;
+        border-radius: 12px;
+        background: #FFFFFF;
+        box-shadow: 0 10px 28px rgba(16, 24, 40, 0.05);
+    }
+
+    div[data-testid="stNumberInput"] [data-baseweb="input"],
+    div[data-testid="stTextInput"] [data-baseweb="input"],
+    div[data-testid="stSelectbox"] [data-baseweb="select"] {
+        border-radius: 9px !important;
+    }
+
+    div[data-testid="stNumberInput"] [data-baseweb="input"]:focus-within,
+    div[data-testid="stTextInput"] [data-baseweb="input"]:focus-within,
+    div[data-testid="stSelectbox"] [data-baseweb="select"]:focus-within {
+        border-color: #414A58 !important;
+        box-shadow: 0 0 0 1px #414A58 inset, 0 0 0 4px rgba(17, 24, 39, 0.06) !important;
+    }
+
+    .stButton > button {
+        border-radius: 8px;
+        transition: transform 120ms ease, border-color 120ms ease, background 120ms ease, box-shadow 120ms ease;
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 14px rgba(16, 24, 40, 0.07);
+    }
+
     @media (max-width: 900px) {
         .chart-card-grid,
         .cover-cta-row,
@@ -5109,6 +5413,14 @@ st.markdown(
 
         .hero-copy {
             grid-template-columns: 1fr;
+        }
+
+        .product-masthead {
+            align-items: flex-start;
+        }
+
+        .product-masthead-meta > span:last-child {
+            display: none;
         }
 
         [data-testid="stAppViewContainer"] > .main .block-container {
@@ -5741,6 +6053,24 @@ def render_meeting_header(meeting_notes, generated_at, assumption_status):
         f'{escape(T["meeting_date"])}: {escape(date_text)}<br>'
         f'{escape(T["am_name"])}: {escape(am_text)}<br>'
         f'<span class="meeting-badge">{escape(str(assumption_status))}</span>'
+        '</div></div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def render_product_masthead(updated_at):
+    version_label = MODEL_VERSION.split("|")[0].strip()
+    html = (
+        '<div class="product-masthead">'
+        '<div class="product-brand">'
+        f'<div class="product-symbol">{icon_svg("trend")}</div>'
+        '<div>'
+        '<div class="product-brand-name">TikTok Shop</div>'
+        f'<div class="product-brand-subtitle">{escape(T["product_console"])}</div>'
+        '</div></div>'
+        '<div class="product-masthead-meta">'
+        f'<span class="product-status">{escape(T["product_status"])} · {escape(updated_at)}</span>'
+        f'<span>{escape(version_label)}</span>'
         '</div></div>'
     )
     st.markdown(html, unsafe_allow_html=True)
@@ -8261,6 +8591,7 @@ if st.session_state.get("has_generated", False):
             )
             st.session_state["_scroll_to_results"] = False
 
+        render_product_masthead(model_updated_at)
         render_hero(
             overall=overall,
             weeks=int(weeks_per_phase) * len(PHASES),
