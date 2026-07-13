@@ -1793,7 +1793,7 @@ TEXT = {
         "debug_multiplier_roas": "ROAS multiplier",
         "debug_target_gmv_gap": "Target GMV gap",
         "debug_target_profit_gap": "Target profit gap",
-        "scenario_snapshot": "Scenario Snapshot",
+        "scenario_snapshot": "Plan Snapshot",
         "model_last_reviewed": "Model last reviewed",
         "calibration_note": "Default SKU assumptions use recent DE hit-product calibration.",
         "internal_logic_checklist": "Internal Logic Checklist",
@@ -1923,6 +1923,15 @@ TEXT = {
         "section_primary": "Core view",
         "section_secondary": "Supporting view",
         "growth_profit_path": "Growth & Profit Path",
+        "executive_insight": "Executive Insight",
+        "executive_insight_text": "{payback}. Growth is primarily driven by {channel}; {driver} is the current optimization priority. The plan delivers a {margin} profit margin.",
+        "insight_payback_reached": "Cumulative payback is reached in {week}",
+        "insight_payback_not_reached": "Cumulative payback is not reached within the plan",
+        "model_updated": "Model updated",
+        "live_model": "Live model",
+        "model_calculating": "Refreshing growth model...",
+        "peak_gmv": "Peak GMV",
+        "break_even_marker": "Positive weekly profit",
         "growth_engine": "Growth Engine",
         "growth_engine_subtitle": "How samples compound into creator content, demand, orders, and GMV.",
         "growth_engine_rate": "Step efficiency",
@@ -2182,7 +2191,7 @@ TEXT = {
         "debug_multiplier_roas": "ROAS multiplier",
         "debug_target_gmv_gap": "目标 GMV 差距",
         "debug_target_profit_gap": "目标利润差距",
-        "scenario_snapshot": "方案快照",
+        "scenario_snapshot": "计划快照",
         "model_last_reviewed": "模型最近校准",
         "calibration_note": "当前 SKU 默认值优先使用最新 DE hit-product 校准口径。",
         "chart_read": "怎么看",
@@ -2299,6 +2308,15 @@ TEXT = {
         "section_primary": "核心视图",
         "section_secondary": "辅助视图",
         "growth_profit_path": "增长与利润路径",
+        "executive_insight": "核心商业结论",
+        "executive_insight_text": "{payback}。当前增长主要由 {channel} 驱动；{driver} 是优先优化项。方案预计实现 {margin} 的利润率。",
+        "insight_payback_reached": "方案在 {week} 实现累计回本",
+        "insight_payback_not_reached": "方案周期内尚未实现累计回本",
+        "model_updated": "模型已更新",
+        "live_model": "实时模型",
+        "model_calculating": "正在刷新增长模型...",
+        "peak_gmv": "GMV 峰值",
+        "break_even_marker": "单周利润转正",
         "growth_engine": "增长引擎",
         "growth_engine_subtitle": "样品如何逐步转化为达人内容、需求、订单和 GMV。",
         "growth_engine_rate": "阶段效率",
@@ -2903,6 +2921,24 @@ st.markdown(
         font-size: 0.94rem;
         font-weight: 780;
         margin-top: 0.55rem;
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stExpander"] {
+        border: 1px solid #DCE4EE;
+        border-radius: 13px;
+        background: rgba(255,255,255,0.86);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.035);
+        margin-bottom: 0.18rem;
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stExpander"] details[open] {
+        background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%);
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stExpander"] details summary p {
+        color: #273449;
+        font-size: 0.82rem;
+        font-weight: 780;
     }
 
     h1 {
@@ -4234,6 +4270,82 @@ st.markdown(
         word-break: normal;
     }
 
+    .executive-insight-shell {
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 46px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 14px;
+        background:
+            radial-gradient(circle at 96% 0%, rgba(37, 215, 210, 0.13), transparent 32%),
+            linear-gradient(135deg, #FFFFFF 0%, #F8FBFF 100%);
+        border: 1px solid #D5E0EC;
+        border-radius: 18px;
+        padding: 15px 17px;
+        margin: -8px 0 18px 0;
+        box-shadow: 0 16px 38px rgba(15, 23, 42, 0.055);
+    }
+
+    .executive-insight-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        background:
+            radial-gradient(circle at 28% 18%, rgba(255,255,255,0.30), transparent 34%),
+            linear-gradient(135deg, #315EEC, #7C3AED 62%, #FE2C55);
+        box-shadow: 0 12px 24px rgba(49, 94, 236, 0.20);
+    }
+
+    .executive-insight-icon svg {
+        width: 1.3em;
+        height: 1.3em;
+        stroke-width: 1.9;
+    }
+
+    .executive-insight-kicker {
+        color: #315EEC;
+        font-size: 0.66rem;
+        font-weight: 840;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+    }
+
+    .executive-insight-text {
+        color: #1E293B;
+        font-size: 0.91rem;
+        font-weight: 680;
+        line-height: 1.5;
+    }
+
+    .model-live-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #178A62;
+        background: rgba(23, 138, 98, 0.08);
+        border: 1px solid rgba(23, 138, 98, 0.15);
+        border-radius: 999px;
+        padding: 7px 10px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .model-live-chip::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #12A08C;
+        box-shadow: 0 0 0 4px rgba(18, 160, 140, 0.10);
+    }
+
     .kpi-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -4975,6 +5087,15 @@ st.markdown(
             grid-template-columns: 1fr;
         }
 
+        .executive-insight-shell {
+            grid-template-columns: 42px minmax(0, 1fr);
+        }
+
+        .model-live-chip {
+            grid-column: 1 / -1;
+            justify-self: start;
+        }
+
         .section-shell {
             margin-top: 18px;
         }
@@ -5469,9 +5590,6 @@ def build_customer_summary(overall, phase_summary, weekly_be_label, cumulative_b
         (T["model_version"], MODEL_VERSION),
         (T["assumption_status"], assumption_status),
         (T["key_recommendation"], meeting_notes.get("key_recommendation") or "-"),
-        (f"{T['forecast_range']} - {T['conservative_case']}", money(forecast_range["conservative_gmv"], 0)),
-        (f"{T['forecast_range']} - {T['base_case']}", money(forecast_range["base_gmv"], 0)),
-        (f"{T['forecast_range']} - {T['upside_case']}", money(forecast_range["upside_gmv"], 0)),
         (T["total_gmv"], money(overall["Total GMV"], 0)),
         (T["total_profit"], money(overall["Total Profit"], 0)),
         (T["growth_investment"], money(overall["Growth Investment"], 0)),
@@ -5643,6 +5761,31 @@ def render_hero(overall, weeks, skus, break_even_label):
         f'</div><div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("trend")}</div><div class="hero-kpi-label">{escape(T["hero_gmv"])}</div><div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div></div>'
         f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("investment")}</div><div class="hero-kpi-label">{escape(T["hero_investment"])}</div><div class="hero-kpi-value">{money(overall["Growth Investment"], 0)}</div></div>'
         f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("target")}</div><div class="hero-kpi-label">{escape(T["hero_break_even"])}</div><div class="hero-kpi-value">{escape(break_even_label)}</div></div>'
+        '</div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def render_executive_insight(overall, df_all, cumulative_be_label, driver, updated_at):
+    payback = (
+        T["insight_payback_not_reached"]
+        if cumulative_be_label == T["not_reached"]
+        else T["insight_payback_reached"].format(week=cumulative_be_label)
+    )
+    insight = T["executive_insight_text"].format(
+        payback=payback,
+        channel=main_gmv_channel(df_all),
+        driver=driver,
+        margin=pct(float(overall["Profit Margin"]), 1),
+    )
+    html = (
+        '<div class="executive-insight-shell">'
+        f'<div class="executive-insight-icon">{icon_svg("spark")}</div>'
+        '<div>'
+        f'<div class="executive-insight-kicker">{escape(T["executive_insight"])}</div>'
+        f'<div class="executive-insight-text">{escape(insight)}</div>'
+        '</div>'
+        f'<div class="model-live-chip">{escape(T["model_updated"])} · {escape(updated_at)}</div>'
         '</div>'
     )
     st.markdown(html, unsafe_allow_html=True)
@@ -6038,7 +6181,7 @@ def apply_scenario_adjustment(product_df, ads_roas, scenario_key):
 def scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, ads_roas, scenario_label):
     samples = " / ".join(str(int(phase["samples_per_sku"])) for phase in phase_inputs)
     take_rates = " / ".join(pct(float(phase["take_rate"]), 0) for phase in phase_inputs)
-    return f"{int(n_skus)} SKUs · {int(weeks_per_phase) * len(PHASES)} weeks · {samples} samples/SKU/week · {take_rates} paid growth · ROAS {float(ads_roas):.1f} · {scenario_label}"
+    return f"{int(n_skus)} SKUs · {int(weeks_per_phase) * len(PHASES)} weeks · {samples} samples/SKU/week · {take_rates} paid growth · ROAS {float(ads_roas):.1f}"
 
 
 def forecast_range(overall, assumption_status):
@@ -6455,14 +6598,6 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
     takeaways_html = "".join(f"<li><strong>{label}:</strong> {value}</li>" for label, value in takeaways)
     assumptions_html = "".join(f"<li><strong>{label}:</strong> {value}</li>" for label, value, _accent in assumption_summary)
     actions_html = "".join(f"<li>{action}</li>" for action in next_actions)
-    range_html = "".join(
-        f"<li><strong>{label}:</strong> {value}</li>"
-        for label, value in [
-            (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0)),
-            (T["base_case"], money(forecast_range_values["base_gmv"], 0)),
-            (T["upside_case"], money(forecast_range_values["upside_gmv"], 0)),
-        ]
-    )
     notes_html = "".join(
         f"<li><strong>{label}:</strong> {value or '-'}</li>"
         for label, value in [
@@ -6537,11 +6672,6 @@ def meeting_recap_html(overall, narrative, health_checks, path_text, weeks, skus
     <div class="section">
       <h2>{T["next_actions"]}</h2>
       <ol>{actions_html}</ol>
-    </div>
-    <div class="section">
-      <h2>{T["forecast_range"]}</h2>
-      <ul>{range_html}</ul>
-      <p>{T["forecast_range_note"]}</p>
     </div>
     <div class="section">
       <h2>{T["client_narrative"]}</h2>
@@ -6986,12 +7116,6 @@ def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, sku
         y,
     )
     sections = [
-        (T["forecast_range"], [
-            f"{T['conservative_case']}: {money(forecast_range_values['conservative_gmv'], 0)}",
-            f"{T['base_case']}: {money(forecast_range_values['base_gmv'], 0)}",
-            f"{T['upside_case']}: {money(forecast_range_values['upside_gmv'], 0)}",
-            T["forecast_range_note"],
-        ], "#64748B"),
         (T["client_narrative"], [clean(item) for item in narrative]),
         (T["meeting_notes"], [
             f"{T['key_recommendation']}: {meeting_notes.get('key_recommendation') or '-'}",
@@ -7179,6 +7303,32 @@ def add_phase_bands(fig, df, target_row=None, target_col=None):
         )
 
 
+def add_phase_labels(fig, df):
+    phase_ranges = df.groupby("Phase Key", as_index=False).agg(
+        start_week=("Global Week", "min"),
+        end_week=("Global Week", "max"),
+    )
+    phase_lookup = {phase["key"]: phase for phase in PHASES}
+    for _, phase_row in phase_ranges.iterrows():
+        phase = phase_lookup.get(phase_row["Phase Key"])
+        if phase is None:
+            continue
+        midpoint = (float(phase_row["start_week"]) + float(phase_row["end_week"])) / 2
+        fig.add_annotation(
+            x=midpoint,
+            y=1.035,
+            xref="x",
+            yref="paper",
+            text=phase_label(phase),
+            showarrow=False,
+            font=dict(size=9, color="#64748B", family="Arial, sans-serif"),
+            bgcolor="rgba(255,255,255,0.84)",
+            bordercolor="rgba(203,213,225,0.76)",
+            borderwidth=1,
+            borderpad=4,
+        )
+
+
 def add_end_label(fig, x, y, text, color, row=None, col=None, xshift=10, yshift=0):
     kwargs = {}
     if row is not None:
@@ -7273,6 +7423,7 @@ def make_weekly_chart(df, title, break_even_week=None):
 def make_scale_chart(df, title, break_even_week=None, height=330):
     fig = go.Figure()
     add_phase_bands(fig, df)
+    add_phase_labels(fig, df)
     max_week = int(df["Global Week"].max())
     fig.add_trace(
         go.Scatter(
@@ -7300,8 +7451,44 @@ def make_scale_chart(df, title, break_even_week=None, height=330):
     )
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#98A2B3")
+        profit_value = float(df.loc[df["Global Week"] == break_even_week, "GMV"].iloc[0])
+        fig.add_annotation(
+            x=break_even_week,
+            y=profit_value,
+            text=f"{T['break_even_marker']} · {T['week']} {break_even_week}",
+            showarrow=True,
+            arrowhead=0,
+            arrowwidth=1,
+            arrowcolor="#64748B",
+            ax=34,
+            ay=-46,
+            font=dict(size=9, color="#475569"),
+            bgcolor="rgba(255,255,255,0.94)",
+            bordercolor="#D8E1EC",
+            borderwidth=1,
+            borderpad=5,
+        )
+    peak_idx = df["GMV"].idxmax()
+    peak_week = int(df.loc[peak_idx, "Global Week"])
+    peak_gmv = float(df.loc[peak_idx, "GMV"])
+    fig.add_annotation(
+        x=peak_week,
+        y=peak_gmv,
+        text=f"{T['peak_gmv']}<br>{money(peak_gmv, 0)}",
+        showarrow=True,
+        arrowhead=0,
+        arrowwidth=1.2,
+        arrowcolor=CHART_COLORS["gmv"],
+        ax=0,
+        ay=-56,
+        font=dict(size=9, color=CHART_COLORS["gmv"]),
+        bgcolor="rgba(255,255,255,0.96)",
+        bordercolor="rgba(49,94,236,0.20)",
+        borderwidth=1,
+        borderpad=5,
+    )
     apply_plotly_layout(fig, "", height=height)
-    fig.update_layout(showlegend=False, margin=dict(l=42, r=68, t=10, b=28))
+    fig.update_layout(showlegend=False, margin=dict(l=42, r=68, t=42, b=34))
     fig.update_yaxes(tickprefix="€", tickformat=",.0f")
     fig.update_xaxes(title=T["week"], dtick=week_tick_step(max_week), tickmode="linear")
     last_x = df["Global Week"].iloc[-1]
@@ -7663,7 +7850,9 @@ with st.sidebar:
         organic_click_window_weeks = int(st.session_state.get("_model_organic_click_window_weeks", st.session_state.get("organic_window_input", 4)))
         target_gmv = float(st.session_state.get("_model_target_gmv", st.session_state.get("target_gmv_input", 0.0)))
         target_profit = float(st.session_state.get("_model_target_profit", st.session_state.get("target_profit_input", 0.0)))
-        scenario_case = st.session_state.get("_model_scenario_case", st.session_state.get("scenario_case_input", "base"))
+        scenario_case = "base"
+        st.session_state["_model_scenario_case"] = scenario_case
+        st.session_state["scenario_case_input"] = scenario_case
         phase_inputs = []
         for idx, phase in enumerate(PHASES):
             take_rate_pct = float(st.session_state.get(f"_model_take_rate_pct_{idx}", st.session_state.get(f"take_rate_{idx}", phase["take_rate"] * 100)))
@@ -7681,21 +7870,21 @@ with st.sidebar:
                 reset_defaults()
         if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"]):
             reset_sku_assumptions(n_skus)
-        promo_60d = st.checkbox(
-            T["promo"],
-            value=True,
-            help=T["promo_yes"],
-            key="promo_60d_input",
-        )
-        use_fbt = st.checkbox(
-            T["fbt"],
-            value=False,
-            help=T["fbt_help"],
-            key="use_fbt_input",
-        )
-        weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1, key="weeks_per_phase_input")
+        with st.expander(T["plan_setup"], expanded=True):
+            promo_60d = st.checkbox(
+                T["promo"],
+                value=True,
+                help=T["promo_yes"],
+                key="promo_60d_input",
+            )
+            use_fbt = st.checkbox(
+                T["fbt"],
+                value=False,
+                help=T["fbt_help"],
+                key="use_fbt_input",
+            )
+            weeks_per_phase = st.slider(T["weeks_phase"], min_value=2, max_value=8, value=4, step=1, key="weeks_per_phase_input")
 
-        st.header(T["cost_assumptions"])
         legacy_order_cost = float(st.session_state.get("logistics_cost_manual", 5.0))
         if "logistics_carrier_cost_manual" not in st.session_state:
             st.session_state["logistics_carrier_cost_manual"] = legacy_order_cost
@@ -7705,93 +7894,52 @@ with st.sidebar:
             st.session_state["logistics_return_allowance_manual"] = 0.0
         if "sample_handling_cost_manual" not in st.session_state:
             st.session_state["sample_handling_cost_manual"] = 0.0
-        fulfillment_label = T["fulfillment_fbt_fallback"] if use_fbt else T["fulfillment"]
-        st.caption(fulfillment_label)
-        logistics_carrier_cost = st.number_input(
-            T["logistics_carrier_cost"],
-            min_value=0.0,
-            step=0.25,
-            key="logistics_carrier_cost_manual",
-        )
-        logistics_pick_pack_cost = st.number_input(
-            T["logistics_pick_pack_cost"],
-            min_value=0.0,
-            step=0.25,
-            key="logistics_pick_pack_cost_manual",
-        )
-        logistics_return_allowance = st.number_input(
-            T["logistics_return_allowance"],
-            min_value=0.0,
-            step=0.25,
-            key="logistics_return_allowance_manual",
-        )
-        logistics_cost = float(logistics_carrier_cost) + float(logistics_pick_pack_cost) + float(logistics_return_allowance)
-        render_subtle_note(
-            logistics_detail_display(logistics_carrier_cost, logistics_pick_pack_cost, logistics_return_allowance),
-            T["logistics_total"],
-        )
-        sample_delivery_cost = st.number_input(
-            T["sample_shipping_cost"],
-            min_value=0.0,
-            value=5.0,
-            step=0.5,
-            key="sample_shipping_cost_manual",
-        )
-        sample_handling_cost = st.number_input(
-            T["sample_handling_cost"],
-            min_value=0.0,
-            step=0.25,
-            key="sample_handling_cost_manual",
-        )
-        sample_shipping_cost = float(sample_delivery_cost) + float(sample_handling_cost)
-        render_subtle_note(
-            sample_shipping_detail_display(sample_delivery_cost, sample_handling_cost),
-            T["sample_shipping_total"],
-        )
-        if use_fbt:
-            render_subtle_note(T["fbt_help"], T["fbt"])
+        with st.expander(T["cost_assumptions"], expanded=False):
+            fulfillment_label = T["fulfillment_fbt_fallback"] if use_fbt else T["fulfillment"]
+            st.caption(fulfillment_label)
+            logistics_carrier_cost = st.number_input(T["logistics_carrier_cost"], min_value=0.0, step=0.25, key="logistics_carrier_cost_manual")
+            logistics_pick_pack_cost = st.number_input(T["logistics_pick_pack_cost"], min_value=0.0, step=0.25, key="logistics_pick_pack_cost_manual")
+            logistics_return_allowance = st.number_input(T["logistics_return_allowance"], min_value=0.0, step=0.25, key="logistics_return_allowance_manual")
+            logistics_cost = float(logistics_carrier_cost) + float(logistics_pick_pack_cost) + float(logistics_return_allowance)
+            render_subtle_note(logistics_detail_display(logistics_carrier_cost, logistics_pick_pack_cost, logistics_return_allowance), T["logistics_total"])
+            sample_delivery_cost = st.number_input(T["sample_shipping_cost"], min_value=0.0, value=5.0, step=0.5, key="sample_shipping_cost_manual")
+            sample_handling_cost = st.number_input(T["sample_handling_cost"], min_value=0.0, step=0.25, key="sample_handling_cost_manual")
+            sample_shipping_cost = float(sample_delivery_cost) + float(sample_handling_cost)
+            render_subtle_note(sample_shipping_detail_display(sample_delivery_cost, sample_handling_cost), T["sample_shipping_total"])
+            if use_fbt:
+                render_subtle_note(T["fbt_help"], T["fbt"])
 
-        st.header(T["growth_levers"])
-        ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
-        organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1, key="organic_window_input")
-        if st.session_state.get("scenario_case_input") not in {"conservative", "base", "upside"}:
-            st.session_state["scenario_case_input"] = "base"
-        scenario_case = st.selectbox(
-            T["scenario_case"],
-            options=["conservative", "base", "upside"],
-            format_func=lambda key: {
-                "conservative": T["scenario_conservative"],
-                "base": T["scenario_base"],
-                "upside": T["scenario_upside"],
-            }[key],
-            key="scenario_case_input",
-            help=T["scenario_case_help"],
-        )
-        render_subtle_note(T["scenario_case_detail"], T["scenario_case"])
-        st.header(T["target_setup"])
-        target_gmv = st.number_input(T["target_gmv"], min_value=0.0, value=0.0, step=1000.0, key="target_gmv_input", help=T["target_gmv_help"])
-        target_profit = st.number_input(T["target_profit"], min_value=0.0, value=0.0, step=1000.0, key="target_profit_input", help=T["target_profit_help"])
-        st.header(T["phase_controls"])
+        with st.expander(T["growth_levers"], expanded=False):
+            ads_roas = st.number_input(T["ads_roas"], min_value=0.1, max_value=8.0, value=6.0, step=0.1, key="ads_roas_input")
+            organic_click_window_weeks = st.number_input(T["organic_click_window"], min_value=1, max_value=8, value=4, step=1, key="organic_window_input")
+        scenario_case = "base"
+        st.session_state["scenario_case_input"] = scenario_case
+
+        with st.expander(T["target_setup"], expanded=False):
+            target_gmv = st.number_input(T["target_gmv"], min_value=0.0, value=0.0, step=1000.0, key="target_gmv_input", help=T["target_gmv_help"])
+            target_profit = st.number_input(T["target_profit"], min_value=0.0, value=0.0, step=1000.0, key="target_profit_input", help=T["target_profit_help"])
+
         phase_inputs = []
-        for idx, phase in enumerate(PHASES):
-            st.subheader(phase_label(phase))
-            take_rate = st.number_input(
-                f"{T['take_rate']} - {phase_label(phase)}",
-                min_value=0.0,
-                max_value=30.0,
-                value=float(phase["take_rate"] * 100),
-                step=1.0,
-                key=f"take_rate_{idx}",
-                help=T.get("take_rate_help"),
-            ) / 100
-            samples_per_sku = st.number_input(
-                f"{T['samples_sku_week']} - {phase_label(phase)}",
-                min_value=0,
-                value=int(phase["samples_per_sku"]),
-                step=1,
-                key=f"samples_per_sku_{idx}",
-            )
-            phase_inputs.append({**phase, "take_rate": take_rate, "samples_per_sku": samples_per_sku})
+        with st.expander(T["phase_controls"], expanded=False):
+            for idx, phase in enumerate(PHASES):
+                st.subheader(phase_label(phase))
+                take_rate = st.number_input(
+                    f"{T['take_rate']} - {phase_label(phase)}",
+                    min_value=0.0,
+                    max_value=30.0,
+                    value=float(phase["take_rate"] * 100),
+                    step=1.0,
+                    key=f"take_rate_{idx}",
+                    help=T.get("take_rate_help"),
+                ) / 100
+                samples_per_sku = st.number_input(
+                    f"{T['samples_sku_week']} - {phase_label(phase)}",
+                    min_value=0,
+                    value=int(phase["samples_per_sku"]),
+                    step=1,
+                    key=f"samples_per_sku_{idx}",
+                )
+                phase_inputs.append({**phase, "take_rate": take_rate, "samples_per_sku": samples_per_sku})
 
         st.session_state["_model_promo_60d"] = bool(promo_60d)
         st.session_state["_model_use_fbt"] = bool(use_fbt)
@@ -8020,17 +8168,18 @@ if st.session_state.get("has_generated", False):
         else:
             product_df = build_product_df(int(n_skus))
             adjusted_product_df, effective_ads_roas = apply_scenario_adjustment(product_df, ads_roas, scenario_case)
-            df_all = build_weekly_model(
-                product_df=adjusted_product_df,
-                phase_inputs=phase_inputs,
-                weeks_per_phase=int(weeks_per_phase),
-                promo_60d=bool(promo_60d),
-                logistics_cost=float(logistics_cost),
-                sample_shipping_cost=float(sample_shipping_cost),
-                use_fbt=bool(use_fbt),
-                organic_click_window_weeks=int(organic_click_window_weeks),
-                ads_roas=float(effective_ads_roas),
-            )
+            with st.spinner(T["model_calculating"]):
+                df_all = build_weekly_model(
+                    product_df=adjusted_product_df,
+                    phase_inputs=phase_inputs,
+                    weeks_per_phase=int(weeks_per_phase),
+                    promo_60d=bool(promo_60d),
+                    logistics_cost=float(logistics_cost),
+                    sample_shipping_cost=float(sample_shipping_cost),
+                    use_fbt=bool(use_fbt),
+                    organic_click_window_weeks=int(organic_click_window_weeks),
+                    ads_roas=float(effective_ads_roas),
+                )
         phase_summary = build_phase_summary(df_all)
         overall_summary = build_overall_summary(df_all)
         weekly_be = first_positive_profit_week(df_all)
@@ -8039,6 +8188,17 @@ if st.session_state.get("has_generated", False):
         overall = overall_summary.iloc[0]
         weekly_be_label = f"Week {weekly_be}" if weekly_be else T["not_reached"]
         cumulative_be_label = f"Week {cumulative_be}" if cumulative_be else T["not_reached"]
+        model_signature = repr((
+            int(n_skus), int(weeks_per_phase), bool(promo_60d), bool(use_fbt),
+            round(float(logistics_cost), 4), round(float(sample_shipping_cost), 4),
+            round(float(effective_ads_roas), 4), int(organic_click_window_weeks),
+            tuple((phase["key"], round(float(phase["take_rate"]), 4), int(phase["samples_per_sku"])) for phase in phase_inputs),
+            product_df.round(6).to_json(orient="split"),
+        ))
+        if st.session_state.get("_model_signature") != model_signature:
+            st.session_state["_model_signature"] = model_signature
+            st.session_state["_model_updated_at"] = datetime.now().strftime("%H:%M:%S")
+        model_updated_at = st.session_state.get("_model_updated_at", datetime.now().strftime("%H:%M:%S"))
         total_cost_row = df_all.sum(numeric_only=True)
         total_cost_driver, _, _ = cost_driver(total_cost_row)
         narrative = client_narrative(
@@ -8107,13 +8267,26 @@ if st.session_state.get("has_generated", False):
             skus=int(n_skus),
             break_even_label=cumulative_be_label,
         )
-        render_growth_path_strip(phase_summary, cumulative_be_label, total_cost_driver)
+        render_executive_insight(overall, df_all, cumulative_be_label, total_cost_driver, model_updated_at)
         render_growth_engine(overall)
+        with st.container(border=True):
+            render_chart_panel_header(T["forecast_gmv"], kicker=T["section_primary"])
+            st.plotly_chart(
+                make_scale_chart(df_all, T["forecast_gmv"], weekly_be, height=450),
+                use_container_width=True,
+                config={"displayModeBar": False, "responsive": True},
+            )
+            render_chart_panel_caption(
+                "Phase bands show how GMV scales against total cost; annotations mark the peak and first positive-profit week."
+                if lang != "zh" else
+                "阶段背景展示 GMV 相对总成本的增长路径，并标记峰值和首次单周利润转正时间。"
+            )
         render_decision_panel(overall, df_all, cumulative_be_label, total_cost_driver)
-        render_dashboard_intro(
-            scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
-            diagnosis_text,
-        )
+        if not meeting_mode:
+            render_dashboard_intro(
+                scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
+                diagnosis_text,
+            )
 
         render_section_header(T["executive_dashboard"])
         if (not meeting_mode) and (not st.session_state.get("plan_locked", False)):
@@ -8153,6 +8326,7 @@ if st.session_state.get("has_generated", False):
         render_kpi_grid(dashboard_items, fixed_cols=2 if meeting_mode else 3)
         target_items = target_comparison_items(overall, target_gmv, target_profit)
 
+        render_growth_path_strip(phase_summary, cumulative_be_label, total_cost_driver)
         render_section_header(T["phase_trend"])
         render_phase_overview(phase_summary)
         selected_phase_key = render_segmented_buttons(
@@ -8179,16 +8353,6 @@ if st.session_state.get("has_generated", False):
             render_chart_panel_caption(escape(phase_chart_insight(phase_row)))
 
         render_section_header(T["charts"], T["section_primary"])
-        with st.container(border=True):
-            render_chart_panel_header(
-                T["forecast_gmv"]
-            )
-            st.plotly_chart(make_scale_chart(df_all, T["forecast_gmv"], weekly_be, height=430), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-            render_chart_panel_caption(
-                "GMV versus total cost."
-                if lang != "zh" else
-                "对比 GMV 与总成本。"
-            )
         chart_left, chart_right = st.columns(2, gap="large")
         with chart_left:
             with st.container(border=True):
@@ -8342,13 +8506,6 @@ if st.session_state.get("has_generated", False):
                     render_status_panel(T["health_check"], check, tone="info", compact=True)
                 else:
                     render_status_panel(T["health_check"], check, tone="warning", compact=True)
-            st.caption(T["forecast_range_note"])
-            render_kpi_grid([
-                (T["conservative_case"], money(forecast_range_values["conservative_gmv"], 0), "#64748B"),
-                (T["base_case"], money(forecast_range_values["base_gmv"], 0), "#315EEC"),
-                (T["upside_case"], money(forecast_range_values["upside_gmv"], 0), "#178A62"),
-            ], compact=True)
-
             with st.expander(T["path_to_be"], expanded=False):
                 if cumulative_be:
                     render_status_panel(T["path_to_be"], path_text, tone="success", compact=True)
