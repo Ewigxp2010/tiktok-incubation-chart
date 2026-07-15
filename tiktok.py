@@ -5226,6 +5226,19 @@ def refresh_if_category_changed(i):
         apply_category_defaults(i)
 
 
+def handle_category_change(i):
+    category = st.session_state[f"category_{i}"]
+    subcategories = list(CATEGORY_PRESETS[category].keys())
+    current_subcategory = st.session_state.get(f"subcategory_{i}")
+    if current_subcategory not in subcategories:
+        st.session_state[f"subcategory_{i}"] = subcategories[0]
+    apply_category_defaults(i)
+
+
+def handle_subcategory_change(i):
+    apply_category_defaults(i)
+
+
 def initialize_sku(i):
     default_profile = DEFAULT_SKU_PROFILES[i % len(DEFAULT_SKU_PROFILES)]
     if f"sku_name_{i}" not in st.session_state:
@@ -8035,6 +8048,8 @@ if show_setup:
                     options=category_options,
                     key=f"category_{i}",
                     format_func=category_label,
+                    on_change=handle_category_change,
+                    args=(i,),
                 )
             category = st.session_state[f"category_{i}"]
             subcategories = list(CATEGORY_PRESETS[category].keys())
@@ -8046,6 +8061,8 @@ if show_setup:
                     options=subcategories,
                     key=f"subcategory_{i}",
                     format_func=subcategory_label,
+                    on_change=handle_subcategory_change,
+                    args=(i,),
                 )
 
             refresh_if_category_changed(i)
