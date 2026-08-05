@@ -6008,6 +6008,10 @@ def render_section_header(title, eyebrow=None):
     )
 
 
+def set_segmented_button_value(state_key, option):
+    st.session_state[state_key] = option
+
+
 def render_segmented_buttons(options, state_key, format_func=str):
     if not options:
         return None
@@ -6020,15 +6024,15 @@ def render_segmented_buttons(options, state_key, format_func=str):
     cols = st.columns(len(options), gap="small")
     for idx, option in enumerate(options):
         with cols[idx]:
-            if st.button(
+            st.button(
                 format_func(option),
                 key=f"{state_key}__btn__{idx}",
                 type="primary" if option == selected else "secondary",
                 width="stretch",
-            ):
-                st.session_state[state_key] = option
-                selected = option
-    return selected
+                on_click=set_segmented_button_value,
+                args=(state_key, option),
+            )
+    return st.session_state[state_key]
 
 
 def render_dashboard_intro(snapshot_text, diagnosis_text):
