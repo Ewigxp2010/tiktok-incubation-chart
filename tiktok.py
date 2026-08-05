@@ -1929,6 +1929,7 @@ TEXT = {
         "insight_payback_not_reached": "Cumulative payback is not reached within the plan",
         "model_updated": "Model updated",
         "live_model": "Live model",
+        "product_console": "Growth Planning Console",
         "model_calculating": "Refreshing growth model...",
         "peak_gmv": "Peak GMV",
         "break_even_marker": "Positive weekly profit",
@@ -2314,6 +2315,7 @@ TEXT = {
         "insight_payback_not_reached": "方案周期内尚未实现累计回本",
         "model_updated": "模型已更新",
         "live_model": "实时模型",
+        "product_console": "增长规划控制台",
         "model_calculating": "正在刷新增长模型...",
         "peak_gmv": "GMV 峰值",
         "break_even_marker": "单周利润转正",
@@ -3000,7 +3002,7 @@ st.markdown(
         font-size: clamp(4.2rem, 6vw, 6.7rem);
         font-weight: 860;
         line-height: 0.94;
-        letter-spacing: -0.08em;
+        letter-spacing: 0;
         max-width: 1100px;
         white-space: nowrap;
     }
@@ -3725,7 +3727,7 @@ st.markdown(
         font-size: clamp(2rem, 3.2vw, 3rem);
         font-weight: 810;
         line-height: 0.98;
-        letter-spacing: -0.03em;
+        letter-spacing: 0;
     }
 
     .meeting-header-meta {
@@ -4218,7 +4220,7 @@ st.markdown(
         font-size: clamp(1.95rem, 3vw, 2.9rem);
         font-weight: 810;
         line-height: 0.94;
-        letter-spacing: -0.04em;
+        letter-spacing: 0;
         margin-bottom: 12px;
     }
 
@@ -5068,6 +5070,308 @@ st.markdown(
         margin-top: auto;
     }
 
+    /* Refined growth-console design system. */
+    .stApp,
+    .stApp * {
+        letter-spacing: 0 !important;
+    }
+
+    [data-testid="stAppViewContainer"] > .main {
+        background: linear-gradient(180deg, #F8F9FB 0%, #F2F4F7 100%);
+    }
+
+    .block-container {
+        max-width: 1280px;
+        padding-top: 2.2rem;
+    }
+
+    section[data-testid="stSidebar"] {
+        background: #FAFBFC;
+        border-right-color: #E3E7EC;
+        box-shadow: 10px 0 28px rgba(16, 24, 40, 0.035);
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stExpander"] {
+        border-color: #E1E6EC;
+        border-radius: 8px;
+        background: #FFFFFF;
+        box-shadow: 0 2px 8px rgba(16, 24, 40, 0.025);
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stExpander"] details[open] {
+        background: #FFFFFF;
+    }
+
+    .product-masthead {
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 0 1px 13px 1px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #E1E5EA;
+    }
+
+    #results-start {
+        scroll-margin-top: 76px;
+    }
+
+    .product-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .product-symbol {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        background: #151922;
+        border: 1px solid #282E38;
+        border-radius: 8px;
+        box-shadow: 0 6px 14px rgba(16, 24, 40, 0.13);
+    }
+
+    .product-symbol::before {
+        content: "";
+        position: absolute;
+        inset: -1px 6px auto 6px;
+        height: 2px;
+        border-radius: 0 0 2px 2px;
+        background: linear-gradient(90deg, var(--tts-cyan) 0 47%, var(--tts-red) 53% 100%);
+    }
+
+    .product-symbol svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 1.9;
+    }
+
+    .product-brand-name {
+        color: #131820;
+        font-size: 0.94rem;
+        font-weight: 820;
+        line-height: 1.15;
+    }
+
+    .product-brand-subtitle {
+        color: #7A8493;
+        font-size: 0.68rem;
+        font-weight: 680;
+        line-height: 1.3;
+        margin-top: 2px;
+    }
+
+    .product-masthead-meta {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #697386;
+        font-size: 0.68rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .product-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #13795B;
+        padding: 6px 9px;
+        border: 1px solid #D7E8E2;
+        background: #F4FAF7;
+        border-radius: 8px;
+    }
+
+    .product-status::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #16A37E;
+        box-shadow: 0 0 0 3px rgba(22, 163, 126, 0.10);
+    }
+
+    .cover-shell {
+        padding-top: 8vh;
+    }
+
+    .cover-logo-title {
+        font-size: clamp(3.2rem, 5vw, 5.2rem);
+        line-height: 1.02;
+    }
+
+    .cover-logo-kicker {
+        color: #485364;
+        background: #F0F2F5;
+        border-color: #E1E5EA;
+        border-radius: 8px;
+    }
+
+    .cover-bottom-row .stButton > button {
+        border-radius: 8px;
+        background: #151922;
+        border: 1px solid #151922;
+        box-shadow: 0 10px 24px rgba(16, 24, 40, 0.14);
+    }
+
+    .cover-bottom-row [data-testid="stNumberInputContainer"] input,
+    .cover-bottom-row [data-testid="stNumberInputContainer"] button {
+        border-radius: 8px;
+    }
+
+    .hero-band {
+        background: linear-gradient(115deg, #12161E 0%, #1B202A 100%);
+        border-color: #272E38;
+        border-radius: 8px;
+        padding: 26px 28px;
+        margin: 0 0 20px 0;
+        box-shadow: 0 16px 38px rgba(16, 24, 40, 0.15);
+    }
+
+    .hero-band::before {
+        inset: 0 22px auto 22px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--tts-cyan) 0 44%, rgba(255,255,255,0.22) 44% 56%, var(--tts-red) 56% 100%);
+        border-radius: 0 0 3px 3px;
+        opacity: 0.95;
+    }
+
+    .hero-title {
+        font-size: clamp(1.85rem, 2.7vw, 2.5rem);
+        line-height: 1.04;
+    }
+
+    .hero-mark,
+    .hero-kpi-icon {
+        border-radius: 8px;
+        background: rgba(255,255,255,0.07);
+        border-color: rgba(255,255,255,0.14);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+    }
+
+    .hero-mark::after,
+    .hero-kpi-icon::after,
+    .premium-kpi-icon::after,
+    .growth-path-icon::after,
+    .growth-engine-mark::after,
+    .growth-engine-step-icon::after {
+        display: none;
+    }
+
+    .executive-insight-shell,
+    .growth-engine-panel,
+    .decision-panel,
+    .premium-kpi,
+    .growth-path-node,
+    .phase-overview-card,
+    .diagnostic-card {
+        background: #FFFFFF;
+        border-color: #E0E5EB;
+        border-radius: 8px;
+        box-shadow: 0 7px 20px rgba(16, 24, 40, 0.04);
+    }
+
+    .executive-insight-icon,
+    .growth-engine-mark {
+        border-radius: 8px;
+        background: #171B23;
+        border-color: #2B313C;
+        box-shadow: 0 7px 16px rgba(16, 24, 40, 0.13);
+    }
+
+    .executive-insight-kicker {
+        color: #5E6979;
+    }
+
+    .model-live-chip {
+        border-radius: 8px;
+    }
+
+    .premium-kpi::before {
+        left: 0;
+        right: auto;
+        top: 15px;
+        bottom: 15px;
+        width: 2px;
+        height: auto;
+        border-radius: 0 2px 2px 0;
+    }
+
+    .premium-kpi-icon,
+    .growth-path-icon,
+    .growth-engine-step-icon {
+        border-radius: 8px;
+        background: #F4F6F8;
+        border-color: #E1E6EC;
+        box-shadow: none;
+    }
+
+    .growth-path-summary {
+        background: #171B23;
+        border-color: #272D37;
+    }
+
+    .growth-path-node::after,
+    .growth-engine-step::after {
+        background: #C8D0DA;
+        opacity: 0.8;
+    }
+
+    .growth-engine-step {
+        background: #FCFDFE;
+        border-color: #E5E9EE;
+        border-radius: 8px;
+    }
+
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.chart-card-title),
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.sku-title) {
+        background: #FFFFFF;
+        border-color: #E0E5EB;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(16, 24, 40, 0.045);
+    }
+
+    div[data-testid="stExpander"],
+    div[data-testid="stExpander"] div[data-testid="stExpander"] {
+        border-radius: 8px;
+        background: #FFFFFF;
+        box-shadow: 0 3px 10px rgba(16, 24, 40, 0.025);
+    }
+
+    div[data-testid="stNumberInput"] [data-baseweb="input"],
+    div[data-testid="stTextInput"] [data-baseweb="input"],
+    div[data-testid="stSelectbox"] [data-baseweb="select"],
+    .stTabs [data-baseweb="tab"],
+    .st-key-selected_phase_view div[role="radiogroup"] label,
+    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
+        border-radius: 8px !important;
+    }
+
+    div[data-testid="stNumberInput"] [data-baseweb="input"]:focus-within,
+    div[data-testid="stTextInput"] [data-baseweb="input"]:focus-within,
+    div[data-testid="stSelectbox"] [data-baseweb="select"]:focus-within {
+        border-color: #475467 !important;
+        box-shadow: 0 0 0 1px #475467 inset, 0 0 0 4px rgba(17, 24, 39, 0.06) !important;
+    }
+
+    .stButton > button {
+        border-radius: 8px;
+        transition: transform 120ms ease, border-color 120ms ease, background 120ms ease, box-shadow 120ms ease;
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 14px rgba(16, 24, 40, 0.07);
+    }
+
     @media (max-width: 900px) {
         .chart-card-grid,
         .cover-cta-row,
@@ -5109,6 +5413,14 @@ st.markdown(
 
         .hero-copy {
             grid-template-columns: 1fr;
+        }
+
+        .product-masthead {
+            align-items: flex-start;
+        }
+
+        .product-masthead-meta > span:last-child {
+            display: none;
         }
 
         [data-testid="stAppViewContainer"] > .main .block-container {
@@ -5754,6 +6066,24 @@ def render_meeting_header(meeting_notes, generated_at, assumption_status):
         f'{escape(T["meeting_date"])}: {escape(date_text)}<br>'
         f'{escape(T["am_name"])}: {escape(am_text)}<br>'
         f'<span class="meeting-badge">{escape(str(assumption_status))}</span>'
+        '</div></div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def render_product_masthead(updated_at):
+    version_label = MODEL_VERSION.split("|")[0].strip()
+    html = (
+        '<div class="product-masthead">'
+        '<div class="product-brand">'
+        f'<div class="product-symbol">{icon_svg("trend")}</div>'
+        '<div>'
+        '<div class="product-brand-name">TikTok Shop</div>'
+        f'<div class="product-brand-subtitle">{escape(T["product_console"])}</div>'
+        '</div></div>'
+        '<div class="product-masthead-meta">'
+        f'<span class="product-status">{escape(T["live_model"])} · {escape(updated_at)}</span>'
+        f'<span>{escape(version_label)}</span>'
         '</div></div>'
     )
     st.markdown(html, unsafe_allow_html=True)
@@ -8278,6 +8608,7 @@ if st.session_state.get("has_generated", False):
             )
             st.session_state["_scroll_to_results"] = False
 
+        render_product_masthead(model_updated_at)
         render_hero(
             overall=overall,
             weeks=int(weeks_per_phase) * len(PHASES),
