@@ -7,6 +7,7 @@ from plotly.subplots import make_subplots
 from io import BytesIO
 from datetime import datetime
 from html import escape
+from ui_copy import ENHANCEMENT_TEXT
 
 
 st.set_page_config(page_title="TikTok Shop Growth Visualizer", page_icon="📈", layout="wide")
@@ -2755,6 +2756,10 @@ TEXT["nl"] = {
 }
 
 
+for language_code, enhancement_copy in ENHANCEMENT_TEXT.items():
+    TEXT[language_code].update(enhancement_copy)
+
+
 LANG_LABELS = {
     "en": "English",
     "zh": "简体中文",
@@ -2779,6 +2784,14 @@ def short_number(value):
 
 def short_money(value):
     return f"€{short_number(value)}"
+
+
+def signed_money(value):
+    value = float(value)
+    if abs(value) < 0.5:
+        return "€0"
+    sign = "+" if value > 0 else "-"
+    return f"{sign}{money(abs(value), 0)}"
 
 
 def pct(value, digits=1):
@@ -3310,114 +3323,6 @@ st.markdown(
         margin-top: 6px;
     }
 
-    .st-key-selected_phase_view div[role="radiogroup"],
-    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] {
-        gap: 8px;
-    }
-
-    .st-key-selected_phase_view div[role="radiogroup"] {
-        display: grid !important;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        align-items: stretch;
-        width: 100%;
-    }
-
-    .st-key-selected_phase_view div[role="radiogroup"] label {
-        background: #FFFFFF;
-        border: 1.5px solid #D5DEEA;
-        border-radius: 14px;
-        padding: 11px 18px;
-        min-height: 56px;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
-        transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
-        width: 100%;
-        justify-content: center;
-        display: flex;
-        align-items: center;
-    }
-
-    .st-key-selected_phase_view div[role="radiogroup"] label > div {
-        display: flex !important;
-        flex-direction: row !important;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .st-key-selected_phase_view div[role="radiogroup"] label > div > div:first-child {
-        display: none !important;
-    }
-
-    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
-        background: #F8FAFC;
-        border: 1px solid #E7ECF2;
-        border-radius: 12px;
-        padding: 8px 14px;
-        min-height: 42px;
-        width: 100%;
-        justify-content: center;
-        display: flex;
-        align-items: center;
-    }
-
-    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        align-items: stretch;
-        width: 100%;
-    }
-
-    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label > div {
-        display: flex !important;
-        flex-direction: row !important;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-    }
-
-    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label > div > div:first-child {
-        display: none !important;
-    }
-
-    .st-key-selected_phase_view div[role="radiogroup"] label:hover {
-        border-color: #BFCBDA;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
-    }
-
-    .st-key-selected_phase_view div[role="radiogroup"] label:has(input:checked) {
-        background: linear-gradient(180deg, #FFFFFF 0%, #F8FBFF 100%);
-        border-color: #8FAEDD;
-        box-shadow: 0 0 0 1px rgba(49, 94, 236, 0.08), 0 6px 18px rgba(49, 94, 236, 0.08);
-    }
-
-    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label:has(input:checked) {
-        background: #FFFFFF;
-        border-color: #CCD7E4;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
-    }
-
-    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label p {
-        font-size: 0.92rem !important;
-        font-weight: 680 !important;
-        color: #334155 !important;
-        text-align: center !important;
-        white-space: nowrap !important;
-    }
-
-    .st-key-selected_phase_view div[role="radiogroup"] label p {
-        font-size: 0.98rem !important;
-        font-weight: 720 !important;
-        color: #1F2937 !important;
-        text-align: center !important;
-        white-space: nowrap !important;
-    }
-
-    .st-key-selected_phase_view div[role="radiogroup"] label:has(input:checked) p {
-        color: #111827 !important;
-    }
-
     .stButton > button {
         border-radius: 10px;
         border: 1px solid #E4E7EC;
@@ -3432,6 +3337,24 @@ st.markdown(
         background: #F8FAFC;
         color: #111827;
         border: 1px solid #D9DEE5;
+    }
+
+    .stButton > button:focus-visible,
+    .stDownloadButton > button:focus-visible,
+    [data-baseweb="select"]:focus-visible {
+        outline: 3px solid rgba(49, 94, 236, 0.30) !important;
+        outline-offset: 2px !important;
+    }
+
+    .st-key-selected_phase_view_control [data-testid="stButton"],
+    div[class*="st-key-phase_chart_mode_"][class*="_control"] [data-testid="stButton"] {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .st-key-selected_phase_view_control [data-testid="stButton"] button,
+    div[class*="st-key-phase_chart_mode_"][class*="_control"] [data-testid="stButton"] button {
+        width: 100%;
     }
 
     .stButton > button[kind="primary"] {
@@ -4074,58 +3997,6 @@ st.markdown(
         overflow-wrap: anywhere;
     }
 
-    .phase-overview-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-        margin: 12px 0 16px 0;
-    }
-
-    .phase-overview-card {
-        background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
-        border: 1px solid #D3DCE8;
-        border-radius: 14px;
-        padding: 16px 16px;
-        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.045);
-    }
-
-    .phase-overview-card:last-child {
-        padding-right: 16px;
-        padding-left: 16px;
-    }
-
-    .phase-overview-title {
-        color: #111827;
-        font-size: 0.84rem;
-        font-weight: 760;
-        margin-bottom: 10px;
-        line-height: 1.25;
-        text-transform: uppercase;
-        letter-spacing: 0.02em;
-    }
-
-    .phase-overview-metrics {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px 10px;
-    }
-
-    .phase-overview-label {
-        color: #64748B;
-        font-size: 0.68rem;
-        font-weight: 720;
-        line-height: 1.25;
-    }
-
-    .phase-overview-value {
-        color: #111827;
-        font-size: clamp(0.86rem, 1.2vw, 1rem);
-        font-weight: 760;
-        line-height: 1.2;
-        margin-top: 3px;
-        overflow-wrap: anywhere;
-    }
-
     .hero-band {
         position: relative;
         overflow: hidden;
@@ -4366,6 +4237,60 @@ st.markdown(
 
     .kpi-grid.kpi-grid-compact {
         grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    }
+
+    .outcome-context-strip {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin: 12px 0 20px 0;
+    }
+
+    .outcome-context-card {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 0;
+        padding: 12px 14px;
+        background: #FFFFFF;
+        border: 1px solid #DCE4EE;
+        border-radius: 12px;
+    }
+
+    .outcome-context-icon {
+        flex: 0 0 30px;
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #315EEC;
+        background: #F4F7FB;
+        border: 1px solid #E2E8F0;
+        border-radius: 9px;
+    }
+
+    .outcome-context-icon svg {
+        width: 1.05em;
+        height: 1.05em;
+        stroke-width: 1.9;
+    }
+
+    .outcome-context-label {
+        color: #667085;
+        font-size: 0.7rem;
+        font-weight: 760;
+        line-height: 1.2;
+        text-transform: uppercase;
+    }
+
+    .outcome-context-value {
+        color: #111827;
+        font-size: 0.9rem;
+        font-weight: 800;
+        line-height: 1.25;
+        margin-top: 4px;
+        overflow-wrap: anywhere;
     }
 
     .premium-kpi {
@@ -5076,6 +5001,15 @@ st.markdown(
         letter-spacing: 0 !important;
     }
 
+    h1.hero-title,
+    h1.cover-logo-title {
+        margin: 0;
+    }
+
+    h1.hero-title {
+        color: #FFFFFF !important;
+    }
+
     [data-testid="stAppViewContainer"] > .main {
         background: linear-gradient(180deg, #F8F9FB 0%, #F2F4F7 100%);
     }
@@ -5271,7 +5205,6 @@ st.markdown(
     .decision-panel,
     .premium-kpi,
     .growth-path-node,
-    .phase-overview-card,
     .diagnostic-card {
         background: #FFFFFF;
         border-color: #E0E5EB;
@@ -5349,9 +5282,7 @@ st.markdown(
     div[data-testid="stNumberInput"] [data-baseweb="input"],
     div[data-testid="stTextInput"] [data-baseweb="input"],
     div[data-testid="stSelectbox"] [data-baseweb="select"],
-    .stTabs [data-baseweb="tab"],
-    .st-key-selected_phase_view div[role="radiogroup"] label,
-    div[class*="st-key-phase_chart_mode_"] div[role="radiogroup"] label {
+    .stTabs [data-baseweb="tab"] {
         border-radius: 8px !important;
     }
 
@@ -5377,18 +5308,66 @@ st.markdown(
         .cover-cta-row,
         .cover-summary-grid,
         .hero-band,
-        .growth-path-strip,
-        .growth-engine-grid,
         .decision-grid,
-        .focus-card-grid,
         .dashboard-intro,
         .executive-brief-grid,
-        .kpi-grid,
-        .kpi-grid.kpi-grid-four,
         .readout-grid,
-        .action-group-grid,
-        .phase-overview-grid {
+        .action-group-grid {
             grid-template-columns: 1fr;
+        }
+
+        .growth-path-strip,
+        .growth-engine-grid,
+        .focus-card-grid,
+        .kpi-grid,
+        .kpi-grid.kpi-grid-three,
+        .kpi-grid.kpi-grid-four,
+        .outcome-context-strip {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .growth-path-summary,
+        .growth-engine-step:last-child,
+        .outcome-context-card:last-child {
+            grid-column: 1 / -1;
+        }
+
+        .growth-path-node::after,
+        .growth-engine-step::after {
+            display: none;
+        }
+
+        .growth-path-node,
+        .growth-engine-step,
+        .focus-card {
+            padding: 11px;
+        }
+
+        .growth-path-title {
+            font-size: 0.84rem;
+        }
+
+        .outcome-context-card {
+            align-items: flex-start;
+            padding: 11px;
+        }
+
+        .st-key-selected_phase_view_control,
+        div[class*="st-key-phase_chart_mode_"][class*="_control"] {
+            flex-wrap: nowrap !important;
+        }
+
+        .st-key-selected_phase_view_control [data-testid="stButton"] button,
+        div[class*="st-key-phase_chart_mode_"][class*="_control"] [data-testid="stButton"] button {
+            min-height: 42px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .st-key-selected_phase_view_control [data-testid="stButton"] button p,
+        div[class*="st-key-phase_chart_mode_"][class*="_control"] [data-testid="stButton"] button p {
+            font-size: 0.78rem !important;
+            white-space: nowrap !important;
         }
 
         .executive-insight-shell {
@@ -5429,6 +5408,78 @@ st.markdown(
         }
     }
 
+    @media (max-width: 600px) {
+        .hero-band {
+            gap: 0;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+
+        .growth-path-node:nth-child(3) {
+            grid-column: 1 / -1;
+        }
+
+        .hero-copy {
+            grid-template-columns: 40px minmax(0, 1fr);
+            gap: 12px;
+            padding-bottom: 14px;
+        }
+
+        .hero-mark {
+            width: 40px;
+            height: 40px;
+        }
+
+        h1.hero-title {
+            font-size: 1.95rem;
+            line-height: 1.08;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle {
+            font-size: 0.84rem;
+            line-height: 1.45;
+        }
+
+        .hero-kpi {
+            display: grid;
+            grid-template-columns: 30px minmax(0, 1fr) auto;
+            grid-template-rows: auto auto;
+            gap: 1px 10px;
+            align-items: center;
+            min-height: 52px;
+            padding: 10px 0;
+            border-top-color: rgba(255,255,255,0.16);
+        }
+
+        .hero-kpi-icon {
+            grid-row: 1 / 3;
+            width: 30px;
+            height: 30px;
+            margin: 0;
+        }
+
+        .hero-kpi-label {
+            grid-column: 2;
+            margin: 0;
+            font-size: 0.6rem;
+            line-height: 1.2;
+        }
+
+        .hero-kpi-value {
+            grid-column: 3;
+            grid-row: 1 / 3;
+            font-size: 0.98rem;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .executive-insight-shell {
+            gap: 10px;
+            padding: 13px;
+        }
+    }
+
     .sku-title {
         font-size: 1.02rem;
         font-weight: 790;
@@ -5453,7 +5504,6 @@ st.markdown(
     .readout-card,
     .executive-brief-card,
     .dashboard-intro-card,
-    .phase-overview-card,
     .support-panel,
     .report-appendix,
     .action-group,
@@ -5576,11 +5626,41 @@ def initialize_sku(i):
         st.session_state[f"paid_commission_pct_{i}"] = paid_pct
 
 
+def preserve_setup_widget_state():
+    """Keep hidden setup widgets intact while focus view is active."""
+    prefixes = (
+        "sku_name_", "category_", "subcategory_", "aov_", "gross_margin_pct_",
+        "organic_commission_pct_", "paid_commission_pct_", "videos_per_sample_",
+        "clicks_per_video_", "click_to_order_pct_", "shop_tab_share_pct_",
+        "take_rate_", "samples_per_sku_",
+    )
+    exact_keys = {
+        "promo_60d_input", "use_fbt_input", "weeks_per_phase_input",
+        "logistics_carrier_cost_manual", "logistics_pick_pack_cost_manual",
+        "logistics_return_allowance_manual", "sample_shipping_cost_manual",
+        "sample_handling_cost_manual", "ads_roas_input", "organic_window_input",
+        "target_gmv_input", "target_profit_input", "scenario_case_input",
+        "brand_name_input", "scenario_name_input", "meeting_date_input",
+        "am_name_input", "key_recommendation_input", "assumption_status_input",
+    }
+    for key in list(st.session_state.keys()):
+        if key in exact_keys or any(key.startswith(prefix) for prefix in prefixes):
+            st.session_state[key] = st.session_state[key]
+
+
+def switch_to_client_view():
+    st.session_state["meeting_mode_input"] = False
+    st.session_state["selected_phase_view"] = PHASES[0]["key"]
+    for phase in PHASES:
+        st.session_state[f"phase_chart_mode_{phase['key']}"] = "cumulative"
+
+
 def build_product_df(n_skus):
     rows = []
     for i in range(int(n_skus)):
+        sku_name = str(st.session_state.get(f"sku_name_{i}", "")).strip() or LETTERS[i]
         rows.append({
-            "SKU": st.session_state[f"sku_name_{i}"],
+            "SKU": sku_name,
             "Category": st.session_state[f"category_{i}"],
             "Subcategory": st.session_state[f"subcategory_{i}"],
             "AOV": float(st.session_state[f"aov_{i}"]),
@@ -5595,8 +5675,6 @@ def build_product_df(n_skus):
         })
 
     df = pd.DataFrame(rows)
-    if df["SKU"].astype(str).str.strip().eq("").any():
-        raise ValueError("SKU name cannot be empty.")
     if df["AOV"].le(0).any():
         raise ValueError("AOV must be greater than 0.")
     if df["Gross Margin"].lt(0.05).any() or df["Gross Margin"].gt(0.90).any():
@@ -5612,6 +5690,111 @@ def build_product_df(n_skus):
     if df["Paid Creator Commission Rate"].lt(0).any() or df["Paid Creator Commission Rate"].gt(0.80).any():
         raise ValueError("Paid-traffic creator commission must be between 0% and 80%.")
     return df
+
+
+def model_input_signature(
+    product_df,
+    phase_inputs,
+    weeks_per_phase,
+    promo_60d,
+    use_fbt,
+    logistics_carrier_cost,
+    logistics_pick_pack_cost,
+    logistics_return_allowance,
+    logistics_cost,
+    sample_delivery_cost,
+    sample_handling_cost,
+    sample_shipping_cost,
+    ads_roas,
+    organic_click_window_weeks,
+    target_gmv,
+    target_profit,
+    scenario_case,
+    assumption_status_key,
+):
+    return repr((
+        int(weeks_per_phase),
+        bool(promo_60d),
+        bool(use_fbt),
+        round(float(logistics_carrier_cost), 4),
+        round(float(logistics_pick_pack_cost), 4),
+        round(float(logistics_return_allowance), 4),
+        round(float(logistics_cost), 4),
+        round(float(sample_delivery_cost), 4),
+        round(float(sample_handling_cost), 4),
+        round(float(sample_shipping_cost), 4),
+        round(float(ads_roas), 4),
+        int(organic_click_window_weeks),
+        round(float(target_gmv or 0), 2),
+        round(float(target_profit or 0), 2),
+        str(scenario_case),
+        normalize_assumption_status(assumption_status_key),
+        tuple(
+            (phase["key"], round(float(phase["take_rate"]), 4), int(phase["samples_per_sku"]))
+            for phase in phase_inputs
+        ),
+        product_df.round(6).to_json(orient="split"),
+    ))
+
+
+def apply_model_draft(
+    product_df,
+    phase_inputs,
+    weeks_per_phase,
+    promo_60d,
+    use_fbt,
+    logistics_carrier_cost,
+    logistics_pick_pack_cost,
+    logistics_return_allowance,
+    logistics_cost,
+    sample_delivery_cost,
+    sample_handling_cost,
+    sample_shipping_cost,
+    ads_roas,
+    organic_click_window_weeks,
+    target_gmv,
+    target_profit,
+    scenario_case,
+    assumption_status_key,
+):
+    st.session_state["_applied_product_df"] = product_df.copy()
+    st.session_state["_applied_phase_inputs"] = [dict(phase) for phase in phase_inputs]
+    st.session_state["_applied_weeks_per_phase"] = int(weeks_per_phase)
+    st.session_state["_applied_promo_60d"] = bool(promo_60d)
+    st.session_state["_applied_use_fbt"] = bool(use_fbt)
+    st.session_state["_applied_logistics_carrier_cost"] = float(logistics_carrier_cost)
+    st.session_state["_applied_logistics_pick_pack_cost"] = float(logistics_pick_pack_cost)
+    st.session_state["_applied_logistics_return_allowance"] = float(logistics_return_allowance)
+    st.session_state["_applied_logistics_cost"] = float(logistics_cost)
+    st.session_state["_applied_sample_delivery_cost"] = float(sample_delivery_cost)
+    st.session_state["_applied_sample_handling_cost"] = float(sample_handling_cost)
+    st.session_state["_applied_sample_shipping_cost"] = float(sample_shipping_cost)
+    st.session_state["_applied_ads_roas"] = float(ads_roas)
+    st.session_state["_applied_organic_click_window_weeks"] = int(organic_click_window_weeks)
+    st.session_state["_applied_target_gmv"] = float(target_gmv or 0)
+    st.session_state["_applied_target_profit"] = float(target_profit or 0)
+    st.session_state["_applied_scenario_case"] = scenario_case
+    st.session_state["_applied_assumption_status"] = normalize_assumption_status(assumption_status_key)
+    st.session_state["_applied_signature"] = model_input_signature(
+        product_df=product_df,
+        phase_inputs=phase_inputs,
+        weeks_per_phase=weeks_per_phase,
+        promo_60d=promo_60d,
+        use_fbt=use_fbt,
+        logistics_carrier_cost=logistics_carrier_cost,
+        logistics_pick_pack_cost=logistics_pick_pack_cost,
+        logistics_return_allowance=logistics_return_allowance,
+        logistics_cost=logistics_cost,
+        sample_delivery_cost=sample_delivery_cost,
+        sample_handling_cost=sample_handling_cost,
+        sample_shipping_cost=sample_shipping_cost,
+        ads_roas=ads_roas,
+        organic_click_window_weeks=organic_click_window_weeks,
+        target_gmv=target_gmv,
+        target_profit=target_profit,
+        scenario_case=scenario_case,
+        assumption_status_key=assumption_status_key,
+    )
 
 
 def effective_logistics_cost_per_unit(aov_values, logistics_cost, use_fbt):
@@ -5660,6 +5843,7 @@ def sample_shipping_detail_display(shipping_cost, handling_cost):
     )
 
 
+@st.cache_data(show_spinner=False, max_entries=64)
 def build_weekly_model(
     product_df,
     phase_inputs,
@@ -5670,6 +5854,7 @@ def build_weekly_model(
     use_fbt,
     organic_click_window_weeks,
     ads_roas,
+    language_code,
 ):
     aov = product_df["AOV"].to_numpy()
     gross_margin = product_df["Gross Margin"].to_numpy()
@@ -5761,7 +5946,7 @@ def build_weekly_model(
             total_cost = cogs + platform_fee + creator_commission + ads_cost + samples_cost + fulfillment_cost
 
             rows.append({
-                "Phase": phase_label(phase),
+                "Phase": TEXT[language_code][phase["key"]],
                 "Phase Key": phase["key"],
                 "Week in Phase": week_idx + 1,
                 "Global Week": global_week,
@@ -5947,7 +6132,11 @@ ICON_SVG = {
     "ads": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5.3 15.8V8.7l10.2-3v13.1z" opacity=".26"/><path d="M6 15.2V9.3l8.7-2.6v11.1z"/><path d="M14.7 9.5h2.3a2.7 2.7 0 0 1 0 5.4h-2.3"/><path d="m8.1 15.6 1.1 3.9"/><path d="M18.8 6.1 20.4 5"/><path d="M19.2 18.5l1.5 1.1"/></svg>',
     "channel": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h5.3v5.3H4.5z" opacity=".28"/><path d="M14.2 4.8h5.3v5.3h-5.3z" opacity=".28"/><path d="M14.2 14.4h5.3v4.8h-5.3z" opacity=".28"/><path d="M5.2 7.7h3.9v3.9H5.2z"/><path d="M14.9 5.5h3.9v3.9h-3.9z"/><path d="M14.9 15.1h3.9v3.4h-3.9z"/><path d="M9.1 9.7h2.4c1 0 1.7-.7 1.7-1.7v-.5"/><path d="M9.1 9.7h2.4c1 0 1.7.7 1.7 1.7v5.4"/></svg>',
     "cost": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 5.7h12.7v11.8H5.2z" opacity=".24"/><path d="M6 6.5h11.1v10.2H6z"/><path d="M8.2 9.3h6.8"/><path d="M8.2 12h5.2"/><path d="M8.2 14.7h3.5"/><path d="M16 16.3l3 3"/><path d="M19 16.3l-3 3"/></svg>',
-    "phase": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 12h13.6" opacity=".28"/><path d="M5.2 12h13.6"/><circle cx="6.2" cy="12" r="2.25" fill="currentColor" stroke="none" opacity=".25"/><circle cx="12" cy="12" r="2.25" fill="currentColor" stroke="none" opacity=".25"/><circle cx="17.8" cy="12" r="2.25" fill="currentColor" stroke="none" opacity=".25"/><circle cx="6.2" cy="12" r="1.15"/><circle cx="12" cy="12" r="1.15"/><circle cx="17.8" cy="12" r="1.15"/></svg>',
+    "phase": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h4v-4h4v-4h4V6h4" opacity=".3"/><path d="M4 18h4v-4h4v-4h4V6h4"/><path d="m17.5 3.5 2.5 2.5-2.5 2.5"/></svg>',
+    "video": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2" opacity=".28"/><rect x="4.5" y="6" width="15" height="12" rx="1.5"/><path d="m10 9 5 3-5 3z" fill="currentColor" stroke="none" opacity=".48"/></svg>',
+    "click": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 11.2 8.4-5.1 1.3-2.5 5.1z" opacity=".3"/><path d="m6.8 4.5 9 6.7-4.3 1.1-2.1 4.2z"/><path d="m13.2 13.3 4.3 4.3"/><path d="M4 10H2.5M5.3 6.5 4.2 5.4M9.2 3.5V2"/></svg>',
+    "order": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 11H6z" opacity=".26"/><path d="M6 8h12l-.9 10H6.9z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/><path d="m10 13 1.4 1.4 3-3"/></svg>',
+    "truck": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6h11v10h-11z" opacity=".26"/><path d="M4.5 7h9v8h-9z"/><path d="M13.5 10h4l2.5 3v2h-6.5z"/><circle cx="8" cy="17" r="1.8"/><circle cx="17.5" cy="17" r="1.8"/></svg>',
     "spark": '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8 13.7 9l5.2 1.8-5.2 1.8L12 18l-1.7-5.4-5.2-1.8L10.3 9z" opacity=".28"/><path d="M12 5.2 13.3 9l3.8 1.3-3.8 1.3L12 15.6l-1.3-4-3.8-1.3L10.7 9z"/><path d="M18 3.5v3"/><path d="M19.5 5h-3"/><path d="M5.8 17.3v2.2"/><path d="M6.9 18.4H4.7"/></svg>',
 }
 
@@ -6003,7 +6192,7 @@ def render_kpi_grid(items, compact=False, fixed_cols=None):
 def render_section_header(title, eyebrow=None):
     eyebrow_html = f'<div class="section-eyebrow">{escape(str(eyebrow))}</div>' if eyebrow else ""
     st.markdown(
-        f'<div class="section-shell">{eyebrow_html}<div class="section-title">{escape(str(title))}</div></div>',
+        f'<div class="section-shell">{eyebrow_html}<h2 class="section-title">{escape(str(title))}</h2></div>',
         unsafe_allow_html=True,
     )
 
@@ -6012,7 +6201,7 @@ def set_segmented_button_value(state_key, option):
     st.session_state[state_key] = option
 
 
-def render_segmented_buttons(options, state_key, format_func=str):
+def render_segmented_buttons(options, state_key, format_func=str, help_func=None):
     if not options:
         return None
     if state_key not in st.session_state:
@@ -6021,14 +6210,14 @@ def render_segmented_buttons(options, state_key, format_func=str):
     if selected not in options:
         selected = options[0]
         st.session_state[state_key] = selected
-    cols = st.columns(len(options), gap="small")
-    for idx, option in enumerate(options):
-        with cols[idx]:
+    with st.container(key=f"{state_key}_control", horizontal=True, gap="small"):
+        for idx, option in enumerate(options):
             st.button(
                 format_func(option),
                 key=f"{state_key}__btn__{idx}",
                 type="primary" if option == selected else "secondary",
                 width="stretch",
+                help=help_func(option) if help_func else None,
                 on_click=set_segmented_button_value,
                 args=(state_key, option),
             )
@@ -6045,6 +6234,44 @@ def render_dashboard_intro(snapshot_text, diagnosis_text):
         "</div>"
     )
     st.markdown(html, unsafe_allow_html=True)
+
+
+def render_outcome_context(forecast_values, overall, previous_outcomes, target_gmv, target_profit):
+    forecast_value = (
+        f"{money(forecast_values['conservative_gmv'], 0)} – "
+        f"{money(forecast_values['upside_gmv'], 0)}"
+    )
+    if previous_outcomes:
+        change_value = T["model_change_value"].format(
+            gmv=signed_money(float(overall["Total GMV"]) - float(previous_outcomes["gmv"])),
+            profit=signed_money(float(overall["Total Profit"]) - float(previous_outcomes["profit"])),
+        )
+    else:
+        change_value = T["baseline_model"]
+
+    has_gmv_target = float(target_gmv or 0) > 0
+    has_profit_target = float(target_profit or 0) > 0
+    if has_gmv_target or has_profit_target:
+        target_value = T["target_gap_value"].format(
+            gmv=signed_money(float(overall["Total GMV"]) - float(target_gmv)) if has_gmv_target else "–",
+            profit=signed_money(float(overall["Total Profit"]) - float(target_profit)) if has_profit_target else "–",
+        )
+    else:
+        target_value = T["target_not_set_short"]
+
+    items = [
+        (T["forecast_band"], forecast_value, "trend"),
+        (T["model_change"], change_value, "spark"),
+        (T["target_gap"], target_value, "target"),
+    ]
+    cards = "".join(
+        f'<div class="outcome-context-card">'
+        f'<div class="outcome-context-icon">{icon_svg(icon)}</div>'
+        f'<div><div class="outcome-context-label">{escape(label)}</div>'
+        f'<div class="outcome-context-value">{escape(value)}</div></div></div>'
+        for label, value, icon in items
+    )
+    st.markdown(f'<div class="outcome-context-strip">{cards}</div>', unsafe_allow_html=True)
 
 
 def render_sidebar_meta(text):
@@ -6103,7 +6330,7 @@ def render_hero(overall, weeks, skus, break_even_label):
         '<div class="hero-band"><div class="hero-copy">'
         f'<div class="hero-mark">{icon_svg("trend")}</div>'
         '<div>'
-        f'<div class="hero-title">{T["hero_title"].format(weeks=weeks, skus=skus)}</div>'
+        f'<h1 class="hero-title">{escape(T["hero_title"].format(weeks=weeks, skus=skus))}</h1>'
         f'<div class="hero-subtitle">{escape(subtitle)}</div></div>'
         f'</div><div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("trend")}</div><div class="hero-kpi-label">{escape(T["hero_gmv"])}</div><div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div></div>'
         f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("investment")}</div><div class="hero-kpi-label">{escape(T["hero_investment"])}</div><div class="hero-kpi-value">{money(overall["Growth Investment"], 0)}</div></div>'
@@ -6195,21 +6422,21 @@ def render_growth_engine(overall):
             "label": T["videos_label"],
             "value": f"{videos:,.0f}",
             "rate": f"{videos / samples:.2f} {T['growth_engine_video_rate']}" if samples else "-",
-            "icon": "phase",
+            "icon": "video",
             "accent": "#25D7D2",
         },
         {
             "label": T["clicks_label"],
             "value": f"{clicks:,.0f}",
             "rate": f"{clicks / videos:,.0f} {T['growth_engine_click_rate']}" if videos else "-",
-            "icon": "channel",
+            "icon": "click",
             "accent": "#7C3AED",
         },
         {
             "label": T["orders_label"],
             "value": f"{orders:,.0f}",
             "rate": f"{pct(orders / clicks, 1)} {T['growth_engine_order_rate']}" if clicks else "-",
-            "icon": "target",
+            "icon": "order",
             "accent": "#12A08C",
         },
         {
@@ -6269,7 +6496,7 @@ def growth_bottleneck(overall, df_all):
         (max(0.0, 180.0 - clicks_per_video) / 180.0, T["diagnostic_click_title"], f"{T['growth_engine_click_rate']}: {clicks_per_video:,.0f}", T["diagnostic_click_action"], "channel"),
         (max(0.0, 0.08 - order_rate) / 0.08, T["diagnostic_conversion_title"], f"{T['click_order']}: {pct(order_rate, 1)}", T["diagnostic_conversion_action"], "target"),
         (max(0.0, 22.0 - gmv_per_order) / 22.0, T["diagnostic_order_value_title"], f"{T['growth_engine_aov']}: {money(gmv_per_order, 2)}", T["diagnostic_order_value_action"], "trend"),
-        (max(0.0, logistics_per_order - 2.50) / 2.50, T["diagnostic_logistics_title"], f"{T['fulfillment']}: {money(logistics_per_order, 2)}", T["diagnostic_logistics_action"], "cost"),
+        (max(0.0, logistics_per_order - 2.50) / 2.50, T["diagnostic_logistics_title"], f"{T['fulfillment']}: {money(logistics_per_order, 2)}", T["diagnostic_logistics_action"], "truck"),
         (max(0.0, paid_share - 0.35) / 0.35, T["diagnostic_paid_title"], f"{T['paid_gmv_increment']}: {pct(paid_share, 1)}", T["diagnostic_paid_action"], "ads"),
     ]
     score, title, signal, action, icon = max(candidates, key=lambda item: item[0])
@@ -6353,7 +6580,7 @@ def render_cover_page(default_skus):
             <div class="cover-logo-row">
                 <div class="cover-logo-meta">
                     <div class="cover-logo-kicker">{escape(lang_tag)}</div>
-                    <div class="cover-logo-title">{escape(T["meeting_header"])}</div>
+                    <h1 class="cover-logo-title">{escape(T["meeting_header"])}</h1>
                     <div class="cover-logo-subtitle">{escape(T["caption"])}</div>
                 </div>
             </div>
@@ -6443,21 +6670,27 @@ def executive_brief_items(overall, df_all, weekly_be_label, cumulative_be_label,
     return [
         (
             T["growth_investment"],
-            f"{money(overall['Growth Investment'], 0)} total, including {money(overall['Sample Investment'], 0)} for samples and {money(overall['Ads Investment'], 0)} for ads."
-            if lang != "zh"
-            else f"总增长投入 {money(overall['Growth Investment'], 0)}，其中样品 {money(overall['Sample Investment'], 0)}，广告 {money(overall['Ads Investment'], 0)}。"
+            T["executive_brief_investment"].format(
+                total=money(overall["Growth Investment"], 0),
+                samples=money(overall["Sample Investment"], 0),
+                ads=money(overall["Ads Investment"], 0),
+            ),
         ),
         (
             T["sample_roi_title"],
-            f"Each sample contributes about {money(overall['GMV / Sample'], 0)} GMV and {money(overall['Profit / Sample'], 0)} profit."
-            if lang != "zh"
-            else f"单个样品平均带来 {money(overall['GMV / Sample'], 0)} GMV 和 {money(overall['Profit / Sample'], 0)} 利润。"
+            T["executive_brief_sample"].format(
+                gmv=money(overall["GMV / Sample"], 0),
+                profit=money(overall["Profit / Sample"], 0),
+            ),
         ),
         (
             T["diagnosis_summary"],
-            f"The largest GMV driver is {main_channel}. Weekly break-even: {weekly_be_label}. Cumulative break-even: {cumulative_be_label}. Main cost driver: {driver}."
-            if lang != "zh"
-            else f"当前最大 GMV 驱动来自 {main_channel}。单周回本：{weekly_be_label}；累计回本：{cumulative_be_label}。主要成本压力来自 {driver}。"
+            T["executive_brief_diagnosis"].format(
+                channel=main_channel,
+                weekly_be=weekly_be_label,
+                cumulative_be=cumulative_be_label,
+                driver=driver,
+            ),
         ),
     ]
 
@@ -6642,28 +6875,6 @@ def render_executive_brief(items):
     st.markdown(f'<div class="executive-brief-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
 
 
-def render_phase_overview(phase_summary):
-    cards = []
-    for _, row in phase_summary.iterrows():
-        metrics = [
-            (T["total_gmv"], money(row["GMV"], 0)),
-            (T["total_profit"], money(row["Profit"], 0)),
-            (T["sample_investment"], money(row["Samples Cost"], 0)),
-            (T["ads_investment"], money(row["Ads Cost"], 0)),
-        ]
-        metric_html = "".join(
-            f'<div><div class="phase-overview-label">{escape(label)}</div><div class="phase-overview-value">{escape(value)}</div></div>'
-            for label, value in metrics
-        )
-        cards.append(
-            f'<div class="phase-overview-card">'
-            f'<div class="phase-overview-title">{escape(str(row["Phase"]))}</div>'
-            f'<div class="phase-overview-metrics">{metric_html}</div>'
-            "</div>"
-        )
-    st.markdown(f'<div class="phase-overview-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
-
-
 def cost_explanation(row):
     driver, _amount, share = cost_driver(row)
     total_cost = float(row["Total Cost"])
@@ -6701,7 +6912,7 @@ def render_chart_panel_header(title, subtitle=None, kicker=None):
     subtitle_html = f'<div class="chart-card-subtitle">{escape(str(subtitle))}</div>' if subtitle else ""
     st.markdown(
         f'<div class="chart-card-header"><div>'
-        f'{kicker_html}<div class="chart-card-title">{escape(str(title))}</div>{subtitle_html}'
+        f'{kicker_html}<h3 class="chart-card-title">{escape(str(title))}</h3>{subtitle_html}'
         f'</div></div>',
         unsafe_allow_html=True,
     )
@@ -7514,6 +7725,7 @@ def reset_defaults():
         "organic_commission_pct_", "paid_commission_pct_", "videos_per_sample_",
         "clicks_per_video_", "click_to_order_pct_", "shop_tab_share_pct_",
         "take_rate_", "samples_per_sku_", "phase_chart_mode_", "_model_",
+        "_applied_",
     )
     exact_keys = {
         "has_generated", "selected_phase_view", "logistics_cost_manual",
@@ -7525,6 +7737,7 @@ def reset_defaults():
         "am_name_input", "key_recommendation_input", "assumption_status_input",
         "sku_count_confirmed", "scenario_name_input", "target_gmv_input", "target_profit_input",
         "scenario_case_input", "plan_locked",
+        "_draft_signature", "_scroll_to_results",
         "_model_brand_name", "_model_meeting_date", "_model_am_name",
         "_model_key_recommendation", "_model_assumption_status", "_model_scenario_name",
         "_model_target_gmv", "_model_target_profit", "_model_scenario_case",
@@ -7533,6 +7746,7 @@ def reset_defaults():
         "_model_sample_delivery_cost", "_model_sample_handling_cost",
         "_locked_df_all", "_locked_product_df", "_locked_phase_inputs",
         "_locked_weeks_per_phase", "_locked_ads_roas", "_locked_scenario_label",
+        "_locked_base_ads_roas", "_locked_assumption_status",
         "_locked_scenario_case", "_locked_promo_60d", "_locked_use_fbt",
         "_locked_logistics_cost", "_locked_sample_shipping_cost",
         "_locked_logistics_carrier_cost", "_locked_logistics_pick_pack_cost",
@@ -7767,11 +7981,42 @@ def make_weekly_chart(df, title, break_even_week=None):
     return fig
 
 
-def make_scale_chart(df, title, break_even_week=None, height=330):
+def make_scale_chart(df, title, break_even_week=None, height=330, forecast_spread=0.0, target_gmv=0.0):
     fig = go.Figure()
     add_phase_bands(fig, df)
     add_phase_labels(fig, df)
     max_week = int(df["Global Week"].max())
+    forecast_spread = max(0.0, float(forecast_spread or 0.0))
+    if forecast_spread > 0:
+        lower_band = df["GMV"] * (1 - forecast_spread)
+        upper_band = df["GMV"] * (1 + forecast_spread)
+        fig.add_trace(
+            go.Scatter(
+                x=df["Global Week"],
+                y=lower_band,
+                mode="lines",
+                line=dict(width=0),
+                hoverinfo="skip",
+                showlegend=False,
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=df["Global Week"],
+                y=upper_band,
+                mode="lines",
+                line=dict(width=0),
+                fill="tonexty",
+                fillcolor="rgba(49, 94, 236, 0.075)",
+                name=T["forecast_band"],
+                customdata=np.column_stack((lower_band, upper_band)),
+                hovertemplate=(
+                    f"{T['forecast_band']}: "
+                    "€%{customdata[0]:,.0f} – €%{customdata[1]:,.0f}<extra></extra>"
+                ),
+                showlegend=False,
+            )
+        )
     fig.add_trace(
         go.Scatter(
             x=df["Global Week"],
@@ -7796,6 +8041,30 @@ def make_scale_chart(df, title, break_even_week=None, height=330):
             hovertemplate=f"{T['forecast_gmv']}: €%{{y:,.0f}}<extra></extra>",
         )
     )
+    target_gmv = float(target_gmv or 0.0)
+    if target_gmv > 0 and len(df) > 0:
+        target_weekly = target_gmv / len(df)
+        fig.add_trace(
+            go.Scatter(
+                x=[1, max_week],
+                y=[target_weekly, target_weekly],
+                mode="lines",
+                name=T["target_weekly_run_rate"],
+                line=dict(color="#FE2C55", width=1.5, dash="dot"),
+                hovertemplate=f"{T['target_weekly_run_rate']}: €%{{y:,.0f}}<extra></extra>",
+                showlegend=False,
+            )
+        )
+        fig.add_annotation(
+            x=max_week,
+            y=target_weekly,
+            text=T["target_weekly_run_rate"],
+            showarrow=False,
+            xanchor="right",
+            yshift=12,
+            font=dict(size=9, color="#C81E45"),
+            bgcolor="rgba(255,255,255,0.92)",
+        )
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#98A2B3")
         profit_value = float(df.loc[df["Global Week"] == break_even_week, "GMV"].iloc[0])
@@ -7876,7 +8145,7 @@ def make_profit_investment_chart(df, title, height=310):
     return fig
 
 
-def make_cumulative_profit_chart(df, break_even_week=None, height=520):
+def make_cumulative_profit_chart(df, break_even_week=None, height=520, target_profit=0.0):
     temp = df.copy()
     temp["Cumulative Profit"] = temp["Profit"].cumsum()
     max_week = int(temp["Global Week"].max())
@@ -7896,6 +8165,29 @@ def make_cumulative_profit_chart(df, break_even_week=None, height=520):
         )
     )
     fig.add_hline(y=0, line_color="#6B7280", line_width=1)
+    target_profit = float(target_profit or 0.0)
+    if target_profit > 0:
+        fig.add_trace(
+            go.Scatter(
+                x=[1, max_week],
+                y=[target_profit, target_profit],
+                mode="lines",
+                name=T["target_profit"],
+                line=dict(color="#FE2C55", width=1.5, dash="dot"),
+                hovertemplate=f"{T['target_profit']}: €%{{y:,.0f}}<extra></extra>",
+                showlegend=False,
+            )
+        )
+        fig.add_annotation(
+            x=max_week,
+            y=target_profit,
+            text=T["target_profit"],
+            showarrow=False,
+            xanchor="right",
+            yshift=12,
+            font=dict(size=9, color="#C81E45"),
+            bgcolor="rgba(255,255,255,0.92)",
+        )
     if break_even_week is not None:
         fig.add_vline(x=break_even_week, line_dash="dash", line_color="#6B7280")
     apply_plotly_layout(fig, "", height=height)
@@ -8109,6 +8401,48 @@ def make_phase_cumulative_chart(phase_df, title):
     return fig
 
 
+def compact_phase_label(phase_key):
+    phase_number = next(
+        (idx for idx, phase in enumerate(PHASES, start=1) if phase["key"] == phase_key),
+        1,
+    )
+    return T.get("phase_short", "Phase {number}").format(number=phase_number)
+
+
+@st.fragment
+def render_phase_explorer(phase_inputs, df_all, phase_summary):
+    render_section_header(T["phase_trend"])
+    selected_phase_key = render_segmented_buttons(
+        [phase["key"] for phase in phase_inputs],
+        "selected_phase_view",
+        format_func=compact_phase_label,
+        help_func=lambda key: phase_label(next(phase for phase in phase_inputs if phase["key"] == key)),
+    )
+    selected_phase = next(phase for phase in phase_inputs if phase["key"] == selected_phase_key)
+    phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
+    phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
+    chart_mode = render_segmented_buttons(
+        PHASE_CHART_MODE_KEYS,
+        f"phase_chart_mode_{selected_phase['key']}",
+        format_func=phase_chart_mode_label,
+    )
+    with st.container(border=True):
+        render_chart_panel_header(phase_label(selected_phase))
+        if chart_mode == "cumulative":
+            st.plotly_chart(
+                make_phase_cumulative_chart(phase_df, phase_label(selected_phase)),
+                use_container_width=True,
+                config={"displayModeBar": False, "responsive": True},
+            )
+        else:
+            st.plotly_chart(
+                make_phase_total_chart(phase_row),
+                use_container_width=True,
+                config={"displayModeBar": False, "responsive": True},
+            )
+        render_chart_panel_caption(escape(phase_chart_insight(phase_row)))
+
+
 def format_table(df, money_cols=None, pct_cols=None, number_cols=None, decimal_cols=None):
     out = df.copy()
     for col in dict.fromkeys(money_cols or []):
@@ -8165,6 +8499,9 @@ if not st.session_state.get("sku_count_confirmed", False) and not st.session_sta
     )
     st.stop()
 
+if st.session_state.get("has_generated", False):
+    preserve_setup_widget_state()
+
 with st.sidebar:
     st.header(T["plan_setup"])
     n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
@@ -8178,30 +8515,34 @@ with st.sidebar:
 
     sidebar_meeting_compact = meeting_mode and st.session_state.get("has_generated", False)
     if sidebar_meeting_compact:
-        if st.button(T["back_to_client_view"], key="back_to_client_view_btn"):
-            st.session_state["selected_phase_view"] = PHASES[0]["key"]
-            for phase in PHASES:
-                st.session_state[f"phase_chart_mode_{phase['key']}"] = "cumulative"
-            st.rerun()
-        promo_60d = bool(st.session_state.get("_model_promo_60d", st.session_state.get("promo_60d_input", True)))
-        use_fbt = bool(st.session_state.get("_model_use_fbt", st.session_state.get("use_fbt_input", False)))
-        weeks_per_phase = int(st.session_state.get("_model_weeks_per_phase", st.session_state.get("weeks_per_phase_input", 4)))
-        logistics_carrier_cost = float(st.session_state.get("_model_logistics_carrier_cost", st.session_state.get("logistics_carrier_cost_manual", st.session_state.get("logistics_cost_manual", 5.0))))
-        logistics_pick_pack_cost = float(st.session_state.get("_model_logistics_pick_pack_cost", st.session_state.get("logistics_pick_pack_cost_manual", 0.0)))
-        logistics_return_allowance = float(st.session_state.get("_model_logistics_return_allowance", st.session_state.get("logistics_return_allowance_manual", 0.0)))
-        logistics_cost = float(st.session_state.get("_model_logistics_cost", logistics_carrier_cost + logistics_pick_pack_cost + logistics_return_allowance))
-        sample_delivery_cost = float(st.session_state.get("_model_sample_delivery_cost", st.session_state.get("sample_shipping_cost_manual", logistics_cost)))
-        sample_handling_cost = float(st.session_state.get("_model_sample_handling_cost", st.session_state.get("sample_handling_cost_manual", 0.0)))
-        sample_shipping_cost = float(st.session_state.get("_model_sample_shipping_cost", sample_delivery_cost + sample_handling_cost))
-        ads_roas = float(st.session_state.get("_model_ads_roas", st.session_state.get("ads_roas_input", 6.0)))
-        organic_click_window_weeks = int(st.session_state.get("_model_organic_click_window_weeks", st.session_state.get("organic_window_input", 4)))
-        target_gmv = float(st.session_state.get("_model_target_gmv", st.session_state.get("target_gmv_input", 0.0)))
-        target_profit = float(st.session_state.get("_model_target_profit", st.session_state.get("target_profit_input", 0.0)))
-        scenario_case = "base"
+        st.button(
+            T["back_to_client_view"],
+            key="back_to_client_view_btn",
+            on_click=switch_to_client_view,
+        )
+        promo_60d = bool(st.session_state.get("_applied_promo_60d", st.session_state.get("_model_promo_60d", st.session_state.get("promo_60d_input", True))))
+        use_fbt = bool(st.session_state.get("_applied_use_fbt", st.session_state.get("_model_use_fbt", st.session_state.get("use_fbt_input", False))))
+        weeks_per_phase = int(st.session_state.get("_applied_weeks_per_phase", st.session_state.get("_model_weeks_per_phase", st.session_state.get("weeks_per_phase_input", 4))))
+        logistics_carrier_cost = float(st.session_state.get("_applied_logistics_carrier_cost", st.session_state.get("_model_logistics_carrier_cost", st.session_state.get("logistics_carrier_cost_manual", st.session_state.get("logistics_cost_manual", 5.0)))))
+        logistics_pick_pack_cost = float(st.session_state.get("_applied_logistics_pick_pack_cost", st.session_state.get("_model_logistics_pick_pack_cost", st.session_state.get("logistics_pick_pack_cost_manual", 0.0))))
+        logistics_return_allowance = float(st.session_state.get("_applied_logistics_return_allowance", st.session_state.get("_model_logistics_return_allowance", st.session_state.get("logistics_return_allowance_manual", 0.0))))
+        logistics_cost = float(st.session_state.get("_applied_logistics_cost", st.session_state.get("_model_logistics_cost", logistics_carrier_cost + logistics_pick_pack_cost + logistics_return_allowance)))
+        sample_delivery_cost = float(st.session_state.get("_applied_sample_delivery_cost", st.session_state.get("_model_sample_delivery_cost", st.session_state.get("sample_shipping_cost_manual", logistics_cost))))
+        sample_handling_cost = float(st.session_state.get("_applied_sample_handling_cost", st.session_state.get("_model_sample_handling_cost", st.session_state.get("sample_handling_cost_manual", 0.0))))
+        sample_shipping_cost = float(st.session_state.get("_applied_sample_shipping_cost", st.session_state.get("_model_sample_shipping_cost", sample_delivery_cost + sample_handling_cost)))
+        ads_roas = float(st.session_state.get("_applied_ads_roas", st.session_state.get("_model_ads_roas", st.session_state.get("ads_roas_input", 6.0))))
+        organic_click_window_weeks = int(st.session_state.get("_applied_organic_click_window_weeks", st.session_state.get("_model_organic_click_window_weeks", st.session_state.get("organic_window_input", 4))))
+        target_gmv = float(st.session_state.get("_applied_target_gmv", st.session_state.get("_model_target_gmv", st.session_state.get("target_gmv_input", 0.0))))
+        target_profit = float(st.session_state.get("_applied_target_profit", st.session_state.get("_model_target_profit", st.session_state.get("target_profit_input", 0.0))))
+        scenario_case = st.session_state.get("_applied_scenario_case", "base")
         st.session_state["_model_scenario_case"] = scenario_case
         st.session_state["scenario_case_input"] = scenario_case
         phase_inputs = []
         for idx, phase in enumerate(PHASES):
+            applied_phases = st.session_state.get("_applied_phase_inputs", [])
+            if idx < len(applied_phases):
+                phase_inputs.append(dict(applied_phases[idx]))
+                continue
             take_rate_pct = float(st.session_state.get(f"_model_take_rate_pct_{idx}", st.session_state.get(f"take_rate_{idx}", phase["take_rate"] * 100)))
             samples_per_sku = int(st.session_state.get(f"_model_samples_per_sku_{idx}", st.session_state.get(f"samples_per_sku_{idx}", phase["samples_per_sku"])))
             phase_inputs.append({**phase, "take_rate": take_rate_pct / 100, "samples_per_sku": samples_per_sku})
@@ -8468,7 +8809,10 @@ else:
         "key_recommendation": st.session_state.get("_model_key_recommendation", st.session_state.get("key_recommendation_input", T["key_recommendation_default"])),
     }
     assumption_status_key = normalize_assumption_status(
-        st.session_state.get("_model_assumption_status", st.session_state.get("assumption_status_input", "planning"))
+        st.session_state.get(
+            "_applied_assumption_status",
+            st.session_state.get("_model_assumption_status", st.session_state.get("assumption_status_input", "planning")),
+        )
     )
     st.session_state["_model_assumption_status"] = assumption_status_key
     assumption_status = assumption_status_label(assumption_status_key)
@@ -8482,17 +8826,134 @@ scenario_label = {
 }.get(scenario_case, T["scenario_base"])
 for i in range(int(n_skus)):
     initialize_sku(i)
-product_df_preview = build_product_df(int(n_skus))
+
+draft_product_df = None
+draft_signature = None
+input_validation_error = None
+try:
+    draft_product_df = build_product_df(int(n_skus))
+    draft_signature = model_input_signature(
+        product_df=draft_product_df,
+        phase_inputs=phase_inputs,
+        weeks_per_phase=weeks_per_phase,
+        promo_60d=promo_60d,
+        use_fbt=use_fbt,
+        logistics_carrier_cost=logistics_carrier_cost,
+        logistics_pick_pack_cost=logistics_pick_pack_cost,
+        logistics_return_allowance=logistics_return_allowance,
+        logistics_cost=logistics_cost,
+        sample_delivery_cost=sample_delivery_cost,
+        sample_handling_cost=sample_handling_cost,
+        sample_shipping_cost=sample_shipping_cost,
+        ads_roas=ads_roas,
+        organic_click_window_weeks=organic_click_window_weeks,
+        target_gmv=target_gmv,
+        target_profit=target_profit,
+        scenario_case=scenario_case,
+        assumption_status_key=assumption_status_key,
+    )
+except (KeyError, TypeError, ValueError) as exc:
+    input_validation_error = str(exc)
+
+st.session_state["_draft_signature"] = draft_signature
 if st.session_state.get("plan_locked", False):
     st.warning(T["plan_locked"])
     if st.button(T["unlock_plan"], key="unlock_plan_btn"):
         st.session_state["plan_locked"] = False
         st.rerun()
 
-if (not st.session_state.get("has_generated", False)) and st.button(T["generate"], type="primary"):
-    st.session_state["has_generated"] = True
-    st.session_state["plan_locked"] = False
-    st.session_state["_scroll_to_results"] = True
+if not st.session_state.get("has_generated", False):
+    if input_validation_error:
+        st.error(f"{T['input_error']}: {input_validation_error}")
+
+    if st.button(T["generate"], type="primary", disabled=bool(input_validation_error)):
+        apply_model_draft(
+            product_df=draft_product_df,
+            phase_inputs=phase_inputs,
+            weeks_per_phase=weeks_per_phase,
+            promo_60d=promo_60d,
+            use_fbt=use_fbt,
+            logistics_carrier_cost=logistics_carrier_cost,
+            logistics_pick_pack_cost=logistics_pick_pack_cost,
+            logistics_return_allowance=logistics_return_allowance,
+            logistics_cost=logistics_cost,
+            sample_delivery_cost=sample_delivery_cost,
+            sample_handling_cost=sample_handling_cost,
+            sample_shipping_cost=sample_shipping_cost,
+            ads_roas=ads_roas,
+            organic_click_window_weeks=organic_click_window_weeks,
+            target_gmv=target_gmv,
+            target_profit=target_profit,
+            scenario_case=scenario_case,
+            assumption_status_key=assumption_status_key,
+        )
+        st.session_state["has_generated"] = True
+        st.session_state["plan_locked"] = False
+        st.session_state["_scroll_to_results"] = True
+        st.rerun()
+
+if (
+    st.session_state.get("has_generated", False)
+    and "_applied_product_df" not in st.session_state
+    and draft_product_df is not None
+):
+    apply_model_draft(
+        product_df=draft_product_df,
+        phase_inputs=phase_inputs,
+        weeks_per_phase=weeks_per_phase,
+        promo_60d=promo_60d,
+        use_fbt=use_fbt,
+        logistics_carrier_cost=logistics_carrier_cost,
+        logistics_pick_pack_cost=logistics_pick_pack_cost,
+        logistics_return_allowance=logistics_return_allowance,
+        logistics_cost=logistics_cost,
+        sample_delivery_cost=sample_delivery_cost,
+        sample_handling_cost=sample_handling_cost,
+        sample_shipping_cost=sample_shipping_cost,
+        ads_roas=ads_roas,
+        organic_click_window_weeks=organic_click_window_weeks,
+        target_gmv=target_gmv,
+        target_profit=target_profit,
+        scenario_case=scenario_case,
+        assumption_status_key=assumption_status_key,
+    )
+
+has_pending_model_changes = (
+    st.session_state.get("has_generated", False)
+    and show_setup
+    and not st.session_state.get("plan_locked", False)
+    and draft_signature is not None
+    and draft_signature != st.session_state.get("_applied_signature")
+)
+if show_setup and st.session_state.get("has_generated", False):
+    with st.sidebar:
+        if input_validation_error:
+            render_status_panel(T["input_error"], input_validation_error, tone="warning", compact=True)
+        elif has_pending_model_changes:
+            render_status_panel(T["update_model"], T["pending_model_changes"], tone="warning", compact=True)
+            if st.button(T["update_model"], type="primary", key="apply_model_changes_btn", width="stretch"):
+                apply_model_draft(
+                    product_df=draft_product_df,
+                    phase_inputs=phase_inputs,
+                    weeks_per_phase=weeks_per_phase,
+                    promo_60d=promo_60d,
+                    use_fbt=use_fbt,
+                    logistics_carrier_cost=logistics_carrier_cost,
+                    logistics_pick_pack_cost=logistics_pick_pack_cost,
+                    logistics_return_allowance=logistics_return_allowance,
+                    logistics_cost=logistics_cost,
+                    sample_delivery_cost=sample_delivery_cost,
+                    sample_handling_cost=sample_handling_cost,
+                    sample_shipping_cost=sample_shipping_cost,
+                    ads_roas=ads_roas,
+                    organic_click_window_weeks=organic_click_window_weeks,
+                    target_gmv=target_gmv,
+                    target_profit=target_profit,
+                    scenario_case=scenario_case,
+                    assumption_status_key=assumption_status_key,
+                )
+                st.session_state["_scroll_to_results"] = True
+                st.rerun()
 
 if st.session_state.get("has_generated", False):
     try:
@@ -8516,9 +8977,30 @@ if st.session_state.get("has_generated", False):
             organic_click_window_weeks = st.session_state.get("_locked_organic_click_window_weeks", organic_click_window_weeks)
             target_gmv = st.session_state.get("_locked_target_gmv", target_gmv)
             target_profit = st.session_state.get("_locked_target_profit", target_profit)
+            model_ads_roas = st.session_state.get("_locked_base_ads_roas", st.session_state.get("_applied_ads_roas", effective_ads_roas))
+            assumption_status_key = normalize_assumption_status(
+                st.session_state.get("_locked_assumption_status", st.session_state.get("_applied_assumption_status", assumption_status_key))
+            )
         else:
-            product_df = build_product_df(int(n_skus))
-            adjusted_product_df, effective_ads_roas = apply_scenario_adjustment(product_df, ads_roas, scenario_case)
+            product_df = st.session_state["_applied_product_df"].copy()
+            phase_inputs = [dict(phase) for phase in st.session_state["_applied_phase_inputs"]]
+            weeks_per_phase = int(st.session_state["_applied_weeks_per_phase"])
+            promo_60d = bool(st.session_state["_applied_promo_60d"])
+            use_fbt = bool(st.session_state["_applied_use_fbt"])
+            logistics_carrier_cost = float(st.session_state["_applied_logistics_carrier_cost"])
+            logistics_pick_pack_cost = float(st.session_state["_applied_logistics_pick_pack_cost"])
+            logistics_return_allowance = float(st.session_state["_applied_logistics_return_allowance"])
+            logistics_cost = float(st.session_state["_applied_logistics_cost"])
+            sample_delivery_cost = float(st.session_state["_applied_sample_delivery_cost"])
+            sample_handling_cost = float(st.session_state["_applied_sample_handling_cost"])
+            sample_shipping_cost = float(st.session_state["_applied_sample_shipping_cost"])
+            model_ads_roas = float(st.session_state["_applied_ads_roas"])
+            organic_click_window_weeks = int(st.session_state["_applied_organic_click_window_weeks"])
+            target_gmv = float(st.session_state["_applied_target_gmv"])
+            target_profit = float(st.session_state["_applied_target_profit"])
+            scenario_case = st.session_state["_applied_scenario_case"]
+            assumption_status_key = normalize_assumption_status(st.session_state["_applied_assumption_status"])
+            adjusted_product_df, effective_ads_roas = apply_scenario_adjustment(product_df, model_ads_roas, scenario_case)
             with st.spinner(T["model_calculating"]):
                 df_all = build_weekly_model(
                     product_df=adjusted_product_df,
@@ -8530,7 +9012,15 @@ if st.session_state.get("has_generated", False):
                     use_fbt=bool(use_fbt),
                     organic_click_window_weeks=int(organic_click_window_weeks),
                     ads_roas=float(effective_ads_roas),
+                    language_code=lang,
                 )
+        assumption_status = assumption_status_label(assumption_status_key)
+        model_n_skus = len(product_df)
+        scenario_label = {
+            "conservative": T["scenario_conservative"],
+            "base": T["scenario_base"],
+            "upside": T["scenario_upside"],
+        }.get(scenario_case, T["scenario_base"])
         phase_summary = build_phase_summary(df_all)
         overall_summary = build_overall_summary(df_all)
         weekly_be = first_positive_profit_week(df_all)
@@ -8539,16 +9029,41 @@ if st.session_state.get("has_generated", False):
         overall = overall_summary.iloc[0]
         weekly_be_label = f"Week {weekly_be}" if weekly_be else T["not_reached"]
         cumulative_be_label = f"Week {cumulative_be}" if cumulative_be else T["not_reached"]
-        model_signature = repr((
-            int(n_skus), int(weeks_per_phase), bool(promo_60d), bool(use_fbt),
-            round(float(logistics_cost), 4), round(float(sample_shipping_cost), 4),
-            round(float(effective_ads_roas), 4), int(organic_click_window_weeks),
-            tuple((phase["key"], round(float(phase["take_rate"]), 4), int(phase["samples_per_sku"])) for phase in phase_inputs),
-            product_df.round(6).to_json(orient="split"),
-        ))
+        model_signature = model_input_signature(
+            product_df=product_df,
+            phase_inputs=phase_inputs,
+            weeks_per_phase=weeks_per_phase,
+            promo_60d=promo_60d,
+            use_fbt=use_fbt,
+            logistics_carrier_cost=logistics_carrier_cost,
+            logistics_pick_pack_cost=logistics_pick_pack_cost,
+            logistics_return_allowance=logistics_return_allowance,
+            logistics_cost=logistics_cost,
+            sample_delivery_cost=sample_delivery_cost,
+            sample_handling_cost=sample_handling_cost,
+            sample_shipping_cost=sample_shipping_cost,
+            ads_roas=model_ads_roas,
+            organic_click_window_weeks=organic_click_window_weeks,
+            target_gmv=target_gmv,
+            target_profit=target_profit,
+            scenario_case=scenario_case,
+            assumption_status_key=assumption_status_key,
+        )
+        current_outcomes = {
+            "gmv": float(overall["Total GMV"]),
+            "profit": float(overall["Total Profit"]),
+            "break_even": cumulative_be,
+        }
         if st.session_state.get("_model_signature") != model_signature:
+            previous_outcomes = st.session_state.get("_model_current_outcomes")
+            if previous_outcomes:
+                st.session_state["_model_previous_outcomes"] = previous_outcomes
+            st.session_state["_model_current_outcomes"] = current_outcomes
             st.session_state["_model_signature"] = model_signature
             st.session_state["_model_updated_at"] = datetime.now().strftime("%H:%M:%S")
+        elif "_model_current_outcomes" not in st.session_state:
+            st.session_state["_model_current_outcomes"] = current_outcomes
+        previous_outcomes = st.session_state.get("_model_previous_outcomes")
         model_updated_at = st.session_state.get("_model_updated_at", datetime.now().strftime("%H:%M:%S"))
         total_cost_row = df_all.sum(numeric_only=True)
         total_cost_driver, _, _ = cost_driver(total_cost_row)
@@ -8580,7 +9095,7 @@ if st.session_state.get("has_generated", False):
         assumption_summary = build_assumption_summary(
             phase_inputs=phase_inputs,
             weeks_per_phase=int(weeks_per_phase),
-            n_skus=int(n_skus),
+            n_skus=model_n_skus,
             logistics_display=logistics_display,
             sample_shipping_cost=float(sample_shipping_cost),
             ads_roas=float(effective_ads_roas),
@@ -8616,31 +9131,40 @@ if st.session_state.get("has_generated", False):
         render_hero(
             overall=overall,
             weeks=int(weeks_per_phase) * len(PHASES),
-            skus=int(n_skus),
+            skus=model_n_skus,
             break_even_label=cumulative_be_label,
         )
         render_executive_insight(overall, df_all, cumulative_be_label, total_cost_driver, model_updated_at)
+        render_outcome_context(
+            forecast_range_values,
+            overall,
+            previous_outcomes,
+            target_gmv,
+            target_profit,
+        )
         render_growth_engine(overall)
         with st.container(border=True):
             render_chart_panel_header(T["forecast_gmv"], kicker=T["section_primary"])
             st.plotly_chart(
-                make_scale_chart(df_all, T["forecast_gmv"], weekly_be, height=450),
+                make_scale_chart(
+                    df_all,
+                    T["forecast_gmv"],
+                    weekly_be,
+                    height=450,
+                    forecast_spread=forecast_range_values["spread"],
+                    target_gmv=target_gmv,
+                ),
                 use_container_width=True,
                 config={"displayModeBar": False, "responsive": True},
             )
-            render_chart_panel_caption(
-                "Phase bands show how GMV scales against total cost; annotations mark the peak and first positive-profit week."
-                if lang != "zh" else
-                "阶段背景展示 GMV 相对总成本的增长路径，并标记峰值和首次单周利润转正时间。"
-            )
+            render_chart_panel_caption(T["forecast_chart_caption"])
         render_decision_panel(overall, df_all, cumulative_be_label, total_cost_driver)
         if not meeting_mode:
             render_dashboard_intro(
-                scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
+                scenario_snapshot_text(model_n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
                 diagnosis_text,
             )
 
-        render_section_header(T["executive_dashboard"])
         if (not meeting_mode) and (not st.session_state.get("plan_locked", False)):
             if st.button(T["lock_plan"], key="lock_plan_btn"):
                 st.session_state["plan_locked"] = True
@@ -8649,6 +9173,7 @@ if st.session_state.get("has_generated", False):
                 st.session_state["_locked_phase_inputs"] = phase_inputs
                 st.session_state["_locked_weeks_per_phase"] = int(weeks_per_phase)
                 st.session_state["_locked_ads_roas"] = float(effective_ads_roas)
+                st.session_state["_locked_base_ads_roas"] = float(model_ads_roas)
                 st.session_state["_locked_scenario_label"] = scenario_label
                 st.session_state["_locked_scenario_case"] = scenario_case
                 st.session_state["_locked_promo_60d"] = bool(promo_60d)
@@ -8663,46 +9188,12 @@ if st.session_state.get("has_generated", False):
                 st.session_state["_locked_organic_click_window_weeks"] = int(organic_click_window_weeks)
                 st.session_state["_locked_target_gmv"] = float(target_gmv)
                 st.session_state["_locked_target_profit"] = float(target_profit)
+                st.session_state["_locked_assumption_status"] = assumption_status_key
                 st.rerun()
-        dashboard_items = [
-            (T["total_gmv"], money(overall["Total GMV"], 0), "#315EEC"),
-            (T["total_profit"], money(overall["Total Profit"], 0), "#178A62" if overall["Total Profit"] >= 0 else "#B42318"),
-            (T["growth_investment"], money(overall["Growth Investment"], 0), "#4F46E5"),
-            (T["cumulative_be"], cumulative_be_label, "#64748B"),
-        ]
-        if not meeting_mode:
-            dashboard_items.extend([
-                (T["sample_gmv_roi"], f"{overall['GMV / Sample Cost']:.1f}x", "#64748B"),
-                (T["channel_mix"], main_gmv_channel(df_all), "#94A3B8"),
-            ])
-        render_kpi_grid(dashboard_items, fixed_cols=2 if meeting_mode else 3)
         target_items = target_comparison_items(overall, target_gmv, target_profit)
 
         render_growth_path_strip(phase_summary, cumulative_be_label, total_cost_driver)
-        render_section_header(T["phase_trend"])
-        render_phase_overview(phase_summary)
-        selected_phase_key = render_segmented_buttons(
-            [p["key"] for p in phase_inputs],
-            "selected_phase_view",
-            format_func=lambda key: phase_label(next(p for p in phase_inputs if p["key"] == key)),
-        )
-        selected_phase = next(p for p in phase_inputs if p["key"] == selected_phase_key)
-        phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
-        phase_row = phase_summary[phase_summary["Phase Key"] == selected_phase["key"]].iloc[0]
-        objective = phase_objective(selected_phase["key"])
-        chart_mode = render_segmented_buttons(
-            PHASE_CHART_MODE_KEYS,
-            f"phase_chart_mode_{selected_phase['key']}",
-            format_func=phase_chart_mode_label,
-        )
-        phase_chart_title = phase_label(selected_phase)
-        with st.container(border=True):
-            render_chart_panel_header(phase_chart_title)
-            if chart_mode == "cumulative":
-                st.plotly_chart(make_phase_cumulative_chart(phase_df, phase_label(selected_phase)), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-            else:
-                st.plotly_chart(make_phase_total_chart(phase_row), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-            render_chart_panel_caption(escape(phase_chart_insight(phase_row)))
+        render_phase_explorer(phase_inputs, df_all, phase_summary)
 
         render_section_header(T["charts"], T["section_primary"])
         chart_left, chart_right = st.columns(2, gap="large")
@@ -8712,22 +9203,23 @@ if st.session_state.get("has_generated", False):
                     T["sales_contribution"]
                 )
                 st.plotly_chart(make_profit_investment_chart(df_all, T["sales_contribution"], height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-                render_chart_panel_caption(
-                    "Weekly profit versus growth investment."
-                    if lang != "zh" else
-                    "单周利润与增长投入。"
-                )
+                render_chart_panel_caption(T["weekly_profit_caption"])
         with chart_right:
             with st.container(border=True):
                 render_chart_panel_header(
                     T["cumulative_profit_trend"]
                 )
-                st.plotly_chart(make_cumulative_profit_chart(df_all, cumulative_be, height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-                render_chart_panel_caption(
-                    "Cumulative profit versus upfront investment."
-                    if lang != "zh" else
-                    "累计利润与前期投入。"
+                st.plotly_chart(
+                    make_cumulative_profit_chart(
+                        df_all,
+                        cumulative_be,
+                        height=320,
+                        target_profit=target_profit,
+                    ),
+                    use_container_width=True,
+                    config={"displayModeBar": False, "responsive": True},
                 )
+                render_chart_panel_caption(T["cumulative_profit_caption"])
         if meeting_mode:
             support_container = st.expander(T["supporting_charts"], expanded=False)
         else:
@@ -8742,17 +9234,12 @@ if st.session_state.get("has_generated", False):
                         kicker=T["section_secondary"],
                     )
                     render_funnel_summary(df_all)
-                    render_chart_panel_caption(
-                        (
-                            f"<strong>Business lens.</strong> {overall['Total Samples']:,.0f} samples scale into "
-                            f"{overall['Total Videos']:,.0f} videos, {overall['Total Clicks']:,.0f} clicks, and "
-                            f"{overall['Total Orders']:,.0f} orders."
-                        ) if lang != "zh" else (
-                            f"<strong>商业视角。</strong>{overall['Total Samples']:,.0f} 个样品预计带来 "
-                            f"{overall['Total Videos']:,.0f} 条视频、{overall['Total Clicks']:,.0f} 次点击和 "
-                            f"{overall['Total Orders']:,.0f} 个订单。"
-                        )
-                    )
+                    render_chart_panel_caption(T["funnel_business_lens"].format(
+                        samples=f"{overall['Total Samples']:,.0f}",
+                        videos=f"{overall['Total Videos']:,.0f}",
+                        clicks=f"{overall['Total Clicks']:,.0f}",
+                        orders=f"{overall['Total Orders']:,.0f}",
+                    ))
             with support_col2:
                 with st.container(border=True):
                     render_chart_panel_header(
@@ -8760,11 +9247,7 @@ if st.session_state.get("has_generated", False):
                         kicker=T["section_secondary"],
                     )
                     st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-                    render_chart_panel_caption(
-                        "<strong>Business lens.</strong> This view keeps only two channels: Affiliate Video GMV and Store/Search GMV."
-                        if lang != "zh" else
-                        "<strong>商业视角。</strong>这里只看两条渠道：达人视频 GMV 和店铺/Search GMV。"
-                    )
+                    render_chart_panel_caption(T["channel_business_lens"])
             with support_col3:
                 with st.container(border=True):
                     render_chart_panel_header(
@@ -8772,13 +9255,7 @@ if st.session_state.get("has_generated", False):
                         kicker=T["section_secondary"],
                     )
                     st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
-                    render_chart_panel_caption(
-                        (
-                            f"<strong>Business lens.</strong> The largest cost driver is {escape(total_cost_driver)}; margin work should start there."
-                        ) if lang != "zh" else (
-                            f"<strong>商业视角。</strong>当前最大成本项是 {escape(total_cost_driver)}，利润优化应先看这一项。"
-                        )
-                    )
+                    render_chart_panel_caption(T["cost_business_lens"].format(driver=total_cost_driver))
 
         render_section_header(T["next_actions"])
         render_grouped_actions(next_actions)
@@ -8798,7 +9275,7 @@ if st.session_state.get("has_generated", False):
                 render_kpi_grid(target_items)
 
             render_subtle_note(
-                scenario_snapshot_text(n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
+                scenario_snapshot_text(model_n_skus, weeks_per_phase, phase_inputs, effective_ads_roas, scenario_label),
                 T["scenario_snapshot"],
             )
             render_executive_brief(
@@ -8885,7 +9362,7 @@ if st.session_state.get("has_generated", False):
                         effective_ads_roas=effective_ads_roas,
                         target_gmv=target_gmv,
                         target_profit=target_profit,
-                        n_skus=n_skus,
+                        n_skus=model_n_skus,
                         locked=st.session_state.get("plan_locked", False),
                     ),
                     width="stretch",
@@ -8957,7 +9434,7 @@ if st.session_state.get("has_generated", False):
             health_checks=health_checks,
             path_text=path_text,
             weeks=int(weeks_per_phase) * len(PHASES),
-            skus=int(n_skus),
+            skus=model_n_skus,
             generated_at=generated_at,
             meeting_notes=meeting_notes,
             assumption_status=assumption_status,
@@ -8974,7 +9451,7 @@ if st.session_state.get("has_generated", False):
             health_checks=health_checks,
             path_text=path_text,
             weeks=int(weeks_per_phase) * len(PHASES),
-            skus=int(n_skus),
+            skus=model_n_skus,
             generated_at=generated_at,
             meeting_notes=meeting_notes,
             assumption_status=assumption_status,
@@ -8994,7 +9471,7 @@ if st.session_state.get("has_generated", False):
             health_checks=health_checks,
             path_text=path_text,
             weeks=int(weeks_per_phase) * len(PHASES),
-            skus=int(n_skus),
+            skus=model_n_skus,
             generated_at=generated_at,
             meeting_notes=meeting_notes,
             assumption_status=assumption_status,
