@@ -6715,10 +6715,10 @@ def icon_for_label(label):
 
 def render_workspace_nav():
     items = [
-        ("results-start", T["workspace_nav_overview"], "trend"),
-        ("phase-workspace", T["workspace_nav_phases"], "phase"),
-        ("action-workspace", T["workspace_nav_actions"], "target"),
-        ("export-workspace", T["workspace_nav_exports"], "investment"),
+        ("results-start", T.get("workspace_nav_overview", "Overview"), "trend"),
+        ("phase-workspace", T.get("workspace_nav_phases", "Phases"), "phase"),
+        ("action-workspace", T.get("workspace_nav_actions", "Actions"), "target"),
+        ("export-workspace", T.get("workspace_nav_exports", "Export"), "investment"),
     ]
     links = "".join(
         f'<a class="workspace-nav-link" href="#{anchor}">'
@@ -6740,12 +6740,14 @@ def render_section_anchor(anchor):
 
 
 def render_sidebar_workspace_header():
+    title = T.get("sidebar_console", T.get("plan_setup", "Plan Setup"))
+    subtitle = T.get("sidebar_console_subtitle", T.get("setup_ready", "Configure the active growth plan"))
     st.markdown(
         '<div class="sidebar-workspace-header">'
         f'<div class="sidebar-workspace-icon">{icon_svg("phase")}</div>'
         '<div>'
-        f'<h2 class="sidebar-workspace-title">{escape(T["sidebar_console"])}</h2>'
-        f'<div class="sidebar-workspace-subtitle">{escape(T["sidebar_console_subtitle"])}</div>'
+        f'<h2 class="sidebar-workspace-title">{escape(title)}</h2>'
+        f'<div class="sidebar-workspace-subtitle">{escape(subtitle)}</div>'
         '</div></div>',
         unsafe_allow_html=True,
     )
