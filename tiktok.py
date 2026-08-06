@@ -3012,7 +3012,7 @@ st.markdown(
 
     .cover-logo-title {
         color: #0F172A;
-        font-size: clamp(4.2rem, 6vw, 6.7rem);
+        font-size: 5.2rem;
         font-weight: 860;
         line-height: 0.94;
         letter-spacing: 0;
@@ -3155,7 +3155,7 @@ st.markdown(
     div[data-testid="stMetricValue"] {
         color: var(--tts-ink);
         font-weight: 760;
-        font-size: clamp(1.12rem, 1.85vw, 1.75rem);
+        font-size: 1.45rem;
         white-space: normal !important;
         overflow-wrap: anywhere;
         word-break: break-word;
@@ -3647,7 +3647,7 @@ st.markdown(
 
     .meeting-header-title {
         color: #111827;
-        font-size: clamp(2rem, 3.2vw, 3rem);
+        font-size: 2.45rem;
         font-weight: 810;
         line-height: 0.98;
         letter-spacing: 0;
@@ -3692,7 +3692,7 @@ st.markdown(
 
     .section-title {
         color: #111827;
-        font-size: clamp(1.28rem, 1.65vw, 1.5rem);
+        font-size: 1.4rem;
         font-weight: 780;
         line-height: 1.12;
         margin: 0 0 2px 0;
@@ -3991,7 +3991,7 @@ st.markdown(
 
     .funnel-card-value {
         color: #111827;
-        font-size: clamp(1.35rem, 2.2vw, 2rem);
+        font-size: 1.65rem;
         font-weight: 820;
         line-height: 1.12;
         overflow-wrap: anywhere;
@@ -4088,7 +4088,7 @@ st.markdown(
 
     .hero-title {
         color: #FFFFFF;
-        font-size: clamp(1.95rem, 3vw, 2.9rem);
+        font-size: 2.4rem;
         font-weight: 810;
         line-height: 0.94;
         letter-spacing: 0;
@@ -4136,7 +4136,7 @@ st.markdown(
 
     .hero-kpi-value {
         color: #FFFFFF;
-        font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+        font-size: 1.35rem;
         font-weight: 800;
         line-height: 1.2;
         overflow-wrap: anywhere;
@@ -4357,7 +4357,7 @@ st.markdown(
     }
 
     .kpi-grid.kpi-grid-compact .premium-kpi-value {
-        font-size: clamp(0.94rem, 1.35vw, 1.18rem);
+        font-size: 1.05rem;
     }
 
     .kpi-grid.kpi-grid-compact .premium-kpi-label {
@@ -4380,7 +4380,7 @@ st.markdown(
 
     .premium-kpi-value {
         color: #111827;
-        font-size: clamp(1.08rem, 1.72vw, 1.42rem);
+        font-size: 1.28rem;
         font-weight: 800;
         line-height: 1.18;
         overflow-wrap: anywhere;
@@ -4755,7 +4755,7 @@ st.markdown(
 
     .growth-engine-step-value {
         color: #0F172A;
-        font-size: clamp(1rem, 1.45vw, 1.32rem);
+        font-size: 1.18rem;
         font-weight: 860;
         line-height: 1.12;
         overflow-wrap: anywhere;
@@ -5021,7 +5021,7 @@ st.markdown(
 
     .focus-value {
         color: #0F172A;
-        font-size: clamp(0.92rem, 1.25vw, 1.12rem);
+        font-size: 1.02rem;
         font-weight: 880;
         line-height: 1.15;
         overflow-wrap: anywhere;
@@ -5246,7 +5246,7 @@ st.markdown(
     }
 
     .cover-logo-title {
-        font-size: clamp(3.2rem, 5vw, 5.2rem);
+        font-size: 4.2rem;
         line-height: 1.02;
     }
 
@@ -5287,7 +5287,7 @@ st.markdown(
     }
 
     .hero-title {
-        font-size: clamp(1.85rem, 2.7vw, 2.5rem);
+        font-size: 2.15rem;
         line-height: 1.04;
     }
 
@@ -5916,6 +5916,269 @@ st.markdown(
         box-shadow: 0 6px 22px rgba(16, 24, 40, 0.04);
     }
 
+    /* Premium analytics workspace. */
+    :root {
+        --workspace-border: #D8DEE7;
+        --workspace-divider: #E7EBF0;
+        --workspace-surface: #FFFFFF;
+        --workspace-shadow: 0 10px 28px rgba(16, 24, 40, 0.065);
+    }
+
+    section[data-testid="stSidebar"] {
+        background: #F8F9FB;
+        border-right-color: #DEE3EA;
+        box-shadow: 8px 0 26px rgba(16, 24, 40, 0.035);
+    }
+
+    .product-masthead {
+        border-bottom-color: var(--workspace-border);
+    }
+
+    .workspace-nav {
+        gap: 4px;
+        padding: 4px;
+        background: #EDEFF3;
+        border-color: #D9DFE7;
+        box-shadow: var(--workspace-shadow);
+    }
+
+    .workspace-nav-link {
+        min-height: 38px;
+        border: 1px solid transparent;
+        transition: color 140ms ease, background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .workspace-nav-icon {
+        width: 22px;
+        height: 22px;
+        flex-basis: 22px;
+        color: var(--nav-accent);
+        background: color-mix(in srgb, var(--nav-accent) 8%, #FFFFFF);
+        border: 1px solid color-mix(in srgb, var(--nav-accent) 16%, #FFFFFF);
+        border-radius: 6px;
+    }
+
+    .workspace-nav-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    [data-testid="stAppViewContainer"]:not(:has(.section-anchor:target)) .workspace-nav-link[href="#results-start"],
+    [data-testid="stAppViewContainer"]:has(#results-start:target) .workspace-nav-link[href="#results-start"],
+    [data-testid="stAppViewContainer"]:has(#phase-workspace:target) .workspace-nav-link[href="#phase-workspace"],
+    [data-testid="stAppViewContainer"]:has(#action-workspace:target) .workspace-nav-link[href="#action-workspace"],
+    [data-testid="stAppViewContainer"]:has(#export-workspace:target) .workspace-nav-link[href="#export-workspace"] {
+        color: #111820 !important;
+        background: #FFFFFF;
+        border-color: #DDE2E9;
+        box-shadow: 0 2px 7px rgba(16, 24, 40, 0.08);
+    }
+
+    .hero-band {
+        background: #10151D;
+        border-color: #252D38;
+        box-shadow: 0 16px 36px rgba(16, 24, 40, 0.18);
+    }
+
+    .hero-mark {
+        color: #8BE7E1;
+        background: #19212B;
+        border-color: #34404E;
+    }
+
+    .hero-kpi:nth-child(1) { --hero-accent: #6F9BFF; }
+    .hero-kpi:nth-child(2) { --hero-accent: #63D2B3; }
+    .hero-kpi:nth-child(3) { --hero-accent: #D3A0FF; }
+    .hero-kpi:nth-child(4) { --hero-accent: #FF7892; }
+
+    .hero-kpi-icon {
+        color: var(--hero-accent, #FFFFFF);
+        background: color-mix(in srgb, var(--hero-accent, #FFFFFF) 11%, #171D26);
+        border-color: color-mix(in srgb, var(--hero-accent, #FFFFFF) 24%, #222A35);
+    }
+
+    .executive-insight-shell {
+        border-left: 3px solid #171D26;
+        box-shadow: 0 6px 18px rgba(16, 24, 40, 0.04);
+    }
+
+    .outcome-context-strip {
+        gap: 0;
+        overflow: hidden;
+        background: var(--workspace-surface);
+        border: 1px solid var(--workspace-border);
+        border-radius: 8px;
+        box-shadow: 0 3px 12px rgba(16, 24, 40, 0.035);
+    }
+
+    .outcome-context-card {
+        padding: 13px 15px;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .outcome-context-card + .outcome-context-card {
+        border-left: 1px solid var(--workspace-divider);
+    }
+
+    .outcome-context-icon {
+        border-radius: 6px;
+    }
+
+    .section-shell {
+        position: relative;
+        border-bottom-color: var(--workspace-border);
+    }
+
+    .section-shell::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        width: 68px;
+        height: 2px;
+        background: linear-gradient(90deg, #315EEC 0 58%, #12A08C 58% 78%, #FE2C55 78% 100%);
+    }
+
+    h2.section-title {
+        font-size: 1.5rem !important;
+        font-weight: 780 !important;
+        line-height: 1.2 !important;
+    }
+
+    .growth-path-node {
+        border-color: var(--workspace-border);
+        box-shadow: 0 6px 18px rgba(16, 24, 40, 0.04);
+    }
+
+    .growth-path-node::after {
+        display: none;
+    }
+
+    .growth-path-node::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        background: linear-gradient(
+            90deg,
+            var(--phase-accent, #315EEC) 0 var(--phase-share, 0%),
+            #E7EBF0 var(--phase-share, 0%) 100%
+        );
+    }
+
+    .growth-path-icon {
+        color: var(--phase-accent, #315EEC);
+        background: color-mix(in srgb, var(--phase-accent, #315EEC) 8%, #FFFFFF);
+        border-color: color-mix(in srgb, var(--phase-accent, #315EEC) 18%, #FFFFFF);
+    }
+
+    .growth-path-summary::before {
+        background: linear-gradient(90deg, var(--tts-cyan) 0 48%, rgba(255,255,255,0.26) 48% 54%, var(--tts-red) 54% 100%);
+    }
+
+    .growth-engine-panel {
+        overflow: hidden;
+        padding: 16px 0 0 0;
+        border-color: var(--workspace-border);
+        box-shadow: 0 8px 24px rgba(16, 24, 40, 0.045);
+    }
+
+    .growth-engine-header {
+        padding: 0 16px;
+        margin-bottom: 14px;
+    }
+
+    .growth-engine-grid {
+        gap: 0;
+        border-top: 1px solid var(--workspace-divider);
+    }
+
+    .growth-engine-step {
+        min-height: 126px;
+        padding: 15px;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    .growth-engine-step + .growth-engine-step {
+        border-left: 1px solid var(--workspace-divider);
+    }
+
+    .growth-engine-step::before {
+        content: "";
+        position: absolute;
+        inset: 0 15px auto 15px;
+        height: 2px;
+        background: var(--step-accent, #315EEC);
+        opacity: 0.72;
+    }
+
+    .growth-engine-step::after {
+        display: none;
+    }
+
+    .growth-engine-step-icon {
+        border-radius: 6px;
+        color: var(--step-accent, #315EEC);
+        background: color-mix(in srgb, var(--step-accent, #315EEC) 8%, #FFFFFF);
+        border-color: color-mix(in srgb, var(--step-accent, #315EEC) 18%, #FFFFFF);
+    }
+
+    .decision-panel {
+        padding: 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+
+    .diagnostic-card,
+    .focus-card {
+        border-color: var(--workspace-border);
+        box-shadow: 0 5px 16px rgba(16, 24, 40, 0.035);
+    }
+
+    .chart-card-icon {
+        --chart-accent: #315EEC;
+        color: var(--chart-accent);
+        background: color-mix(in srgb, var(--chart-accent) 8%, #FFFFFF);
+        border-color: color-mix(in srgb, var(--chart-accent) 18%, #FFFFFF);
+        border-radius: 6px;
+    }
+
+    h3.chart-card-title {
+        font-size: 1.1rem !important;
+        font-weight: 780 !important;
+        line-height: 1.2 !important;
+    }
+
+    .chart-card-icon-phase { --chart-accent: #7257D9; }
+    .chart-card-icon-profit { --chart-accent: #16836A; }
+    .chart-card-icon-target { --chart-accent: #D83B5F; }
+    .chart-card-icon-channel { --chart-accent: #138D93; }
+    .chart-card-icon-investment,
+    .chart-card-icon-cost,
+    .chart-card-icon-ads { --chart-accent: #C94C67; }
+    .chart-card-icon-sample,
+    .chart-card-icon-video { --chart-accent: #4B72D5; }
+
+    .st-key-selected_phase_view_control,
+    div[class*="st-key-phase_chart_mode_"][class*="_control"] {
+        background: #EDEFF3;
+        border-color: #D9DFE7;
+    }
+
+    .st-key-selected_phase_view_control [data-testid="stButton"] button[kind="primary"],
+    div[class*="st-key-phase_chart_mode_"][class*="_control"] [data-testid="stButton"] button[kind="primary"] {
+        background: #121820 !important;
+        box-shadow: 0 4px 10px rgba(16, 24, 40, 0.18) !important;
+    }
+
     @media (prefers-reduced-motion: reduce) {
         [data-testid="stMain"] {
             scroll-behavior: auto;
@@ -5930,6 +6193,14 @@ st.markdown(
     }
 
     @media (max-width: 900px) {
+        .cover-logo-title {
+            font-size: 3.8rem;
+        }
+
+        .meeting-header-title {
+            font-size: 2.1rem;
+        }
+
         .chart-card-grid,
         .cover-cta-row,
         .cover-summary-grid,
@@ -5976,6 +6247,27 @@ st.markdown(
         .outcome-context-card {
             align-items: flex-start;
             padding: 11px;
+        }
+
+        .outcome-context-card:nth-child(3) {
+            border-top: 1px solid var(--workspace-divider);
+            border-left: 0;
+        }
+
+        .growth-engine-step + .growth-engine-step {
+            border-left: 0;
+        }
+
+        .growth-engine-step:nth-child(even) {
+            border-left: 1px solid var(--workspace-divider);
+        }
+
+        .growth-engine-step:nth-child(n + 3) {
+            border-top: 1px solid var(--workspace-divider);
+        }
+
+        .growth-engine-step:last-child {
+            border-left: 0;
         }
 
         .st-key-selected_phase_view_control,
@@ -6066,6 +6358,48 @@ st.markdown(
     }
 
     @media (max-width: 600px) {
+        .cover-logo-title {
+            font-size: 3rem;
+        }
+
+        .meeting-header-title {
+            font-size: 1.85rem;
+        }
+
+        h2.section-title {
+            font-size: 1.28rem !important;
+        }
+
+        h3.chart-card-title {
+            font-size: 1.05rem !important;
+        }
+
+        .funnel-card-value {
+            font-size: 1.45rem;
+        }
+
+        .growth-engine-grid,
+        .outcome-context-strip {
+            grid-template-columns: 1fr;
+        }
+
+        .growth-engine-step:last-child,
+        .outcome-context-card:last-child {
+            grid-column: auto;
+        }
+
+        .outcome-context-card + .outcome-context-card,
+        .outcome-context-card:nth-child(3) {
+            border-top: 1px solid var(--workspace-divider);
+            border-left: 0;
+        }
+
+        .growth-engine-step:nth-child(even),
+        .growth-engine-step + .growth-engine-step {
+            border-top: 1px solid var(--workspace-divider);
+            border-left: 0;
+        }
+
         .workspace-nav-link {
             min-height: 46px;
             flex-direction: column;
@@ -6077,14 +6411,14 @@ st.markdown(
         }
 
         .workspace-nav-icon {
-            width: 16px;
-            height: 16px;
-            flex-basis: 16px;
+            width: 20px;
+            height: 20px;
+            flex-basis: 20px;
         }
 
         .workspace-nav-icon svg {
-            width: 15px;
-            height: 15px;
+            width: 13px;
+            height: 13px;
         }
 
         .chart-card-legends {
@@ -7148,7 +7482,11 @@ def render_executive_insight(overall, df_all, cumulative_be_label, driver, updat
 
 def render_growth_path_strip(phase_summary, payback_label, driver):
     cards = []
+    phase_accents = ("#315EEC", "#7257D9", "#16836A")
+    max_phase_gmv = max((float(value) for value in phase_summary["GMV"]), default=0.0)
     for idx, (_, row) in enumerate(phase_summary.iterrows(), start=1):
+        phase_accent = phase_accents[(idx - 1) % len(phase_accents)]
+        phase_share = min(100.0, max(0.0, float(row["GMV"]) / max_phase_gmv * 100.0)) if max_phase_gmv else 0.0
         metrics = [
             (T["total_gmv"], money(row["GMV"], 0)),
             (T["total_profit"], money(row["Profit"], 0)),
@@ -7158,7 +7496,7 @@ def render_growth_path_strip(phase_summary, payback_label, driver):
             for label, value in metrics
         )
         cards.append(
-            f'<div class="growth-path-node">'
+            f'<div class="growth-path-node" style="--phase-accent:{phase_accent};--phase-share:{phase_share:.1f}%;">'
             f'<div class="growth-path-kicker">Phase {idx}</div>'
             f'<div class="growth-path-heading"><div class="growth-path-icon">{icon_svg("phase")}</div>'
             f'<div class="growth-path-title">{escape(str(row["Phase"]))}</div></div>'
@@ -7174,7 +7512,7 @@ def render_growth_path_strip(phase_summary, payback_label, driver):
         for label, value in summary_metrics
     )
     cards.append(
-        f'<div class="growth-path-node growth-path-summary">'
+        f'<div class="growth-path-node growth-path-summary" style="--phase-accent:#FE2C55;--phase-share:100%;">'
         f'<div class="growth-path-kicker">{escape(T["section_primary"])}</div>'
         f'<div class="growth-path-heading"><div class="growth-path-icon">{icon_svg("target")}</div>'
         f'<div class="growth-path-title">{escape(T["growth_profit_path"])}</div></div>'
@@ -7714,7 +8052,8 @@ def render_chart_lens(title, body, compact=False):
 def render_chart_panel_header(title, subtitle=None, kicker=None, icon=None, legends=None):
     kicker_html = f'<div class="chart-card-kicker">{escape(str(kicker))}</div>' if kicker else ""
     subtitle_html = f'<div class="chart-card-subtitle">{escape(str(subtitle))}</div>' if subtitle else ""
-    icon_html = f'<div class="chart-card-icon">{icon_svg(icon)}</div>' if icon else ""
+    icon_name = icon if icon in ICON_SVG else "spark"
+    icon_html = f'<div class="chart-card-icon chart-card-icon-{icon_name}">{icon_svg(icon_name)}</div>' if icon else ""
     legend_html = ""
     if legends:
         legend_items = []
@@ -9343,7 +9682,7 @@ with st.sidebar:
 
     if "meeting_mode_input" not in st.session_state:
         st.session_state["meeting_mode_input"] = True
-    meeting_mode = st.checkbox(
+    meeting_mode = st.toggle(
         T["meeting_mode"],
         help=T["meeting_mode_help"],
         key="meeting_mode_input",
