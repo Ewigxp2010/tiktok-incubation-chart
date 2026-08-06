@@ -5318,6 +5318,140 @@ st.markdown(
         margin-bottom: 10px;
     }
 
+    .workspace-nav {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 3px;
+        padding: 4px;
+        margin: 0;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid #DCE2E9;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(16, 24, 40, 0.075);
+        backdrop-filter: blur(14px);
+    }
+
+    div[data-testid="stElementContainer"]:has(.workspace-nav) {
+        position: sticky;
+        top: 66px;
+        z-index: 50;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .workspace-nav-link {
+        min-width: 0;
+        min-height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 7px 9px;
+        color: #596475 !important;
+        border-radius: 6px;
+        text-decoration: none !important;
+        font-size: 0.72rem;
+        font-weight: 750;
+        line-height: 1;
+        transition: color 120ms ease, background 120ms ease;
+    }
+
+    .workspace-nav-link:hover,
+    .workspace-nav-link:focus-visible {
+        color: #151A22 !important;
+        background: #F1F3F6;
+        outline: none;
+    }
+
+    .workspace-nav-icon {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #315EEC;
+    }
+
+    .workspace-nav-link:nth-child(2) .workspace-nav-icon {
+        color: #7257D9;
+    }
+
+    .workspace-nav-link:nth-child(3) .workspace-nav-icon {
+        color: #16836A;
+    }
+
+    .workspace-nav-link:nth-child(4) .workspace-nav-icon {
+        color: #D83B5F;
+    }
+
+    .workspace-nav-icon svg {
+        width: 17px;
+        height: 17px;
+        stroke-width: 1.85;
+    }
+
+    .section-anchor {
+        height: 0;
+        scroll-margin-top: 126px;
+    }
+
+    .sidebar-workspace-header {
+        display: grid;
+        grid-template-columns: 36px minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+        padding: 4px 0 14px 0;
+        margin: 0 0 14px 0;
+        border-bottom: 1px solid #E1E6EC;
+    }
+
+    .sidebar-workspace-icon {
+        position: relative;
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        background: #151A22;
+        border: 1px solid #29313C;
+        border-radius: 8px;
+        box-shadow: 0 6px 14px rgba(16, 24, 40, 0.12);
+    }
+
+    .sidebar-workspace-icon::before {
+        content: "";
+        position: absolute;
+        inset: -1px 7px auto 7px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--tts-cyan) 0 48%, var(--tts-red) 52% 100%);
+    }
+
+    .sidebar-workspace-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 1.9;
+    }
+
+    section[data-testid="stSidebar"] h2.sidebar-workspace-title {
+        margin: 0;
+        padding: 0;
+        color: #151A22;
+        font-size: 0.94rem;
+        font-weight: 810;
+        line-height: 1.2;
+    }
+
+    .sidebar-workspace-subtitle {
+        margin-top: 3px;
+        color: #7A8493;
+        font-size: 0.67rem;
+        font-weight: 620;
+        line-height: 1.35;
+    }
+
     .hero-band {
         grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
         gap: 20px;
@@ -5433,6 +5567,158 @@ st.markdown(
 
     .section-title {
         font-size: 1.34rem;
+    }
+
+    .chart-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 10px;
+    }
+
+    .chart-card-heading {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .chart-card-icon {
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #315EEC;
+        background: #F3F6FF;
+        border: 1px solid #DCE4F8;
+        border-radius: 8px;
+    }
+
+    .chart-card-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 1.9;
+    }
+
+    .chart-card-copy {
+        min-width: 0;
+    }
+
+    .chart-card-kicker {
+        margin-bottom: 4px;
+    }
+
+    .chart-card-legends {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 7px 12px;
+        max-width: 58%;
+        padding-top: 3px;
+    }
+
+    .chart-legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #697386;
+        font-size: 0.66rem;
+        font-weight: 680;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    .chart-legend-swatch {
+        width: 16px;
+        flex: 0 0 16px;
+        color: var(--legend-color);
+    }
+
+    .chart-legend-swatch.line {
+        height: 2px;
+        background: currentColor;
+        border-radius: 2px;
+    }
+
+    .chart-legend-swatch.band {
+        height: 8px;
+        background: currentColor;
+        border: 1px solid color-mix(in srgb, currentColor 42%, white);
+        border-radius: 2px;
+        opacity: 0.72;
+    }
+
+    .chart-legend-swatch.dash {
+        height: 0;
+        border-top: 2px dashed currentColor;
+    }
+
+    .action-group {
+        position: relative;
+        overflow: hidden;
+        border-color: #DCE2E9;
+        box-shadow: 0 5px 18px rgba(16, 24, 40, 0.035);
+    }
+
+    .action-group::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 2px;
+        background: var(--action-accent);
+    }
+
+    .action-group-head {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #E8ECF1;
+    }
+
+    .action-group-icon {
+        width: 32px;
+        height: 32px;
+        flex: 0 0 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--action-accent);
+        background: #F4F6F8;
+        border: 1px solid #E1E6EC;
+        border-radius: 8px;
+    }
+
+    .action-group-icon svg {
+        width: 17px;
+        height: 17px;
+        stroke-width: 1.9;
+    }
+
+    .action-group-title {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .action-group-item {
+        position: relative;
+        padding-left: 17px;
+    }
+
+    .action-group-item::before {
+        content: "";
+        position: absolute;
+        left: 1px;
+        top: 0.72em;
+        width: 6px;
+        height: 6px;
+        border: 2px solid var(--action-accent);
+        border-radius: 50%;
+        transform: translateY(-50%);
     }
 
     .st-key-selected_phase_view_control,
@@ -5576,6 +5862,26 @@ st.markdown(
             margin-top: 18px;
         }
 
+        .workspace-nav {
+            position: static;
+        }
+
+        div[data-testid="stElementContainer"]:has(.workspace-nav) {
+            position: static;
+            margin-bottom: 10px;
+        }
+
+        .chart-card-header {
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .chart-card-legends {
+            justify-content: flex-start;
+            max-width: none;
+            padding-left: 44px;
+        }
+
         .hero-metrics {
             grid-template-columns: repeat(3, minmax(0, 1fr));
             padding-top: 14px;
@@ -5612,6 +5918,36 @@ st.markdown(
     }
 
     @media (max-width: 600px) {
+        .workspace-nav-link {
+            min-height: 46px;
+            flex-direction: column;
+            gap: 3px;
+            padding: 6px 3px;
+            font-size: 0.61rem;
+            line-height: 1.15;
+            text-align: center;
+        }
+
+        .workspace-nav-icon {
+            width: 16px;
+            height: 16px;
+            flex-basis: 16px;
+        }
+
+        .workspace-nav-icon svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .chart-card-legends {
+            gap: 6px 10px;
+            padding-left: 0;
+        }
+
+        .chart-legend-item {
+            font-size: 0.61rem;
+        }
+
         .hero-band {
             gap: 0;
             padding: 18px;
@@ -6377,6 +6713,44 @@ def icon_for_label(label):
     return "spark"
 
 
+def render_workspace_nav():
+    items = [
+        ("results-start", T["workspace_nav_overview"], "trend"),
+        ("phase-workspace", T["workspace_nav_phases"], "phase"),
+        ("action-workspace", T["workspace_nav_actions"], "target"),
+        ("export-workspace", T["workspace_nav_exports"], "investment"),
+    ]
+    links = "".join(
+        f'<a class="workspace-nav-link" href="#{anchor}">'
+        f'<span class="workspace-nav-icon">{icon_svg(icon)}</span>'
+        f'<span>{escape(str(label))}</span></a>'
+        for anchor, label, icon in items
+    )
+    st.markdown(
+        f'<nav class="workspace-nav" aria-label="Growth workspace">{links}</nav>',
+        unsafe_allow_html=True,
+    )
+
+
+def render_section_anchor(anchor):
+    st.markdown(
+        f'<div class="section-anchor" id="{escape(str(anchor))}"></div>',
+        unsafe_allow_html=True,
+    )
+
+
+def render_sidebar_workspace_header():
+    st.markdown(
+        '<div class="sidebar-workspace-header">'
+        f'<div class="sidebar-workspace-icon">{icon_svg("phase")}</div>'
+        '<div>'
+        f'<h2 class="sidebar-workspace-title">{escape(T["sidebar_console"])}</h2>'
+        f'<div class="sidebar-workspace-subtitle">{escape(T["sidebar_console_subtitle"])}</div>'
+        '</div></div>',
+        unsafe_allow_html=True,
+    )
+
+
 def render_kpi_grid(items, compact=False, fixed_cols=None):
     cards = []
     for label, value, accent in items:
@@ -7051,14 +7425,22 @@ def group_next_actions(actions):
 
 def render_grouped_actions(actions):
     cards = []
+    group_styles = {
+        T["action_group_validate"]: ("target", "#315EEC"),
+        T["action_group_optimize"]: ("cost", "#D97706"),
+        T["action_group_scale"]: ("trend", "#16836A"),
+    }
     for title, items in group_next_actions(actions).items():
+        icon, accent = group_styles.get(title, ("spark", "#315EEC"))
         body = "".join(
             f'<div class="action-group-item">{escape(str(item))}</div>'
             for item in (items or [T["action_no_immediate"]])
         )
         cards.append(
-            f'<div class="action-group">'
-            f'<div class="action-group-title">{escape(str(title))}</div>{body}</div>'
+            f'<div class="action-group" style="--action-accent:{escape(accent)};">'
+            '<div class="action-group-head">'
+            f'<div class="action-group-icon">{icon_svg(icon)}</div>'
+            f'<div class="action-group-title">{escape(str(title))}</div></div>{body}</div>'
         )
     st.markdown(f'<div class="action-group-grid">{"".join(cards)}</div>', unsafe_allow_html=True)
 
@@ -7119,13 +7501,26 @@ def render_chart_lens(title, body, compact=False):
     )
 
 
-def render_chart_panel_header(title, subtitle=None, kicker=None):
+def render_chart_panel_header(title, subtitle=None, kicker=None, icon=None, legends=None):
     kicker_html = f'<div class="chart-card-kicker">{escape(str(kicker))}</div>' if kicker else ""
     subtitle_html = f'<div class="chart-card-subtitle">{escape(str(subtitle))}</div>' if subtitle else ""
+    icon_html = f'<div class="chart-card-icon">{icon_svg(icon)}</div>' if icon else ""
+    legend_html = ""
+    if legends:
+        legend_items = []
+        for label, color, swatch_type in legends:
+            swatch_class = swatch_type if swatch_type in {"line", "band", "dash"} else "line"
+            legend_items.append(
+                f'<span class="chart-legend-item">'
+                f'<span class="chart-legend-swatch {swatch_class}" style="--legend-color:{escape(str(color))};"></span>'
+                f'<span>{escape(str(label))}</span></span>'
+            )
+        legend_html = f'<div class="chart-card-legends">{"".join(legend_items)}</div>'
     st.markdown(
-        f'<div class="chart-card-header"><div>'
+        '<div class="chart-card-header">'
+        f'<div class="chart-card-heading">{icon_html}<div class="chart-card-copy">'
         f'{kicker_html}<h3 class="chart-card-title">{escape(str(title))}</h3>{subtitle_html}'
-        f'</div></div>',
+        f'</div></div>{legend_html}</div>',
         unsafe_allow_html=True,
     )
 
@@ -8656,7 +9051,7 @@ def render_phase_explorer(phase_inputs, df_all, phase_summary):
         icon_func=phase_chart_mode_icon,
     )
     with st.container(border=True):
-        render_chart_panel_header(phase_label(selected_phase))
+        render_chart_panel_header(phase_label(selected_phase), icon="phase")
         if chart_mode == "cumulative":
             st.plotly_chart(
                 make_phase_cumulative_chart(phase_df, phase_label(selected_phase)),
@@ -8732,7 +9127,7 @@ if st.session_state.get("has_generated", False):
     preserve_setup_widget_state()
 
 with st.sidebar:
-    st.header(T["plan_setup"])
+    render_sidebar_workspace_header()
     n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
 
     meeting_mode = st.checkbox(
@@ -9358,6 +9753,7 @@ if st.session_state.get("has_generated", False):
             st.session_state["_scroll_to_results"] = False
 
         render_product_masthead(model_updated_at)
+        render_workspace_nav()
         render_hero(
             overall=overall,
             weeks=int(weeks_per_phase) * len(PHASES),
@@ -9374,7 +9770,16 @@ if st.session_state.get("has_generated", False):
         )
         render_growth_engine(overall)
         with st.container(border=True):
-            render_chart_panel_header(T["forecast_gmv"], kicker=T["section_primary"])
+            render_chart_panel_header(
+                T["forecast_gmv"],
+                kicker=T["section_primary"],
+                icon="trend",
+                legends=[
+                    (T["forecast_gmv"], CHART_COLORS["gmv"], "line"),
+                    (T["total_cost_label"], CHART_COLORS["cost"], "line"),
+                    (T["forecast_band"], "#CBD8FF", "band"),
+                ],
+            )
             st.plotly_chart(
                 make_scale_chart(
                     df_all,
@@ -9422,6 +9827,7 @@ if st.session_state.get("has_generated", False):
                 st.rerun()
         target_items = target_comparison_items(overall, target_gmv, target_profit)
 
+        render_section_anchor("phase-workspace")
         render_growth_path_strip(phase_summary, cumulative_be_label, total_cost_driver)
         render_phase_explorer(phase_inputs, df_all, phase_summary)
 
@@ -9430,14 +9836,24 @@ if st.session_state.get("has_generated", False):
         with chart_left:
             with st.container(border=True):
                 render_chart_panel_header(
-                    T["sales_contribution"]
+                    T["sales_contribution"],
+                    icon="profit",
+                    legends=[
+                        (T["profit_label"], CHART_COLORS["profit"], "line"),
+                        (T["growth_investment"], "#7C74E8", "band"),
+                    ],
                 )
                 st.plotly_chart(make_profit_investment_chart(df_all, T["sales_contribution"], height=320), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                 render_chart_panel_caption(T["weekly_profit_caption"])
         with chart_right:
             with st.container(border=True):
                 render_chart_panel_header(
-                    T["cumulative_profit_trend"]
+                    T["cumulative_profit_trend"],
+                    icon="target",
+                    legends=[
+                        (T["cumulative_profit_trend"], CHART_COLORS["cumulative"], "line"),
+                        (T["cumulative_be"], "#6B7280", "dash"),
+                    ],
                 )
                 st.plotly_chart(
                     make_cumulative_profit_chart(
@@ -9462,6 +9878,7 @@ if st.session_state.get("has_generated", False):
                     render_chart_panel_header(
                         T["funnel_summary"],
                         kicker=T["section_secondary"],
+                        icon="sample",
                     )
                     render_funnel_summary(df_all)
                     render_chart_panel_caption(T["funnel_business_lens"].format(
@@ -9475,6 +9892,7 @@ if st.session_state.get("has_generated", False):
                     render_chart_panel_header(
                         T["channel_mix"],
                         kicker=T["section_secondary"],
+                        icon="channel",
                     )
                     st.plotly_chart(make_channel_mix_chart(phase_summary), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                     render_chart_panel_caption(T["channel_business_lens"])
@@ -9483,10 +9901,12 @@ if st.session_state.get("has_generated", False):
                     render_chart_panel_header(
                         T["investment_split"],
                         kicker=T["section_secondary"],
+                        icon="investment",
                     )
                     st.plotly_chart(make_investment_split_chart(df_all), use_container_width=True, config={"displayModeBar": False, "responsive": True})
                     render_chart_panel_caption(T["cost_business_lens"].format(driver=total_cost_driver))
 
+        render_section_anchor("action-workspace")
         render_section_header(T["next_actions"])
         render_grouped_actions(next_actions)
 
@@ -9721,6 +10141,7 @@ if st.session_state.get("has_generated", False):
             f"{safe_filename_part(meeting_notes.get('scenario_name'), 'Scenario')}_"
             f"TikTokShop_GrowthPlan_{export_date}"
         )
+        render_section_anchor("export-workspace")
         render_section_header(T["export_materials"])
         if not meeting_mode:
             st.markdown(f'<div class="export-shell-caption">{escape(T["export_materials_note"])}</div>', unsafe_allow_html=True)
