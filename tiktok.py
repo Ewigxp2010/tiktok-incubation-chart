@@ -4862,6 +4862,114 @@ st.markdown(
         line-height: 1.45;
     }
 
+    .debug-details-grid {
+        overflow: hidden;
+        border: 1px solid #DCE4EE;
+        border-radius: 14px;
+        background: #FFFFFF;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.82);
+    }
+
+    .debug-details-header,
+    .debug-details-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(120px, 0.65fr);
+        align-items: center;
+        column-gap: 18px;
+        padding: 10px 14px;
+    }
+
+    .debug-details-header {
+        color: #64748B;
+        background: #F7F9FC;
+        border-bottom: 1px solid #E7EDF4;
+        font-size: 0.68rem;
+        font-weight: 820;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .debug-details-header span:last-child,
+    .debug-details-value {
+        text-align: right;
+    }
+
+    .debug-details-row {
+        min-height: 42px;
+        color: #334155;
+        font-size: 0.79rem;
+        line-height: 1.35;
+    }
+
+    .debug-details-row + .debug-details-row {
+        border-top: 1px solid #EDF1F6;
+    }
+
+    .debug-details-label {
+        font-weight: 680;
+    }
+
+    .debug-details-value {
+        color: #0F172A;
+        font-weight: 820;
+        font-variant-numeric: tabular-nums;
+        overflow-wrap: anywhere;
+    }
+
+    .detail-table-shell {
+        overflow: hidden;
+        border: 1px solid #DCE4EE;
+        border-radius: 14px;
+        background: #FFFFFF;
+    }
+
+    .detail-table-scroll {
+        max-height: min(56vh, 480px);
+        overflow: auto;
+        scrollbar-gutter: stable;
+    }
+
+    .detail-table {
+        width: max-content;
+        min-width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        color: #334155;
+        font-size: 0.74rem;
+        line-height: 1.35;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .detail-table th,
+    .detail-table td {
+        max-width: 240px;
+        padding: 9px 11px;
+        text-align: left;
+        vertical-align: top;
+        white-space: nowrap;
+        border-bottom: 1px solid #EDF1F6;
+    }
+
+    .detail-table th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        color: #526174;
+        background: #F7F9FC;
+        font-size: 0.65rem;
+        font-weight: 820;
+        text-transform: uppercase;
+        letter-spacing: 0.045em;
+    }
+
+    .detail-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .detail-table tbody tr:hover td {
+        background: #F8FAFD;
+    }
+
     .focus-card-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5308,6 +5416,10 @@ st.markdown(
         background: #F4F6F8;
     }
 
+    [data-testid="stMain"] {
+        scroll-behavior: smooth;
+    }
+
     .block-container {
         padding-top: 1.55rem;
     }
@@ -5341,6 +5453,9 @@ st.markdown(
     }
 
     .workspace-nav-link {
+        --nav-accent: #315EEC;
+        position: relative;
+        overflow: hidden;
         min-width: 0;
         min-height: 36px;
         display: flex;
@@ -5357,11 +5472,50 @@ st.markdown(
         transition: color 120ms ease, background 120ms ease;
     }
 
+    .workspace-nav-link:nth-child(2) {
+        --nav-accent: #7257D9;
+    }
+
+    .workspace-nav-link:nth-child(3) {
+        --nav-accent: #16836A;
+    }
+
+    .workspace-nav-link:nth-child(4) {
+        --nav-accent: #D83B5F;
+    }
+
+    .workspace-nav-link::after {
+        content: "";
+        position: absolute;
+        inset: auto 14px 0 14px;
+        height: 2px;
+        background: var(--nav-accent);
+        opacity: 0;
+        transition: opacity 120ms ease;
+    }
+
     .workspace-nav-link:hover,
     .workspace-nav-link:focus-visible {
         color: #151A22 !important;
         background: #F1F3F6;
         outline: none;
+    }
+
+    [data-testid="stAppViewContainer"]:not(:has(.section-anchor:target)) .workspace-nav-link[href="#results-start"],
+    [data-testid="stAppViewContainer"]:has(#results-start:target) .workspace-nav-link[href="#results-start"],
+    [data-testid="stAppViewContainer"]:has(#phase-workspace:target) .workspace-nav-link[href="#phase-workspace"],
+    [data-testid="stAppViewContainer"]:has(#action-workspace:target) .workspace-nav-link[href="#action-workspace"],
+    [data-testid="stAppViewContainer"]:has(#export-workspace:target) .workspace-nav-link[href="#export-workspace"] {
+        color: #151A22 !important;
+        background: #F1F3F6;
+    }
+
+    [data-testid="stAppViewContainer"]:not(:has(.section-anchor:target)) .workspace-nav-link[href="#results-start"]::after,
+    [data-testid="stAppViewContainer"]:has(#results-start:target) .workspace-nav-link[href="#results-start"]::after,
+    [data-testid="stAppViewContainer"]:has(#phase-workspace:target) .workspace-nav-link[href="#phase-workspace"]::after,
+    [data-testid="stAppViewContainer"]:has(#action-workspace:target) .workspace-nav-link[href="#action-workspace"]::after,
+    [data-testid="stAppViewContainer"]:has(#export-workspace:target) .workspace-nav-link[href="#export-workspace"]::after {
+        opacity: 1;
     }
 
     .workspace-nav-icon {
@@ -5371,19 +5525,7 @@ st.markdown(
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #315EEC;
-    }
-
-    .workspace-nav-link:nth-child(2) .workspace-nav-icon {
-        color: #7257D9;
-    }
-
-    .workspace-nav-link:nth-child(3) .workspace-nav-icon {
-        color: #16836A;
-    }
-
-    .workspace-nav-link:nth-child(4) .workspace-nav-icon {
-        color: #D83B5F;
+        color: var(--nav-accent);
     }
 
     .workspace-nav-icon svg {
@@ -5487,7 +5629,7 @@ st.markdown(
 
     .hero-metrics {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         align-items: stretch;
         min-width: 0;
         border-left: 1px solid rgba(255,255,255,0.14);
@@ -5498,7 +5640,7 @@ st.markdown(
         flex-direction: column;
         justify-content: center;
         min-width: 0;
-        padding: 2px 15px;
+        padding: 2px 8px;
         border-left-color: rgba(255,255,255,0.14);
     }
 
@@ -5518,7 +5660,8 @@ st.markdown(
     }
 
     .hero-kpi-value {
-        font-size: 1.18rem;
+        font-size: 0.98rem;
+        white-space: nowrap;
     }
 
     .hero-kpi-value,
@@ -5774,6 +5917,10 @@ st.markdown(
     }
 
     @media (prefers-reduced-motion: reduce) {
+        [data-testid="stMain"] {
+            scroll-behavior: auto;
+        }
+
         .stButton > button,
         .growth-path-node,
         .growth-engine-step {
@@ -5863,11 +6010,12 @@ st.markdown(
         }
 
         .workspace-nav {
-            position: static;
+            position: relative;
         }
 
         div[data-testid="stElementContainer"]:has(.workspace-nav) {
-            position: static;
+            position: sticky;
+            top: 60px;
             margin-bottom: 10px;
         }
 
@@ -5883,7 +6031,7 @@ st.markdown(
         }
 
         .hero-metrics {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             padding-top: 14px;
             border-top: 1px solid rgba(255,255,255,0.15);
             border-left: 0;
@@ -6025,6 +6173,20 @@ st.markdown(
             gap: 10px;
             padding: 13px;
         }
+
+        .debug-details-header {
+            display: none;
+        }
+
+        .debug-details-row {
+            grid-template-columns: 1fr;
+            gap: 3px;
+            padding: 10px 12px;
+        }
+
+        .debug-details-value {
+            text-align: left;
+        }
     }
 
     .sku-title {
@@ -6093,6 +6255,36 @@ def category_path_label(category, subcategory):
 
 def csv_bytes(df):
     return df.to_csv(index=False).encode("utf-8-sig")
+
+
+def dataframe_html(df):
+    def cell_text(value):
+        if value is None:
+            return ""
+        try:
+            if pd.isna(value):
+                return ""
+        except (TypeError, ValueError):
+            pass
+        return str(value)
+
+    header_html = "".join(f"<th scope=\"col\">{escape(str(column))}</th>" for column in df.columns)
+    body_html = "".join(
+        "<tr>"
+        + "".join(f"<td>{escape(cell_text(value))}</td>" for value in row)
+        + "</tr>"
+        for row in df.itertuples(index=False, name=None)
+    )
+    return (
+        '<div class="detail-table-shell">'
+        '<div class="detail-table-scroll">'
+        '<table class="detail-table">'
+        f'<thead><tr>{header_html}</tr></thead>'
+        f'<tbody>{body_html}</tbody>'
+        '</table>'
+        '</div>'
+        '</div>'
+    )
 
 
 def get_preset(category, subcategory):
@@ -6921,6 +7113,7 @@ def render_hero(overall, weeks, skus, break_even_label):
         f'<h1 class="hero-title">{escape(T["hero_title"].format(weeks=weeks, skus=skus))}</h1>'
         f'<div class="hero-subtitle">{escape(subtitle)}</div></div>'
         f'</div><div class="hero-metrics"><div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("trend")}</div><div class="hero-kpi-label">{escape(T["hero_gmv"])}</div><div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div></div>'
+        f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("profit")}</div><div class="hero-kpi-label">{escape(T["total_profit"])}</div><div class="hero-kpi-value">{money(overall["Total Profit"], 0)}</div></div>'
         f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("investment")}</div><div class="hero-kpi-label">{escape(T["hero_investment"])}</div><div class="hero-kpi-value">{money(overall["Growth Investment"], 0)}</div></div>'
         f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("target")}</div><div class="hero-kpi-label">{escape(T["hero_break_even"])}</div><div class="hero-kpi-value">{escape(break_even_label)}</div></div>'
         '</div></div>'
@@ -7312,7 +7505,7 @@ def target_comparison_items(overall, target_gmv, target_profit):
     return items
 
 
-def debug_details_table(overall, scenario_key, effective_ads_roas, target_gmv, target_profit, n_skus, locked):
+def debug_details_html(overall, scenario_key, effective_ads_roas, target_gmv, target_profit, n_skus, locked):
     factors = SCENARIO_ADJUSTMENTS.get(scenario_key, SCENARIO_ADJUSTMENTS["base"])
     target_gmv = float(target_gmv or 0)
     target_profit = float(target_profit or 0)
@@ -7335,7 +7528,22 @@ def debug_details_table(overall, scenario_key, effective_ads_roas, target_gmv, t
         (T["model_version"], MODEL_VERSION),
         (T["model_last_reviewed"], MODEL_LAST_REVIEWED),
     ]
-    return pd.DataFrame(rows, columns=[T["debug_metric"], T["debug_value"]])
+    row_html = "".join(
+        '<div class="debug-details-row" role="row">'
+        f'<span class="debug-details-label" role="cell">{escape(str(label))}</span>'
+        f'<span class="debug-details-value" role="cell">{escape(str(value))}</span>'
+        '</div>'
+        for label, value in rows
+    )
+    return (
+        '<div class="debug-details-grid" role="table">'
+        '<div class="debug-details-header" role="row">'
+        f'<span role="columnheader">{escape(T["debug_metric"])}</span>'
+        f'<span role="columnheader">{escape(T["debug_value"])}</span>'
+        '</div>'
+        f'{row_html}'
+        '</div>'
+    )
 
 
 def apply_scenario_adjustment(product_df, ads_roas, scenario_key):
@@ -7881,7 +8089,8 @@ def wrap_pdf_text(text, max_width, font_name, font_size):
     return words
 
 
-def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, diagnosis_text, forecast_range_values, assumption_summary, next_actions, df_all, product_df=None, detail_pack=True):
+@st.cache_data(show_spinner=False, max_entries=24)
+def meeting_summary_pdf(overall, narrative, health_checks, path_text, weeks, skus, generated_at, meeting_notes, assumption_status, takeaways, cost_explanation_text, diagnosis_text, forecast_range_values, assumption_summary, next_actions, df_all, product_df=None, detail_pack=True, language_code="en"):
     from reportlab.lib.pagesizes import A4
     from reportlab.lib import colors
     from reportlab.pdfgen import canvas
@@ -9132,9 +9341,10 @@ with st.sidebar:
     render_sidebar_workspace_header()
     n_skus = st.number_input(T["expected_listing_skus"], min_value=1, max_value=26, value=5, step=1, key="n_skus_input")
 
+    if "meeting_mode_input" not in st.session_state:
+        st.session_state["meeting_mode_input"] = True
     meeting_mode = st.checkbox(
         T["meeting_mode"],
-        value=True,
         help=T["meeting_mode_help"],
         key="meeting_mode_input",
     )
@@ -9688,8 +9898,11 @@ if st.session_state.get("has_generated", False):
             st.session_state["_model_current_outcomes"] = current_outcomes
             st.session_state["_model_signature"] = model_signature
             st.session_state["_model_updated_at"] = datetime.now().strftime("%H:%M:%S")
+            st.session_state["_model_generated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         elif "_model_current_outcomes" not in st.session_state:
             st.session_state["_model_current_outcomes"] = current_outcomes
+        if "_model_generated_at" not in st.session_state:
+            st.session_state["_model_generated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         previous_outcomes = st.session_state.get("_model_previous_outcomes")
         model_updated_at = st.session_state.get("_model_updated_at", datetime.now().strftime("%H:%M:%S"))
         total_cost_row = df_all.sum(numeric_only=True)
@@ -9715,7 +9928,7 @@ if st.session_state.get("has_generated", False):
         takeaways = commercial_takeaways(overall, df_all, cumulative_be_label, total_cost_driver)
         business_readout = business_readout_items(overall, df_all, cumulative_be_label, total_cost_driver)
         forecast_range_values = forecast_range(overall, assumption_status)
-        generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+        generated_at = st.session_state["_model_generated_at"]
         logistics_display = logistics_display_text(product_df, float(logistics_cost), bool(use_fbt))
         if not use_fbt:
             logistics_display = logistics_detail_display(logistics_carrier_cost, logistics_pick_pack_cost, logistics_return_allowance)
@@ -9739,7 +9952,7 @@ if st.session_state.get("has_generated", False):
             driver=total_cost_driver,
         )
 
-        st.markdown('<div id="results-start"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-anchor" id="results-start"></div>', unsafe_allow_html=True)
         if st.session_state.get("_scroll_to_results", False):
             components.html(
                 """
@@ -10007,8 +10220,8 @@ if st.session_state.get("has_generated", False):
                 st.caption(T["planning_disclaimer"])
 
             with st.expander(T["debug_details"], expanded=False):
-                st.dataframe(
-                    debug_details_table(
+                st.markdown(
+                    debug_details_html(
                         overall=overall,
                         scenario_key=scenario_case,
                         effective_ads_roas=effective_ads_roas,
@@ -10017,8 +10230,7 @@ if st.session_state.get("has_generated", False):
                         n_skus=model_n_skus,
                         locked=st.session_state.get("plan_locked", False),
                     ),
-                    width="stretch",
-                    hide_index=True,
+                    unsafe_allow_html=True,
                 )
 
             if not meeting_mode:
@@ -10046,7 +10258,7 @@ if st.session_state.get("has_generated", False):
                         "Organic Creator Commission Rate": T["organic_commission_sku"],
                         "Paid Creator Commission Rate": T["paid_commission_sku"],
                     })
-                    st.dataframe(product_display, width="stretch")
+                    st.markdown(dataframe_html(product_display), unsafe_allow_html=True)
 
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -10116,6 +10328,7 @@ if st.session_state.get("has_generated", False):
             df_all=df_all,
             product_df=product_df,
             detail_pack=False,
+            language_code=lang,
         )
         meeting_pdf = meeting_summary_pdf(
             overall=overall,
@@ -10136,6 +10349,7 @@ if st.session_state.get("has_generated", False):
             df_all=df_all,
             product_df=product_df,
             detail_pack=True,
+            language_code=lang,
         )
         export_date = datetime.now().strftime("%Y-%m-%d")
         export_prefix = (
@@ -10231,17 +10445,22 @@ if st.session_state.get("has_generated", False):
                     "ShopTab Paid GMV": f"{T['shoptab_gmv']} Paid",
                     "ShopTab GMV": T["shoptab_gmv"],
                 })
-                st.dataframe(
-                    phase_summary_display,
-                    width="stretch",
-                )
+                st.markdown(dataframe_html(phase_summary_display), unsafe_allow_html=True)
 
         if not meeting_mode:
             with st.expander(T["view_details"], expanded=False):
                 st.markdown(f"**{T['overall_summary']}**")
-                st.dataframe(
-                    format_table(overall_summary, money_cols=money_cols, pct_cols=["Profit Margin", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols),
-                    width="stretch",
+                st.markdown(
+                    dataframe_html(
+                        format_table(
+                            overall_summary,
+                            money_cols=money_cols,
+                            pct_cols=["Profit Margin", "Contribution Margin"],
+                            number_cols=number_cols,
+                            decimal_cols=decimal_cols,
+                        )
+                    ),
+                    unsafe_allow_html=True,
                 )
                 st.markdown(f"**{T['weekly_details']}**")
                 weekly_display = format_table(df_all.drop(columns=["Phase Key"]), money_cols=money_cols, pct_cols=["Ads Take Rate", "Contribution Margin"], number_cols=number_cols, decimal_cols=decimal_cols)
@@ -10252,7 +10471,7 @@ if st.session_state.get("has_generated", False):
                     "ShopTab Paid GMV": f"{T['shoptab_gmv']} Paid",
                     "ShopTab GMV": T["shoptab_gmv"],
                 })
-                st.dataframe(weekly_display, width="stretch")
+                st.markdown(dataframe_html(weekly_display), unsafe_allow_html=True)
 
                 d1, d2 = st.columns(2)
                 d1.download_button(T["download_weekly"], data=csv_bytes(df_all), file_name=f"{export_prefix}_weekly_details.csv", mime="text/csv")
