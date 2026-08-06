@@ -5303,6 +5303,199 @@ st.markdown(
         box-shadow: 0 5px 14px rgba(16, 24, 40, 0.07);
     }
 
+    /* Executive workspace refinement. */
+    [data-testid="stAppViewContainer"] > .main {
+        background: #F4F6F8;
+    }
+
+    .block-container {
+        padding-top: 1.55rem;
+    }
+
+    .product-masthead {
+        min-height: 46px;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .hero-band {
+        grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+        gap: 20px;
+        padding: 22px 24px;
+        margin-bottom: 12px;
+        background: #131820;
+        border-color: #29313C;
+        box-shadow: 0 12px 30px rgba(16, 24, 40, 0.14);
+    }
+
+    .hero-copy {
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 13px;
+        align-items: center;
+    }
+
+    .hero-mark {
+        width: 42px;
+        height: 42px;
+    }
+
+    h1.hero-title {
+        font-size: 2rem;
+        line-height: 1.08;
+        margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+        max-width: 38rem;
+        font-size: 0.86rem;
+        line-height: 1.48;
+    }
+
+    .hero-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+        min-width: 0;
+        border-left: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .hero-kpi {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+        padding: 2px 15px;
+        border-left-color: rgba(255,255,255,0.14);
+    }
+
+    .hero-kpi:first-child {
+        border-left: 0;
+    }
+
+    .hero-kpi-icon {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 8px;
+    }
+
+    .hero-kpi-label {
+        margin-bottom: 5px;
+        font-size: 0.64rem;
+    }
+
+    .hero-kpi-value {
+        font-size: 1.18rem;
+    }
+
+    .hero-kpi-value,
+    .outcome-context-value,
+    .growth-path-value,
+    .growth-engine-step-value,
+    .premium-kpi-value,
+    .focus-value,
+    input {
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum" 1;
+    }
+
+    .executive-insight-shell {
+        padding: 13px 15px;
+        margin: 0 0 14px 0;
+        box-shadow: 0 4px 14px rgba(16, 24, 40, 0.035);
+    }
+
+    .outcome-context-strip {
+        margin: 10px 0 16px 0;
+    }
+
+    .outcome-context-card {
+        border-color: #DCE2E9;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.025);
+    }
+
+    .outcome-context-card:nth-child(1) .outcome-context-icon {
+        color: #315EEC;
+    }
+
+    .outcome-context-card:nth-child(2) .outcome-context-icon {
+        color: #7257D9;
+    }
+
+    .outcome-context-card:nth-child(3) .outcome-context-icon {
+        color: #16836A;
+    }
+
+    .section-shell {
+        margin-top: 28px;
+        padding-bottom: 8px;
+    }
+
+    .section-title {
+        font-size: 1.34rem;
+    }
+
+    .st-key-selected_phase_view_control,
+    div[class*="st-key-phase_chart_mode_"][class*="_control"] {
+        gap: 4px !important;
+        padding: 4px;
+        background: #E9EDF2;
+        border: 1px solid #DDE3EA;
+        border-radius: 8px;
+    }
+
+    .st-key-selected_phase_view_control [data-testid="stButton"],
+    div[class*="st-key-phase_chart_mode_"][class*="_control"] [data-testid="stButton"] {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .st-key-selected_phase_view_control [data-testid="stButton"] button,
+    div[class*="st-key-phase_chart_mode_"][class*="_control"] [data-testid="stButton"] button {
+        position: relative;
+        overflow: hidden;
+        min-height: 42px;
+        border: 0 !important;
+        background: transparent !important;
+        color: #596475 !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    .st-key-selected_phase_view_control [data-testid="stButton"] button[kind="primary"],
+    div[class*="st-key-phase_chart_mode_"][class*="_control"] [data-testid="stButton"] button[kind="primary"] {
+        background: #151A22 !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 3px 8px rgba(16, 24, 40, 0.16) !important;
+    }
+
+    .st-key-selected_phase_view_control [data-testid="stButton"] button[kind="primary"]::after {
+        content: "";
+        position: absolute;
+        inset: 0 18px auto 18px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--tts-cyan) 0 48%, var(--tts-red) 52% 100%);
+    }
+
+    .st-key-selected_phase_view_control [data-testid="stIconMaterial"],
+    div[class*="st-key-phase_chart_mode_"][class*="_control"] [data-testid="stIconMaterial"] {
+        font-size: 1.05rem;
+    }
+
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.chart-card-title) {
+        border-color: #DCE2E9;
+        box-shadow: 0 6px 22px rgba(16, 24, 40, 0.04);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .stButton > button,
+        .growth-path-node,
+        .growth-engine-step {
+            transition: none !important;
+            transform: none !important;
+        }
+    }
+
     @media (max-width: 900px) {
         .chart-card-grid,
         .cover-cta-row,
@@ -5383,15 +5576,25 @@ st.markdown(
             margin-top: 18px;
         }
 
-        .hero-kpi {
+        .hero-metrics {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.15);
             border-left: 0;
-            border-top: 1px solid #E5E7EB;
-            padding-left: 0;
-            padding-top: 12px;
+        }
+
+        .hero-kpi {
+            border-top: 0;
+            border-left: 1px solid rgba(255,255,255,0.14);
+            padding: 0 12px;
+        }
+
+        .hero-kpi:first-child {
+            border-left: 0;
         }
 
         .hero-copy {
-            grid-template-columns: 1fr;
+            grid-template-columns: 42px minmax(0, 1fr);
         }
 
         .product-masthead {
@@ -5441,7 +5644,14 @@ st.markdown(
             line-height: 1.45;
         }
 
-        .hero-kpi {
+        .hero-metrics {
+            grid-template-columns: 1fr;
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        .hero-kpi,
+        .hero-kpi:first-child {
             display: grid;
             grid-template-columns: 30px minmax(0, 1fr) auto;
             grid-template-rows: auto auto;
@@ -5449,6 +5659,7 @@ st.markdown(
             align-items: center;
             min-height: 52px;
             padding: 10px 0;
+            border-left: 0;
             border-top-color: rgba(255,255,255,0.16);
         }
 
@@ -6201,7 +6412,7 @@ def set_segmented_button_value(state_key, option):
     st.session_state[state_key] = option
 
 
-def render_segmented_buttons(options, state_key, format_func=str, help_func=None):
+def render_segmented_buttons(options, state_key, format_func=str, help_func=None, icon_func=None):
     if not options:
         return None
     if state_key not in st.session_state:
@@ -6216,6 +6427,7 @@ def render_segmented_buttons(options, state_key, format_func=str, help_func=None
                 format_func(option),
                 key=f"{state_key}__btn__{idx}",
                 type="primary" if option == selected else "secondary",
+                icon=icon_func(option) if icon_func else None,
                 width="stretch",
                 help=help_func(option) if help_func else None,
                 on_click=set_segmented_button_value,
@@ -6332,10 +6544,10 @@ def render_hero(overall, weeks, skus, break_even_label):
         '<div>'
         f'<h1 class="hero-title">{escape(T["hero_title"].format(weeks=weeks, skus=skus))}</h1>'
         f'<div class="hero-subtitle">{escape(subtitle)}</div></div>'
-        f'</div><div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("trend")}</div><div class="hero-kpi-label">{escape(T["hero_gmv"])}</div><div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div></div>'
+        f'</div><div class="hero-metrics"><div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("trend")}</div><div class="hero-kpi-label">{escape(T["hero_gmv"])}</div><div class="hero-kpi-value">{money(overall["Total GMV"], 0)}</div></div>'
         f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("investment")}</div><div class="hero-kpi-label">{escape(T["hero_investment"])}</div><div class="hero-kpi-value">{money(overall["Growth Investment"], 0)}</div></div>'
         f'<div class="hero-kpi"><div class="hero-kpi-icon">{icon_svg("target")}</div><div class="hero-kpi-label">{escape(T["hero_break_even"])}</div><div class="hero-kpi-value">{escape(break_even_label)}</div></div>'
-        '</div>'
+        '</div></div>'
     )
     st.markdown(html, unsafe_allow_html=True)
 
@@ -8409,6 +8621,21 @@ def compact_phase_label(phase_key):
     return T.get("phase_short", "Phase {number}").format(number=phase_number)
 
 
+def phase_button_icon(phase_key):
+    return {
+        "phase1": ":material/filter_1:",
+        "phase2": ":material/filter_2:",
+        "phase3": ":material/filter_3:",
+    }.get(phase_key, ":material/flag:")
+
+
+def phase_chart_mode_icon(mode_key):
+    return {
+        "cumulative": ":material/show_chart:",
+        "total": ":material/waterfall_chart:",
+    }.get(mode_key, ":material/monitoring:")
+
+
 @st.fragment
 def render_phase_explorer(phase_inputs, df_all, phase_summary):
     render_section_header(T["phase_trend"])
@@ -8417,6 +8644,7 @@ def render_phase_explorer(phase_inputs, df_all, phase_summary):
         "selected_phase_view",
         format_func=compact_phase_label,
         help_func=lambda key: phase_label(next(phase for phase in phase_inputs if phase["key"] == key)),
+        icon_func=phase_button_icon,
     )
     selected_phase = next(phase for phase in phase_inputs if phase["key"] == selected_phase_key)
     phase_df = df_all[df_all["Phase Key"] == selected_phase["key"]].copy()
@@ -8425,6 +8653,7 @@ def render_phase_explorer(phase_inputs, df_all, phase_summary):
         PHASE_CHART_MODE_KEYS,
         f"phase_chart_mode_{selected_phase['key']}",
         format_func=phase_chart_mode_label,
+        icon_func=phase_chart_mode_icon,
     )
     with st.container(border=True):
         render_chart_panel_header(phase_label(selected_phase))
@@ -8490,7 +8719,7 @@ if not st.session_state.get("sku_count_confirmed", False) and not st.session_sta
             label_visibility="collapsed",
         )
     with cover_col2:
-        if st.button(T["continue_setup"], type="primary", width="stretch"):
+        if st.button(T["continue_setup"], type="primary", icon=":material/arrow_forward:", width="stretch"):
             st.session_state["sku_count_confirmed"] = True
             st.rerun()
     st.markdown(
@@ -8518,6 +8747,7 @@ with st.sidebar:
         st.button(
             T["back_to_client_view"],
             key="back_to_client_view_btn",
+            icon=":material/tune:",
             on_click=switch_to_client_view,
         )
         promo_60d = bool(st.session_state.get("_applied_promo_60d", st.session_state.get("_model_promo_60d", st.session_state.get("promo_60d_input", True))))
@@ -8550,13 +8780,13 @@ with st.sidebar:
         st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
         render_sidebar_meta(f"{T['model_version']}: {MODEL_VERSION}")
         render_sidebar_divider()
-        if st.button(T["reset_defaults"], key="reset_request_btn"):
+        if st.button(T["reset_defaults"], key="reset_request_btn", icon=":material/restart_alt:"):
             st.session_state["reset_confirm_pending"] = True
         if st.session_state.get("reset_confirm_pending", False):
             render_status_panel(T["reset_defaults"], T["reset_pending"], tone="warning", compact=True)
-            if st.button(T["reset_confirm"], key="reset_confirm_btn"):
+            if st.button(T["reset_confirm"], key="reset_confirm_btn", icon=":material/check:"):
                 reset_defaults()
-        if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"]):
+        if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"], icon=":material/replay:"):
             reset_sku_assumptions(n_skus)
         with st.expander(T["plan_setup"], expanded=True):
             promo_60d = st.checkbox(
@@ -8858,7 +9088,7 @@ except (KeyError, TypeError, ValueError) as exc:
 st.session_state["_draft_signature"] = draft_signature
 if st.session_state.get("plan_locked", False):
     st.warning(T["plan_locked"])
-    if st.button(T["unlock_plan"], key="unlock_plan_btn"):
+    if st.button(T["unlock_plan"], key="unlock_plan_btn", icon=":material/lock_open:"):
         st.session_state["plan_locked"] = False
         st.rerun()
 
@@ -8866,7 +9096,7 @@ if not st.session_state.get("has_generated", False):
     if input_validation_error:
         st.error(f"{T['input_error']}: {input_validation_error}")
 
-    if st.button(T["generate"], type="primary", disabled=bool(input_validation_error)):
+    if st.button(T["generate"], type="primary", icon=":material/monitoring:", disabled=bool(input_validation_error)):
         apply_model_draft(
             product_df=draft_product_df,
             phase_inputs=phase_inputs,
@@ -8931,7 +9161,7 @@ if show_setup and st.session_state.get("has_generated", False):
             render_status_panel(T["input_error"], input_validation_error, tone="warning", compact=True)
         elif has_pending_model_changes:
             render_status_panel(T["update_model"], T["pending_model_changes"], tone="warning", compact=True)
-            if st.button(T["update_model"], type="primary", key="apply_model_changes_btn", width="stretch"):
+            if st.button(T["update_model"], type="primary", key="apply_model_changes_btn", icon=":material/sync:", width="stretch"):
                 apply_model_draft(
                     product_df=draft_product_df,
                     phase_inputs=phase_inputs,
@@ -9166,7 +9396,7 @@ if st.session_state.get("has_generated", False):
             )
 
         if (not meeting_mode) and (not st.session_state.get("plan_locked", False)):
-            if st.button(T["lock_plan"], key="lock_plan_btn"):
+            if st.button(T["lock_plan"], key="lock_plan_btn", icon=":material/lock:"):
                 st.session_state["plan_locked"] = True
                 st.session_state["_locked_product_df"] = product_df.copy()
                 st.session_state["_locked_df_all"] = df_all.copy()
@@ -9508,6 +9738,7 @@ if st.session_state.get("has_generated", False):
                     data=csv_bytes(customer_summary),
                     file_name=f"{export_prefix}_summary.csv",
                     mime="text/csv",
+                    icon=":material/download:",
                     width="stretch",
                 )
             st.markdown('</div>', unsafe_allow_html=True)
@@ -9524,6 +9755,7 @@ if st.session_state.get("has_generated", False):
                     data=meeting_html.encode("utf-8"),
                     file_name=f"{export_prefix}_summary.html",
                     mime="text/html",
+                    icon=":material/download:",
                     width="stretch",
                 )
             st.markdown('</div>', unsafe_allow_html=True)
@@ -9540,6 +9772,7 @@ if st.session_state.get("has_generated", False):
                     data=one_pager_pdf,
                     file_name=f"{export_prefix}_one_pager.pdf",
                     mime="application/pdf",
+                    icon=":material/download:",
                     width="stretch",
                 )
             st.markdown('</div>', unsafe_allow_html=True)
@@ -9556,6 +9789,7 @@ if st.session_state.get("has_generated", False):
                     data=meeting_pdf,
                     file_name=f"{export_prefix}_detail.pdf",
                     mime="application/pdf",
+                    icon=":material/download:",
                     width="stretch",
                 )
             st.markdown('</div>', unsafe_allow_html=True)
