@@ -8032,12 +8032,20 @@ def render_decision_panel(overall, df_all, cumulative_be_label, driver):
 def render_setup_workspace_header(n_skus, weeks_per_phase):
     has_generated = st.session_state.get("has_generated", False)
     total_weeks = int(weeks_per_phase) * len(PHASES)
-    title = T["setup_edit_title"] if has_generated else T["setup_workspace_title"]
-    subtitle = T["setup_edit_subtitle"] if has_generated else T["setup_workspace_subtitle"]
+    title = (
+        T.get("setup_edit_title", "Refine the active plan")
+        if has_generated
+        else T.get("setup_workspace_title", "Build the growth plan")
+    )
+    subtitle = (
+        T.get("setup_edit_subtitle", "Adjust assumptions without replacing the live dashboard until you apply the changes.")
+        if has_generated
+        else T.get("setup_workspace_subtitle", "Set the portfolio economics once, then turn them into a decision-ready growth forecast.")
+    )
     steps = [
-        ("01", T["setup_step_plan"], T["setup_step_plan_meta"], "phase"),
-        ("02", T["setup_step_skus"], T["setup_step_skus_meta"].format(skus=int(n_skus)), "sample"),
-        ("03", T["setup_step_forecast"], T["setup_step_forecast_meta"].format(weeks=total_weeks), "trend"),
+        ("01", T.get("setup_step_plan", "Plan inputs"), T.get("setup_step_plan_meta", "Controls in the sidebar"), "phase"),
+        ("02", T.get("setup_step_skus", "SKU economics"), T.get("setup_step_skus_meta", "{skus} product profiles").format(skus=int(n_skus)), "sample"),
+        ("03", T.get("setup_step_forecast", "Growth forecast"), T.get("setup_step_forecast_meta", "{weeks}-week decision view").format(weeks=total_weeks), "trend"),
     ]
     step_html = "".join(
         f'<div class="setup-rail-step">'
@@ -8054,7 +8062,7 @@ def render_setup_workspace_header(n_skus, weeks_per_phase):
             <div class="setup-workspace-copy">
                 <div class="setup-workspace-mark">{icon_svg("trend")}</div>
                 <div>
-                    <div class="setup-workspace-eyebrow">{escape(T["setup_workspace_eyebrow"])}</div>
+                    <div class="setup-workspace-eyebrow">{escape(T.get("setup_workspace_eyebrow", "Growth planning workspace"))}</div>
                     <h1 class="setup-workspace-title">{escape(title)}</h1>
                     <div class="setup-workspace-subtitle">{escape(subtitle)}</div>
                 </div>
@@ -8072,8 +8080,8 @@ def render_setup_section_heading(n_skus):
         <div class="setup-section-heading">
             <div>
                 <div class="setup-section-kicker">{escape(T["sku_setup"])}</div>
-                <h2 class="setup-section-title">{escape(T["setup_portfolio_title"])}</h2>
-                <div class="setup-section-subtitle">{escape(T["setup_portfolio_subtitle"])}</div>
+                <h2 class="setup-section-title">{escape(T.get("setup_portfolio_title", "SKU portfolio"))}</h2>
+                <div class="setup-section-subtitle">{escape(T.get("setup_portfolio_subtitle", "Open a product to refine its economics. Category benchmarks remain available inside each SKU."))}</div>
             </div>
             <div class="setup-count-badge"><strong>{int(n_skus)}</strong><span>SKU</span></div>
         </div>
@@ -10133,7 +10141,7 @@ with st.sidebar:
                 )
                 phase_inputs.append({**phase, "take_rate": take_rate, "samples_per_sku": samples_per_sku})
 
-        with st.expander(T["setup_tools"], expanded=bool(st.session_state.get("reset_confirm_pending", False))):
+        with st.expander(T.get("setup_tools", "Workspace tools"), expanded=bool(st.session_state.get("reset_confirm_pending", False))):
             if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"], icon=":material/replay:", width="stretch"):
                 reset_sku_assumptions(n_skus)
             if st.button(T["reset_defaults"], key="reset_request_btn", icon=":material/restart_alt:", width="stretch"):
@@ -10167,7 +10175,7 @@ show_setup = (not meeting_mode) or (not st.session_state.get("has_generated", Fa
 
 if show_setup:
     render_setup_workspace_header(n_skus, weeks_per_phase)
-    st.markdown(f'<div class="setup-utility-label">{escape(T["setup_reference"])}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="setup-utility-label">{escape(T.get("setup_reference", "Planning reference"))}</div>', unsafe_allow_html=True)
     reference_col, logic_col = st.columns(2)
     with reference_col:
         with st.expander(T["benchmark_info"], expanded=False):
@@ -10394,9 +10402,9 @@ if not st.session_state.get("has_generated", False):
                 <div class="setup-action-copy">
                     <div class="setup-action-icon">{icon_svg("trend")}</div>
                     <div>
-                        <div class="setup-action-title">{escape(T["setup_action_title"])}</div>
-                        <div class="setup-action-body">{escape(T["setup_action_body"])}</div>
-                        <div class="setup-action-summary">{escape(T["setup_action_summary"].format(skus=int(n_skus), weeks=int(weeks_per_phase) * len(PHASES), phases=len(PHASES)))}</div>
+                        <div class="setup-action-title">{escape(T.get("setup_action_title", "Ready to model the growth path"))}</div>
+                        <div class="setup-action-body">{escape(T.get("setup_action_body", "Generate the forecast from the current portfolio, phase plan, and cost assumptions."))}</div>
+                        <div class="setup-action-summary">{escape(T.get("setup_action_summary", "{skus} SKUs · {weeks} weeks · {phases} phases").format(skus=int(n_skus), weeks=int(weeks_per_phase) * len(PHASES), phases=len(PHASES)))}</div>
                     </div>
                 </div>
                 """,
