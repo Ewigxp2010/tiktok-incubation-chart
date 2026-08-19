@@ -6523,6 +6523,349 @@ st.markdown(
         }
     }
 
+    /* Planning workspace: direct, compact, and decision-oriented. */
+    .setup-workspace-hero {
+        margin: 0 0 24px 0;
+        padding: 20px 24px 0 24px;
+        color: #FFFFFF;
+        background: #121820;
+        border: 1px solid #121820;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 16px 34px rgba(16, 24, 40, 0.12);
+    }
+
+    .setup-workspace-copy {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 14px;
+        align-items: start;
+        padding-bottom: 18px;
+    }
+
+    .setup-workspace-mark {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        color: #FFFFFF;
+        background: #315EEC;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 8px;
+        box-shadow: 0 10px 22px rgba(49, 94, 236, 0.24);
+    }
+
+    .setup-workspace-mark svg {
+        width: 22px;
+        height: 22px;
+        stroke-width: 1.65;
+    }
+
+    .setup-workspace-eyebrow,
+    .setup-section-kicker,
+    .setup-utility-label {
+        font-size: 0.68rem;
+        line-height: 1.2;
+        font-weight: 780;
+        text-transform: uppercase;
+        letter-spacing: 0;
+    }
+
+    .setup-workspace-eyebrow {
+        color: #AFC2FF;
+        margin: 1px 0 7px 0;
+    }
+
+    h1.setup-workspace-title {
+        color: #FFFFFF;
+        font-size: 1.78rem;
+        line-height: 1.08;
+        font-weight: 820;
+        letter-spacing: 0;
+        margin: 0;
+    }
+
+    .setup-workspace-subtitle {
+        max-width: 720px;
+        color: #B8C1CE;
+        font-size: 0.8rem;
+        line-height: 1.55;
+        margin-top: 9px;
+    }
+
+    .setup-rail {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border-top: 1px solid rgba(255, 255, 255, 0.13);
+    }
+
+    .setup-rail-step {
+        min-width: 0;
+        min-height: 64px;
+        display: grid;
+        grid-template-columns: 25px 30px minmax(0, 1fr);
+        gap: 9px;
+        align-items: center;
+        padding: 11px 16px 12px 0;
+    }
+
+    .setup-rail-step + .setup-rail-step {
+        border-left: 1px solid rgba(255, 255, 255, 0.13);
+        padding-left: 18px;
+    }
+
+    .setup-step-index {
+        color: #778396;
+        font-size: 0.62rem;
+        font-weight: 760;
+    }
+
+    .setup-step-icon {
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        color: #AFC2FF;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 7px;
+    }
+
+    .setup-step-icon svg {
+        width: 16px;
+        height: 16px;
+        stroke-width: 1.7;
+    }
+
+    .setup-step-copy {
+        min-width: 0;
+    }
+
+    .setup-step-title {
+        color: #FFFFFF;
+        font-size: 0.79rem;
+        line-height: 1.2;
+        font-weight: 760;
+    }
+
+    .setup-step-meta {
+        color: #8F9BAB;
+        font-size: 0.67rem;
+        line-height: 1.35;
+        margin-top: 4px;
+        overflow-wrap: anywhere;
+    }
+
+    .setup-utility-label {
+        color: #7C8797;
+        margin: 0 0 8px 1px;
+    }
+
+    .setup-section-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        margin: 28px 0 12px 0;
+        padding-bottom: 13px;
+        border-bottom: 1px solid #DCE3EC;
+    }
+
+    .setup-section-kicker {
+        color: #315EEC;
+        margin-bottom: 5px;
+    }
+
+    h2.setup-section-title {
+        color: #111827;
+        font-size: 1.45rem;
+        line-height: 1.15;
+        font-weight: 800;
+        letter-spacing: 0;
+        margin: 0;
+    }
+
+    .setup-section-subtitle {
+        color: #687386;
+        max-width: 720px;
+        font-size: 0.79rem;
+        line-height: 1.48;
+        margin-top: 6px;
+    }
+
+    .setup-count-badge {
+        min-width: 48px;
+        height: 42px;
+        flex: 0 0 48px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #315EEC;
+        background: #EEF3FF;
+        border: 1px solid #D3DEFF;
+        border-radius: 8px;
+        line-height: 1;
+    }
+
+    .setup-count-badge strong {
+        font-size: 0.82rem;
+        font-weight: 820;
+    }
+
+    .setup-count-badge span {
+        color: #667085;
+        font-size: 0.5rem;
+        font-weight: 760;
+        margin-top: 3px;
+    }
+
+    div[data-testid="stExpander"]:has(.sku-title) {
+        border-radius: 8px;
+        border-color: #D8E0EA;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.025);
+        overflow: hidden;
+    }
+
+    div[data-testid="stExpander"]:has(.sku-title) details[open] {
+        background: #FFFFFF;
+        border-color: #B9C7F0;
+        box-shadow: 0 10px 24px rgba(16, 24, 40, 0.055);
+    }
+
+    div[data-testid="stExpander"]:has(.sku-title) details summary {
+        min-height: 52px;
+    }
+
+    div[data-testid="stExpander"]:has(.sku-title) details summary p {
+        color: #263247;
+        font-size: 0.84rem;
+        font-weight: 760;
+    }
+
+    .st-key-generate_simulator_action {
+        margin-top: 24px;
+        padding: 18px 20px;
+        background: #F6F8FB;
+        border: 1px solid #D6DEE9;
+        border-left: 3px solid #315EEC;
+        border-radius: 8px;
+    }
+
+    .setup-action-copy {
+        display: grid;
+        grid-template-columns: 38px minmax(0, 1fr);
+        gap: 12px;
+        align-items: center;
+    }
+
+    .setup-action-icon {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        color: #315EEC;
+        background: #EAF0FF;
+        border: 1px solid #CFDBFF;
+        border-radius: 8px;
+    }
+
+    .setup-action-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke-width: 1.7;
+    }
+
+    .setup-action-title {
+        color: #172033;
+        font-size: 0.9rem;
+        line-height: 1.25;
+        font-weight: 790;
+    }
+
+    .setup-action-body {
+        color: #667085;
+        font-size: 0.72rem;
+        line-height: 1.42;
+        margin-top: 3px;
+    }
+
+    .setup-action-summary {
+        color: #315EEC;
+        font-size: 0.67rem;
+        line-height: 1.3;
+        font-weight: 740;
+        margin-top: 5px;
+    }
+
+    .st-key-generate_simulator_action .stButton > button {
+        min-height: 48px;
+        border-radius: 8px;
+        font-size: 0.84rem;
+        font-weight: 780;
+        box-shadow: 0 8px 18px rgba(49, 94, 236, 0.18);
+    }
+
+    @media (max-width: 760px) {
+        .setup-workspace-hero {
+            padding: 18px 16px 0 16px;
+        }
+
+        .setup-workspace-copy {
+            grid-template-columns: 40px minmax(0, 1fr);
+            gap: 12px;
+            padding-bottom: 18px;
+        }
+
+        .setup-workspace-mark {
+            width: 40px;
+            height: 40px;
+        }
+
+        h1.setup-workspace-title {
+            font-size: 1.55rem;
+        }
+
+        .setup-workspace-subtitle {
+            font-size: 0.78rem;
+        }
+
+        .setup-rail-step {
+            min-height: 66px;
+            grid-template-columns: 22px minmax(0, 1fr);
+            gap: 6px;
+            padding: 12px 8px 13px 0;
+        }
+
+        .setup-rail-step + .setup-rail-step {
+            padding-left: 8px;
+        }
+
+        .setup-step-icon,
+        .setup-step-meta {
+            display: none;
+        }
+
+        .setup-step-title {
+            font-size: 0.68rem;
+            overflow-wrap: anywhere;
+        }
+
+        .setup-section-heading {
+            align-items: center;
+            margin-top: 22px;
+        }
+
+        h2.setup-section-title {
+            font-size: 1.25rem;
+        }
+
+        .st-key-generate_simulator_action {
+            padding: 15px;
+        }
+    }
+
     .sku-title {
         font-size: 1.02rem;
         font-weight: 790;
@@ -7686,23 +8029,53 @@ def render_decision_panel(overall, df_all, cumulative_be_label, driver):
     st.markdown(html, unsafe_allow_html=True)
 
 
-def render_cover_page(default_skus):
-    lang_tag = {
-        "en": "DE planning model",
-        "zh": "DE planning model",
-        "de": "DE Planungsmodell",
-        "nl": "DE planningsmodel",
-    }.get(lang, "DE planning model")
+def render_setup_workspace_header(n_skus, weeks_per_phase):
+    has_generated = st.session_state.get("has_generated", False)
+    total_weeks = int(weeks_per_phase) * len(PHASES)
+    title = T["setup_edit_title"] if has_generated else T["setup_workspace_title"]
+    subtitle = T["setup_edit_subtitle"] if has_generated else T["setup_workspace_subtitle"]
+    steps = [
+        ("01", T["setup_step_plan"], T["setup_step_plan_meta"], "phase"),
+        ("02", T["setup_step_skus"], T["setup_step_skus_meta"].format(skus=int(n_skus)), "sample"),
+        ("03", T["setup_step_forecast"], T["setup_step_forecast_meta"].format(weeks=total_weeks), "trend"),
+    ]
+    step_html = "".join(
+        f'<div class="setup-rail-step">'
+        f'<div class="setup-step-index">{escape(number)}</div>'
+        f'<div class="setup-step-icon">{icon_svg(icon)}</div>'
+        f'<div class="setup-step-copy"><div class="setup-step-title">{escape(label)}</div>'
+        f'<div class="setup-step-meta">{escape(meta)}</div></div>'
+        f'</div>'
+        for number, label, meta, icon in steps
+    )
     st.markdown(
         f"""
-        <div class="cover-shell">
-            <div class="cover-logo-row">
-                <div class="cover-logo-meta">
-                    <div class="cover-logo-kicker">{escape(lang_tag)}</div>
-                    <h1 class="cover-logo-title">{escape(T["meeting_header"])}</h1>
-                    <div class="cover-logo-subtitle">{escape(T["caption"])}</div>
+        <section class="setup-workspace-hero">
+            <div class="setup-workspace-copy">
+                <div class="setup-workspace-mark">{icon_svg("trend")}</div>
+                <div>
+                    <div class="setup-workspace-eyebrow">{escape(T["setup_workspace_eyebrow"])}</div>
+                    <h1 class="setup-workspace-title">{escape(title)}</h1>
+                    <div class="setup-workspace-subtitle">{escape(subtitle)}</div>
                 </div>
             </div>
+            <div class="setup-rail">{step_html}</div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_setup_section_heading(n_skus):
+    st.markdown(
+        f"""
+        <div class="setup-section-heading">
+            <div>
+                <div class="setup-section-kicker">{escape(T["sku_setup"])}</div>
+                <h2 class="setup-section-title">{escape(T["setup_portfolio_title"])}</h2>
+                <div class="setup-section-subtitle">{escape(T["setup_portfolio_subtitle"])}</div>
+            </div>
+            <div class="setup-count-badge"><strong>{int(n_skus)}</strong><span>SKU</span></div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -9634,45 +10007,6 @@ def format_table(df, money_cols=None, pct_cols=None, number_cols=None, decimal_c
     return out
 
 
-if not st.session_state.get("sku_count_confirmed", False) and not st.session_state.get("has_generated", False):
-    st.markdown(
-        """
-        <style>
-        section[data-testid="stSidebar"] { display: none !important; }
-        [data-testid="collapsedControl"] { display: none !important; }
-        [data-testid="stAppViewContainer"] > .main .block-container {
-            max-width: 1080px;
-            padding-left: 2.75rem;
-            padding-right: 2.75rem;
-            padding-top: 2.5rem;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-    render_cover_page(5)
-    st.markdown(f'<div class="cover-bottom-row"><div class="cover-row-label">{escape(T["expected_listing_skus"])}</div></div>', unsafe_allow_html=True)
-    cover_col1, cover_col2 = st.columns([1.25, 1.05], vertical_alignment="bottom")
-    with cover_col1:
-        st.number_input(
-            T["expected_listing_skus"],
-            min_value=1,
-            max_value=26,
-            value=5,
-            step=1,
-            key="n_skus_input",
-            label_visibility="collapsed",
-        )
-    with cover_col2:
-        if st.button(T["continue_setup"], type="primary", icon=":material/arrow_forward:", width="stretch"):
-            st.session_state["sku_count_confirmed"] = True
-            st.rerun()
-    st.markdown(
-        f'<div class="cover-note"><strong>{escape(T["model_version"])}:</strong> {escape(MODEL_VERSION)}. {escape(T["calibration_note"])}</div>',
-        unsafe_allow_html=True,
-    )
-    st.stop()
-
 if st.session_state.get("has_generated", False):
     preserve_setup_widget_state()
 
@@ -9682,11 +10016,14 @@ with st.sidebar:
 
     if "meeting_mode_input" not in st.session_state:
         st.session_state["meeting_mode_input"] = True
-    meeting_mode = st.toggle(
-        T["meeting_mode"],
-        help=T["meeting_mode_help"],
-        key="meeting_mode_input",
-    )
+    if st.session_state.get("has_generated", False):
+        meeting_mode = st.toggle(
+            T["meeting_mode"],
+            help=T["meeting_mode_help"],
+            key="meeting_mode_input",
+        )
+    else:
+        meeting_mode = True
 
     sidebar_meeting_compact = meeting_mode and st.session_state.get("has_generated", False)
     if sidebar_meeting_compact:
@@ -9723,17 +10060,8 @@ with st.sidebar:
             samples_per_sku = int(st.session_state.get(f"_model_samples_per_sku_{idx}", st.session_state.get(f"samples_per_sku_{idx}", phase["samples_per_sku"])))
             phase_inputs.append({**phase, "take_rate": take_rate_pct / 100, "samples_per_sku": samples_per_sku})
     else:
-        st.markdown(f'<div class="setup-ready">{escape(T["setup_ready"])}</div>', unsafe_allow_html=True)
         render_sidebar_meta(f"{T['model_version']}: {MODEL_VERSION}")
         render_sidebar_divider()
-        if st.button(T["reset_defaults"], key="reset_request_btn", icon=":material/restart_alt:"):
-            st.session_state["reset_confirm_pending"] = True
-        if st.session_state.get("reset_confirm_pending", False):
-            render_status_panel(T["reset_defaults"], T["reset_pending"], tone="warning", compact=True)
-            if st.button(T["reset_confirm"], key="reset_confirm_btn", icon=":material/check:"):
-                reset_defaults()
-        if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"], icon=":material/replay:"):
-            reset_sku_assumptions(n_skus)
         with st.expander(T["plan_setup"], expanded=True):
             promo_60d = st.checkbox(
                 T["promo"],
@@ -9805,6 +10133,17 @@ with st.sidebar:
                 )
                 phase_inputs.append({**phase, "take_rate": take_rate, "samples_per_sku": samples_per_sku})
 
+        with st.expander(T["setup_tools"], expanded=bool(st.session_state.get("reset_confirm_pending", False))):
+            if st.button(T["reset_sku_assumptions"], key="reset_sku_assumptions_btn", help=T["reset_sku_assumptions_help"], icon=":material/replay:", width="stretch"):
+                reset_sku_assumptions(n_skus)
+            if st.button(T["reset_defaults"], key="reset_request_btn", icon=":material/restart_alt:", width="stretch"):
+                st.session_state["reset_confirm_pending"] = True
+                st.rerun()
+            if st.session_state.get("reset_confirm_pending", False):
+                render_status_panel(T["reset_defaults"], T["reset_pending"], tone="warning", compact=True)
+                if st.button(T["reset_confirm"], key="reset_confirm_btn", icon=":material/check:", width="stretch"):
+                    reset_defaults()
+
         st.session_state["_model_promo_60d"] = bool(promo_60d)
         st.session_state["_model_use_fbt"] = bool(use_fbt)
         st.session_state["_model_weeks_per_phase"] = int(weeks_per_phase)
@@ -9827,12 +10166,16 @@ with st.sidebar:
 show_setup = (not meeting_mode) or (not st.session_state.get("has_generated", False))
 
 if show_setup:
-    st.subheader(T["sku_setup"])
-    with st.expander(T["benchmark_info"], expanded=False):
-        st.write(T["benchmark_info_text"])
-    with st.expander(T["model_assumptions"], expanded=False):
-        render_model_logic()
-        render_subtle_note(T["planning_disclaimer"], T["model_assumptions"])
+    render_setup_workspace_header(n_skus, weeks_per_phase)
+    st.markdown(f'<div class="setup-utility-label">{escape(T["setup_reference"])}</div>', unsafe_allow_html=True)
+    reference_col, logic_col = st.columns(2)
+    with reference_col:
+        with st.expander(T["benchmark_info"], expanded=False):
+            st.write(T["benchmark_info_text"])
+    with logic_col:
+        with st.expander(T["model_assumptions"], expanded=False):
+            render_model_logic()
+            render_subtle_note(T["planning_disclaimer"], T["model_assumptions"])
 
     with st.expander(T["meeting_notes"], expanded=False):
         n1, n2, n3, n4 = st.columns(4)
@@ -9873,13 +10216,14 @@ if show_setup:
     st.session_state["_model_assumption_status"] = assumption_status_key
     assumption_status = assumption_status_label(assumption_status_key)
 
+    render_setup_section_heading(n_skus)
     for i in range(int(n_skus)):
         initialize_sku(i)
         category = st.session_state[f"category_{i}"]
         subcategory = st.session_state[f"subcategory_{i}"]
         sku_name_preview = st.session_state[f"sku_name_{i}"] or chr(65 + i)
         expander_label = f"SKU {i + 1} · {sku_name_preview} · {category_path_label(category, subcategory)}"
-        with st.expander(expander_label, expanded=(not st.session_state.get("has_generated", False))):
+        with st.expander(expander_label, expanded=(i == 0 and not st.session_state.get("has_generated", False))):
             category = st.session_state[f"category_{i}"]
             subcategory = st.session_state[f"subcategory_{i}"]
             st.markdown(
@@ -10042,7 +10386,32 @@ if not st.session_state.get("has_generated", False):
     if input_validation_error:
         st.error(f"{T['input_error']}: {input_validation_error}")
 
-    if st.button(T["generate"], type="primary", icon=":material/monitoring:", disabled=bool(input_validation_error)):
+    with st.container(key="generate_simulator_action"):
+        action_copy, action_button = st.columns([1.8, 1], vertical_alignment="center")
+        with action_copy:
+            st.markdown(
+                f"""
+                <div class="setup-action-copy">
+                    <div class="setup-action-icon">{icon_svg("trend")}</div>
+                    <div>
+                        <div class="setup-action-title">{escape(T["setup_action_title"])}</div>
+                        <div class="setup-action-body">{escape(T["setup_action_body"])}</div>
+                        <div class="setup-action-summary">{escape(T["setup_action_summary"].format(skus=int(n_skus), weeks=int(weeks_per_phase) * len(PHASES), phases=len(PHASES)))}</div>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        with action_button:
+            generate_clicked = st.button(
+                T["generate"],
+                type="primary",
+                icon=":material/monitoring:",
+                disabled=bool(input_validation_error),
+                key="generate_simulator_btn",
+                width="stretch",
+            )
+    if generate_clicked:
         apply_model_draft(
             product_df=draft_product_df,
             phase_inputs=phase_inputs,

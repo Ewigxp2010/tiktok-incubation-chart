@@ -11,8 +11,8 @@ class SimulatorRegressionTests(unittest.TestCase):
     def start_setup(self):
         app = AppTest.from_file(str(APP_PATH)).run(timeout=30)
         self.assertFalse(app.exception)
-        app.button[0].click().run(timeout=30)
-        self.assertFalse(app.exception)
+        self.assertEqual(app.number_input(key="n_skus_input").value, 5)
+        self.assertEqual(app.button(key="generate_simulator_btn").key, "generate_simulator_btn")
         return app
 
     def generate(self, app):
